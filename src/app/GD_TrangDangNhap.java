@@ -3,25 +3,32 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class GD_TrangDangNhap extends JFrame {
+
+public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	private static final long serialVersionUID = 1L;
-	private JLabel lblTitle, lblUsername, lblPassword;
+	private JLabel lblTitle;
     private JTextField txtUsername, txtPassword;
-    private JButton btnLogin, btnExit;
-    private String user="123";
-	private String pass= "123";
-	private JLabel lblQuenMatKhau;
+    private JButton btnLogin, btnExit, btnQuenMatKhau;
+    private String user="";
+	private String pass= "";
+	private JLabel lblKaeaoke;
 
 	public GD_TrangDangNhap() {
 		setTitle("đăng nhập");
@@ -29,6 +36,7 @@ public class GD_TrangDangNhap extends JFrame {
 		setLocationRelativeTo(null);
 		//setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
@@ -63,11 +71,20 @@ public class GD_TrangDangNhap extends JFrame {
 		btnLogin.setBackground(Color.black);
 		panel.add(btnLogin);
 
-		lblQuenMatKhau= new JLabel("Quên Mật Khẩu?");
-		lblQuenMatKhau.setBounds(115, 205, 200, 35);
-		lblQuenMatKhau.setFont(new Font("Arial", Font.BOLD, 12));
-		lblQuenMatKhau.setForeground(Color.black);
-		panel.add(lblQuenMatKhau);
+		btnQuenMatKhau = new JButton("Quên Mật Khẩu?");
+		btnQuenMatKhau.setBounds(90, 220, 130, 20);
+		btnQuenMatKhau.setFont(new Font("Arial", Font.PLAIN, 10));
+		btnQuenMatKhau.setForeground(Color.black);
+		btnQuenMatKhau.setBackground(Color.white);
+		panel.add(btnQuenMatKhau);
+
+		
+		lblKaeaoke= new JLabel("KARAOKE 4T");
+		lblKaeaoke.setHorizontalAlignment(SwingConstants.CENTER);
+		lblKaeaoke.setBounds(30, 330, 250, 30);
+		lblKaeaoke.setFont(new Font("Arial", Font.BOLD, 18));
+		lblKaeaoke.setForeground(Color.black);
+		panel.add(lblKaeaoke);
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon("image\\hinh_trangdangnhap.jpg"));
@@ -79,11 +96,74 @@ public class GD_TrangDangNhap extends JFrame {
 		label.setIcon(hinhgt);
 		panel.add(label);
 		this.add(panel);
-		
+		// nhấp nháy 
+        txtUsername.addFocusListener(new FocusListener() { // Thêm FocusListener
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtUsername.getText().equals("Tên đăng nhập")) {
+                    txtUsername.setText("");
+                }
+            }
 
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtUsername.getText().isEmpty()) {
+                    txtUsername.setText("Tên đăng nhập");
+                }
+            }
+        });
 		
+        btnLogin.addActionListener(this);
+        btnQuenMatKhau.addActionListener(this);
+        
+ // ở đây chọn thoát giao diện  window hiển thị và hỏi.... chọn yes thì thoát, chọn no cũng thoát luôn nên sai cần hỡ trợ khúc này.
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showOptionDialog(
+                    null, "Bạn có chắc chắn muốn thoát không?", 
+                    "Xác nhận thoát", JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == JOptionPane.YES_OPTION) {
+                	System.exit(0);
+                }
+                // đoạn code nguy hiểm có thể làm tê liệt hệ thống :))
+                else windowOpened(e);
+            }
+        });
+    
 	}
 	public static void main(String[] args) {
 		new GD_TrangDangNhap().setVisible(true);
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		Object o = e.getSource();
+		if (o.equals(btnLogin)) {
+			GD_TrangChu trangchu= new GD_TrangChu();
+			trangchu.setVisible(true);	
+			dispose();
+//			String username = txtUsername.getText();
+//			char[] mk = ((JPasswordField) txtPassword).getPassword();
+//			String mkstr=new String(mk);
+//			if(username.equals(user)&& mkstr.equals(pass)) {
+//				GD_TrangChu trangchu= new GD_TrangChu();
+//				trangchu.setVisible(true);	
+//				dispose();
+//			}
+//			else {
+//				JOptionPane.showMessageDialog(this, "Sai tài khoản | mật khẩu");
+//			}
+
+		}
+		else if (o.equals(btnQuenMatKhau)) {
+			GD_QuenMatKhau quenmk= new GD_QuenMatKhau();
+			quenmk.setVisible(true);	
+			dispose();
+		}
+
+	
+		
 	}
 }
