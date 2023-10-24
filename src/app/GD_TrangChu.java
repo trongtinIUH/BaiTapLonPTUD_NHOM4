@@ -2,6 +2,8 @@ package app;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -9,6 +11,7 @@ import javax.swing.SwingConstants;
 
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import java.awt.GridLayout;
@@ -25,11 +28,15 @@ import java.awt.event.ActionEvent;
 
 
 public class GD_TrangChu extends JFrame implements ActionListener{
-
+	
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
+	private JPanel sidebarPanel;
+	private JPanel cardPanel;
+	private CardLayout cardLayout;
 	private final JPanel panel_1 = new JPanel();
 	private JButton btnDatPhong;
 	private JButton btnDanhSachPhong;
@@ -40,22 +47,29 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	private JTabbedPane tabbedPane = new JTabbedPane();
 	private JButton btnThongKe;
 	private JButton btnTroGiup;
-	private JLabel lblKaeaoke;
+	private JLabel lblKaraoke;
 	private JButton btnUser;
 	private GD_TrangDangNhap trangDangNhap;
 
-
+	GD_DatPhong datPhong = new GD_DatPhong();
+	GD_DanhSachPhong danhSachPhong = new GD_DanhSachPhong();
+	GD_NhanVien nhanVien = new GD_NhanVien();
+	GD_KhachHang khachHang = new GD_KhachHang();
+	GD_HoaDon hoaDon = new GD_HoaDon();
+	GD_SanPham sanPham = new GD_SanPham();
+	GD_ThongKe thongKe = new GD_ThongKe();
+	GD_TroGiup troGiup = new GD_TroGiup();
 	public GD_TrangChu() {
 		super("Karaoke 4T");
+		ImageIcon icon = new ImageIcon("icon\\icon_Karaoke3.jpg");
+	    this.setIconImage(icon.getImage());
 		initialize();
 //		this.trangDangNhap = trangDangNhap;
 	}
 
 	public static void main(String[] args) {
-		ImageIcon img = new ImageIcon("icon\\icon_Karaoke3.jpg");
 		GD_TrangChu home = new GD_TrangChu();
 		home.setVisible(true);
-		home.setIconImage(img.getImage());
 	}
 	
 	private void initialize() {
@@ -192,6 +206,10 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(217, 226, 231));
 		
+		JPanel pnMargin = new JPanel();
+		pnMargin.setPreferredSize(new Dimension(300, 20));
+		pnMargin.setBackground(new Color(217, 226, 231));
+		panel_3.add(pnMargin);
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBackground(new Color(255, 165, 0));
 		lblNewLabel_1.setIcon(new ImageIcon("image\\hinh_trangdangnhap.jpg"));
@@ -203,12 +221,12 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		lblNewLabel_1.setIcon(hinhgt1);
 		panel_3.add(lblNewLabel_1);
 		
-		lblKaeaoke= new JLabel("KARAOKE 4T");
-		lblKaeaoke.setHorizontalAlignment(SwingConstants.CENTER);
-		lblKaeaoke.setBounds(0, 100, 100, 30);
-		lblKaeaoke.setFont(new Font("Arial", Font.BOLD, 14));
-		lblKaeaoke.setForeground(Color.black);
-		panel_3.add(lblKaeaoke);
+		lblKaraoke= new JLabel("KARAOKE 4T");
+		lblKaraoke.setHorizontalAlignment(SwingConstants.CENTER);
+		lblKaraoke.setBounds(0, 100, 100, 30);
+		lblKaraoke.setFont(new Font("Arial", Font.BOLD, 14));
+		lblKaraoke.setForeground(Color.black);
+		panel_3.add(lblKaraoke);
 		 
 		 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
@@ -236,7 +254,7 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		gl_panel_2.setVerticalGroup(
 				gl_panel_2.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel_2.createSequentialGroup()
-						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 						.addGap(15) // Thêm khoảng cách 10 pixel
 						.addComponent(btnDatPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
 						.addGap(15) // Thêm khoảng cách 10 pixel
@@ -260,17 +278,31 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 			);
 		panel_2.setLayout(gl_panel_2);
 		
-		tabbedPane = new JTabbedPane();
-		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		tabbedPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-		JLabel lblNewLabel_2 = new JLabel("");
+		sidebarPanel = new JPanel();
+		cardPanel = new JPanel();
+	    cardLayout = new CardLayout();
+	    cardPanel.setLayout(cardLayout);
+	    JPanel trangChu = new JPanel();
+	    trangChu.setBackground(Color.black);
+	    JLabel lblNewLabel_2 = new JLabel("");
+	    lblNewLabel_2.setIcon(new ImageIcon("image\\TrangChu.jpg"));
+	    lblNewLabel_2.setBounds(0, 100, 1080, 730);
 		ImageIcon hinhgt= new ImageIcon("image\\TrangChu.jpg");
 		Image image = hinhgt.getImage();
-		Image newImage = image.getScaledInstance(1050, 650, java.awt.Image.SCALE_SMOOTH);
+		Image newImage = image.getScaledInstance(1080, 730, java.awt.Image.SCALE_SMOOTH);
 		hinhgt = new ImageIcon(newImage);
 		lblNewLabel_2.setIcon(hinhgt);
-		tabbedPane.addTab("tab_GioiThieu\r\n", null, lblNewLabel_2, null);
+		trangChu.add(lblNewLabel_2);
+	    cardPanel.add(trangChu, "TrangChu");
+	    cardPanel.add(datPhong, "DatPhong");
+	    cardPanel.add(danhSachPhong, "DanhSachPhong");  
+	    cardPanel.add(nhanVien, "NhanVien");  
+	    cardPanel.add(khachHang, "KhachHang");  
+	    cardPanel.add(hoaDon, "HoaDon");  
+	    cardPanel.add(sanPham, "SanPham");  
+	    cardPanel.add(thongKe, "ThongKe");  
+	    cardPanel.add(troGiup, "TroGiup");  
+		getContentPane().add(cardPanel, BorderLayout.CENTER);
 		
 		btnDatPhong.addActionListener(this);
 		btnDanhSachPhong.addActionListener(this);
@@ -286,145 +318,23 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub	
+		Object o = e.getSource();
+		if(o.equals(btnDatPhong)) {
+			cardLayout.show(cardPanel, "DatPhong");
+		} else if(o.equals(btnDanhSachPhong)) {
+			cardLayout.show(cardPanel, "DanhSachPhong");
+		} else if(o.equals(btnNhanVien)) {
+			cardLayout.show(cardPanel, "NhanVien");
+		}else if(o.equals(btnKhachHang)) {
+			cardLayout.show(cardPanel, "KhachHang");
+		}else if(o.equals(btnHoaDon)) {
+			cardLayout.show(cardPanel, "HoaDon");
+		}else if(o.equals(btnSanPham)) {
+			cardLayout.show(cardPanel, "SanPham");
+		}else if(o.equals(btnThongKe)) {
+			cardLayout.show(cardPanel, "ThongKe");
+		} else if(o.equals(btnTroGiup)) {
+			cardLayout.show(cardPanel, "TroGiup");
+		}
 	}
-
-//	@Override
-//	public void actionPerformed(ActionEvent e) {
-//		Object o= e.getSource();
-//		if(o.equals(btnKhachHang)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_Khách Hàng")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    } 
-//			khachHang.clearTable();
-//			khachHang.loadData();
-//			setBackground();
-//			btnKhachHang.setBackground(Color.pink);
-//			tabbedPane.addTab("tab_Khách Hàng\r\n", null, khachHang, null);
-//			tabbedPane.setSelectedIndex(getIndex(khachHang));
-//		}
-//		if(o.equals(btnBanHang)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_Bán Hàng")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    } 
-//			    
-//			setBackground();
-//			btnBanHang.setBackground(Color.pink);
-//			tabbedPane.addTab("tab_Bán Hàng\r\n", null, banHang, null);
-//			tabbedPane.setSelectedIndex(getIndex(banHang));
-//		}
-//		if(o.equals(btnHopDong)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_Hợp Đồng")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    } 
-//			dsHopDong.clearTable();
-//			dsHopDong.loadData();
-//			setBackground();
-//			btnHopDong.setBackground(Color.pink);
-//			tabbedPane.addTab("tab_Hợp Đồng\r\n", null, dsHopDong, null);
-//			tabbedPane.setSelectedIndex(getIndex(dsHopDong));
-//		}
-//		if(o.equals(btnNhanVien)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_Nhân viên")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    } 
-//			nhanVien.clearTable();
-//			nhanVien.loadData();
-//			setBackground();
-//			btnNhanVien.setBackground(Color.pink);
-//			tabbedPane.addTab("tab_Nhân Viên\r\n", null, nhanVien, null);
-//			tabbedPane.setSelectedIndex(getIndex(nhanVien));
-//		}
-//		if(o.equals(btnNhaphang)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_Nhập Hàng")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    } 
-//			nhapHang.clearTable();
-//			nhapHang.loadData();
-//			setBackground();
-//			btnNhaphang.setBackground(Color.pink);
-//			tabbedPane.addTab("tab_Nhập Hàng\r\n", null, nhapHang, null);
-//			tabbedPane.setSelectedIndex(getIndex(nhapHang));
-//		}
-//		if(o.equals(btnSanPham)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_sản Phẩm")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    } 
-//			sanPham.clearTableFrmSanPham();
-//			sanPham.loadDataFrmSanPham();
-//			setBackground();
-//			btnSanPham.setBackground(Color.pink);
-//			tabbedPane.addTab("tab_Sản Phẩm\r\n", null, sanPham, null);
-//			tabbedPane.setSelectedIndex(getIndex(sanPham));
-//		}
-//		if(o.equals(btnBaoHanh)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_Bảo Hành")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    }  
-//			baohanh.clearTable();
-//			baohanh.loadData();
-//			setBackground();
-//			btnBaoHanh.setBackground(Color.pink);
-//			tabbedPane.addTab("tab_Bảo Hành\r\n", null,baohanh , null);
-//			tabbedPane.setSelectedIndex(getIndex(baohanh));
-//		}
-//		if(o.equals(btnThongKe)) {
-//			 int count = tabbedPane.getTabCount();
-//			    for (int i = count - 1; i >= 0; i--) {
-//			        String title = tabbedPane.getTitleAt(i);
-//			        if (!title.equals("tab_GioiThieu") && !title.equals("tab_Thống Kê")) {
-//			            tabbedPane.removeTabAt(i);
-//			        }
-//			    }  
-//			    thongke.loadData();
-//			    setBackground();
-//			    btnThongKe.setBackground(Color.pink);
-//			    tabbedPane.addTab("tab_Thống Kê\r\n", null, thongke, null);
-//			 //   tabbedPane.setSelectedIndex(getIndex(thongke));
-//			    tabbedPane.setSelectedComponent(thongke);
-//		}
-//	}
-
-//	public void setBackground() {
-//		btnBanHang.setBackground(Color.white);
-//		btnKhachHang.setBackground(Color.white);
-//		btnHopDong.setBackground(Color.white);
-//		btnNhanVien.setBackground(Color.white);
-//		btnNhaphang.setBackground(Color.white);
-//		btnSanPham.setBackground(Color.white);
-//		btnBaoHanh.setBackground(Color.white);
-//		btnThongKe.setBackground(Color.white);
-//		
-//	}
-	
-//	public int getIndex(Component obj) {
-//		return tabbedPane.indexOfComponent(obj);
-//	}
 }
