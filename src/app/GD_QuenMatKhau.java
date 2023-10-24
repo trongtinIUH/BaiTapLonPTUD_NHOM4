@@ -10,7 +10,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -32,6 +34,9 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		//setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		ImageIcon icon = new ImageIcon("image\\\\hinh_trangdangnhap.jpg");
+	    this.setIconImage(icon.getImage());
 		
 
 		JPanel panel = new JPanel();
@@ -80,7 +85,7 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 		    lblMatKhauMoi.setForeground(Color.white);
 	        panel.add(lblMatKhauMoi); 
 	        
-	        txtPassword= new JTextField(20);
+	        txtPassword = new JPasswordField(20);
 	        txtPassword.setBounds(130, 140, 300, 20);
 	        panel.add(txtPassword);
 			
@@ -90,7 +95,7 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 		    lblNhapLaiMatKhauMoi.setForeground(Color.white);
 	        panel.add(lblNhapLaiMatKhauMoi); 
 	        
-	        txtPassword_New= new JTextField(20);
+	        txtPassword_New= new JPasswordField(20);
 	        txtPassword_New.setBounds(130, 170, 300, 20);
 	        panel.add(txtPassword_New);
 	        
@@ -134,6 +139,7 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if(o.equals(btnXacNhan)) {
+			JOptionPane.showMessageDialog(null, "Mật khẩu mới của bạn đã được cập nhật !");
 			// thêm joption thông báo thành công rồi nhảy về trang đăng nhập//
 			GD_TrangDangNhap dn= new GD_TrangDangNhap();
 			dn.setVisible(true);	
@@ -146,7 +152,11 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 			dispose();
 		}
 		else if (o.equals(btnOTP)) {
-			// tự động nhập mã qua txt otp
+			  // Tạo mã OTP ngẫu nhiên gồm 6 chữ số
+		    int otp = (int)(Math.random() * ((999999 - 100000) + 1)) + 100000;
+		    
+		    // Hiển thị mã OTP trong ô txtOTP
+		    txtOTP.setText(String.valueOf(otp));
 		}
 //		
 	}

@@ -6,9 +6,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.Component;
 
 import javax.swing.ImageIcon;
 import java.awt.GridLayout;
@@ -21,7 +21,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.LayoutStyle.ComponentPlacement;
+
 
 
 public class GD_TrangChu extends JFrame implements ActionListener{
@@ -42,28 +42,22 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	private JButton btnTroGiup;
 	private JLabel lblKaeaoke;
 	private JButton btnUser;
+	private GD_TrangDangNhap trangDangNhap;
 
-	//thêm các frm
 
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-	new GD_TrangChu().setVisible(true);
-	}
-
-	/**
-	 * Create the application. 
-	 */
 	public GD_TrangChu() {
-		super("Karaoke_4T.java");
+		super("Karaoke 4T");
 		initialize();
+//		this.trangDangNhap = trangDangNhap;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	public static void main(String[] args) {
+		ImageIcon img = new ImageIcon("icon\\icon_Karaoke3.jpg");
+		GD_TrangChu home = new GD_TrangChu();
+		home.setVisible(true);
+		home.setIconImage(img.getImage());
+	}
+	
 	private void initialize() {
 		
 		// hiển thị full màn hình
@@ -79,11 +73,10 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		panel_1.setLayout(new GridLayout(0, 1, 8, 1));
 		
 		Panel panel_2 = new Panel();
-		panel_2.setBackground(Color.WHITE);
-		panel_2.setForeground(Color.WHITE);
+		panel_2.setBackground(new Color(217, 226, 231));
 		panel_1.add(panel_2);
 		
-		//user
+		//User
 		 btnUser = new JButton("");
 		 btnUser.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		 btnUser.setForeground(Color.BLACK);
@@ -94,18 +87,22 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 			}
 		});
 		
-		 btnDatPhong = new JButton("Đặt Phòng");
+		 btnDatPhong = new JButton("ĐẶT PHÒNG");
 		 btnDatPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		 btnDatPhong.setForeground(Color.BLACK);
 		 btnDatPhong.setBackground(Color.white);
-		 btnDatPhong.setIcon(new ImageIcon("icon\\banhang.png"));
+		 btnDatPhong.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		 btnDatPhong.setIconTextGap(25); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		 btnDatPhong.setIcon(new ImageIcon("icon\\icon_DatPhong.png"));
 		 btnDatPhong.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		 btnDanhSachPhong = new JButton("Danh Sách Phòng");
-		 btnDanhSachPhong.setIcon(new ImageIcon("icon\\khuyenmai.png"));
+		 btnDanhSachPhong = new JButton("DANH SÁCH PHÒNG");
+		 btnDanhSachPhong.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		 btnDanhSachPhong.setIconTextGap(10); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		 btnDanhSachPhong.setIcon(new ImageIcon("icon\\icon_DSPhong.png"));
 		 btnDanhSachPhong.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -114,18 +111,10 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		 btnDanhSachPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		 btnDanhSachPhong.setBackground(Color.WHITE);
 		
-		btnSanPham = new JButton("Sản Phẩm");
-		btnSanPham.setIcon(new ImageIcon("icon\\sanpham.png"));
-		btnSanPham.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnSanPham.setForeground(Color.BLACK);
-		btnSanPham.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnSanPham.setBackground(Color.WHITE);
-		
-		 btnNhanVien = new JButton("Nhân Viên");
-		btnNhanVien.setIcon(new ImageIcon("icon\\nhanvien.png"));
+		btnNhanVien = new JButton("NHÂN VIÊN");
+		btnNhanVien.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		btnNhanVien.setIconTextGap(35); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnNhanVien.setIcon(new ImageIcon("icon\\icon_NhanVien.png"));
 		btnNhanVien.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -134,8 +123,74 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		btnNhanVien.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnNhanVien.setBackground(Color.WHITE);
 		
+		btnKhachHang = new JButton("KHÁCH HÀNG");
+		btnKhachHang.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnKhachHang.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		btnKhachHang.setIconTextGap(20); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnKhachHang.setIcon(new ImageIcon("icon\\icon_KhachHang.png"));
+		btnKhachHang.setForeground(Color.BLACK);
+		btnKhachHang.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnKhachHang.setBackground(Color.WHITE);
+		
+		btnSanPham = new JButton("SẢN PHẨM");
+		btnSanPham.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		btnSanPham.setIconTextGap(27); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnSanPham.setIcon(new ImageIcon("icon\\icon_SanPham.png"));
+		btnSanPham.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnSanPham.setForeground(Color.BLACK);
+		btnSanPham.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnSanPham.setBackground(Color.WHITE);
+		
+		/// Hóa đơn
+		 btnHoaDon = new JButton("HÓA ĐƠN");
+		 btnHoaDon.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+		 btnHoaDon.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		 btnHoaDon.setIconTextGap(30); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		 btnHoaDon.setIcon(new ImageIcon("icon\\icon_HoaDon.png"));
+		 btnHoaDon.setForeground(Color.BLACK);
+		 btnHoaDon.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		 btnHoaDon.setBackground(Color.WHITE);
+		 
+		//thống kê 
+		 btnThongKe = new JButton("THỐNG KÊ");
+		 btnThongKe.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+		 btnThongKe.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		 btnThongKe.setIconTextGap(20); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		 btnThongKe.setIcon(new ImageIcon("icon\\icon_ThongKe.png"));
+		 btnThongKe.setForeground(Color.BLACK);
+		 btnThongKe.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		 btnThongKe.setBackground(Color.WHITE);
+		
+		//Trợ giúp
+		 btnTroGiup = new JButton("TRỢ GIÚP");
+		 btnTroGiup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		 btnTroGiup.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
+		 btnTroGiup.setIconTextGap(35); //Tạo Khoảng cách giữa icon và Nội dung(text)
+		 btnTroGiup.setIcon(new ImageIcon("icon\\icon_TroGiup.png"));
+		 btnTroGiup.setForeground(Color.BLACK);
+		 btnTroGiup.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		 btnTroGiup.setBackground(Color.WHITE);
+		 
+		 //user
+//		 btnUser.setIcon(new ImageIcon("icon\\icon_User.png"));
+		
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(Color.WHITE);
+		panel_3.setBackground(new Color(217, 226, 231));
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBackground(new Color(255, 165, 0));
@@ -154,51 +209,6 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		lblKaeaoke.setFont(new Font("Arial", Font.BOLD, 14));
 		lblKaeaoke.setForeground(Color.black);
 		panel_3.add(lblKaeaoke);
-		
-		 btnKhachHang = new JButton("Khách Hàng");
-		btnKhachHang.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnKhachHang.setIcon(new ImageIcon("icon\\khachhang.png"));
-		btnKhachHang.setForeground(Color.BLACK);
-		btnKhachHang.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnKhachHang.setBackground(Color.WHITE);
-		
-		/// Hóa đơn
-		 btnHoaDon = new JButton("Hóa Đơn");
-		 btnHoaDon.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
-		 btnHoaDon.setIcon(new ImageIcon("icon\\baohanh.png"));
-		 btnHoaDon.setForeground(Color.BLACK);
-		 btnHoaDon.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnHoaDon.setBackground(Color.WHITE);
-		
-		//Thống kê
-		 btnTroGiup = new JButton("Trợ Giúp");
-		 btnTroGiup.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		 btnTroGiup.setIcon(new ImageIcon("icon\\nhaphang.png"));
-		 btnTroGiup.setForeground(Color.BLACK);
-		 btnTroGiup.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnTroGiup.setBackground(Color.WHITE);
-		//thống kê 
-		 btnThongKe = new JButton("Thống Kê");
-		 btnThongKe.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
-		 btnThongKe.setIcon(new ImageIcon("icon\\thongke.png"));
-		 btnThongKe.setForeground(Color.BLACK);
-		 btnThongKe.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnThongKe.setBackground(Color.WHITE);
-		 
-		 //user
-		 btnUser.setIcon(new ImageIcon("icon\\nhanvien.png"));
 		 
 		 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
@@ -255,7 +265,7 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		tabbedPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		JLabel lblNewLabel_2 = new JLabel("");
-		ImageIcon hinhgt= new ImageIcon("image\\hinh_trangdangnhap.jpg");
+		ImageIcon hinhgt= new ImageIcon("image\\TrangChu.jpg");
 		Image image = hinhgt.getImage();
 		Image newImage = image.getScaledInstance(1050, 650, java.awt.Image.SCALE_SMOOTH);
 		hinhgt = new ImageIcon(newImage);

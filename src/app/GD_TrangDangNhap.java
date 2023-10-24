@@ -31,16 +31,19 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	private JLabel lblKaeaoke;
 
 	public GD_TrangDangNhap() {
-		setTitle("đăng nhập");
+		setTitle("Đăng Nhập KARAOKE 4T");
 		setSize(720, 400);
 		setLocationRelativeTo(null);
 		//setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		ImageIcon icon = new ImageIcon("image\\\\hinh_trangdangnhap.jpg");
+	    this.setIconImage(icon.getImage());
+		
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(240, 240, 240));
+		panel.setBackground(new Color(255,255,255,255));
 		
 		lblTitle = new JLabel("KARAOKE 4T");
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 32));
@@ -95,6 +98,16 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		hinhgt = new ImageIcon(newImage);
 		label.setIcon(hinhgt);
 		panel.add(label);
+		
+		JLabel label1 = new JLabel("");
+		label1.setIcon(new ImageIcon("image\\hinh_trangDN1.jpg"));
+		label1.setBounds(0, 260, 50, 50);
+		ImageIcon hinhgt1= new ImageIcon("image\\hinh_trangDN1.jpg");
+		Image image1 = hinhgt1.getImage();
+		Image newImage1 = image1.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+		hinhgt1 = new ImageIcon(newImage1);
+		label1.setIcon(hinhgt1);
+		panel.add(label1);
 		this.add(panel);
 		// nhấp nháy 
         txtUsername.addFocusListener(new FocusListener() { // Thêm FocusListener
@@ -116,22 +129,6 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
         btnLogin.addActionListener(this);
         btnQuenMatKhau.addActionListener(this);
         
- // ở đây chọn thoát giao diện  window hiển thị và hỏi.... chọn yes thì thoát, chọn no cũng thoát luôn nên sai cần hỡ trợ khúc này.
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                int confirm = JOptionPane.showOptionDialog(
-                    null, "Bạn có chắc chắn muốn thoát không?", 
-                    "Xác nhận thoát", JOptionPane.YES_NO_OPTION, 
-                    JOptionPane.QUESTION_MESSAGE, null, null, null);
-                if (confirm == JOptionPane.YES_OPTION) {
-                	System.exit(0);
-                }
-                // đoạn code nguy hiểm có thể làm tê liệt hệ thống :))
-                else windowOpened(e);
-            }
-        });
-    
 	}
 	public static void main(String[] args) {
 		new GD_TrangDangNhap().setVisible(true);
