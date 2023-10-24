@@ -2,6 +2,7 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -133,8 +136,12 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
         });
     
 	}
+	
 	public static void main(String[] args) {
-		new GD_TrangDangNhap().setVisible(true);
+		ImageIcon img = new ImageIcon("icon\\icon_Karaoke3.jpg");
+		GD_TrangDangNhap trangDangNhap = new GD_TrangDangNhap();
+		trangDangNhap.setVisible(true);
+		trangDangNhap.setIconImage(img.getImage());
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
