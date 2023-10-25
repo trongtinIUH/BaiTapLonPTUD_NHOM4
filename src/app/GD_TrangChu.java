@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Color;
 import java.awt.Dimension;
 
