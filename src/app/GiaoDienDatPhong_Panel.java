@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
 
 public class GiaoDienDatPhong_Panel extends JPanel implements ActionListener, MouseListener {
 
@@ -18,6 +21,10 @@ public class GiaoDienDatPhong_Panel extends JPanel implements ActionListener, Mo
 	 */
 	private static final long serialVersionUID = 1L;
 	private JButton btnUser;
+	private JComboBox comboBox_;
+	private JComboBox comboBox_TrangThai;
+	private JTextField txtSoNguoi;
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -47,16 +54,67 @@ public class GiaoDienDatPhong_Panel extends JPanel implements ActionListener, Mo
 		btnUser.setBounds(1019, 0, 61, 35);
 		btnUser.setBackground(new Color(181,230,251,255));
 		panel_1.add(btnUser);
-		
+		//---gốc 2
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
 		panel_2.setBounds(0, 35, 1080, 130);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
+		//--- lbl và combox trạng thái
+		JLabel lblTrangThai = new JLabel("Trạng Thái");
+		lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblTrangThai.setBounds(30, 10, 93, 25);
+		panel_2.add(lblTrangThai);
 		
-		JLabel lblNewLabel = new JLabel("Trạng Thái");
-		lblNewLabel.setBounds(45, 11, 130, 14);
-		panel_2.add(lblNewLabel);
+		comboBox_TrangThai = new JComboBox();
+		comboBox_TrangThai.setBackground(Color.WHITE);
+		comboBox_TrangThai.setFont(new Font("Tahoma", Font.BOLD, 12));
+		comboBox_TrangThai.setModel(new DefaultComboBoxModel(new String[] {"Trống", "Chờ", "Đang Sử Dụng", "Sửa Chửa"}));
+		comboBox_TrangThai.setBounds(130, 10, 185, 25);
+		panel_2.add(comboBox_TrangThai);
+		
+		JLabel lblLoiPhng = new JLabel("Loại Phòng");
+		lblLoiPhng.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblLoiPhng.setBounds(30, 62, 93, 25);
+		panel_2.add(lblLoiPhng);
+		
+		JComboBox comboBox_LoaiPhong = new JComboBox();
+		comboBox_LoaiPhong.setModel(new DefaultComboBoxModel(new String[] {"Phòng Vip", "Phòng Thường"}));
+		comboBox_LoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 12));
+		comboBox_LoaiPhong.setBackground(Color.WHITE);
+		comboBox_LoaiPhong.setBounds(130, 62, 185, 25);
+		panel_2.add(comboBox_LoaiPhong);
+		
+		JLabel lblSoNguoi = new JLabel("Số Người");
+		lblSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblSoNguoi.setBounds(406, 14, 79, 25);
+		panel_2.add(lblSoNguoi);
+		
+		JLabel lblMaPhong = new JLabel("Mã Phòng");
+		lblMaPhong.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblMaPhong.setBounds(406, 62, 79, 25);
+		panel_2.add(lblMaPhong);
+		
+		txtSoNguoi = new JTextField();
+		txtSoNguoi.setEditable(false);
+		txtSoNguoi.setText("10");
+		txtSoNguoi.setBounds(509, 14, 102, 25);
+		panel_2.add(txtSoNguoi);
+		txtSoNguoi.setColumns(10);
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		textField.setColumns(10);
+		textField.setBounds(509, 62, 102, 25);
+		panel_2.add(textField);
+		
+		JButton btnTimKiem = new JButton("Tìm Kiếm");
+		btnTimKiem.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnTimKiem.setBounds(694, 16, 89, 23);
+		panel_2.add(btnTimKiem);
 		
 		
 		//thêm sự kiện
