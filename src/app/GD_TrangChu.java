@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -213,7 +214,7 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBackground(new Color(255, 165, 0));
 		lblNewLabel_1.setIcon(new ImageIcon("image\\hinh_trangdangnhap.jpg"));
-		lblNewLabel_1.setBounds(0, 10, 100, 100);
+		lblNewLabel_1.setBounds(0, 100, 100, 100);
 		ImageIcon hinhgt1= new ImageIcon("image\\hinh_trangdangnhap.jpg");
 		Image image1 = hinhgt1.getImage();
 		Image newImage1 = image1.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
