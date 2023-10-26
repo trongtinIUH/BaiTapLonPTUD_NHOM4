@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Phong extends LoaiPhong implements Serializable {
 
@@ -10,5 +11,65 @@ public class Phong extends LoaiPhong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String maPhong;
 	private LoaiPhong loaiPhong;
+	private enum TrangThai{Trống,Chờ,Đang_Sử_Dụng,Đang_Sửa_Chửa}
+	public TrangThai trangThai;
+	public Phong() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Phong(String maLoaiPhong, String tenLoaiPhong, int sucChua, double donGiaTheoGio) {
+		super(maLoaiPhong, tenLoaiPhong, sucChua, donGiaTheoGio);
+		// TODO Auto-generated constructor stub
+	}
+	public Phong(String maPhong, LoaiPhong loaiPhong, TrangThai trangThai) {
+		super();
+		this.maPhong = maPhong;
+		this.loaiPhong = loaiPhong;
+		this.trangThai = trangThai;
+	}
+	public String getMaPhong() {
+		return maPhong;
+	}
+	public void setMaPhong(String maPhong) {
+		this.maPhong = maPhong;
+	}
+	public LoaiPhong getLoaiPhong() {
+		return loaiPhong;
+	}
+	public void setLoaiPhong(LoaiPhong loaiPhong) {
+		this.loaiPhong = loaiPhong;
+	}
+	public TrangThai getTrangThai() {
+		return trangThai;
+	}
+	public void setTrangThai(TrangThai trangThai) {
+		this.trangThai = trangThai;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(maPhong);
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Phong other = (Phong) obj;
+		return Objects.equals(maPhong, other.maPhong);
+	}
+	@Override
+	public String toString() {
+		return String.format("Phong [maPhong=%s, loaiPhong=%s, trangThai=%s]", maPhong, loaiPhong, trangThai);
+	}
+	
 	
 }
