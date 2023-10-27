@@ -89,7 +89,7 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 			    Color.blue)
 			);
 		pnOrderInfo.setBackground(Color.white);
-		pnOrderInfo.setBounds(0, 20, 725, 297);
+		pnOrderInfo.setBounds(10, 20, 705, 297);
 		pnOrderInfo.add(lblMaHD = new JLabel("Mã hóa đơn"));
 		lblMaHD.setFont(new Font("Arial", Font.BOLD, 18));
 		lblMaHD.setBounds(10, 25, 160, 34);
@@ -153,7 +153,7 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		txtTongTien.setHorizontalAlignment(JTextField.RIGHT);
 		
 		pnOrderInfo.add(btnXoa = new JButton("Xóa"));
-		btnXoa.setBounds(190, 237, 140, 50);
+		btnXoa.setBounds(190, 237, 140, 40);
 		btnXoa.setBackground(Color.decode("#EE1919"));
 		btnXoa.setForeground(Color.white);
 		btnXoa.setFont(new Font("Arial", Font.BOLD, 18));
@@ -162,7 +162,7 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		btnXoa.setIconTextGap(18);
 		
 		pnOrderInfo.add(btnSua = new JButton("Sửa"));
-		btnSua.setBounds(350, 237, 140, 50);
+		btnSua.setBounds(350, 237, 140, 40);
 		btnSua.setBackground(Color.decode("#4A83D7"));
 		btnSua.setForeground(Color.white);
 		btnSua.setFont(new Font("Arial", Font.BOLD, 18));
@@ -171,7 +171,7 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		btnSua.setIconTextGap(18);
 		
 		JPanel pnSearch = new JPanel();
-		pnSearch.setBounds(745, 20, 330, 297);
+		pnSearch.setBounds(730, 20, 330, 297);
 		pnSearch.setLayout(null);
 		pnSearch.setBorder(BorderFactory.createTitledBorder(
 			    BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2), 
@@ -199,7 +199,7 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		txtTimKiem.setFont(new Font("Arial", Font.BOLD, 18));
 		txtTimKiem.setBounds(15, 150, 300, 30);
 		pnSearch.add(btnTimKiem = new JButton("Tìm kiếm"));
-		btnTimKiem.setBounds(100, 220, 160, 50);
+		btnTimKiem.setBounds(100, 220, 160, 40);
 		btnTimKiem.setBackground(Color.decode("#0D99FF"));
 		btnTimKiem.setForeground(Color.white);
 		btnTimKiem.setFont(new Font("Arial", Font.BOLD, 18));
@@ -209,7 +209,7 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		pnContent.add(pnSearch);
 
 		pnContent.add(btnXuatDSHD = new JButton("XUẤT DANH SÁCH HÓA ĐƠN"));
-		btnXuatDSHD.setBounds(745, 327, 330, 34);
+		btnXuatDSHD.setBounds(730, 327, 330, 34);
 		btnXuatDSHD.setBackground(Color.decode("#FBB5B5"));
 		btnXuatDSHD.setForeground(Color.white);
 		btnXuatDSHD.setFont(new Font("Arial", Font.BOLD, 16));
@@ -223,11 +223,11 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		JLabel lblListOrder = new JLabel("DANH SÁCH HÓA ĐƠN");
 		lblListOrder.setForeground(Color.blue);
 		lblListOrder.setFont(new Font("Arial", Font.BOLD, 25));
-		lblListOrder.setBounds(5, 365, 400, 30);
+		lblListOrder.setBounds(10, 365, 400, 30);
 		pnContent.add(lblListOrder);
 		JPanel pnTableOrderList = new JPanel();
 		pnTableOrderList.setLayout(null);
-		pnTableOrderList.setBounds(0, 396, 711, 270);
+		pnTableOrderList.setBounds(10, 396, 711, 270);
 		modelOrderList = new DefaultTableModel(colOrderList,0);
 		tableOrderList = new JTable(modelOrderList);
 		tableOrderList.setSelectionBackground(Color.pink);
@@ -249,11 +249,11 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		JLabel lblOrderDetail = new JLabel("CHI TIẾT HÓA ĐƠN");
 		lblOrderDetail.setForeground(Color.blue);
 		lblOrderDetail.setFont(new Font("Arial", Font.BOLD, 25));
-		lblOrderDetail.setBounds(731, 365, 400, 30);
+		lblOrderDetail.setBounds(730, 365, 400, 30);
 		pnContent.add(lblOrderDetail);
 		JPanel pnTableOrderDetail = new JPanel();
 		pnTableOrderDetail.setLayout(null);
-		pnTableOrderDetail.setBounds(746, 396, 325, 120);
+		pnTableOrderDetail.setBounds(730, 396, 325, 120);
 		modelOrderDetail = new DefaultTableModel(colOrderDetail,0);
 		tableOrderDetail = new JTable(modelOrderDetail);
 		tableOrderDetail.setSelectionBackground(Color.pink);
@@ -270,11 +270,11 @@ public class GD_HoaDon extends JPanel implements ActionListener {
 		JLabel lblServiceDetail = new JLabel("CHI TIẾT DỊCH VỤ");
 		lblServiceDetail.setForeground(Color.blue);
 		lblServiceDetail.setFont(new Font("Arial", Font.BOLD, 25));
-		lblServiceDetail.setBounds(731, 516, 400, 30);
+		lblServiceDetail.setBounds(730, 516, 400, 30);
 		pnContent.add(lblServiceDetail);
 		JPanel pnTableServiceDetail = new JPanel();
 		pnTableServiceDetail.setLayout(null);
-		pnTableServiceDetail.setBounds(746, 546, 325, 120);
+		pnTableServiceDetail.setBounds(730, 546, 325, 120);
 		modelServiceDetail = new DefaultTableModel(colServiceDetail,0);
 		tableServiceDetail = new JTable(modelServiceDetail);
 		tableServiceDetail.setSelectionBackground(Color.pink);

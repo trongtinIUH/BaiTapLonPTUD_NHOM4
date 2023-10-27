@@ -22,7 +22,7 @@ public class GD_TroGiup extends JPanel {
 //		Styling header
 		JPanel pnNorth = new JPanel();
 		pnNorth.setBackground(Color.decode("#B5E6FB"));
-		pnNorth.setBounds(0, 0, 1078, 60);
+		pnNorth.setBounds(0, 0, 1080, 60);
 		pnNorth.setLayout(null);
 		lblTitle = new JLabel("TRỢ GIÚP");
 		lblTitle.setBounds(501, 15, 200, 30);
