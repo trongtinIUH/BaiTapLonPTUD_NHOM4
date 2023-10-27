@@ -113,6 +113,8 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		 btnDatPhong.setBorderPainted(false);
+		 btnDatPhong.setBackground(new Color(217, 226, 231));
 		
 		 btnDanhSachPhong = new JButton("DANH SÁCH PHÒNG");
 		 btnDanhSachPhong.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
@@ -122,9 +124,10 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		 btnDanhSachPhong.setBorderPainted(false);
 		 btnDanhSachPhong.setForeground(Color.BLACK);
 		 btnDanhSachPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnDanhSachPhong.setBackground(Color.WHITE);
+		 btnDanhSachPhong.setBackground(new Color(217, 226, 231));
 		
 		btnNhanVien = new JButton("NHÂN VIÊN");
 		btnNhanVien.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
@@ -134,21 +137,23 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		btnNhanVien.setBorderPainted(false);
 		btnNhanVien.setForeground(Color.BLACK);
 		btnNhanVien.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnNhanVien.setBackground(Color.WHITE);
+		btnNhanVien.setBackground(new Color(217, 226, 231));
 		
 		btnKhachHang = new JButton("KHÁCH HÀNG");
 		btnKhachHang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		btnKhachHang.setBorderPainted(false);
 		btnKhachHang.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
 		btnKhachHang.setIconTextGap(20); //Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnKhachHang.setIcon(new ImageIcon("icon\\icon_KhachHang.png"));
 		btnKhachHang.setForeground(Color.BLACK);
 		btnKhachHang.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnKhachHang.setBackground(Color.WHITE);
+		btnKhachHang.setBackground(new Color(217, 226, 231));
 		
 		btnSanPham = new JButton("SẢN PHẨM");
 		btnSanPham.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
@@ -158,9 +163,10 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		btnSanPham.setBorderPainted(false);
 		btnSanPham.setForeground(Color.BLACK);
 		btnSanPham.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnSanPham.setBackground(Color.WHITE);
+		btnSanPham.setBackground(new Color(217, 226, 231));
 		
 		/// Hóa đơn
 		 btnHoaDon = new JButton("HÓA ĐƠN");
@@ -168,12 +174,13 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 				public void actionPerformed(ActionEvent e) {
 				}
 			});
+		 btnHoaDon.setBorderPainted(false);
 		 btnHoaDon.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
 		 btnHoaDon.setIconTextGap(30); //Tạo Khoảng cách giữa icon và Nội dung(text)
 		 btnHoaDon.setIcon(new ImageIcon("icon\\icon_HoaDon.png"));
 		 btnHoaDon.setForeground(Color.BLACK);
 		 btnHoaDon.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnHoaDon.setBackground(Color.WHITE);
+		 btnHoaDon.setBackground(new Color(217, 226, 231));
 		 
 		//thống kê 
 		 btnThongKe = new JButton("THỐNG KÊ");
@@ -181,12 +188,13 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 				public void actionPerformed(ActionEvent e) {
 				}
 			});
+		 btnThongKe.setBorderPainted(false);
 		 btnThongKe.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
 		 btnThongKe.setIconTextGap(20); //Tạo Khoảng cách giữa icon và Nội dung(text)
 		 btnThongKe.setIcon(new ImageIcon("icon\\icon_ThongKe.png"));
 		 btnThongKe.setForeground(Color.BLACK);
 		 btnThongKe.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnThongKe.setBackground(Color.WHITE);
+		 btnThongKe.setBackground(new Color(217, 226, 231));
 		
 		//Trợ giúp
 		 btnTroGiup = new JButton("TRỢ GIÚP");
@@ -194,12 +202,13 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		 btnTroGiup.setBorderPainted(false);
 		 btnTroGiup.setHorizontalAlignment(SwingConstants.LEFT); //căn lề trái button
 		 btnTroGiup.setIconTextGap(35); //Tạo Khoảng cách giữa icon và Nội dung(text)
 		 btnTroGiup.setIcon(new ImageIcon("icon\\icon_TroGiup.png"));
 		 btnTroGiup.setForeground(Color.BLACK);
 		 btnTroGiup.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnTroGiup.setBackground(Color.WHITE);
+		 btnTroGiup.setBackground(new Color(217, 226, 231));
 		 
 		 //user
 //		 btnUser.setIcon(new ImageIcon("icon\\icon_User.png"));
@@ -234,23 +243,22 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-					.addContainerGap()
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
 						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel_2.createSequentialGroup()
-							.addGap(14)
+							.addGap(0)
 							.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(btnDatPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-								.addComponent(btnDanhSachPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-								.addComponent(btnNhanVien, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-								.addComponent(btnKhachHang, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-								.addComponent(btnSanPham, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-								.addComponent(btnHoaDon, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-								.addComponent(btnThongKe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-								.addComponent(btnTroGiup, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236,Short.MAX_VALUE)
-								.addComponent(btnUser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 236,Short.MAX_VALUE)
+								.addComponent(btnDatPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+								.addComponent(btnDanhSachPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+								.addComponent(btnNhanVien, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+								.addComponent(btnKhachHang, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+								.addComponent(btnSanPham, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+								.addComponent(btnHoaDon, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+								.addComponent(btnThongKe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+								.addComponent(btnTroGiup, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280,Short.MAX_VALUE)
+								.addComponent(btnUser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280,Short.MAX_VALUE)
 									)))
-					.addContainerGap())
+					)
 		);
 		gl_panel_2.setVerticalGroup(
 				gl_panel_2.createParallelGroup(Alignment.LEADING)
@@ -315,26 +323,53 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		btnTroGiup.addActionListener(this);
 		btnUser.addActionListener(this);
 	}
+	
+	private void resetActiveTab() {
+		btnDatPhong.setBackground(new Color(217, 226, 231));
+		btnDanhSachPhong.setBackground(new Color(217, 226, 231));
+		btnNhanVien.setBackground(new Color(217, 226, 231));
+		btnKhachHang.setBackground(new Color(217, 226, 231));
+		btnHoaDon.setBackground(new Color(217, 226, 231));
+		btnSanPham.setBackground(new Color(217, 226, 231));
+		btnThongKe.setBackground(new Color(217, 226, 231));
+		btnTroGiup.setBackground(new Color(217, 226, 231));
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub	
 		Object o = e.getSource();
 		if(o.equals(btnDatPhong)) {
+			resetActiveTab();
+			btnDatPhong.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "DatPhong");
 		} else if(o.equals(btnDanhSachPhong)) {
+			resetActiveTab();
+			btnDanhSachPhong.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "DanhSachPhong");
 		} else if(o.equals(btnNhanVien)) {
+			resetActiveTab();
+			btnNhanVien.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "NhanVien");
 		}else if(o.equals(btnKhachHang)) {
+			resetActiveTab();
+			btnKhachHang.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "KhachHang");
 		}else if(o.equals(btnHoaDon)) {
+			resetActiveTab();
+			btnHoaDon.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "HoaDon");
 		}else if(o.equals(btnSanPham)) {
+			resetActiveTab();
+			btnSanPham.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "SanPham");
 		}else if(o.equals(btnThongKe)) {
+			resetActiveTab();
+			btnThongKe.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "ThongKe");
 		} else if(o.equals(btnTroGiup)) {
+			resetActiveTab();
+			btnTroGiup.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "TroGiup");
 		}
 	}
