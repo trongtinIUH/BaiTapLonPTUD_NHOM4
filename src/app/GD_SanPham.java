@@ -75,17 +75,17 @@ public class GD_SanPham extends JPanel  implements ActionListener{
 		font = new Font("Arial", Font.BOLD, 14);
 		
 		JPanel pnNorth = new JPanel();
-		pnNorth.setBounds(0,0,1080,80);
+		pnNorth.setBounds(0,0,1080,35);
 		pnNorth.setLayout(null);
 		pnNorth.add(lblTitle = new JLabel("SẢN PHẨM"));
-		lblTitle.setFont(new Font("Arial",Font.BOLD, 40));
-		lblTitle.setBounds(400, 15, 350, 45);
+		lblTitle.setFont(new Font("Arial",Font.BOLD, 14));
+		lblTitle.setBounds(501, 5, 150, 30);
 		pnNorth.setBackground(new Color(181, 230, 251));
 		add(pnNorth);
 		
 		JPanel pnlCenter = new JPanel();
 		pnlCenter.setLayout(null);
-		pnlCenter.setBounds(5,90, 1070, 640);
+		pnlCenter.setBounds(5,40, 1070, 640);
 		pnlCenter.setBackground(getBackground());
 		add(pnlCenter);
 		
