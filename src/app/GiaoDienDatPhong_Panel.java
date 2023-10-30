@@ -1,29 +1,29 @@
 package app;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import java.awt.GridLayout;
+import java.awt.Image;
 
-public class GD_DatPhong extends JPanel implements ActionListener, MouseListener {
+import javax.swing.SwingConstants;
+
+
+public class GiaoDienDatPhong_Panel extends JPanel implements ActionListener, MouseListener {
 
 	/**
 	 * 
@@ -48,14 +48,11 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private JButton btnPhong501,btnPhong505,btnPhong502,btnPhong504,btnPhong503;
 	private JLabel lbl_iconPhongVIP,lbl_iconPhongsuaChua,lbl_iconPhongCho,lbl_iconPhongTrong;
 
-		
-	private Dialog_User dialog_user = new Dialog_User();
-
 
 	/**
 	 * Create the panel.
 	 */
-	public GD_DatPhong() {
+	public GiaoDienDatPhong_Panel() {
 		this.setSize(1080, 730);
 		setLayout(null);
 		//---gốc chứa all panel con--------------------------********************************************************************
@@ -254,7 +251,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         panel_ChuaPhong.add(btnPhong103);
         //btn104
         btnPhong104 = new JButton("Phòng 104");
-        btnPhong104.setBounds(650, 20, 160, 100);
+        btnPhong104.setBounds(650, 20, 150, 100);
         btnPhong104.setBackground(Color.WHITE);
         btnPhong104.setIcon(resizedIcon_phongsua);
         btnPhong104.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -494,6 +491,12 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	}
 
 	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		
+	}
+
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -502,13 +505,13 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		btnUser.setBackground(Color.WHITE);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		btnUser.setBackground(new Color(181,230,251,255));
 	}
 
 	@Override
@@ -520,16 +523,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if(o.equals(btnUser)) {
-			dialog_user.setVisible(true);
-	
-		}
 		
 	}
 }
