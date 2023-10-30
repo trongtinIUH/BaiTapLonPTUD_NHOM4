@@ -106,9 +106,6 @@ public class GD_KhachHang extends JPanel implements ActionListener{
 		pnlThongTin.add(txtTen = new JTextField());
 		txtTen.setFont(font);
 		txtTen.setBounds(145,80,180,20);
-//		pnlThongTin.add(txtDiaChi = new JTextField());
-//		txtDiaChi.setFont(font);
-//		txtDiaChi.setBounds(500,40,200,20);
 		pnlThongTin.add(radNam = new JRadioButton("Nam"));
 		pnlThongTin.add(radNu = new JRadioButton("Nữ"));
 		grSex = new ButtonGroup();
