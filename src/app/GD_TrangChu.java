@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -19,7 +18,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Panel;
 import javax.swing.JButton;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -248,15 +246,15 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 						.addGroup(gl_panel_2.createSequentialGroup()
 							.addGap(0)
 							.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(btnDatPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-								.addComponent(btnDanhSachPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-								.addComponent(btnNhanVien, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-								.addComponent(btnKhachHang, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-								.addComponent(btnSanPham, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-								.addComponent(btnHoaDon, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-								.addComponent(btnThongKe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-								.addComponent(btnTroGiup, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280,Short.MAX_VALUE)
-								.addComponent(btnUser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 280,Short.MAX_VALUE)
+								.addComponent(btnDatPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+								.addComponent(btnDanhSachPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+								.addComponent(btnNhanVien, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+								.addComponent(btnKhachHang, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+								.addComponent(btnSanPham, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+								.addComponent(btnHoaDon, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+								.addComponent(btnThongKe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+								.addComponent(btnTroGiup, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273,Short.MAX_VALUE)
+								.addComponent(btnUser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273,Short.MAX_VALUE)
 									)))
 					)
 		);

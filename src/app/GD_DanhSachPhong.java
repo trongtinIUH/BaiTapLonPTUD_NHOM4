@@ -76,8 +76,10 @@ public class GD_DanhSachPhong extends JPanel {
 		// Khung thông tin phòng
 		JPanel pnSouth = new JPanel();
 		pnSouth.setBackground(new Color(255, 255, 255));
-		pnSouth.setBounds(7, 80, 690, 300);
-		pnSouth.setBorder(BorderFactory.createTitledBorder("Thông tin phòng"));
+		pnSouth.setBounds(7, 80, 690, 270);
+		pnSouth.setBorder(
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2), "Thông tin phòng",
+						TitledBorder.LEFT, TitledBorder.CENTER, new Font("Arial", Font.BOLD, 16), Color.blue));
 		TitledBorder titlethongtin = (TitledBorder) pnSouth.getBorder();
 		titlethongtin.setTitleColor(Color.blue);
 		titlethongtin.setTitleFont(font);
@@ -153,26 +155,27 @@ public class GD_DanhSachPhong extends JPanel {
 		// Các nút
 		pnSouth.add(btnThem = new JButton("THÊM", new ImageIcon("icon\\Add_icon.png")));
 		btnThem.setFont(font);
-		btnThem.setBounds(60, 250, 130, 35);
+		btnThem.setBounds(60, 220, 130, 35);
 		btnThem.setBackground(new Color(109, 197, 112));
 		pnSouth.add(btnXoa = new JButton("XÓA", new ImageIcon("icon\\Delete_icon.png")));
 		btnXoa.setFont(font);
-		btnXoa.setBounds(208, 250, 130, 35);
+		btnXoa.setBounds(208, 220, 130, 35);
 		btnXoa.setBackground(new Color(228, 50, 51));
 		pnSouth.add(btnSua = new JButton("SỬA", new ImageIcon("icon\\Edit_icon.png")));
 		btnSua.setFont(font);
-		btnSua.setBounds(356, 250, 130, 35);
+		btnSua.setBounds(356, 220, 130, 35);
 		btnSua.setBackground(new Color(74, 131, 215));
 		pnSouth.add(btnLamMoi = new JButton("LÀM MỚI", new ImageIcon("icon\\Refresh_icon.png")));
 		btnLamMoi.setFont(font);
-		btnLamMoi.setBounds(504, 250, 130, 35);
+		btnLamMoi.setBounds(504, 220, 130, 35);
 		btnLamMoi.setBackground(new Color(104, 211, 211));
 
 		// khung tìm kiếm
 		JPanel pnEast = new JPanel();
 		pnEast.setBackground(new Color(255, 255, 255));
-		pnEast.setBounds(707, 80, 364, 300);
-		pnEast.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
+		pnEast.setBounds(707, 80, 364, 270);
+		pnEast.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2),
+				"Tìm kiếm", TitledBorder.LEFT, TitledBorder.CENTER, new Font("Arial", Font.BOLD, 16), Color.blue));
 		TitledBorder titleTimKiem = (TitledBorder) pnEast.getBorder();
 		titleTimKiem.setTitleColor(Color.blue);
 		titleTimKiem.setTitleFont(font);
@@ -199,19 +202,19 @@ public class GD_DanhSachPhong extends JPanel {
 
 		txtTuKhoaTim = new JTextField();
 		txtTuKhoaTim.setFont(font3);
-		txtTuKhoaTim.setBounds(30, 160, 310, 30);
+		txtTuKhoaTim.setBounds(30, 135, 310, 30);
 		pnEast.add(txtTuKhoaTim);
 
 		btnTimKiem = new JButton("Tìm kiếm", new ImageIcon("icon\\Research_icon.png"));
 		btnTimKiem.setFont(font);
-		btnTimKiem.setBounds(112, 250, 140, 35);
+		btnTimKiem.setBounds(112, 220, 140, 35);
 		btnTimKiem.setBackground(new Color(238, 233, 233));
 		pnEast.add(btnTimKiem);
 
 		JPanel pnCenter = new JPanel();
 		pnCenter.setLayout(null);
 		pnCenter.setBackground(new Color(246, 245, 255));
-		pnCenter.setBounds(0, 380, 1078, 500);
+		pnCenter.setBounds(0, 350, 1078, 500);
 
 		JLabel lblBang = new JLabel("DANH SÁCH PHÒNG");
 		lblBang.setFont(new Font("Arial", Font.BOLD, 20));
@@ -230,7 +233,7 @@ public class GD_DanhSachPhong extends JPanel {
 		table.getTableHeader().setBackground(new Color(238, 233, 233));
 		table.getColumnModel().getColumn(0).setMaxWidth(60);
 		scroll = new JScrollPane(table);
-		scroll.setBounds(9, 50, 1060, 290);
+		scroll.setBounds(9, 50, 1060, 320);
 		pnCenter.add(scroll);
 	}
 }

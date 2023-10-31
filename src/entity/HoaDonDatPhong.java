@@ -33,6 +33,11 @@ public class HoaDonDatPhong implements Serializable {
 		this.khuyenMai = khuyenMai;
 		this.tienKhachDua = tienKhachDua;
 	}
+	
+	public HoaDonDatPhong(String maHoaDon) {
+		this.maHoaDon = maHoaDon;
+	}
+	
 	public String getMaHoaDon() {
 		return maHoaDon;
 	}

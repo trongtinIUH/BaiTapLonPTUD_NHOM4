@@ -78,14 +78,15 @@ public class GD_NhanVien extends JPanel implements ActionListener {
 		int labelX = (pnNorth.getWidth() - labelWidth) / 2; // Căn giữa theo chiều ngang
 		int labelY = (pnNorth.getHeight() - labelHeight) / 2; // Căn giữa theo chiều dọc
 		lblTitle.setBounds(labelX, labelY, labelWidth, labelHeight);
-		pnNorth.add(lblTitle);
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 25));
 
 		// khung thông tin nhân viên
 		JPanel pnSouth = new JPanel();
 		pnSouth.setBackground(new Color(255, 255, 255));
 		pnSouth.setBounds(7, 80, 690, 300);
-		pnSouth.setBorder(BorderFactory.createTitledBorder("Thông tin nhân viên"));
+		pnSouth.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2),
+				"Thông tin nhân viên", TitledBorder.LEFT, TitledBorder.CENTER, new Font("Arial", Font.BOLD, 16),
+				Color.blue));
 		TitledBorder titlethongtin = (TitledBorder) pnSouth.getBorder();
 		titlethongtin.setTitleColor(Color.blue);
 		titlethongtin.setTitleFont(font);
@@ -223,7 +224,8 @@ public class GD_NhanVien extends JPanel implements ActionListener {
 		JPanel pnEast = new JPanel();
 		pnEast.setBackground(new Color(255, 255, 255));
 		pnEast.setBounds(707, 80, 364, 300);
-		pnEast.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
+		pnEast.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2),
+				"Tìm kiếm", TitledBorder.LEFT, TitledBorder.CENTER, new Font("Arial", Font.BOLD, 16), Color.blue));
 		TitledBorder titleTimKiem = (TitledBorder) pnEast.getBorder();
 		titleTimKiem.setTitleColor(Color.blue);
 		titleTimKiem.setTitleFont(font);
