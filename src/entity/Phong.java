@@ -27,6 +27,11 @@ public class Phong extends LoaiPhong implements Serializable {
 		this.loaiPhong = loaiPhong;
 		this.trangThai = trangThai;
 	}
+	
+	public Phong(String maPhong) {
+		this.maPhong = maPhong;
+	}
+	
 	public String getMaPhong() {
 		return maPhong;
 	}

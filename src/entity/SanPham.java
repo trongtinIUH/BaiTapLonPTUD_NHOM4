@@ -13,26 +13,26 @@ public class SanPham implements Serializable {
 	private String maSanPham;
 	private String tenSanPham;
 	private Date ngaySanXuat;
-	private String noiSanXuat;
+	private String loaiSanPham;
 	private double donGia;
+	private String donViTinh;
 	private int soLuongTon;
 	private String hinhAnh;
-	private String donViTinh;
 	public SanPham() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public SanPham(String maSanPham, String tenSanPham, Date ngaySanXuat, String noiSanXuat, double donGia,
-			int soLuongTon, String hinhAnh, String donViTinh) {
+	public SanPham(String maSanPham, String tenSanPham, Date ngaySanXuat, String loaiSanPham, double donGia,
+			String donViTinh, int soLuongTon, String hinhAnh) {
 		super();
 		this.maSanPham = maSanPham;
 		this.tenSanPham = tenSanPham;
 		this.ngaySanXuat = ngaySanXuat;
-		this.noiSanXuat = noiSanXuat;
+		this.loaiSanPham = loaiSanPham;
 		this.donGia = donGia;
+		this.donViTinh = donViTinh;
 		this.soLuongTon = soLuongTon;
 		this.hinhAnh = hinhAnh;
-		this.donViTinh = donViTinh;
 	}
 	public String getMaSanPham() {
 		return maSanPham;
@@ -52,11 +52,11 @@ public class SanPham implements Serializable {
 	public void setNgaySanXuat(Date ngaySanXuat) {
 		this.ngaySanXuat = ngaySanXuat;
 	}
-	public String getNoiSanXuat() {
-		return noiSanXuat;
+	public String getloaiSanPham() {
+		return loaiSanPham;
 	}
-	public void setNoiSanXuat(String noiSanXuat) {
-		this.noiSanXuat = noiSanXuat;
+	public void setloaiSanPham(String loaiSanPham) {
+		this.loaiSanPham = loaiSanPham;
 	}
 	public double getDonGia() {
 		return donGia;
@@ -103,8 +103,8 @@ public class SanPham implements Serializable {
 	@Override
 	public String toString() {
 		return String.format(
-				"SanPham [maSanPham=%s, tenSanPham=%s, ngaySanXuat=%s, noiSanXuat=%s, donGia=%s, soLuongTon=%s, hinhAnh=%s, donViTinh=%s]",
-				maSanPham, tenSanPham, ngaySanXuat, noiSanXuat, donGia, soLuongTon, hinhAnh, donViTinh);
+				"SanPham [maSanPham=%s, tenSanPham=%s, ngaySanXuat=%s, loaiSanPham=%s, donGia=%s, soLuongTon=%s, hinhAnh=%s, donViTinh=%s]",
+				maSanPham, tenSanPham, ngaySanXuat, loaiSanPham, donGia, soLuongTon, hinhAnh, donViTinh);
 	}
 	
 	

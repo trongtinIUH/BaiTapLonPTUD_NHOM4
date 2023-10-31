@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -19,7 +18,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Panel;
 import javax.swing.JButton;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;

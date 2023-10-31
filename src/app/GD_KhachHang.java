@@ -4,6 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -11,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -20,7 +29,16 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class GD_KhachHang extends JPanel implements ActionListener {
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import dao.KhachHang_dao;
+import entity.KhachHang;
+
+public class GD_KhachHang extends JPanel implements ActionListener, MouseListener {
 	/**
 	 * 
 	 */
@@ -28,7 +46,7 @@ public class GD_KhachHang extends JPanel implements ActionListener {
 	Font font = new Font("Arial", Font.BOLD, 16); // khung tittle
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
-	private String col[] = { "STT", "Mã khách hàng", "Tên khách hàng", "Giới tính", "Số điện thoại" };
+	private String col[] = { "STT", "Mã khách hàng", "Tên khách hàng", "Số điện thoại", "giới tính" };
 	private JLabel lblTitle;
 	private JTextField txtTimKiem;
 	private JComboBox<String> cbLoaiTimKiem;
@@ -47,11 +65,18 @@ public class GD_KhachHang extends JPanel implements ActionListener {
 	private JRadioButton radNu;
 	private JButton btnThem;
 	private JLabel lblGioiTinh;
+	private KhachHang_dao kh_dao;
+	private JTextField txtHoTen;
+	private JTextField txtMa;
+	private XSSFWorkbook wordbook;
+	private Date ngayHienTai;
+	private Date date;
 
 	public GD_KhachHang() {
 		setBackground(new Color(242, 240, 255));
 		setLayout(null);
 		font = new Font("Arial", Font.BOLD, 18);
+		kh_dao = new KhachHang_dao();
 
 		JPanel pnNorth = new JPanel();
 		pnNorth.setBounds(0, 0, 1078, 60);
@@ -88,25 +113,34 @@ public class GD_KhachHang extends JPanel implements ActionListener {
 		pnlThongTin.setBackground(Color.white);
 		font = new Font("Arial", Font.BOLD, 14);
 
-		JLabel lblMa = new JLabel("Mã nhân viên");
+		JLabel lblMa = new JLabel("Mã khách hàng");
 		pnlThongTin.add(lblMa);
 		lblMa.setBounds(20, 20, 150, 100);
 		lblMa.setFont(font2);
 
 		int x = 160, y = 55, w = 180, h = 28;
-		JTextField txtMa = new JTextField();
+		txtMa = new JTextField();
 		txtMa.setEditable(false);
 		txtMa.setBounds(x, y, w, h);
 		pnlThongTin.add(txtMa);
 		txtMa.setHorizontalAlignment(JTextField.RIGHT);
 		txtMa.setFont(font3);
+//		Set<String> generatedCodes = new HashSet<>();
+//		String code;
+//		PhatSinhMa_dao ps_ma = new PhatSinhMa_dao();
+//		do {
+//			code = ps_ma.generateRandomKH();
+//		} while (generatedCodes.contains(code));
+//		generatedCodes.add(code);
+//		txtMa.setText(code);
+		loadMa();
 
 		JLabel lblHoTen = new JLabel("Họ tên");
 		lblHoTen.setBounds(20, 70, 100, 100);
 		lblHoTen.setFont(font2);
 		pnlThongTin.add(lblHoTen);
 
-		JTextField txtHoTen = new JTextField();
+		txtHoTen = new JTextField();
 		pnlThongTin.add(txtHoTen);
 		y += 50;
 		txtHoTen.setBounds(x, y, w, h);
@@ -156,8 +190,7 @@ public class GD_KhachHang extends JPanel implements ActionListener {
 		JPanel pnlTimKiem = new JPanel();
 		pnlTimKiem.setLayout(null);
 		pnlTimKiem.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2),
-				"Tìm kiếm", TitledBorder.LEFT, TitledBorder.CENTER, new Font("Arial", Font.BOLD, 16),
-				Color.blue));
+				"Tìm kiếm", TitledBorder.LEFT, TitledBorder.CENTER, new Font("Arial", Font.BOLD, 16), Color.blue));
 		pnlTimKiem.setBounds(707, 80, 364, 230);
 		pnlTimKiem.setBackground(Color.white);
 
@@ -225,6 +258,249 @@ public class GD_KhachHang extends JPanel implements ActionListener {
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
 		btnXuatExcel.addActionListener(this);
+		table.addMouseListener(this);
+
+		loadData();
+	}
+
+	//---- Mã khách hàng phát sinh tự động tăng dần bắt đầu từ 001
+	private int ThuTuKhachHangTrongNgay() {
+		int sl = 1;
+		String maKH = "";
+		for (KhachHang kh : kh_dao.getallKhachHangs()) {
+			maKH = kh.getMaKhachHang(); //Chạy hết vòng for sẽ lấy được mã KH cuối danh sách
+		}
+		int ngayTrenMaKHCuoiDS = Integer.parseInt(maKH.substring(2, 8));
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd"); // Format yyMMdd sẽ so sánh ngày được
+		ngayHienTai = new Date();
+		int ngayHT = Integer.parseInt(dateFormat.format(ngayHienTai));
+		if (ngayHT > ngayTrenMaKHCuoiDS) {
+			sl = 1;
+		} else if (ngayHT == ngayTrenMaKHCuoiDS) {
+			sl = Integer.parseInt(maKH.substring(8, 11)) + 1;
+		}
+		return sl;
+	}
+	
+	private String generateRandomCode() {
+		String prefix = "KH";
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+		date = new Date();
+		String suffix = String.format("%03d", ThuTuKhachHangTrongNgay());
+		return prefix + dateFormat.format(date) + suffix;
+	}
+
+	private void loadMa() {
+		String code;
+		code = generateRandomCode();
+		txtMa.setText(code);
+	}
+	//---------------------------------------------------------
+
+	public void loadData() {
+		int i = 0;
+		String gioiTinh = "";
+		for (KhachHang kh : kh_dao.getallKhachHangs()) {
+			i++;
+			if (kh.isGioiTinh() == true) {
+				gioiTinh = "Nam";
+			} else {
+				gioiTinh = "Nữ";
+			}
+			Object[] row = { i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(), gioiTinh };
+			model.addRow(row);
+		}
+	}
+
+	public void clearTable() {
+		while (table.getRowCount() > 0) {
+			model.removeRow(0);
+		}
+	}
+
+	public void xoaTrang() {
+		txtMa.setText("");
+		txtHoTen.setText("");
+		txtSDT.setText("");
+		txtTimKiem.setText("");
+		grSex.clearSelection();
+	}
+
+	public void them() {
+		if (txtMa.getText().equals("") || txtHoTen.getText().equals("") || txtSDT.getText().equals("")
+				|| (!radNam.isSelected() && !radNu.isSelected())) {
+			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!!");
+		} else {
+			String ma = txtMa.getText().trim();
+			String ten = txtHoTen.getText().trim();
+			String sdt = txtSDT.getText().trim();
+			Boolean gioiTinh;
+			String hienThiGioiTinh;
+			if (radNam.isSelected()) {
+				gioiTinh = true;
+			} else {
+				gioiTinh = false;
+			}
+			KhachHang kh = new KhachHang(ma, ten, sdt, gioiTinh);
+			if (kh_dao.addKhachHang(kh)) {
+				if (gioiTinh == true) {
+					hienThiGioiTinh = "Nam";
+				} else
+					hienThiGioiTinh = "Nữ";
+				model.addRow(new Object[] { model.getRowCount() + 1, ma, ten, sdt, hienThiGioiTinh });
+				JOptionPane.showMessageDialog(this, "Thêm thành công!!");
+				xoaTrang();
+				loadMa();
+			} else {
+				JOptionPane.showMessageDialog(null, "Trùng mã");
+				xoaTrang();
+				loadMa();
+			}
+		}
+	}
+
+	public void xoa() {
+		if (table.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!!");
+		} else if (table.getSelectedRowCount() > 1) {
+			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 khách hàng để xóa!!");
+		} else {
+			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa khách hàng này không?", "Thông báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				int row = table.getSelectedRow();
+				kh_dao.deleteKhachHang(model.getValueAt(row, 1).toString());
+				model.removeRow(row);
+				JOptionPane.showMessageDialog(this, "Xóa thành công!!");
+			}
+		}
+	}
+
+	public void sua() {
+		if (table.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để sửa!!");
+		} else if (table.getSelectedRowCount() > 1) {
+			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 khách hàng để sửa!!");
+		} else {
+			String ma = txtMa.getText().trim();
+			String ten = txtHoTen.getText().trim();
+			String sdt = txtSDT.getText().trim();
+			Boolean gioiTinh;
+			if (radNam.isSelected()) {
+				gioiTinh = true;
+			} else {
+				gioiTinh = false;
+			}
+			KhachHang kh = new KhachHang(ma, ten, sdt, gioiTinh);
+			if (kh_dao.updateKhachHang(kh)) {
+				clearTable();
+				loadData();
+				JOptionPane.showMessageDialog(null, "Sửa thành công!!");
+			}
+		}
+	}
+
+	public void tim() {
+		int i = 0;
+		if (btnTimKiem.getText().equals("Tìm kiếm")) {
+			if (cbLoaiTimKiem.getSelectedItem().equals("Mã khách hàng")) {
+				KhachHang kh = null;
+				kh = kh_dao.getKhachHangTheoMaKH(txtTimKiem.getText());
+				if (kh != null) {
+					btnTimKiem.setText("Hủy tìm");
+					clearTable();
+					Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(), kh.isGioiTinh() };
+					model.addRow(row);
+				} else {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+				}
+			} else if (cbLoaiTimKiem.getSelectedItem().equals("Tên khách hàng")) {
+				ArrayList<KhachHang> dsKhachHang = kh_dao.getKhachHangTheoTenKH(txtTimKiem.getText());
+				if (dsKhachHang != null) {
+					btnTimKiem.setText("Hủy tìm");
+					clearTable();
+					for (KhachHang kh : dsKhachHang) {
+						Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(),
+								kh.isGioiTinh() };
+						model.addRow(row);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+				}
+			} else if (cbLoaiTimKiem.getSelectedItem().equals("Số điện thoại")) {
+				KhachHang kh = null;
+				kh = kh_dao.getKhachHangTheoSDT(txtTimKiem.getText());
+				if (kh != null) {
+					btnTimKiem.setText("Hủy tìm");
+					clearTable();
+					Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(), kh.isGioiTinh() };
+					model.addRow(row);
+				} else {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+				}
+			}
+		} else {
+			clearTable();
+			loadData();
+			btnTimKiem.setText("Tìm kiếm");
+		}
+	}
+
+	public void xuatExcel() {
+		try {
+			wordbook = new XSSFWorkbook();
+			XSSFSheet sheet = wordbook.createSheet("Danh sách khách hàng");
+
+			XSSFRow row = null;
+			Cell cell = null;
+			row = sheet.createRow(2);// Tạo 2 dòng trống trong excel
+			cell = row.createCell(0, CellType.STRING);
+			cell.setCellValue("STT");
+			cell = row.createCell(1, CellType.STRING);
+			cell.setCellValue("Mã khách hàng");
+			cell = row.createCell(2, CellType.STRING);
+			cell.setCellValue("Tên khách hàng");
+			cell = row.createCell(3, CellType.STRING);
+			cell.setCellValue("Số điện thoại");
+			cell = row.createCell(4, CellType.STRING);
+			cell.setCellValue("Giới tính");
+
+			for (int i = 0; i < kh_dao.getallKhachHangs().size(); i++) {
+				row = sheet.createRow(3 + i); // Bỏ qua 2 dòng trống
+
+				cell = row.createCell(0, CellType.NUMERIC);
+				cell.setCellValue(i + 1);
+				cell = row.createCell(1, CellType.STRING);
+				cell.setCellValue(kh_dao.getallKhachHangs().get(i).getMaKhachHang());
+				cell = row.createCell(2, CellType.STRING);
+				cell.setCellValue(kh_dao.getallKhachHangs().get(i).getHoTen());
+				cell = row.createCell(3, CellType.NUMERIC);
+				cell.setCellValue(kh_dao.getallKhachHangs().get(i).getSoDienThoai());
+				
+				String gioiTinhInExcel = "";
+				if(kh_dao.getallKhachHangs().get(i).isGioiTinh() == true) {
+					gioiTinhInExcel = "Nam";
+				}else
+					gioiTinhInExcel = "Nữ";
+				cell = row.createCell(4, CellType.STRING);
+				cell.setCellValue(gioiTinhInExcel);
+			}
+
+			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSachKhachHang.xlsx");
+			try {
+				FileOutputStream file_out = new FileOutputStream(file);
+				wordbook.write(file_out);
+				file_out.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+
+			JOptionPane.showMessageDialog(this, "In file danh sách thành công!!");
+		} catch (Exception e1) {
+			// TODO: handle exception
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Không in được");
+		}
 	}
 
 	@Override
@@ -232,18 +508,57 @@ public class GD_KhachHang extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		Object obj = e.getSource();
 		if (obj.equals(btnThem)) {
-
+			them();
 		} else if (obj.equals(btnXoa)) {
-
+			xoa();
 		} else if (obj.equals(btnSua)) {
-
+			sua();
 		} else if (obj.equals(btnLamMoi)) {
-
+			xoaTrang();
+			loadMa();
 		} else if (obj.equals(btnTimKiem)) {
-
-		} else if (obj.equals(btnLamMoi)) {
-
+			tim();
+		} else if (obj.equals(btnXuatExcel)) {
+			xuatExcel();
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		txtMa.setText(model.getValueAt(row, 1).toString());
+		txtHoTen.setText(model.getValueAt(row, 2).toString());
+		txtSDT.setText(model.getValueAt(row, 3).toString());
+		if (model.getValueAt(row, 4).toString().equals("Nam")) {
+			radNam.setSelected(true);
+		} else if (model.getValueAt(row, 4).toString().equals("Nữ")) {
+			radNu.setSelected(true);
+			;
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 }
