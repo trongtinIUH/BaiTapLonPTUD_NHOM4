@@ -24,6 +24,12 @@ public class LoaiPhong  implements Serializable {
 		this.sucChua = sucChua;
 		this.donGiaTheoGio = donGiaTheoGio;
 	}
+	
+	public LoaiPhong(String maLoaiPhong) {
+		super();
+		this.maLoaiPhong = maLoaiPhong;
+	}
+	
 	public String getMaLoaiPhong() {
 		return maLoaiPhong;
 	}

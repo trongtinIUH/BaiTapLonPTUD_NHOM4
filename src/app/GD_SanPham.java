@@ -396,9 +396,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		if (icon != null) {
 		    File imageFile = new File(icon.getDescription());
 		    absolutePath = imageFile.getAbsolutePath();
-		} else {
-		    System.out.println("Chưa có hình ảnh hiển thị.");
-		}
+		} 
 		if (txtMa.getText().equals("") || txtTen.getText().equals("") || txtDonGia.getText().equals("") || txtSoLuong.getText().equals("")
 				|| icon == null) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!!");
@@ -493,7 +491,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 				} else {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 				}
-			} else if (cbLoaiTimKiem.getSelectedItem().equals("Loại sản phẩm")) {  //Phải bỏ dấu tiếng Việt ở loại SP
+			} else if (cbLoaiTimKiem.getSelectedItem().equals("Loại sản phẩm")) {  
 				ArrayList<SanPham> dsSanPham = sp_dao.getSanPhamTheoLoaiSanPham(txtTimKiem.getText());
 				if (dsSanPham != null) {
 					btnTimKiem.setText("Hủy tìm");

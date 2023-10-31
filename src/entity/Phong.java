@@ -11,7 +11,7 @@ public class Phong extends LoaiPhong implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String maPhong;
 	private LoaiPhong loaiPhong;
-	private enum TrangThai{Trống,Chờ,Đang_Sử_Dụng,Đang_Sửa_Chửa}
+	public enum TrangThai{Trống,Chờ,Đang_Sử_Dụng,Đang_Sửa_Chửa}
 	public TrangThai trangThai;
 	public Phong() {
 		super();

@@ -34,6 +34,12 @@ public class SanPham implements Serializable {
 		this.soLuongTon = soLuongTon;
 		this.hinhAnh = hinhAnh;
 	}
+	
+	public SanPham(String maSanPham) {
+		super();
+		this.maSanPham = maSanPham;
+	}
+	
 	public String getMaSanPham() {
 		return maSanPham;
 	}

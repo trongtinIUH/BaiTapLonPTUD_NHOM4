@@ -28,6 +28,12 @@ public class KhuyenMai implements Serializable {
 		this.ngayKetThuc = ngayKetThuc;
 		this.phanTramKhuyenMai = phanTramKhuyenMai;
 	}
+	
+	public KhuyenMai(String maKhuyenMai) {
+		super();
+		this.maKhuyenMai = maKhuyenMai;
+	}
+	
 	public String getMaKhuyenMai() {
 		return maKhuyenMai;
 	}

@@ -57,29 +57,6 @@ public class SanPham_dao {
 		return dt;
 	}
 	
-	public String getMaSanPhamTheoTenSanPham(String tenSP) {
-		String ma = "";
-		try {
-			ConnectDB.getInstance();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		Connection con = ConnectDB.getConnection();
-		try {
-			String sql = "select maDT from SanPham where tenSanPham = N'" + tenSP + "'";
-			Statement stm = con.createStatement();
-			ResultSet rs = stm.executeQuery(sql);
-			while(rs.next()) {
-				ma = rs.getString("maSanPham");
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return ma;
-	}
-	
 
 	public ArrayList<SanPham> getSanPhamTheoTenSanPham(String tenSP) {
 		ArrayList<SanPham> dsSanPham = new ArrayList<SanPham>();
@@ -114,7 +91,7 @@ public class SanPham_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from SanPham where loaiSanPham = '" + loaiSP + "'";
+			String sql = "select * from SanPham where loaiSanPham = N'" + loaiSP + "'";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while(rs.next()) {
