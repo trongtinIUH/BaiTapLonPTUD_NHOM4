@@ -21,6 +21,10 @@ public class NhanVien implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public NhanVien(String maNhanVien) {
+		super();
+		this.maNhanVien = maNhanVien;
+	}
 	public NhanVien(String maNhanVien, String hoTen, String soDienThoai, boolean gioiTinh, Date ngaySinh, String chucVu,
 			String anhDaiDien) {
 		super();

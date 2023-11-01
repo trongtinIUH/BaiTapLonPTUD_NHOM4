@@ -81,6 +81,33 @@ public class Phong_dao {
 		return dsPhong;
 	}
 	
+	public double tinhTongTienPhongTheoMaHoaDon(String maHD) {
+		double tongTien = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT SUM(lp.donGiaTheoGio * cthd.soGioHat) AS tongTien "
+					+ "FROM ChiTietHoaDon cthd JOIN Phong p ON p.maPhong = cthd.maPhong "
+					+ "JOIN LoaiPhong lp ON lp.maLoaiPhong = p.maLoaiPhong "
+					+ "where cthd.maHoaDon = '" + maHD + "'"
+					+ "GROUP BY cthd.maHoaDon";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				tongTien = rs.getDouble(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return tongTien;
+	}
+	
 	public boolean addPhong(Phong ph) {
 		try {
 			ConnectDB.getInstance();

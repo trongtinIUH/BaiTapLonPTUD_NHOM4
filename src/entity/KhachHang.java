@@ -17,6 +17,10 @@ public class KhachHang implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public KhachHang(String maKhachHang) {
+		super();
+		this.maKhachHang = maKhachHang;
+	}
 	public KhachHang(String maKhachHang, String hoTen, String soDienThoai, boolean gioiTinh) {
 		super();
 		this.maKhachHang = maKhachHang;

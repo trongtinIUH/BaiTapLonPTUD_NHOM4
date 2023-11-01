@@ -46,7 +46,7 @@ public class ChiTietHoaDon_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from ChiTietHoaDon where maHD='"+ maHD +"'";
+			String sql = "select * from ChiTietHoaDon where maHoaDon='"+ maHD +"'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
