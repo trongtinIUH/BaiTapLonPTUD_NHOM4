@@ -52,7 +52,7 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	private JButton btnUser;
 	private GD_TrangDangNhap trangDangNhap;
 
-	GD_DatPhong datPhong = new GD_DatPhong();
+	private  GD_DatPhong datPhong = new GD_DatPhong();
 	GD_DanhSachPhong danhSachPhong = new GD_DanhSachPhong();
 	GD_NhanVien nhanVien = new GD_NhanVien();
 	GD_KhachHang khachHang = new GD_KhachHang();

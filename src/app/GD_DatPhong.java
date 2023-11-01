@@ -50,7 +50,9 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 		
 	private Dialog_User dialog_user = new Dialog_User();
-
+	private Dialog_HienThiPhong dialog_htPhong = new Dialog_HienThiPhong();
+	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2();
+	private Dialog_PhongDangSD dialog_PhongDangSD = new Dialog_PhongDangSD();
 
 	/**
 	 * Create the panel.
@@ -66,65 +68,65 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		panel.setLayout(null);
 		//---gốc 1--------------------------***********************************************************************
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 0, 1080, 35);
+		panel_1.setBounds(0, 0, 1080, 60);
 		panel_1.setBackground(new Color(181,230,251,255));
 		panel_1.setLayout(null);
 		JLabel lblTieuDe = new JLabel("ĐẶT PHÒNG");
-		lblTieuDe.setBounds(501, 5, 92, 30);
-		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 14));
+		lblTieuDe.setBounds(501, 10, 130, 30);
+		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_1.add(lblTieuDe);
 		panel.add(panel_1);
 		//---nút user
 		btnUser = new JButton("");
 		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 0, 61, 35);
+		btnUser.setBounds(1019, 5, 61, 45);
 		btnUser.setBackground(new Color(181,230,251,255));
 		panel_1.add(btnUser);
 		
 		//---gốc 2----------------------------------****************************************************************
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(0, 35, 1080, 103);
+		panel_2.setBounds(0, 60, 1080, 103);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		//--- lbl và combox trạng thái
 		JLabel lblTrangThai = new JLabel("Trạng Thái");
-		lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTrangThai.setBounds(30, 10, 93, 25);
+		lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblTrangThai.setBounds(10, 10, 100, 25);
 		panel_2.add(lblTrangThai);
 		
 		comboBox_TrangThai = new JComboBox<String>();
 		comboBox_TrangThai.setBackground(Color.WHITE);
-		comboBox_TrangThai.setFont(new Font("Tahoma", Font.BOLD, 13));
+		comboBox_TrangThai.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboBox_TrangThai.setModel(new DefaultComboBoxModel<String>(new String[] {"Trống", "Chờ", "Đang Sử Dụng", "Sửa Chửa"}));
 		comboBox_TrangThai.setBounds(130, 10, 212, 30);
 		panel_2.add(comboBox_TrangThai);
 		
 		JLabel lblLoiPhng = new JLabel("Loại Phòng");
-		lblLoiPhng.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblLoiPhng.setBounds(30, 60, 93, 25);
+		lblLoiPhng.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblLoiPhng.setBounds(10, 60, 100, 25);
 		panel_2.add(lblLoiPhng);
 		
 		 comboBox_LoaiPhong = new JComboBox<String>();
 		comboBox_LoaiPhong.setModel(new DefaultComboBoxModel<String>(new String[] {"Phòng Vip", "Phòng Thường"}));
-		comboBox_LoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 13));
+		comboBox_LoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboBox_LoaiPhong.setBackground(Color.WHITE);
 		comboBox_LoaiPhong.setBounds(130, 60, 212, 30);
 		panel_2.add(comboBox_LoaiPhong);
 		
 		//---lbl số người và mã phòng & txt
 		JLabel lblSoNguoi = new JLabel("Số Người");
-		lblSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblSoNguoi.setBounds(406, 10, 79, 25);
+		lblSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblSoNguoi.setBounds(380, 10, 100, 25);
 		panel_2.add(lblSoNguoi);
 		
 		JLabel lblMaPhong = new JLabel("Mã Phòng");
-		lblMaPhong.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblMaPhong.setBounds(406, 60, 79, 30);
+		lblMaPhong.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblMaPhong.setBounds(380, 60, 100, 30);
 		panel_2.add(lblMaPhong);
 		
 		txtSoNguoi = new JTextField();
-		txtSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtSoNguoi.setEditable(false);
 		txtSoNguoi.setText("10");
 		txtSoNguoi.setBounds(509, 10, 102, 30);
@@ -132,7 +134,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		txtSoNguoi.setColumns(10);
 		
 		txtMaPhong = new JTextField();
-		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtMaPhong.setText("101");
 		txtMaPhong.setEditable(false);
 		txtMaPhong.setColumns(10);
@@ -142,25 +144,25 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		//--- cuối góc phải là 3 nút jbutton
 		btnTimKiem = new JButton("Tìm Kiếm");
 		btnTimKiem.setForeground(Color.WHITE);
-		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
-		btnTimKiem.setBounds(672, 10, 180, 35);
+		btnTimKiem.setBounds(672, 10, 180, 40);
 		btnTimKiem.setBackground(new Color(13,153,255,255));
 		panel_2.add(btnTimKiem);
 		
 		btnLamMoi = new JButton("Làm Mới");
 		btnLamMoi.setForeground(Color.WHITE);
 		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
-		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnLamMoi.setBounds(879, 10, 180, 35);
+		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnLamMoi.setBounds(879, 10, 180, 40);
 		btnLamMoi.setBackground(new Color(112,210,103,255));
 		panel_2.add(btnLamMoi);
 		
 		btnTimKiemPDP = new JButton("Tìm Phiếu Đặt Phòng");
 		btnTimKiemPDP.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
 		btnTimKiemPDP.setForeground(Color.WHITE);
-		btnTimKiemPDP.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnTimKiemPDP.setBounds(672, 55, 387, 35);
+		btnTimKiemPDP.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnTimKiemPDP.setBounds(672, 55, 387, 40);
 		btnTimKiemPDP.setBackground(new Color(255,180,0,255));
 		
 		panel_2.add(btnTimKiemPDP);
@@ -168,7 +170,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		//---gốc 3----------------------------------****************************************************************
 		panel_3 = new JPanel();
 		panel_3.setBackground(Color.PINK);
-		panel_3.setBounds(0, 138, 1080, 500);
+		panel_3.setBounds(0, 163, 1080, 500);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 		
@@ -254,7 +256,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         panel_ChuaPhong.add(btnPhong103);
         //btn104
         btnPhong104 = new JButton("Phòng 104");
-        btnPhong104.setBounds(650, 20, 160, 100);
+        btnPhong104.setBounds(650, 20, 150, 100);
         btnPhong104.setBackground(Color.WHITE);
         btnPhong104.setIcon(resizedIcon_phongsua);
         btnPhong104.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -450,7 +452,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         
         JPanel panel_4 = new JPanel();
         panel_4.setBackground(Color.WHITE);
-        panel_4.setBounds(0, 638, 1080, 92);
+        panel_4.setBounds(0, 663, 1080, 67);
         panel.add(panel_4);
         panel_4.setLayout(null);
         //lbl & icon phòng trống
@@ -491,6 +493,11 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnTimKiemPDP.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
+		
+		//add sự kiện cho nút phòng
+		btnPhong301.addActionListener(this);
+		btnPhong302.addActionListener(this);
+		btnPhong105.addActionListener(this);
 	}
 
 	@Override
@@ -529,6 +536,17 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		if(o.equals(btnUser)) {
 			dialog_user.setVisible(true);
 	
+		}
+		if(o.equals(btnPhong301)) {
+			dialog_htPhong.setVisible(true);
+	
+		}
+		if(o.equals(btnPhong302)) {
+			dialog_DatPhongTrong_2.setVisible(true);
+	
+		}
+		if(o.equals(btnPhong105)) {
+			dialog_PhongDangSD.setVisible(true);
 		}
 		
 	}
