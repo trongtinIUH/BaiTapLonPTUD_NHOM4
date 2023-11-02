@@ -46,7 +46,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 	Font font = new Font("Arial", Font.BOLD, 16); // khung tittle
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
-	private String col[] = { "STT", "Mã khách hàng", "Tên khách hàng", "Số điện thoại", "giới tính" };
+	private String col[] = { "STT", "Mã khách hàng", "Tên khách hàng", "Số điện thoại", "Giới tính" };
 	private JLabel lblTitle;
 	private JTextField txtTimKiem;
 	private JComboBox<String> cbLoaiTimKiem;
@@ -401,6 +401,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 
 	public void tim() {
 		int i = 0;
+		String gioitinh="";
 		if (btnTimKiem.getText().equals("Tìm kiếm")) {
 			if (cbLoaiTimKiem.getSelectedItem().equals("Mã khách hàng")) {
 				KhachHang kh = null;
@@ -408,7 +409,12 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 				if (kh != null) {
 					btnTimKiem.setText("Hủy tìm");
 					clearTable();
-					Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(), kh.isGioiTinh() };
+					if(kh.isGioiTinh()==true)
+					{
+						gioitinh="Nam";
+					}
+					else gioitinh ="Nữ";
+					Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(),gioitinh };
 					model.addRow(row);
 				} else {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
@@ -419,8 +425,13 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 					btnTimKiem.setText("Hủy tìm");
 					clearTable();
 					for (KhachHang kh : dsKhachHang) {
+						if(kh.isGioiTinh()==true)
+						{
+							gioitinh="Nam";
+						}
+						else gioitinh ="Nữ";
 						Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(),
-								kh.isGioiTinh() };
+								gioitinh };
 						model.addRow(row);
 					}
 				} else {
@@ -430,9 +441,14 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 				KhachHang kh = null;
 				kh = kh_dao.getKhachHangTheoSDT(txtTimKiem.getText());
 				if (kh != null) {
+					if(kh.isGioiTinh()==true)
+					{
+						gioitinh="Nam";
+					}
+					else gioitinh ="Nữ";
 					btnTimKiem.setText("Hủy tìm");
 					clearTable();
-					Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(), kh.isGioiTinh() };
+					Object[] row = { ++i, kh.getMaKhachHang(), kh.getHoTen(), kh.getSoDienThoai(), gioitinh };
 					model.addRow(row);
 				} else {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");

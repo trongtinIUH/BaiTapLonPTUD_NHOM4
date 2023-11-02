@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
 
 public class GD_DatPhong extends JPanel implements ActionListener, MouseListener {
 
@@ -63,7 +64,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		//---gốc chứa all panel con--------------------------********************************************************************
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 1080, 730);
-		panel.setBackground(Color.green);
+		panel.setBackground(Color.decode("#FAFAFF"));
 		add(panel);
 		panel.setLayout(null);
 		//---gốc 1--------------------------***********************************************************************
@@ -85,7 +86,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		
 		//---gốc 2----------------------------------****************************************************************
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.WHITE);
+		panel_2.setBackground(SystemColor.menu);
 		panel_2.setBounds(0, 60, 1080, 103);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
@@ -185,7 +186,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         
 
         JPanel panel_ChuaPhong = new JPanel();
-        panel_ChuaPhong.setBackground(Color.WHITE);
+        panel_ChuaPhong.setBackground(new Color(244,242,255,255));
         panel_ChuaPhong.setBounds(0, 0, 1080, 700);
         outerPanel.add(panel_ChuaPhong);
         panel_ChuaPhong.setLayout(null);
@@ -236,35 +237,35 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         //btn101
         btnPhong101 = new JButton("Phòng 101");
         btnPhong101.setBounds(40, 20, 160, 100);
-        btnPhong101.setBackground(Color.WHITE);
+        btnPhong101.setBackground(new Color(181,230,251,255));
         btnPhong101.setIcon(resizedIcon_phongtrongvip);
         btnPhong101.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong101);
         //btn102
         btnPhong102 = new JButton("Phòng 102");
         btnPhong102.setBounds(250, 20, 160, 100);
-        btnPhong102.setBackground(Color.WHITE);
+        btnPhong102.setBackground(new Color(181,230,251,255));
         btnPhong102.setIcon(resizedIcon_phongtrongvip);
         btnPhong102.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong102);
         //btn103
         btnPhong103 = new JButton("Phòng 103");
         btnPhong103.setBounds(450, 20, 160, 100);
-        btnPhong103.setBackground(Color.WHITE);
+        btnPhong103.setBackground(new Color(181,230,251,255));
         btnPhong103.setIcon(resizedIcon_phongcho);
         btnPhong103.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong103);
         //btn104
         btnPhong104 = new JButton("Phòng 104");
-        btnPhong104.setBounds(650, 20, 150, 100);
-        btnPhong104.setBackground(Color.WHITE);
+        btnPhong104.setBounds(650, 20, 160, 100);
+        btnPhong104.setBackground(new Color(181,230,251,255));
         btnPhong104.setIcon(resizedIcon_phongsua);
         btnPhong104.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong104);
         //btn105
         btnPhong105 = new JButton("Phòng 105");
         btnPhong105.setBounds(850, 20, 160, 100);
-        btnPhong105.setBackground(Color.WHITE);
+        btnPhong105.setBackground(new Color(181,230,251,255));
         btnPhong105.setIcon(resizedIcon_phongsd);
         btnPhong105.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong105);
@@ -272,7 +273,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         //btn201
         btnPhong201 = new JButton("Phòng 201");
         btnPhong201.setBounds(40, 150, 160, 100);
-        btnPhong201.setBackground(Color.WHITE);
+        btnPhong201.setBackground(new Color(181,230,251,255));
         btnPhong201.setIcon(resizedIcon_phongtrongvip);
         btnPhong201.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong201);
@@ -283,28 +284,28 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         	}
         });
         btnPhong202.setBounds(250, 150, 160, 100);
-        btnPhong202.setBackground(Color.WHITE);
+        btnPhong202.setBackground(new Color(181,230,251,255));
         btnPhong202.setIcon(resizedIcon_phongtrongvip);
         btnPhong202.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong202);
         //btn203
         btnPhong203 = new JButton("Phòng 203");
         btnPhong203.setBounds(450, 150, 160, 100);
-        btnPhong203.setBackground(Color.WHITE);
+        btnPhong203.setBackground(new Color(181,230,251,255));
         btnPhong203.setIcon(resizedIcon_phongcho);
         btnPhong203.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong203);
         //btn204
         btnPhong204 = new JButton("Phòng 204");
         btnPhong204.setBounds(650, 150, 160, 100);
-        btnPhong204.setBackground(Color.WHITE);
+        btnPhong204.setBackground(new Color(181,230,251,255));
         btnPhong204.setIcon(resizedIcon_phongsua);
         btnPhong204.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong204);
         //btn205
         btnPhong205 = new JButton("Phòng 205");
         btnPhong205.setBounds(850, 150, 160, 100);
-        btnPhong205.setBackground(Color.WHITE);
+        btnPhong205.setBackground(new Color(181,230,251,255));
         btnPhong205.setIcon(resizedIcon_phongsd);
         btnPhong205.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong205);
@@ -312,35 +313,35 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         //btn301
         btnPhong301 = new JButton("Phòng 301");
         btnPhong301.setBounds(40, 280, 160, 100);
-        btnPhong301.setBackground(Color.WHITE);
+        btnPhong301.setBackground(new Color(181,230,251,255));
         btnPhong301.setIcon(resizedIcon_phongtrongvip);
         btnPhong301.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong301);
         //btn302
         btnPhong302 = new JButton("Phòng 302");
         btnPhong302.setBounds(250, 280, 160, 100);
-        btnPhong302.setBackground(Color.WHITE);
+        btnPhong302.setBackground(new Color(181,230,251,255));
         btnPhong302.setIcon(resizedIcon_phongtrong);
         btnPhong302.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong302);
         //btn303
         btnPhong303 = new JButton("Phòng 303");
         btnPhong303.setBounds(450, 280, 160, 100);
-        btnPhong303.setBackground(Color.WHITE);
+        btnPhong303.setBackground(new Color(181,230,251,255));
         btnPhong303.setIcon(resizedIcon_phongchovip);
         btnPhong303.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong303);
         //btn304
         btnPhong304 = new JButton("Phòng 304");
         btnPhong304.setBounds(650, 280, 160, 100);
-        btnPhong304.setBackground(Color.WHITE);
+        btnPhong304.setBackground(new Color(181,230,251,255));
         btnPhong304.setIcon(resizedIcon_phongtrong);
         btnPhong304.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong304);
         //btn305
         btnPhong305 = new JButton("Phòng 305");
         btnPhong305.setBounds(850, 280, 160, 100);
-        btnPhong305.setBackground(Color.WHITE);
+        btnPhong305.setBackground(new Color(181,230,251,255));
         btnPhong305.setIcon(resizedIcon_phongsdvip);
         btnPhong305.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong305);
@@ -348,71 +349,71 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         //btn401
         btnPhong401 = new JButton("Phòng 401");
         btnPhong401.setBounds(40, 410, 160, 100);
-        btnPhong401.setBackground(Color.WHITE);
+        btnPhong401.setBackground(new Color(181,230,251,255));
         btnPhong401.setIcon(resizedIcon_phongtrongvip);
         btnPhong401.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong401);
         //btn402
         btnPhong402 = new JButton("Phòng 402");
         btnPhong402.setBounds(250, 410, 160, 100);
-        btnPhong402.setBackground(Color.WHITE);
+        btnPhong402.setBackground(new Color(181,230,251,255));
         btnPhong402.setIcon(resizedIcon_phongtrong);
         btnPhong402.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong402);
         //btn403
         btnPhong403 = new JButton("Phòng 403");
         btnPhong403.setBounds(450, 410, 160, 100);
-        btnPhong403.setBackground(Color.WHITE);
+        btnPhong403.setBackground(new Color(181,230,251,255));
         btnPhong403.setIcon(resizedIcon_phongchovip);
         btnPhong403.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong403);
         //btn404
         btnPhong404 = new JButton("Phòng 404");
         btnPhong404.setBounds(650, 410, 160, 100);
-        btnPhong404.setBackground(Color.WHITE);
+        btnPhong404.setBackground(new Color(181,230,251,255));
         btnPhong404.setIcon(resizedIcon_phongtrong);
         btnPhong404.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong404);
         //btn405
         btnPhong405 = new JButton("Phòng 405");
         btnPhong405.setBounds(850, 410, 160, 100);
-        btnPhong405.setBackground(Color.WHITE);
+        btnPhong405.setBackground(new Color(181,230,251,255));
         btnPhong405.setIcon(resizedIcon_phongsdvip);
         btnPhong405.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong405);
 //hàng 5
         //btn501
         btnPhong501 = new JButton("Phòng 501");
-        btnPhong501.setBounds(40, 520, 160, 100);
-        btnPhong501.setBackground(Color.WHITE);
+        btnPhong501.setBounds(40, 540, 160, 100);
+        btnPhong501.setBackground(new Color(181,230,251,255));
         btnPhong501.setIcon(resizedIcon_phongtrongvip);
         btnPhong501.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong501);
         //btn502
         btnPhong502 = new JButton("Phòng 502");
-        btnPhong502.setBounds(250, 520, 160, 100);
-        btnPhong502.setBackground(Color.WHITE);
+        btnPhong502.setBounds(250, 540, 160, 100);
+        btnPhong502.setBackground(new Color(181,230,251,255));
         btnPhong502.setIcon(resizedIcon_phongtrong);
         btnPhong502.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong502);
         //btn503
         btnPhong503 = new JButton("Phòng 503");
-        btnPhong503.setBounds(450, 520, 160, 100);
-        btnPhong503.setBackground(Color.WHITE);
+        btnPhong503.setBounds(450, 540, 160, 100);
+        btnPhong503.setBackground(new Color(181,230,251,255));
         btnPhong503.setIcon(resizedIcon_phongchovip);
         btnPhong503.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong503);
         //btn504
         btnPhong504 = new JButton("Phòng 504");
-        btnPhong504.setBounds(650, 520, 160, 100);
-        btnPhong504.setBackground(Color.WHITE);
+        btnPhong504.setBounds(650, 540, 160, 100);
+        btnPhong504.setBackground(new Color(181,230,251,255));
         btnPhong504.setIcon(resizedIcon_phongtrong);
         btnPhong504.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong504);
         //btn505
         btnPhong505 = new JButton("Phòng 505");
-        btnPhong505.setBounds(850, 520, 160, 100);
-        btnPhong505.setBackground(Color.WHITE);
+        btnPhong505.setBounds(850, 540, 160, 100);
+        btnPhong505.setBackground(new Color(181,230,251,255));
         btnPhong505.setIcon(resizedIcon_phongsdvip);
         btnPhong505.setVerticalTextPosition(SwingConstants.BOTTOM);
         panel_ChuaPhong.add(btnPhong505);
