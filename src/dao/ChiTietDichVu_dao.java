@@ -46,7 +46,7 @@ public class ChiTietDichVu_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from ChiTietDichVu where maHD='"+ maHD +"'";
+			String sql = "select * from ChiTietDichVu where maHoaDon='"+ maHD +"'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
@@ -57,6 +57,32 @@ public class ChiTietDichVu_dao {
 			e.printStackTrace();
 		}
 		return dsChiTietDichVu;
+	}
+	
+	public double tinhTongTienDVTheoMaHoaDon(String maHD) {
+		double tongTienDV = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT SUM(giaBan * soLuong) AS tongTienDV "
+					+ "FROM ChiTietDichVu ctdv "
+					+ "where ctdv.maHoaDon = '" + maHD + "'"
+					+ "GROUP BY ctdv.maHoaDon";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				tongTienDV = rs.getDouble(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return tongTienDV;
 	}
 	
 	public boolean addChiTietDV(ChiTietDichVu ctdv) {

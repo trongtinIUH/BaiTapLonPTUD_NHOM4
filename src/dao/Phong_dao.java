@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entity.DoanhThuLoaiPhong;
 import entity.LoaiPhong;
 import entity.Phong;
 import entity.Phong.TrangThai;
@@ -79,6 +80,64 @@ public class Phong_dao {
 			e.printStackTrace();
 		}
 		return dsPhong;
+	}
+	
+	public double tinhTongTienPhongTheoMaHoaDon(String maHD) {
+		double tongTien = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT SUM(lp.donGiaTheoGio * cthd.soGioHat) AS tongTien "
+					+ "FROM ChiTietHoaDon cthd JOIN Phong p ON p.maPhong = cthd.maPhong "
+					+ "JOIN LoaiPhong lp ON lp.maLoaiPhong = p.maLoaiPhong "
+					+ "where cthd.maHoaDon = '" + maHD + "'"
+					+ "GROUP BY cthd.maHoaDon";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				tongTien = rs.getDouble(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return tongTien;
+	}
+	
+	public DoanhThuLoaiPhong tinhTongDoanhThuLoaiPhongTheoNgay(String ngay) {
+		DoanhThuLoaiPhong dtlp = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT ngayLapHoaDon, "
+					+ "SUM(CASE WHEN LP.maLoaiPhong LIKE 'PT%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongThuong, "
+					+ "SUM(CASE WHEN LP.maLoaiPhong LIKE 'PV%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongVIP "
+					+ "FROM HoaDonDatPhong HDDP "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDDP.maHoaDon = CTHD.maHoaDon "
+					+ "INNER JOIN Phong P ON CTHD.maPhong = P.maPhong "
+					+ "INNER JOIN LoaiPhong LP ON P.maLoaiPhong = LP.maLoaiPhong "
+					+ "where ngayLapHoaDon = '"+ngay+"' "
+					+ "GROUP BY HDDP.ngayLapHoaDon";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				dtlp = new DoanhThuLoaiPhong(rs.getDate(1), rs.getDouble(2), rs.getDouble(3));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return dtlp;
 	}
 	
 	public boolean addPhong(Phong ph) {

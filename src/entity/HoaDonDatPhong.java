@@ -83,6 +83,15 @@ public class HoaDonDatPhong implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public double tinhTongTienThanhToan(double tongTienPhong, double tongTienDV, float phanTramKhuyenMai) {
+		return (tongTienPhong + tongTienDV) *  (100 - phanTramKhuyenMai * 100)/ 100;
+	}
+	
+	public double tinhTienTraLai(double tongTienPhong, double tongTienDV, float phanTramKhuyenMai, double tienKhachDua) {
+		double tongTien = tinhTongTienThanhToan(tongTienPhong, tongTienDV, phanTramKhuyenMai);
+		return tongTien - tienKhachDua;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(maHoaDon);

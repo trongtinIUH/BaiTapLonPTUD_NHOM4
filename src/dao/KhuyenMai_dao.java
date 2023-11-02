@@ -102,6 +102,29 @@ public class KhuyenMai_dao {
 		return km;
 	}
 	
+	public float getPhanTramKhuyenMaiTheoMaKM(String maKM) {
+		float discount = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select phanTramKhuyenMai from KhuyenMai where maKhuyenMai = '" + maKM + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			if(rs.next()) {
+				discount = rs.getFloat(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return discount;
+	}
+	
 	public boolean addKhuyenMai(KhuyenMai km) {
 		try {
 			ConnectDB.getInstance();

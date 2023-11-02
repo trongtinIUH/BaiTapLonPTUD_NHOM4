@@ -46,7 +46,7 @@ public class ChiTietHoaDon_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from ChiTietHoaDon where maHD='"+ maHD +"'";
+			String sql = "select * from ChiTietHoaDon where maHoaDon='"+ maHD +"'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
@@ -57,6 +57,33 @@ public class ChiTietHoaDon_dao {
 			e.printStackTrace();
 		}
 		return dsChiTietHoaDon;
+	}
+	
+	public double tinhSoGioHatTheoNgay(String date) {
+		double soGioHat = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT SUM(CTHD.soGioHat) AS TongSoGioHat "
+					+ "FROM HoaDonDatPhong HDP "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDP.maHoaDon = CTHD.maHoaDon "
+					+ "where ngayLapHoaDon = '" + date + "' "
+					+ "GROUP BY ngayLapHoaDon";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				soGioHat = rs.getDouble(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return soGioHat;
 	}
 	
 	public boolean addChiTietHD(ChiTietHoaDon cthd) {
