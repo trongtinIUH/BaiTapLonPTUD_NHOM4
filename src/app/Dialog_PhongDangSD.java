@@ -20,6 +20,9 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private JLabel lblPhong,lblGia,lblTrangThai, lblThoiGianHat, lblSoNguoi, lblLoai,lblLoai_1,lblPhong_1,lblgia_1,lbltrangthai_1,lblSoNguoi_1;
 	private JButton btnThemDV,btnChuyenPhong,btnThanhToan;
 
+	private Dialog_ChuyenPhong dialog_ChuyenPhong = new Dialog_ChuyenPhong();
+	private Dialog_ThemDichVu dialog_ThemDichVu = new Dialog_ThemDichVu();
+	private Dialog_ThanhToan dialog_ThanhToan = new Dialog_ThanhToan();
 
 	public Dialog_PhongDangSD() {
 		//kích thước giao diện
@@ -125,6 +128,11 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		btnThanhToan.setBackground(new Color(252,155,78,255));
 	//	btnThanhToan.setBorderPainted(false);
 		getContentPane().add(btnThanhToan);
+		
+		// thêm sự kiện  button
+		btnChuyenPhong.addActionListener(this);
+		btnThanhToan.addActionListener(this);
+		btnThemDV.addActionListener(this);
 	}
 
 
@@ -136,8 +144,17 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if(o.equals(btnChuyenPhong)) {
+		dialog_ChuyenPhong.setVisible(true);	
+		}
 		
+		if(o.equals(btnThemDV)) {
+			dialog_ThemDichVu.setVisible(true);	
+			}
+		if(o.equals(btnThanhToan)) {
+			dialog_ThanhToan.setVisible(true);	
+			}
 	}
 
 }
