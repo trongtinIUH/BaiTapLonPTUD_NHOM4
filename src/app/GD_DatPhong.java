@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -48,8 +49,9 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private JButton btnPhong401,btnPhong405,btnPhong402,btnPhong404,btnPhong403;
 	private JButton btnPhong501,btnPhong505,btnPhong502,btnPhong504,btnPhong503;
 	private JLabel lbl_iconPhongVIP,lbl_iconPhongsuaChua,lbl_iconPhongCho,lbl_iconPhongTrong;
+	
 
-		
+	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong = new Dialog_TimPhieuDatPhong();
 	private Dialog_User dialog_user = new Dialog_User();
 	private Dialog_HienThiPhong dialog_htPhong = new Dialog_HienThiPhong();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2();
@@ -548,6 +550,18 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		}
 		if(o.equals(btnPhong105)) {
 			dialog_PhongDangSD.setVisible(true);
+		}
+		if(o.equals(btnTimKiemPDP)) {
+//			Lấy vị trí của JButton trên màn hình
+//	       Point p = btnTimKiemPDP.getLocationOnScreen();
+//	       Đặt vị trí hiển thị của JDialog tại vị trí của JButton
+//	      dialog.setLocation(p);
+	      
+	        dialog_TimPhieuDatPhong.setLocationRelativeTo(null);
+
+	        // Hiển thị JDialog
+	        dialog_TimPhieuDatPhong.setVisible(true);
+	
 		}
 		
 	}

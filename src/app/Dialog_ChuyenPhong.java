@@ -171,12 +171,14 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener {
 		// các nút jbutton-------------------------------------------------------------------
 		btn_ChuyenPhong = new JButton("Chuyển Phòng");
 		btn_ChuyenPhong.setBackground(Color.GREEN);
+		btn_ChuyenPhong.setForeground(Color.WHITE);
 		btn_ChuyenPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_ChuyenPhong.setBackground(new Color(33,167,38,255));
 		btn_ChuyenPhong.setBounds(33, 176, 250, 40);
 		panel_3.add(btn_ChuyenPhong);
 		
 		btn_QuayLai = new JButton("Quay Lại");
+		btn_QuayLai.setForeground(Color.WHITE);
 		btn_QuayLai.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_QuayLai.setBackground(new Color(255,83,83,255));
 		btn_QuayLai.setBounds(500, 180, 250, 40);

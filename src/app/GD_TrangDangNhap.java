@@ -23,15 +23,17 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import dao.DangNhap_dao;
+
 
 public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private JLabel lblTitle;
     private JTextField txtUsername, txtPassword;
-    private JButton btnLogin, btnExit, btnQuenMatKhau;
-    private String user="";
-	private String pass= "";
+    private JButton btnLogin, btnQuenMatKhau;
 	private JLabel lblKaeaoke;
+	private DangNhap_dao dangNhap_dao= new DangNhap_dao();
+	private GD_TrangChu gd_TrangChu = new GD_TrangChu();
 
 	public GD_TrangDangNhap() {
 		setTitle("Đăng Nhập KARAOKE 4T");
@@ -145,20 +147,16 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 
 		Object o = e.getSource();
 		if (o.equals(btnLogin)) {
-			GD_TrangChu trangchu= new GD_TrangChu();
-			trangchu.setVisible(true);	
-			dispose();
-//			String username = txtUsername.getText();
-//			char[] mk = ((JPasswordField) txtPassword).getPassword();
-//			String mkstr=new String(mk);
-//			if(username.equals(user)&& mkstr.equals(pass)) {
-//				GD_TrangChu trangchu= new GD_TrangChu();
-//				trangchu.setVisible(true);	
-//				dispose();
-//			}
-//			else {
-//				JOptionPane.showMessageDialog(this, "Sai tài khoản | mật khẩu");
-//			}
+			String username = txtUsername.getText();
+			char[] mk = ((JPasswordField) txtPassword).getPassword();
+			String mkstr=new String(mk);
+			if(dangNhap_dao.Timkiem(username, mkstr)==true){
+				gd_TrangChu.setVisible(true);	
+				dispose();
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!");
+			}
 
 		}
 		else if (o.equals(btnQuenMatKhau)) {
