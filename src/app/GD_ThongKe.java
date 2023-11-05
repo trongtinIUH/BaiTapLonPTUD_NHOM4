@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -30,10 +31,16 @@ import dao.HoaDon_dao;
 import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
 import dao.Phong_dao;
+import dao.ThongKe_dao;
+import entity.CurveLineChart;
 import entity.DateLabelFormatter;
 import entity.DoanhThuLoaiPhong;
 import entity.HoaDonDatPhong;
+import entity.ModelChart;
+import entity.ModelPieChart;
+import entity.ModelThongKe;
 import entity.MonthLabelFormatter;
+import entity.PieChart;
 
 public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener {
 	/**
@@ -45,9 +52,9 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	private DefaultTableModel model;
 	private JTable table;
 	private JScrollPane scroll;
-	JLabel lblTitle, lblProfile, lblThongKe, lblLoaihinhTK, lblDate, lblTongDoanhThu,
-	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu;
-	JComboBox<String> cbThongKe, cbDate;
+	JLabel lblTitle, lblProfile, lblThongKe, lblLoaihinhTK, lblDate, lblTongDoanhThu, lblChartTitle,
+	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu, lblYearStart, lblYearEnd;
+	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd;
 	JButton btnThongKe, btnLamMoi, btnInTK;
 	private SqlDateModel modelNgaylap, modelMonth;
 	private Properties p, m;
@@ -59,7 +66,13 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	private ChiTietDichVu_dao chitietdichvu_dao;
 	private ChiTietHoaDon_dao chitiethoadon_dao;
 	private KhuyenMai_dao khuyenmai_dao;
+	private JPanel pnTable, pnContent, pnPieChart, pnCurveLineChart;
+	private DecimalFormat df;
+	private PieChart pieChart;
+	private CurveLineChart lineChart;
+	private ThongKe_dao thongke_dao;
 	public GD_ThongKe() {
+		df = new DecimalFormat("#,###,### VNĐ");
 		setLayout(null);
 		setBackground(Color.decode("#FAFAFF"));
 		hoadon_dao = new HoaDon_dao();
@@ -68,6 +81,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		chitietdichvu_dao = new ChiTietDichVu_dao();
 		khuyenmai_dao = new KhuyenMai_dao();
 		chitiethoadon_dao = new ChiTietHoaDon_dao();
+		thongke_dao = new ThongKe_dao();
 		JPanel pnNorth = new JPanel();
 		pnNorth.setBackground(Color.decode("#B5E6FB"));
 		pnNorth.setBounds(0, 0, 1080, 60);
@@ -94,7 +108,6 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		lblThongKe.setBounds(15, 25, 187, 24);
 		pnMenu.add(cbThongKe = new JComboBox<String>());
 		cbThongKe.addItem("Doanh thu");
-		cbThongKe.addItem("Nhân viên");
 		cbThongKe.addItem("Khách hàng");
 		cbThongKe.setFont(new Font("Arial", Font.PLAIN, 18));
 		cbThongKe.setBounds(222, 25, 187, 24);
@@ -107,8 +120,24 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		cbDate.addItem("Năm");
 		cbDate.setFont(new Font("Arial", Font.PLAIN, 18));
 		cbDate.setBounds(222, 85, 187, 24);
+		
+		pnMenu.add(lblYearStart = new JLabel("Năm bắt đầu"));
+		lblYearStart.setFont(new Font("Arial", Font.BOLD, 18));
+		lblYearStart.setBounds(430, 25, 120, 24);
+		pnMenu.add(cbYearStart = new JComboBox<String>());
+		cbYearStart.setFont(new Font("Arial", Font.PLAIN, 18));
+		cbYearStart.setEnabled(false);
+		cbYearStart.setBounds(560, 25, 80, 24);
+		
+		pnMenu.add(lblYearEnd = new JLabel("Năm kết thúc"));
+		lblYearEnd.setFont(new Font("Arial", Font.BOLD, 18));
+		lblYearEnd.setBounds(430, 85, 120, 24);
+		pnMenu.add(cbYearEnd = new JComboBox<String>());
+		cbYearEnd.setFont(new Font("Arial", Font.PLAIN, 18));
+		cbYearEnd.setBounds(560, 85, 80, 24);
+		cbYearEnd.setEnabled(false);
 		pnMenu.add(btnThongKe = new JButton("Thống kê"));
-		btnThongKe.setBounds(500, 15, 184, 42);
+		btnThongKe.setBounds(680, 15, 184, 42);
 		btnThongKe.setBackground(Color.decode("#0D99FF"));
 		btnThongKe.setForeground(Color.white);
 		btnThongKe.setFont(new Font("Arial", Font.BOLD, 18));
@@ -116,7 +145,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		btnThongKe.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnThongKe.setIconTextGap(18);
 		pnMenu.add(btnLamMoi = new JButton("Làm mới"));
-		btnLamMoi.setBounds(700, 15, 184, 42);
+		btnLamMoi.setBounds(880, 15, 184, 42);
 		btnLamMoi.setBackground(Color.decode("#32BF26"));
 		btnLamMoi.setForeground(Color.white);
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 18));
@@ -124,7 +153,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		btnLamMoi.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnLamMoi.setIconTextGap(18);
 		pnMenu.add(btnInTK = new JButton("In báo cáo thống kê"));
-		btnInTK.setBounds(500, 70, 383, 42);
+		btnInTK.setBounds(680, 70, 383, 42);
 		btnInTK.setBackground(Color.decode("#FFB400"));
 		btnInTK.setForeground(Color.white);
 		btnInTK.setFont(new Font("Arial", Font.BOLD, 18));
@@ -132,11 +161,11 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		btnInTK.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnInTK.setIconTextGap(18);
 		add(pnMenu);
-		JPanel pnContent = new JPanel();
+		pnContent = new JPanel();
 		pnContent.setLayout(null);
 		pnContent.setBounds(0, 192, 400, 535);
 		pnContent.setBackground(Color.white);
-		pnContent.add(lblDate = new JLabel("Chọn ngày: "));
+		pnContent.add(lblDate = new JLabel("Chọn ngày"));
 		lblDate.setFont(new Font("Arial", Font.BOLD, 18));
 		lblDate.setBounds(15, 20, 120, 34);
 
@@ -152,7 +181,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		datePicker.setPreferredSize(new Dimension(164, 34));
 		datePicker.setBackground(Color.white);
 		datePicker.setToolTipText("Chọn ngày lập hóa đơn");
-		modelNgaylap.setDate(2023, 26, 10);
+		modelNgaylap.setDate(2023, 5, 10);
 		modelNgaylap.setSelected(true);
 		
 //		Model Month
@@ -166,10 +195,10 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		monthPicker.setPreferredSize(new Dimension(164, 34));
 		monthPicker.setBackground(Color.white);
 		monthPicker.setToolTipText("Chọn ngày lập hóa đơn");
-		modelMonth.setMonth(10);
+		modelMonth.setMonth(5);
 		modelMonth.setYear(2023);
 		modelMonth.setSelected(true);
-		monthPanel.setVisible(false);
+		monthPicker.setVisible(false);
 		
 		pnContent.add(datePicker);
 		pnContent.add(monthPicker);
@@ -186,40 +215,40 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		pnContent.add(lblTotalRevenue);
 		lblTotalRevenue.setFont(new Font("Arial", Font.BOLD, 18));
 		lblTotalRevenue.setBounds(15, 113, 210, 34);
-		pnContent.add(lblTongDoanhThu = new JLabel("15,500,000 VNĐ"));
+		pnContent.add(lblTongDoanhThu = new JLabel("0 VNĐ"));
 		lblTongDoanhThu.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblTongDoanhThu.setBounds(260, 113, 210, 34);
 		pnContent.add(lblTotalOrder);
 		lblTotalOrder.setFont(new Font("Arial", Font.BOLD, 18));
 		lblTotalOrder.setBounds(15, 189, 210, 34);
-		pnContent.add(lblTongHoaDon = new JLabel("10"));
+		pnContent.add(lblTongHoaDon = new JLabel("0"));
 		lblTongHoaDon.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblTongHoaDon.setBounds(260, 189, 210, 34);
 		pnContent.add(lblNormalRomRevenue);
 		lblNormalRomRevenue.setFont(new Font("Arial", Font.BOLD, 18));
 		lblNormalRomRevenue.setBounds(15, 265, 240, 34);
-		pnContent.add(lblDoanhThuPhongThuong = new JLabel("500,000 VNĐ"));
+		pnContent.add(lblDoanhThuPhongThuong = new JLabel("0 VNĐ"));
 		lblDoanhThuPhongThuong.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblDoanhThuPhongThuong.setBounds(260, 265, 210, 34);
 		pnContent.add(lblVIPRomRevenue);
 		lblVIPRomRevenue.setFont(new Font("Arial", Font.BOLD, 18));
 		lblVIPRomRevenue.setBounds(15, 341, 240, 34);
-		pnContent.add(lblDoanhThuPhongVIP = new JLabel("10,000,000 VNĐ"));
+		pnContent.add(lblDoanhThuPhongVIP = new JLabel("0 VNĐ"));
 		lblDoanhThuPhongVIP.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblDoanhThuPhongVIP.setBounds(260, 341, 210, 34);
 		pnContent.add(lblTotalServiceRevenue);
 		lblTotalServiceRevenue.setFont(new Font("Arial", Font.BOLD, 18));
 		lblTotalServiceRevenue.setBounds(15, 417, 240, 34);
-		pnContent.add(lblDoanhThuDichVu = new JLabel("5,000,000 VNĐ"));
+		pnContent.add(lblDoanhThuDichVu = new JLabel("0 VNĐ"));
 		lblDoanhThuDichVu.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblDoanhThuDichVu.setBounds(260, 417, 210, 34);
 		pnContent.add(lblTotalHour);
 		lblTotalHour.setFont(new Font("Arial", Font.BOLD, 18));
 		lblTotalHour.setBounds(15, 493, 240, 34);
-		pnContent.add(lblTongSoGioHat = new JLabel("20"));
+		pnContent.add(lblTongSoGioHat = new JLabel("0"));
 		lblTongSoGioHat.setFont(new Font("Arial", Font.PLAIN, 18));
 		lblTongSoGioHat.setBounds(260, 493, 210, 34);
-		JPanel pnTable = new JPanel();
+		pnTable = new JPanel();
 		pnTable.setLayout(null);
 		pnTable.setBounds(400, 192, 670, 535);
 		model = new DefaultTableModel(col,0);
@@ -238,14 +267,47 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		scroll.setBounds(0,0,670,535);
 		pnTable.add(scroll);
 		add(pnTable);
+		
+		pnPieChart = new JPanel();
+		pnPieChart.setLayout(null);
+		pnPieChart.setBounds(400, 192, 670, 535);
+		pnPieChart.add(lblChartTitle = new JLabel("BIỂU ĐỒ THỐNG KÊ DOANH THU THEO THÁNG"));
+		lblChartTitle.setForeground(Color.blue);
+		lblChartTitle.setFont(new Font("Arial", Font.BOLD, 25));
+		lblChartTitle.setBounds(20, 0, 600, 34);
+		pnPieChart.add(pieChart = new PieChart());
+		pieChart.setBounds(0, 20, 550, 550);
+		pieChart.setChartType(PieChart.PeiChartType.DEFAULT);
+		pnPieChart.setVisible(false);
+		add(pnPieChart);
 		add(pnContent);
+		pnCurveLineChart = new JPanel();
+		pnCurveLineChart.setLayout(null);
+		pnCurveLineChart.setBounds(0, 182, 1080, 548);
+		pnCurveLineChart.add(lineChart = new CurveLineChart());
+		lineChart.setBounds(0, 0, 1050, 535);
+		lineChart.addLegend("Tổng doanh thu", Color.decode("#7b4397"), Color.decode("#dc2430"));
+		lineChart.addLegend("Doanh thu phòng", Color.decode("#e65c00"), Color.decode("#F9D423"));
+		lineChart.addLegend("Doanh thu dịch vụ", Color.decode("#0099F7"), Color.decode("#F11712"));
+		pnCurveLineChart.setVisible(false);
+		add(pnCurveLineChart);
 		add(pnNorth);
-//		pnTable.setVisible(false);
 		modelNgaylap.addChangeListener(this);
 		modelMonth.addChangeListener(this);
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnInTK.addActionListener(this);
+		updateYearCbo();
+	}
+	
+	public void setCurveLineChartData() {
+		String yearStart = cbYearStart.getSelectedItem().toString();
+		String yearEnd = cbYearEnd.getSelectedItem().toString();
+		for (ModelThongKe tk: thongke_dao.thongKeTheoNam(yearStart, yearEnd)) {
+			lineChart.addData(new ModelChart(tk.getYear(), new double[]{tk.getTongDoanhThu(), tk.getDoanhThuPhong(), tk.getDoanhThuDichVu()}));
+			
+		}
+		lineChart.start();
 	}
 	
 	public void loadDataDoanhThuTheoNgay() {
@@ -263,16 +325,16 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 			khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
 			khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getSoDienThoai(),
 			khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()),
-			hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
+			df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
 			chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
 			khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-			),
+			)),
 			hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
 			};
 			model.addRow(row);
 		}
-		lblTongDoanhThu.setText(tongDoanhThu + " VNĐ");
-		lblDoanhThuDichVu.setText(doanhThuDV + " VNĐ");
+		lblTongDoanhThu.setText(df.format(tongDoanhThu));
+		lblDoanhThuDichVu.setText(df.format(doanhThuDV));
 		lblTongHoaDon.setText(i+"");
 	}
 	
@@ -289,14 +351,77 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		    try {
 		    	DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(modelNgaylap.getValue().toString());
 			    if(dtlp != null) {
-			    	lblDoanhThuPhongThuong.setText(dtlp.getDoanhThuPhongThuong() + " VNĐ");
-				    lblDoanhThuPhongVIP.setText(dtlp.getDoanhThuPhongVIP() + " VNĐ");
+			    	lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
+				    lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
 			    }
 			    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(modelNgaylap.getValue().toString())+"");
 		    } catch (Exception e2) {
 		    	e2.printStackTrace();
 			}
+		  }else if(e.getSource().equals(modelMonth)) {
+			  int month = modelMonth.getMonth() + 1;
+			  String m = "";
+			  if(month < 10) {
+				  m = "0" + month;
+			  } else {
+				  m = month+"";
+			  }
+			  int year = modelMonth.getYear();
+			  double tongDoanhThu = 0;
+				double doanhThuDV = 0;
+				int i = 0;
+				for (HoaDonDatPhong hd : hoadon_dao.getHoaDonTheoThang(m, year)) {
+					i++;
+					tongDoanhThu += hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
+							chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
+							khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()));
+					doanhThuDV += chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon());
+					Object[] row = { i, hd.getMaHoaDon(), 
+					hd.getNgayLapHoaDon(),
+					khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
+					khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getSoDienThoai(),
+					khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()),
+					df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
+					chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
+					khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
+					)),
+					hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+					};
+					model.addRow(row);
+				}
+				lblTongDoanhThu.setText(df.format(tongDoanhThu));
+				lblDoanhThuDichVu.setText(df.format(doanhThuDV));
+				lblTongHoaDon.setText(i+"");
+				try {
+			    	DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoThang(m, year);
+				    if(dtlp != null) {
+				    	lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
+					    lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
+					    pieChart.addData(new ModelPieChart("Doanh thu phòng thường", dtlp.getDoanhThuPhongThuong(), new Color(23, 126, 238)));
+						pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
+				    }
+				    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoThang(m, year)+"");
+			    } catch (Exception e2) {
+			    	e2.printStackTrace();
+				}
+				pieChart.addData(new ModelPieChart("Doanh thu dịch vụ", doanhThuDV, new Color(47, 157, 64)));
 		  }
+	}
+	
+	public void updateYearCbo() {
+		for (ModelThongKe tk: thongke_dao.updateCboYear()) {
+			cbYearStart.addItem(tk.getYear());
+			cbYearEnd.addItem(tk.getYear());
+		}
+	}
+	
+	public void resetField() {
+		lblTongDoanhThu.setText("0 VNĐ");
+		lblTongHoaDon.setText("0");
+		lblDoanhThuPhongThuong.setText("0 VNĐ");
+		lblDoanhThuPhongVIP.setText("0 VNĐ");
+		lblDoanhThuDichVu.setText("0 VNĐ");
+		lblTongSoGioHat.setText("0 VNĐ");
 	}
 
 	@Override
@@ -304,12 +429,32 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if(o.equals(btnThongKe)) {
+			clearDataDoanhThuTheoNgay();
 			if(cbDate.getSelectedItem().equals("Ngày")) {
+				lblDate.setText("Chọn ngày");
 				datePicker.setVisible(true);
 				monthPicker.setVisible(false);
+				pnTable.setVisible(true);
+				resetField();
 			} else if (cbDate.getSelectedItem().equals("Tháng")) {
+				lblDate.setText("Chọn tháng");
 				monthPicker.setVisible(true);
+				pnPieChart.setVisible(true);
 				datePicker.setVisible(false);
+				pnTable.setVisible(false);
+				resetField();
+			} else if(cbDate.getSelectedItem().equals("Năm")) {
+				cbYearStart.setEnabled(true);
+				cbYearEnd.setEnabled(true);
+				pnCurveLineChart.setVisible(true);
+				pnContent.setVisible(false);
+				pnTable.setVisible(false);
+				if(Integer.valueOf(cbYearEnd.getSelectedItem().toString()) > Integer.valueOf(cbYearStart.getSelectedItem().toString())) {
+					lineChart.clear();
+					setCurveLineChartData();
+				} else {
+					JOptionPane.showMessageDialog(cbYearStart, "Năm kết thúc phải lớn hơn năm bắt đầu!");
+				}
 			}
 		}
 	}
