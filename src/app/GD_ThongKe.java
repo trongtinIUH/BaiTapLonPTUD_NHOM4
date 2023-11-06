@@ -431,12 +431,22 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		if(o.equals(btnThongKe)) {
 			clearDataDoanhThuTheoNgay();
 			if(cbDate.getSelectedItem().equals("Ngày")) {
+				cbYearStart.setEnabled(false);
+				cbYearEnd.setEnabled(false);
+				pnContent.setVisible(true);
+				pnCurveLineChart.setVisible(false);
+				pnPieChart.setVisible(false);
 				lblDate.setText("Chọn ngày");
 				datePicker.setVisible(true);
 				monthPicker.setVisible(false);
 				pnTable.setVisible(true);
 				resetField();
 			} else if (cbDate.getSelectedItem().equals("Tháng")) {
+				pnContent.setVisible(true);
+				cbYearStart.setEnabled(false);
+				cbYearEnd.setEnabled(false);
+				pnCurveLineChart.setVisible(false);
+				pnPieChart.setVisible(true);
 				lblDate.setText("Chọn tháng");
 				monthPicker.setVisible(true);
 				pnPieChart.setVisible(true);
@@ -444,6 +454,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 				pnTable.setVisible(false);
 				resetField();
 			} else if(cbDate.getSelectedItem().equals("Năm")) {
+				pnPieChart.setVisible(false);;
 				cbYearStart.setEnabled(true);
 				cbYearEnd.setEnabled(true);
 				pnCurveLineChart.setVisible(true);
@@ -456,6 +467,9 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 					JOptionPane.showMessageDialog(cbYearStart, "Năm kết thúc phải lớn hơn năm bắt đầu!");
 				}
 			}
+		} else if(o.equals(btnLamMoi)) {
+			cbThongKe.setSelectedItem("Doanh thu");
+			cbDate.setSelectedItem("Ngày");
 		}
 	}
 }
