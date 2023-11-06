@@ -131,7 +131,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		pnlThongTin.add(txtMa);
 		txtMa.setHorizontalAlignment(JTextField.RIGHT);
 		txtMa.setFont(font3);
-		
+
 		loadMa();
 
 		JLabel lblTen = new JLabel("Tên sản phẩm");
@@ -224,11 +224,11 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		lblAnh.setFont(font2);
 		y += 50;
 		lblAnh.setBounds(x, y, w + 20, h);
-		
+
 		pnlThongTin.add(openButton = new JButton("Chọn tệp"));
-        openButton.setBounds(x+45, y+5, 87, 20);
-        pnlThongTin.add(imageLabel = new JLabel());
-        imageLabel.setBounds(x+170, y-5, 95, 90);
+		openButton.setBounds(x + 45, y + 5, 87, 20);
+		pnlThongTin.add(imageLabel = new JLabel());
+		imageLabel.setBounds(x + 170, y - 5, 95, 90);
 
 		// Các nút
 		pnlThongTin.add(btnThem = new JButton("THÊM", new ImageIcon("icon\\Add_icon.png")));
@@ -323,18 +323,18 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		btnTimKiem.addActionListener(this);
 		btnXuatExcel.addActionListener(this);
 		table.addMouseListener(this);
-		
+
 		openButton.addActionListener(this);
-		
+
 		loadData();
 	}
-	
-	//---- Mã SP sinh tự động tăng dần bắt đầu từ 001
+
+	// ---- Mã SP sinh tự động tăng dần bắt đầu từ 001
 	private int ThuTuSanPhamTrongNgay() {
 		int sl = 1;
 		String maSP = "";
 		for (SanPham sp : sp_dao.getallSanPhams()) {
-			maSP = sp.getMaSanPham(); //Chạy hết vòng for sẽ lấy được mã SP cuối danh sách
+			maSP = sp.getMaSanPham(); // Chạy hết vòng for sẽ lấy được mã SP cuối danh sách
 		}
 		int STTTrenMaSPCuoiDS = Integer.parseInt(maSP.substring(3, 5));
 		sl = STTTrenMaSPCuoiDS + 1;
@@ -354,16 +354,15 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		code = generateRandomCode();
 		txtMa.setText(code);
 	}
-	//---------------------------------------------------------
+	// ---------------------------------------------------------
 
-	
 	private void chenAnh() {
 		JFileChooser fileChooser = new JFileChooser();
 		int returnValue = fileChooser.showOpenDialog(null);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			selectedFile = fileChooser.getSelectedFile();
 			ImageIcon icon = new ImageIcon(selectedFile.getAbsolutePath());
-            imageLabel.setIcon(icon);
+			imageLabel.setIcon(icon);
 		}
 	}
 
@@ -372,7 +371,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		for (SanPham sp : sp_dao.getallSanPhams()) {
 			i++;
 			Object[] row = { i, sp.getMaSanPham(), sp.getTenSanPham(), sp.getNgaySanXuat(), sp.getloaiSanPham(),
-					sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(), sp.getHinhAnh()};
+					sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(), sp.getHinhAnh() };
 			model.addRow(row);
 		}
 	}
@@ -394,13 +393,13 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 	public void them() {
 		ImageIcon icon = (ImageIcon) imageLabel.getIcon();
 		if (icon != null) {
-		    File imageFile = new File(icon.getDescription());
-		    absolutePath = imageFile.getAbsolutePath();
-		} 
-		if (txtMa.getText().equals("") || txtTen.getText().equals("") || txtDonGia.getText().equals("") || txtSoLuong.getText().equals("")
-				|| icon == null) {
+			File imageFile = new File(icon.getDescription());
+			absolutePath = imageFile.getAbsolutePath();
+		}
+		if (txtMa.getText().equals("") || txtTen.getText().equals("") || txtDonGia.getText().equals("")
+				|| txtSoLuong.getText().equals("") || icon == null) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!!");
-		}else {
+		} else {
 			String ma = txtMa.getText().trim();
 			String ten = txtTen.getText().trim();
 			Date ngaySX = (Date) datePicker.getModel().getValue();
@@ -410,7 +409,8 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 			int soLuongTon = Integer.parseInt(txtSoLuong.getText().trim());
 			SanPham sp = new SanPham(ma, ten, ngaySX, loaiSP, donGia, donViTinh, soLuongTon, absolutePath);
 			if (sp_dao.addSanPham(sp)) {
-				model.addRow(new Object[] { model.getRowCount() + 1, ma, ten, ngaySX, loaiSP, donGia, donViTinh, soLuongTon, absolutePath});
+				model.addRow(new Object[] { model.getRowCount() + 1, ma, ten, ngaySX, loaiSP, donGia, donViTinh,
+						soLuongTon, absolutePath });
 				JOptionPane.showMessageDialog(this, "Thêm thành công!!");
 				xoaTrang();
 				loadMa();
@@ -472,8 +472,9 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 				if (sp != null) {
 					btnTimKiem.setText("Hủy tìm");
 					clearTable();
-					Object[] row = { ++i, sp.getMaSanPham(), sp.getTenSanPham(), sp.getNgaySanXuat(), sp.getloaiSanPham(), 
-							sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(), sp.getHinhAnh()};
+					Object[] row = { ++i, sp.getMaSanPham(), sp.getTenSanPham(), sp.getNgaySanXuat(),
+							sp.getloaiSanPham(), sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(),
+							sp.getHinhAnh() };
 					model.addRow(row);
 				} else {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
@@ -484,21 +485,23 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 					btnTimKiem.setText("Hủy tìm");
 					clearTable();
 					for (SanPham sp : dsSanPham) {
-						Object[] row = { ++i, sp.getMaSanPham(), sp.getTenSanPham(), sp.getNgaySanXuat(), sp.getloaiSanPham(), 
-								sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(), sp.getHinhAnh()};
+						Object[] row = { ++i, sp.getMaSanPham(), sp.getTenSanPham(), sp.getNgaySanXuat(),
+								sp.getloaiSanPham(), sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(),
+								sp.getHinhAnh() };
 						model.addRow(row);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 				}
-			} else if (cbLoaiTimKiem.getSelectedItem().equals("Loại sản phẩm")) {  
+			} else if (cbLoaiTimKiem.getSelectedItem().equals("Loại sản phẩm")) {
 				ArrayList<SanPham> dsSanPham = sp_dao.getSanPhamTheoLoaiSanPham(txtTimKiem.getText());
 				if (dsSanPham != null) {
 					btnTimKiem.setText("Hủy tìm");
 					clearTable();
 					for (SanPham sp : dsSanPham) {
-						Object[] row = { ++i, sp.getMaSanPham(), sp.getTenSanPham(), sp.getNgaySanXuat(), sp.getloaiSanPham(), 
-								sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(), sp.getHinhAnh()};
+						Object[] row = { ++i, sp.getMaSanPham(), sp.getTenSanPham(), sp.getNgaySanXuat(),
+								sp.getloaiSanPham(), sp.getDonGia(), sp.getDonViTinh(), sp.getSoLuongTon(),
+								sp.getHinhAnh() };
 						model.addRow(row);
 					}
 				} else {
@@ -548,12 +551,12 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 				cell.setCellValue(sp_dao.getallSanPhams().get(i).getMaSanPham());
 				cell = row.createCell(2, CellType.STRING);
 				cell.setCellValue(sp_dao.getallSanPhams().get(i).getTenSanPham());
-				
+
 				cell = row.createCell(3, CellType.STRING);
 				DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 				String ngay = df.format(sp_dao.getallSanPhams().get(i).getNgaySanXuat());
 				cell.setCellValue(ngay);
-				
+
 				cell = row.createCell(4, CellType.STRING);
 				cell.setCellValue(sp_dao.getallSanPhams().get(i).getloaiSanPham());
 				cell = row.createCell(5, CellType.NUMERIC);
@@ -584,7 +587,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 			JOptionPane.showMessageDialog(null, "Không in được");
 		}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -602,7 +605,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 			tim();
 		} else if (obj.equals(btnXuatExcel)) {
 			xuatExcel();
-		}else if (obj.equals(openButton)) {
+		} else if (obj.equals(openButton)) {
 			chenAnh();
 		}
 	}
@@ -623,30 +626,30 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		cbDonViTinh.setSelectedItem(model.getValueAt(row, 6));
 		txtSoLuong.setText(model.getValueAt(row, 7).toString());
 		imageLabel.setIcon(new ImageIcon(model.getValueAt(row, 8).toString()));
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
