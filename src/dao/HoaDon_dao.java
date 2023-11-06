@@ -128,6 +128,31 @@ public class HoaDon_dao {
 		}
 		return dsHoaDonDatPhong;
 	}
+	
+	public ArrayList<HoaDonDatPhong> getHoaDonTheoThang(String thang, int nam) {
+		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from HoaDonDatPhong "
+					+ "where MONTH(ngayLapHoaDon) = '"+thang+"' AND YEAR(ngayLapHoaDon) = '"+nam+"'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
+				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsHoaDonDatPhong;
+	}
+	
 	public boolean updateHoaDon(String maHD, Date ngayLap, Boolean status, String maNV) {
 		try {
 			ConnectDB.getInstance();

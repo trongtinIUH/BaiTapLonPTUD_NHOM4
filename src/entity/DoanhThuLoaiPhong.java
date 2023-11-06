@@ -31,6 +31,11 @@ public class DoanhThuLoaiPhong {
 		this.doanhThuPhongThuong = doanhThuPhongThuong;
 		this.doanhThuPhongVIP = doanhThuPhongVIP;
 	}
+	public DoanhThuLoaiPhong(double doanhThuPhongThuong, double doanhThuPhongVIP) {
+		super();
+		this.doanhThuPhongThuong = doanhThuPhongThuong;
+		this.doanhThuPhongVIP = doanhThuPhongVIP;
+	}
 	public DoanhThuLoaiPhong() {
 		super();
 	}

@@ -86,6 +86,35 @@ public class ChiTietHoaDon_dao {
 		return soGioHat;
 	}
 	
+	public double tinhSoGioHatTheoThang(String thang, int nam) {
+		double soGioHat = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT "
+					+ "FORMAT(ngayLapHoaDon, 'yyyy-MM') AS Thang, "
+					+ "SUM(CTHD.soGioHat) AS TongSoGioHat "
+					+ "FROM HoaDonDatPhong HDP "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDP.maHoaDon = CTHD.maHoaDon "
+					+ "WHERE FORMAT(ngayLapHoaDon, 'yyyy-MM') = '"+nam+"-"+thang+"' "
+					+ "GROUP BY FORMAT(ngayLapHoaDon, 'yyyy-MM')";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				soGioHat = rs.getDouble(2);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return soGioHat;
+	}
+	
 	public boolean addChiTietHD(ChiTietHoaDon cthd) {
 		try {
 			ConnectDB.getInstance();
