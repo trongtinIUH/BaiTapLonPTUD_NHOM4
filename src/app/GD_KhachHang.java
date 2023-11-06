@@ -125,14 +125,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 		pnlThongTin.add(txtMa);
 		txtMa.setHorizontalAlignment(JTextField.RIGHT);
 		txtMa.setFont(font3);
-//		Set<String> generatedCodes = new HashSet<>();
-//		String code;
-//		PhatSinhMa_dao ps_ma = new PhatSinhMa_dao();
-//		do {
-//			code = ps_ma.generateRandomKH();
-//		} while (generatedCodes.contains(code));
-//		generatedCodes.add(code);
-//		txtMa.setText(code);
+		
 		loadMa();
 
 		JLabel lblHoTen = new JLabel("Họ tên");
