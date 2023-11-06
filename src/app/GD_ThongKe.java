@@ -276,7 +276,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		lblChartTitle.setFont(new Font("Arial", Font.BOLD, 25));
 		lblChartTitle.setBounds(20, 0, 600, 34);
 		pnPieChart.add(pieChart = new PieChart());
-		pieChart.setBounds(0, 20, 550, 550);
+		pieChart.setBounds(100, 20, 500, 500);
 		pieChart.setChartType(PieChart.PeiChartType.DEFAULT);
 		pnPieChart.setVisible(false);
 		add(pnPieChart);
@@ -359,6 +359,8 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		    	e2.printStackTrace();
 			}
 		  }else if(e.getSource().equals(modelMonth)) {
+			  pieChart.setSelectedIndex(-1);
+			  pieChart.clearData();
 			  int month = modelMonth.getMonth() + 1;
 			  String m = "";
 			  if(month < 10) {
@@ -397,14 +399,20 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 				    if(dtlp != null) {
 				    	lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
 					    lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
-					    pieChart.addData(new ModelPieChart("Doanh thu phòng thường", dtlp.getDoanhThuPhongThuong(), new Color(23, 126, 238)));
-						pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
+					    if(dtlp.getDoanhThuPhongThuong() > 0) {
+					    	pieChart.addData(new ModelPieChart("Doanh thu phòng thường", dtlp.getDoanhThuPhongThuong(), new Color(23, 126, 238)));
+					    }
+						if(dtlp.getDoanhThuPhongVIP() > 0) {
+							pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
+						}
 				    }
 				    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoThang(m, year)+"");
 			    } catch (Exception e2) {
 			    	e2.printStackTrace();
 				}
-				pieChart.addData(new ModelPieChart("Doanh thu dịch vụ", doanhThuDV, new Color(47, 157, 64)));
+				if(doanhThuDV > 0) {
+					pieChart.addData(new ModelPieChart("Doanh thu dịch vụ", doanhThuDV, new Color(47, 157, 64)));
+				}
 		  }
 	}
 	

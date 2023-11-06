@@ -31,6 +31,7 @@ public class PieChart extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private final List<ModelPieChart> models;
     private final DecimalFormat format = new DecimalFormat("#,##0.#");
+    private final DecimalFormat formatMoney = new DecimalFormat("#,###,### VNĐ");
     private PeiChartType chartType = PeiChartType.DEFAULT;
     private int selectedIndex = -1;
     private int hoverIndex = -1;
@@ -130,11 +131,11 @@ public class PieChart extends JComponent {
             g2.setColor(Color.WHITE);
             g2.drawString(text, (float) textX, (float) textY);
             //  Draw label
-            if (hoverIndex == i) {
+            if (hoverIndex == i || selectedIndex == i) {
                 double labelSize = size / 2;
                 double labelX = centerX + cosX * labelSize;
                 double labelY = centerY + sinY * labelSize;
-                String detail = format.format(data.getValues()) + " (" + text + ")";
+                String detail = formatMoney.format(data.getValues()) + " (" + text + ")";
                 drawPopupLabel(g2, size, textAngle, labelX, labelY, data.getName(), detail);
             }
             drawAngle -= angle;

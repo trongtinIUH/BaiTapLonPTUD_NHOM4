@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -81,7 +82,9 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private ChiTietHoaDon_dao chitiethoadon_dao;
 	private SanPham_dao sanpham_dao;
 	private XSSFWorkbook wordbook;
+	private DecimalFormat df;
 	public GD_HoaDon() {
+		df = new DecimalFormat("#,###,### VNĐ");
 		hoadon_dao = new HoaDon_dao();
 		khachhang_dao = new KhachHang_dao();
 		phong_dao = new Phong_dao();
@@ -602,10 +605,10 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 			hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(), 
 			hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", 
 			hd.getKhuyenMai().getMaKhuyenMai(),
-			hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
+			df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
 			chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
 			khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-			)
+			))
 			};
 			modelOrderList.addRow(row);
 		}
