@@ -257,13 +257,15 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		 if(o.equals(btn_Huy)) {
-		        Window[] windows = Window.getWindows();
-		        for (Window window : windows) {
-		            if (window instanceof JDialog) {
-		                window.dispose();
-		            }
-		        }
-		    }
+			 setVisible(false);
+		 }
+//		        Window[] windows = Window.getWindows();
+//		        for (Window window : windows) {
+//		            if (window instanceof JDialog) {
+//		                window.dispose();
+//		            }
+//		        }
+//		    }
 		if(o.equals(btn_DongY)) {
 			
 		}

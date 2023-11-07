@@ -1,10 +1,13 @@
 package app;
 
 import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import dao.DangNhap_dao;
 
 public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	
@@ -27,6 +32,8 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	private JTextField txtSDT, txtPassword,txtPassword_New,txtOTP;
 	private JLabel lblTitle;
 	private JButton btnHuy,btnXacNhan,btnOTP;
+	private DangNhap_dao dangNhap_dao = new DangNhap_dao();
+
 
 	public  GD_QuenMatKhau() {
 		setTitle("Quên Mật Khẩu");
@@ -68,6 +75,7 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	        panel.add(lblOTP); 
 	        
 	        txtOTP = new JTextField(20);
+	        txtOTP.setEditable(false);
 	        txtOTP.setBounds(130, 110, 300, 20);
 	        panel.add(txtOTP);
 	        
@@ -118,7 +126,7 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 			//hình nền
 			JLabel label = new JLabel("");
 			label.setIcon(new ImageIcon("image\\quenmk.jpg"));
-			label.setBounds(0, 0, 600, 400);
+			label.setBounds(0, 0, 584, 311);
 			ImageIcon hinhgt= new ImageIcon("image\\quenmk.jpg");
 			Image image = hinhgt.getImage();
 			Image newImage = image.getScaledInstance(600, 400, java.awt.Image.SCALE_SMOOTH);
@@ -130,20 +138,37 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	        btnOTP.addActionListener(this);
 	        btnHuy.addActionListener(this);
 	        btnXacNhan.addActionListener(this);
-	        this.add(panel);
+	        getContentPane().add(panel);
 	}
+
     public static void main(String[] args) {
     new GD_QuenMatKhau().setVisible(true);
     }
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		
 		if(o.equals(btnXacNhan)) {
-			JOptionPane.showMessageDialog(null, "Mật khẩu mới của bạn đã được cập nhật !");
-			// thêm joption thông báo thành công rồi nhảy về trang đăng nhập//
-			GD_TrangDangNhap dn= new GD_TrangDangNhap();
-			dn.setVisible(true);	
-			dispose();
+			String sdt = txtSDT.getText();
+			char[] mk1 = ((JPasswordField) txtPassword).getPassword();
+			char[] mk2 = ((JPasswordField) txtPassword_New).getPassword();
+			String mk_cu=new String(mk1);
+			String mk_moi=new String(mk2);
+			
+
+				if(dangNhap_dao.TimkiemSDT(sdt)==true) {
+					if(mk_cu.equalsIgnoreCase(mk_moi)) {
+						JOptionPane.showMessageDialog(null, "Mật khẩu mới của bạn đã được cập nhật !");
+						dangNhap_dao.doiMatKhau(sdt, mk_moi);
+						GD_TrangDangNhap dn= new GD_TrangDangNhap();
+						dn.setVisible(true);	
+						dispose();
+					}else {
+						JOptionPane.showMessageDialog(null, "Mật khẩu mới và nhập lại mật khẩu mới không trùng nhau !");
+					}
+					
+				}else JOptionPane.showMessageDialog(null, "Số điện thoại không tồn tại!");
+			
 		}
 		else if(o.equals(btnHuy)) {
 			// thêm joption thông báo rồi nhảy về trang đăng nhập//
