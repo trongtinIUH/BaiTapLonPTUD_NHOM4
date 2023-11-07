@@ -56,10 +56,16 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private Dialog_HienThiPhong dialog_htPhong = new Dialog_HienThiPhong();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2();
 	private Dialog_PhongDangSD dialog_PhongDangSD = new Dialog_PhongDangSD();
+	private ImageIcon phongvip;
+	private Image resizedImage_phongvip;
+	private ImageIcon resizedIcon_phongvip;
+	private Image originalImage_phongvip;
+	private JPanel panel_ChuaPhong;
 
 	/**
 	 * Create the panel.
 	 */
+	
 	public GD_DatPhong() {
 		this.setSize(1080, 730);
 		setLayout(null);
@@ -187,7 +193,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         outerPanel.setLayout(null);
         
 
-        JPanel panel_ChuaPhong = new JPanel();
+        panel_ChuaPhong = new JPanel();
         panel_ChuaPhong.setBackground(new Color(244,242,255,255));
         panel_ChuaPhong.setBounds(0, 0, 1061, 656);
         outerPanel.add(panel_ChuaPhong);
@@ -448,10 +454,10 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
         Image resizedImage_phongsua4 = originalImage_phongsua4.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
         ImageIcon resizedIcon_phongsua4 = new ImageIcon(resizedImage_phongsua4);
         
-        ImageIcon phongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongvip.png");
-        Image originalImage_phongvip = phongvip.getImage();
-        Image resizedImage_phongvip= originalImage_phongvip.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon_phongvip = new ImageIcon(resizedImage_phongvip);
+        phongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongvip.png");
+        originalImage_phongvip = phongvip.getImage();
+        resizedImage_phongvip= originalImage_phongvip.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        resizedIcon_phongvip = new ImageIcon(resizedImage_phongvip);
         
         JPanel panel_4 = new JPanel();
         panel_4.setBackground(Color.WHITE);
@@ -532,6 +538,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

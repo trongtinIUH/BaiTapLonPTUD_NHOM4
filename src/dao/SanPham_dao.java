@@ -221,4 +221,32 @@ public class SanPham_dao {
 		}
 		return n > 0;
 	}
+	
+	// hiển thị dịch vụ bên phòng
+	
+	 public ArrayList<SanPham> getallSp(){
+	        ArrayList<SanPham> dsSanPham = new ArrayList<SanPham>();
+	        Connection con = null;
+	        try {
+	            ConnectDB.getInstance();
+	            con = ConnectDB.getConnection();
+	            String sql = "select maSanPham, tenSanPham, soLuongTon, donGia from SanPham";
+	            Statement stm = con.createStatement();
+	            ResultSet rs = stm.executeQuery(sql);
+	            while(rs.next()) {
+	                dsSanPham.add(new SanPham(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDouble(4)));
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            if (con != null) {
+	                try {
+	                    con.close();
+	                } catch (SQLException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	        return dsSanPham;
+	    }
 }

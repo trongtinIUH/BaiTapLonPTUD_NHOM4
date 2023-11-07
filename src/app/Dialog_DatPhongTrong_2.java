@@ -51,14 +51,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener{
 
 	private Dialog_DatThemPhongTrong dialog_DatThemPhongTrong = new Dialog_DatThemPhongTrong();
 	private Dialog_ThemDichVu dialog_ThemDichVu= new Dialog_ThemDichVu();
-	private Container lbl_TrangThai;
-	private JLabel lbl_Loai;
-	private JLabel lbl_LoaiKhachHang;
-	private JLabel lbl_sdtKH;
-	private Container lbl_TenKH;
-	private JLabel lbl_GioiTinh;
-	private Container lbl_GiaTien;
-	private JLabel lbl_SoNguoi;
+	private JLabel lbl_TrangThai,lbl_Loai,lbl_sdtKH,lbl_TenKH,lbl_GioiTinh,lbl_GiaTien,lbl_SoNguoi,lbl_LoaiKhachHang;
+
 	
 	public Dialog_DatPhongTrong_2() {
 		//màn hình******************************************************************************
@@ -244,6 +238,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener{
 		
 		
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -259,6 +254,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener{
 		if(o.equals(btn_DatPhong)) {
 			JOptionPane.showMessageDialog(this, "Đặt thành công, thời gian sử dụng bắt đầu ghi nhận !");
 			setVisible(false);
+			
 			
 			//đóng toàn bộ dialog ra ngoài màn hình chính
 	        Window[] windows = Window.getWindows();
