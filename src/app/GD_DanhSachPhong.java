@@ -8,10 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Year;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -35,13 +31,16 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import dao.Phong_dao;
+import entity.Enum_TrangThai;
 import entity.LoaiPhong;
-import entity.NhanVien;
 import entity.Phong;
-import entity.Phong.TrangThai;
 import dao.LoaiPhong_dao;
 
 public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Font font = new Font("Arial", Font.BOLD, 16); // khung tittle
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
@@ -68,7 +67,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 	private XSSFWorkbook wordbook;
 	private JComboBox<String> cbLau;
 	private JTextField txtMa;
-	private JComboBox cbSoPhong;
+	private JComboBox<String> cbSoPhong;
 
 	public GD_DanhSachPhong() {
 		setBackground(new Color(246, 245, 255));
@@ -300,6 +299,8 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		btnTimKiem.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnXuatExcel.addActionListener(this);
+		cbLau.addActionListener(this);
+		cbSoPhong.addActionListener(this);
 		loadData();
 		table.addMouseListener(this);
 	}
@@ -406,15 +407,15 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			loadMa();
 			String maP = txtMa.getText();
 			String maLP = loadMaLP();
-			TrangThai trangThai = null;
+			Enum_TrangThai trangThai = null;
 			if (cbTrangThai.getSelectedItem().equals("Trống"))
-				trangThai = TrangThai.Trống;
+				trangThai = Enum_TrangThai.Trống;
 			if (cbTrangThai.getSelectedItem().equals("Chờ"))
-				trangThai = TrangThai.Chờ;
+				trangThai = Enum_TrangThai.Chờ;
 			if (cbTrangThai.getSelectedItem().equals("Đang sử dụng"))
-				trangThai = TrangThai.Đang_sử_dụng;
+				trangThai = Enum_TrangThai.Đang_sử_dụng;
 			if (cbTrangThai.getSelectedItem().equals("Đang sửa chữa"))
-				trangThai = TrangThai.Đang_sửa_chữa;
+				trangThai = Enum_TrangThai.Đang_sửa_chữa;
 			int sucChua = Integer.parseInt(txtSucChua.getText());
 			String tenLoaiPhong = (String) cbLoaiPhong.getSelectedItem();
 			double donGia = Double.parseDouble(txtDonGia.getText());
@@ -459,15 +460,15 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		} else {
 			String maP = txtMa.getText();
 			String maLP = loadMaLP();
-			TrangThai trangThai = null;
+			Enum_TrangThai trangThai = null;
 			if (cbTrangThai.getSelectedItem().equals("Trống"))
-				trangThai = TrangThai.Trống;
+				trangThai = Enum_TrangThai.Trống;
 			if (cbTrangThai.getSelectedItem().equals("Chờ"))
-				trangThai = TrangThai.Chờ;
+				trangThai = Enum_TrangThai.Chờ;
 			if (cbTrangThai.getSelectedItem().equals("Đang sử dụng"))
-				trangThai = TrangThai.Đang_sử_dụng;
+				trangThai = Enum_TrangThai.Đang_sử_dụng;
 			if (cbTrangThai.getSelectedItem().equals("Đang sửa chữa"))
-				trangThai = TrangThai.Đang_sửa_chữa;
+				trangThai = Enum_TrangThai.Đang_sửa_chữa;
 			int sucChua = Integer.parseInt(txtSucChua.getText());
 			String tenLoaiPhong = (String) cbLoaiPhong.getSelectedItem();
 			double donGia = Double.parseDouble(txtDonGia.getText());
@@ -475,10 +476,16 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			Phong p = new Phong(maP, lp, trangThai);
 			lp_dao.addLoaiPhong(lp);
 			if(p_dao.updatePhong(p, generateRandomCode())) {
-				clearTable();
-				loadData();
-				xoaTrang();
-				JOptionPane.showMessageDialog(this, "Sửa thành công!");
+				if(txtMa.getText().trim() != model.getValueAt(table.getSelectedRow(), 1).toString()){
+					JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
+				}else {
+					clearTable();
+					loadData();
+					xoaTrang();
+					JOptionPane.showMessageDialog(this, "Sửa thành công!");
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
 			}
 		}
 	}
@@ -524,7 +531,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 	private void xuatExcel() {
 		try {
 			wordbook = new XSSFWorkbook();
-			XSSFSheet sheet = wordbook.createSheet("Danh sách nhân viên");
+			XSSFSheet sheet = wordbook.createSheet("Danh sách phòng");
 
 			XSSFRow row = null;
 			Cell cell = null;
@@ -605,6 +612,10 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			tim();
 		} else if (obj.equals(btnXuatExcel)) {
 			xuatExcel();
+		}else if(obj.equals(cbLau)) {
+			loadMa();
+		}else if(obj.equals(cbSoPhong)) {
+			loadMa();
 		}
 	}
 }

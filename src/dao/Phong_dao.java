@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 import connectDB.ConnectDB;
 import entity.DoanhThuLoaiPhong;
+import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.Phong;
-import entity.Phong.TrangThai;
 
 public class Phong_dao {
 	public ArrayList<Phong> getallPhongs() {
@@ -28,7 +28,7 @@ public class Phong_dao {
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
 				dsPhong.add(
-						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), TrangThai.valueOf(rs.getString(3))));
+						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -51,7 +51,7 @@ public class Phong_dao {
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
-				ph = new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), TrangThai.valueOf(rs.getString(3)));
+				ph = new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -75,7 +75,7 @@ public class Phong_dao {
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
 				dsPhong.add(
-						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), TrangThai.valueOf(rs.getString(3))));
+						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -128,7 +128,7 @@ public class Phong_dao {
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
 				dsPhong.add(
-						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), TrangThai.valueOf(rs.getString(3))));
+						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -246,11 +246,11 @@ public class Phong_dao {
 		PreparedStatement psmt = null;
 		int n = 0;
 		try {
-			psmt = con.prepareStatement("update Phong set maPhong = ?, maLoaiPhong=?, trangThai=? where maPhong=?");
-			psmt.setString(1, maPhongMoi);
-			psmt.setString(2, ph.getLoaiPhong().getMaLoaiPhong());
-			psmt.setString(3, ph.getTrangThai().toString());
-			psmt.setString(4, ph.getMaPhong());
+			psmt = con.prepareStatement("update Phong set maLoaiPhong=?, trangThai=? where maPhong=?");
+//			psmt.setString(1, maPhongMoi);
+			psmt.setString(1, ph.getLoaiPhong().getMaLoaiPhong());
+			psmt.setString(2, ph.getTrangThai().toString());
+			psmt.setString(3, ph.getMaPhong());
 			n = psmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception

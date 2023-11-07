@@ -12,11 +12,11 @@ public class Phong extends LoaiPhong implements Serializable {
 	private String maPhong;
 	private LoaiPhong loaiPhong;
 
-	public enum TrangThai {
-		Trống, Chờ, Đang_sử_dụng, Đang_sửa_chữa
-	}
+//	public enum TrangThai {
+//		Trống, Chờ, Đang_sử_dụng, Đang_sửa_chữa
+//	}
 
-	private TrangThai trangThai;
+	private Enum_TrangThai trangThai;
 
 	public Phong() {
 		super();
@@ -28,7 +28,7 @@ public class Phong extends LoaiPhong implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Phong(String maPhong, LoaiPhong loaiPhong, TrangThai trangThai) {
+	public Phong(String maPhong, LoaiPhong loaiPhong, Enum_TrangThai trangThai) {
 		super();
 		this.maPhong = maPhong;
 		this.loaiPhong = loaiPhong;
@@ -55,11 +55,11 @@ public class Phong extends LoaiPhong implements Serializable {
 		this.loaiPhong = loaiPhong;
 	}
 
-	public TrangThai getTrangThai() {
+	public Enum_TrangThai getTrangThai() {
 		return trangThai;
 	}
 
-	public void setTrangThai(TrangThai trangThai) {
+	public void setTrangThai(Enum_TrangThai trangThai) {
 		this.trangThai = trangThai;
 	}
 
