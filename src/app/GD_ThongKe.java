@@ -52,10 +52,10 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	private DefaultTableModel model;
 	private JTable table;
 	private JScrollPane scroll;
-	JLabel lblTitle, lblProfile, lblThongKe, lblLoaihinhTK, lblDate, lblTongDoanhThu, lblChartTitle,
+	JLabel lblTitle, lblThongKe, lblLoaihinhTK, lblDate, lblTongDoanhThu, lblChartTitle,
 	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu, lblYearStart, lblYearEnd;
 	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd;
-	JButton btnThongKe, btnLamMoi, btnInTK;
+	JButton btnThongKe, btnLamMoi, btnInTK, btnProfile;
 	private SqlDateModel modelNgaylap, modelMonth;
 	private Properties p, m;
 	private JDatePanelImpl datePanel, monthPanel;
@@ -71,7 +71,9 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	private PieChart pieChart;
 	private CurveLineChart lineChart;
 	private ThongKe_dao thongke_dao;
+	private Dialog_User dialog_user;
 	public GD_ThongKe() {
+		dialog_user = new Dialog_User();
 		df = new DecimalFormat("#,###,### VNĐ");
 		setLayout(null);
 		setBackground(Color.decode("#FAFAFF"));
@@ -88,17 +90,17 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		pnNorth.setLayout(null);
 		lblTitle = new JLabel("Thống kê");
 		lblTitle.setBounds(501, 15, 200, 30);
-		lblTitle.setForeground(Color.blue);
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 25));
 		pnNorth.add(lblTitle);
-		lblProfile = new JLabel("");
-		lblProfile.setBackground(new Color(255, 165, 0));
-		lblProfile.setIcon(new ImageIcon("icon\\icon_profile.png"));
-		lblProfile.setBounds(1020, 7, 45, 45);
+		btnProfile = new JButton();
+		btnProfile.setBackground(Color.decode("#B5E6FB"));
+		btnProfile.setBorderPainted(false);
+		btnProfile.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnProfile.setBounds(1020, 7, 45, 45);
 		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
 		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
-		lblProfile.setIcon(iconProfile);
-		pnNorth.add(lblProfile);
+		btnProfile.setIcon(iconProfile);
+		pnNorth.add(btnProfile);
 		JPanel pnMenu = new JPanel();
 		pnMenu.setLayout(null);
 		pnMenu.setBounds(0, 60, 1080, 122);
@@ -297,6 +299,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnInTK.addActionListener(this);
+		btnProfile.addActionListener(this);
 		updateYearCbo();
 	}
 	
@@ -478,6 +481,8 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		} else if(o.equals(btnLamMoi)) {
 			cbThongKe.setSelectedItem("Doanh thu");
 			cbDate.setSelectedItem("Ngày");
+		} else if(o.equals(btnProfile)) {
+			dialog_user.setVisible(true);
 		}
 	}
 }
