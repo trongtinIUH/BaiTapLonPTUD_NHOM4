@@ -11,6 +11,13 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+import dao.LoaiPhong_dao;
+import dao.PhieuDatPhong_dao;
+import dao.Phong_dao;
+import entity.LoaiPhong;
+import entity.PhieuDatPhong;
+import entity.Phong;
+
 
 public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	/**
@@ -23,8 +30,16 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private Dialog_ChuyenPhong dialog_ChuyenPhong = new Dialog_ChuyenPhong();
 	private Dialog_ThemDichVu dialog_ThemDichVu = new Dialog_ThemDichVu();
 	private Dialog_ThanhToan dialog_ThanhToan = new Dialog_ThanhToan();
+	private Phong_dao p_dao = new Phong_dao();
+	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private Phong p;
+	private LoaiPhong lp;
+	private PhieuDatPhong pdp = new PhieuDatPhong();
+	
+	
 
-	public Dialog_PhongDangSD() {
+	public Dialog_PhongDangSD(String maPhong) {
 		//kích thước giao diện
 		getContentPane().setBackground(Color.WHITE);
 		setSize(320, 410);
@@ -64,19 +79,23 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		
 		//các lbl góc phải---------------------------------------------------------------------
 		lblPhong_1 = new JLabel();
-		lblPhong_1.setText("105");
+		lblPhong_1.setText(maPhong);
 		lblPhong_1.setFont(new Font("Arial", Font.BOLD, 15));
 		lblPhong_1.setBounds(150, 10, 140, 30);
 		getContentPane().add(lblPhong_1);
 		
+		p = p_dao.getPhongTheoMaPhong(maPhong);
+		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+		pdp = pdp_dao.getPhieuDatPhongTheoMa(maPhong);
+		
 		lblLoai_1 = new JLabel();
-		lblLoai_1.setText("Thường");
+		lblLoai_1.setText(lp.getTenLoaiPhong());
 		lblLoai_1.setFont(new Font("Arial", Font.BOLD, 15));
 		lblLoai_1.setBounds(130, 50, 120, 30);
 		getContentPane().add(lblLoai_1);
 		
 		lblSoNguoi_1 = new JLabel();
-		lblSoNguoi_1.setText("7");
+		lblSoNguoi_1.setText(lp.getSucChua() + "");
 		lblSoNguoi_1.setFont(new Font("Arial", Font.BOLD, 15));
 		lblSoNguoi_1.setBounds(150, 90, 120, 30);
 		getContentPane().add(lblSoNguoi_1);
