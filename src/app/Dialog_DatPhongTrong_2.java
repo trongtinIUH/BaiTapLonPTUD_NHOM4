@@ -47,15 +47,15 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtSoNguoi;
 	private JButton btn_DatThemPhong;
-	private JComboBox<String> comboBox_TrangThai,comboBox_LoaiPhong;
-	
+
 	private JTable tblThemPhongMoi;
 	private DefaultTableModel model;
 	private String col[] = { "Mã Phòng", "Loại Phòng", "Số Người", "Đơn Giá", "Trạng Thái" };
 
 	private Dialog_DatThemPhongTrong dialog_DatThemPhongTrong = new Dialog_DatThemPhongTrong();
-	private Dialog_ThemDichVu dialog_ThemDichVu= new Dialog_ThemDichVu();
-	private JLabel lbl_TrangThai,lbl_Loai,lbl_sdtKH,lbl_TenKH,lbl_GioiTinh,lbl_GiaTien,lbl_SoNguoi,lbl_LoaiKhachHang;
+	private Dialog_ThemDichVu dialog_ThemDichVu = new Dialog_ThemDichVu();
+	private JLabel lbl_TrangThai, lbl_Loai, lbl_sdtKH, lbl_TenKH, lbl_GioiTinh, lbl_GiaTien, lbl_SoNguoi,
+			lbl_LoaiKhachHang;
 
 	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp) {
 		// màn
@@ -163,6 +163,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		lbl_GiaTien_1.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl_GiaTien_1.setBounds(550, 35, 200, 25);
 		panel_1.add(lbl_GiaTien_1);
+
 		lbl_TenKH_1 = new JLabel("Nguyễn Văn A");
 		lbl_TenKH_1.setFont(new Font("Arial", Font.ITALIC, 17));
 		lbl_TenKH_1.setBounds(165, 145, 180, 30);
@@ -173,7 +174,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		txtThemDV.setEditable(false);
 		txtThemDV.setText("bia, nước ngọt, bánh trung thu");
 		txtThemDV.setBackground(SystemColor.control);
-		txtThemDV.setBounds(175, 210, 450, 25);
+		txtThemDV.setBounds(175, 340, 600, 30);
 		panel_1.add(txtThemDV);
 
 		// các nút
@@ -182,13 +183,13 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		btn_DatPhong.setBackground(Color.GREEN);
 		btn_DatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatPhong.setBackground(new Color(33, 167, 38, 255));
-		btn_DatPhong.setBounds(20, 260, 300, 40);
+		btn_DatPhong.setBounds(20, 380, 200, 40);
 		panel_1.add(btn_DatPhong);
 
 		btn_QuayLai = new JButton("Quay Lại");
 		btn_QuayLai.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_QuayLai.setBackground(new Color(255, 83, 83, 255));
-		btn_QuayLai.setBounds(400, 260, 300, 40);
+		btn_QuayLai.setBounds(560, 380, 200, 40);
 		panel_1.add(btn_QuayLai);
 
 		btn_ThemDV = new JButton("Thêm DV");
@@ -213,19 +214,12 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		lbl_SoNguoi_1_2.setBounds(142, 45, 200, 25);
 		panel_1.add(lbl_SoNguoi_1_2);
 
-		comboBox_LoaiPhong = new JComboBox<String>();
-		comboBox_LoaiPhong.setModel(new DefaultComboBoxModel<String>(new String[] {"Phòng Vip", "Phòng Thường"}));
-		comboBox_LoaiPhong.setFont(new Font("Arial", Font.BOLD, 16));
-		comboBox_LoaiPhong.setBackground(Color.WHITE);
-		comboBox_LoaiPhong.setBounds(142, 35, 200, 25);
-		panel_1.add(comboBox_LoaiPhong);
-		
 		btn_DatThemPhong = new JButton("Đặt Thêm Phòng");
 		btn_DatThemPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatThemPhong.setBackground(Color.GREEN);
 		btn_DatThemPhong.setBounds(265, 380, 250, 40);
 		panel_1.add(btn_DatThemPhong);
-		
+
 		// bảng thêm phòng mới
 		model = new DefaultTableModel(col, 0);
 		tblThemPhongMoi = new JTable(model);
@@ -236,15 +230,13 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		panel_1.add(sp);
 		panel_1.setPreferredSize(new Dimension(800, 300));
 
-		//thêm sự kiện button
+		// thêm sự kiện button
 		btn_DatPhong.addActionListener(this);
 		btn_KiemTraSDT.addActionListener(this);
 		btn_QuayLai.addActionListener(this);
 		btn_ThemDV.addActionListener(this);
-
 		btn_DatThemPhong.addActionListener(this);
-		
-		
+
 	}
 
 	@Override
@@ -253,25 +245,5 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		if (o.equals(btn_QuayLai)) {
 			setVisible(false);
 		}
-
-		if(o.equals(btn_ThemDV)) {
-		dialog_ThemDichVu.setVisible(true);	
-		}
-		if(o.equals(btn_DatThemPhong)) {
-			dialog_DatThemPhongTrong.setVisible(true);	
-			}
-		if(o.equals(btn_DatPhong)) {
-			JOptionPane.showMessageDialog(this, "Đặt thành công, thời gian sử dụng bắt đầu ghi nhận !");
-			setVisible(false);
-			
-			
-			//đóng toàn bộ dialog ra ngoài màn hình chính
-	        Window[] windows = Window.getWindows();
-	        for (Window window : windows) {
-	            if (window instanceof JDialog) {
-	                window.dispose();
-	            }
-	        }
-			}
 	}
 }

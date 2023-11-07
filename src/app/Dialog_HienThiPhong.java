@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -27,6 +29,8 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private Phong p;
 	private LoaiPhong lp;
+	private JLabel lblSoNguoi;
+	private JTextField txtSoNguoi;
 
 	public Dialog_HienThiPhong(String maPhong) {
 		// kích thước
