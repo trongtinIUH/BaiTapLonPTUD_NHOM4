@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -64,9 +65,9 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	"Ngày lập hóa đơn", "Trạng thái", "Mã khuyến mãi", "Tổng tiền"};
 	private String colOrderDetail[] = {"Mã hóa đơn", "Mã phòng", "Số giờ hát"};
 	private String colServiceDetail[] = {"Mã hóa đơn", "Tên dịch vụ", "Đơn giá", "Số lượng"};
-	private JLabel lblTitle, lblProfile, lblMaHD, lblTenKH, lblMaNV, lblNgayLapHD, lblTrangThai,
+	private JLabel lblTitle, lblMaHD, lblTenKH, lblMaNV, lblNgayLapHD, lblTrangThai,
 	lblKhuyenMai, lblTongTien, lblTimKiem, lblKeyword;
-	private JButton btnXoa, btnSua, btnTimKiem, btnXuatDSHD;
+	private JButton btnXoa, btnSua, btnTimKiem, btnXuatDSHD, btnProfile;
 	private JComboBox<String> cbTrangThai, cbTimKiem;
 	private JTextField txtMaHD, txtTenKH, txtMaNV, txtKhuyenMai, txtTongTien, txtTimKiem;
 	private SqlDateModel modelNgaylap;
@@ -81,7 +82,10 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private ChiTietHoaDon_dao chitiethoadon_dao;
 	private SanPham_dao sanpham_dao;
 	private XSSFWorkbook wordbook;
+	private DecimalFormat df;
+	private Dialog_User dialog_user = new Dialog_User();
 	public GD_HoaDon() {
+		df = new DecimalFormat("#,###,### VNĐ");
 		hoadon_dao = new HoaDon_dao();
 		khachhang_dao = new KhachHang_dao();
 		phong_dao = new Phong_dao();
@@ -98,17 +102,17 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		pnNorth.setLayout(null);
 		lblTitle = new JLabel("Hóa Đơn");
 		lblTitle.setBounds(501, 15, 200, 30);
-		lblTitle.setForeground(Color.blue);
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 25));
 		pnNorth.add(lblTitle);
-		lblProfile = new JLabel("");
-		lblProfile.setBackground(new Color(255, 165, 0));
-		lblProfile.setIcon(new ImageIcon("icon\\icon_profile.png"));
-		lblProfile.setBounds(1020, 7, 45, 45);
+		btnProfile = new JButton();
+		btnProfile.setBackground(Color.decode("#B5E6FB"));
+		btnProfile.setBorderPainted(false);
+		btnProfile.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnProfile.setBounds(1020, 7, 45, 45);
 		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
 		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
-		lblProfile.setIcon(iconProfile);
-		pnNorth.add(lblProfile);
+		btnProfile.setIcon(iconProfile);
+		pnNorth.add(btnProfile);
 		add(pnNorth);
 		
 //		Styling Content
@@ -334,6 +338,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXuatDSHD.addActionListener(this);
 		loadOrderListData();
 		tableOrderList.addMouseListener(this);
+		btnProfile.addActionListener(this);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -347,6 +352,8 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 			sua();
 		} else if(obj.equals(btnXoa)) {
 			xoa();
+		} else if(obj.equals(btnProfile)) {
+			dialog_user.setVisible(true);
 		}
 	}
 	
@@ -602,10 +609,10 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 			hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(), 
 			hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", 
 			hd.getKhuyenMai().getMaKhuyenMai(),
-			hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
+			df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
 			chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
 			khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-			)
+			))
 			};
 			modelOrderList.addRow(row);
 		}
