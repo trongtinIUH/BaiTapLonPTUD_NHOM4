@@ -52,7 +52,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 	private Dialog_User dialog_user = new Dialog_User();
 	private Dialog_HienThiPhong dialog_htPhong;
-	private Dialog_PhongDangSD dialog_PhongDangSD = new Dialog_PhongDangSD();
+	private Dialog_PhongDangSD dialog_PhongDangSD;
 	Phong_dao p_dao = new Phong_dao();
 	LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private JButton btnPhong;
@@ -256,7 +256,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			}
 			i++;
 
-			btnPhong = new JButton("Phòng" + p.getMaPhong());
+			btnPhong = new JButton("Phòng " + p.getMaPhong());
 			btnPhongList.add(btnPhong);
 			LoaiPhong lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
 			btnPhong.setBounds(x, y, w, h);
@@ -405,9 +405,24 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			JButton clickedButton = (JButton) o;
 			for (JButton btn : btnPhongList) {
 				if (btn == clickedButton) {
-					String maPhong = clickedButton.getText().replace("Phòng", "");
+					String maPhong = clickedButton.getText().replace("Phòng ", "");
 					Phong p = p_dao.getPhongTheoMaPhong(maPhong);
 					if (p.getTrangThai() == TrangThai.Trống) {
+						dialog_htPhong = new Dialog_HienThiPhong(maPhong);
+						dialog_htPhong.setVisible(true);
+						break;
+					}
+//					if (p.getTrangThai() == TrangThai.Chờ) {
+//						dialog_htPhong = new Dialog_HienThiPhong(maPhong);
+//						dialog_htPhong.setVisible(true);
+//						break;
+//					}
+					if (p.getTrangThai() == TrangThai.Đang_sử_dụng) {
+						dialog_PhongDangSD = new Dialog_PhongDangSD(maPhong);
+						dialog_PhongDangSD.setVisible(true);
+						break;
+					}
+					if (p.getTrangThai() == TrangThai.Đang_sửa_chữa) {
 						dialog_htPhong = new Dialog_HienThiPhong(maPhong);
 						dialog_htPhong.setVisible(true);
 						break;
