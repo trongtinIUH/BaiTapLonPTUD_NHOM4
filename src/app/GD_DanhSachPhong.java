@@ -475,7 +475,6 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			LoaiPhong lp = new LoaiPhong(maLP, tenLoaiPhong, sucChua, donGia);
 			Phong p = new Phong(maP, lp, trangThai);
 			lp_dao.addLoaiPhong(lp);
-<<<<<<< HEAD
 			if(p_dao.updatePhong(p, generateRandomCode())) {
 				if(txtMa.getText().trim() != model.getValueAt(table.getSelectedRow(), 1).toString()){
 					JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
@@ -487,13 +486,6 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 				}
 			}else {
 				JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
-=======
-			if (p_dao.updatePhong(p, generateRandomCode())) {
-				clearTable();
-				loadData();
-				xoaTrang();
-				JOptionPane.showMessageDialog(this, "Sửa thành công!");
->>>>>>> b7ecccf967bbff76389e778ae3a0ecf9ce0a89c3
 			}
 		}
 	}
@@ -620,19 +612,10 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			tim();
 		} else if (obj.equals(btnXuatExcel)) {
 			xuatExcel();
-<<<<<<< HEAD
 		}else if(obj.equals(cbLau)) {
 			loadMa();
 		}else if(obj.equals(cbSoPhong)) {
 			loadMa();
 		}
-=======
-		} 
-//		else if(obj.equals(cbLau)) {
-//			loadMa();
-//		} else if(obj.equals(cbSoPhong)) {
-//			loadMa();
-//		}
->>>>>>> b7ecccf967bbff76389e778ae3a0ecf9ce0a89c3
 	}
 }
