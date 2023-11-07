@@ -300,6 +300,8 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		btnTimKiem.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnXuatExcel.addActionListener(this);
+		cbLau.addActionListener(this);
+		cbSoPhong.addActionListener(this);
 		loadData();
 		table.addMouseListener(this);
 	}
@@ -446,7 +448,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 				clearTable();
 				loadData();
 				JOptionPane.showMessageDialog(this, "Xóa thành công!!");
-				
+
 			}
 		}
 	}
@@ -474,7 +476,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			LoaiPhong lp = new LoaiPhong(maLP, tenLoaiPhong, sucChua, donGia);
 			Phong p = new Phong(maP, lp, trangThai);
 			lp_dao.addLoaiPhong(lp);
-			if(p_dao.updatePhong(p, generateRandomCode())) {
+			if (p_dao.updatePhong(p, generateRandomCode())) {
 				clearTable();
 				loadData();
 				xoaTrang();
@@ -605,6 +607,11 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			tim();
 		} else if (obj.equals(btnXuatExcel)) {
 			xuatExcel();
-		}
+		} 
+//		else if(obj.equals(cbLau)) {
+//			loadMa();
+//		} else if(obj.equals(cbSoPhong)) {
+//			loadMa();
+//		}
 	}
 }
