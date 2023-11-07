@@ -18,6 +18,11 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import dao.SanPham_dao;
+import entity.NhanVien;
+import entity.SanPham;
+
 import javax.swing.JTextField;
 import java.awt.SystemColor;
 import java.awt.Window;
@@ -48,7 +53,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 	private JLabel lblTongTien;
 	private JTextField txtTongTien;
 
-
+	private SanPham_dao sp_dao;
 
 
 
@@ -246,24 +251,30 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 			btn_Huy.addActionListener(this);
 			btn_LamMoi.addActionListener(this);
 			btnTimKiem.addActionListener(this);
-			
+			 loadData();
 	}
+	public void loadData() {
+		sp_dao = new SanPham_dao();
+		for (SanPham x : sp_dao.getallSp()) {
+			Object[] row = { x.getMaSanPham(), x.getTenSanPham(), x.getSoLuongTon(), x.getDonGia()};
+			model_Trai.addRow(row);
 
-
-	
-	
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		 if(o.equals(btn_Huy)) {
-		        Window[] windows = Window.getWindows();
-		        for (Window window : windows) {
-		            if (window instanceof JDialog) {
-		                window.dispose();
-		            }
-		        }
-		    }
+			 setVisible(false);
+		 }
+//		        Window[] windows = Window.getWindows();
+//		        for (Window window : windows) {
+//		            if (window instanceof JDialog) {
+//		                window.dispose();
+//		            }
+//		        }
+//		    }
 		if(o.equals(btn_DongY)) {
 			
 		}

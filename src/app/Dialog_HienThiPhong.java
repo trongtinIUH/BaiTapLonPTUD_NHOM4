@@ -2,12 +2,10 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
-
 import javax.swing.JButton;
 import dao.Phong_dao;
 import entity.LoaiPhong;
@@ -34,7 +32,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		// kích thước
 		// dialog--------------*****************************************************************
 		getContentPane().setBackground(Color.WHITE);
-		setSize(300, 290);
+		setSize(300, 340);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 
@@ -72,6 +70,8 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		btnDatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btnDatPhong.setBackground(new Color(33, 167, 38, 255));
 		btnDatPhong.setBounds(40, 210, 200, 35);
+		btnDatPhong.setBackground(new Color(33,167,38,255));
+		btnDatPhong.setBounds(40, 250, 200, 40);
 		btnDatPhong.setBorderPainted(false);
 		getContentPane().add(btnDatPhong);
 
@@ -105,6 +105,19 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		lblgia_1.setBounds(130, 170, 120, 30);
 		getContentPane().add(lblgia_1);
 		// add sự kiện
+		
+		lblSoNguoi = new JLabel("Số người:");
+		lblSoNguoi.setFont(new Font("Arial", Font.BOLD, 18));
+		lblSoNguoi.setBounds(20, 210, 90, 30);
+		getContentPane().add(lblSoNguoi);
+		
+		txtSoNguoi = new JTextField();
+		txtSoNguoi.setText("7");
+		txtSoNguoi.setFont(new Font("Arial", Font.BOLD, 18));
+		txtSoNguoi.setBounds(130, 210, 80, 30);
+		getContentPane().add(txtSoNguoi);
+		txtSoNguoi.setColumns(10);
+		//add sự kiện
 		btnDatPhong.addActionListener(this);
 	}
 

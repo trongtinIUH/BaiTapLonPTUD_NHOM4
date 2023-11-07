@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -61,6 +62,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	/**
 	 * Create the panel.
 	 */
+	
 	public GD_DatPhong() {
 		this.setSize(1080, 730);
 		setLayout(null);
@@ -394,6 +396,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		// TODO Auto-generated method stub
 
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

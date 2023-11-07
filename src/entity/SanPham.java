@@ -40,6 +40,13 @@ public class SanPham implements Serializable {
 		this.maSanPham = maSanPham;
 	}
 	
+	public SanPham(String maSanPham, String tenSanPham, int soLuongTon, double donGia) {
+		super();
+		this.maSanPham = maSanPham;
+		this.tenSanPham = tenSanPham;
+		this.donGia = donGia;
+		this.soLuongTon = soLuongTon;
+	}
 	public String getMaSanPham() {
 		return maSanPham;
 	}
