@@ -114,7 +114,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 		JLabel lblLoiPhng = new JLabel("Loại Phòng");
 		lblLoiPhng.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblLoiPhng.setBounds(10, 60, 100, 25);
+		lblLoiPhng.setBounds(10, 60, 150, 25);
 		panel_2.add(lblLoiPhng);
 
 		comboBox_LoaiPhong = new JComboBox<String>();
@@ -191,12 +191,12 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 		// Tạo JPanel bên ngoài với kích thước cố định
 		outerPanel = new JPanel();
-		outerPanel.setPreferredSize(new Dimension(1080, 705));
+		outerPanel.setPreferredSize(new Dimension(1040, calculateSize()));
 		outerPanel.setLayout(null);
 
 		JPanel panel_ChuaPhong = new JPanel();
+		panel_ChuaPhong.setBounds(0, 0, 1059, calculateSize());
 		panel_ChuaPhong.setBackground(new Color(244, 242, 255, 255));
-		panel_ChuaPhong.setBounds(0, 0, 1080, 700);
 		outerPanel.add(panel_ChuaPhong);
 		panel_ChuaPhong.setLayout(null);
 
@@ -320,39 +320,52 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.WHITE);
-		panel_4.setBounds(0, 663, 1080, 67);
+		panel_4.setBounds(0, 690, 1080, 40);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 		// lbl & icon phòng trống
 		lbl_iconPhongTrong = new JLabel("Phòng Trống");
 		lbl_iconPhongTrong.setIcon(resizedIcon_phongtrong4);
 		lbl_iconPhongTrong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbl_iconPhongTrong.setBounds(15, 5, 140, 35);
+		lbl_iconPhongTrong.setBounds(15, 0, 140, 35);
 		panel_4.add(lbl_iconPhongTrong);
 		// lbl & icon phòng chờ
 		lbl_iconPhongCho = new JLabel("Phòng Chờ");
 		lbl_iconPhongCho.setIcon(resizedIcon_phongcho4);
 		lbl_iconPhongCho.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbl_iconPhongCho.setBounds(180, 5, 140, 35);
+		lbl_iconPhongCho.setBounds(180, 0, 140, 35);
 		panel_4.add(lbl_iconPhongCho);
 		// lbl & icon phòng đang sử dụng
 		JLabel lbl_iconPhongSD = new JLabel("Phòng đang sử dụng");
 		lbl_iconPhongSD.setIcon(resizedIcon_phongsd4);
 		lbl_iconPhongSD.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbl_iconPhongSD.setBounds(340, 5, 200, 35);
+		lbl_iconPhongSD.setBounds(340, 0, 200, 35);
 		panel_4.add(lbl_iconPhongSD);
 		// lbl & icon phòng sửa chữa
 		lbl_iconPhongsuaChua = new JLabel("Phòng sửa chửa");
 		lbl_iconPhongsuaChua.setIcon(resizedIcon_phongsua4);
 		lbl_iconPhongsuaChua.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbl_iconPhongsuaChua.setBounds(560, 5, 170, 35);
+		lbl_iconPhongsuaChua.setBounds(560, 0, 170, 35);
 		panel_4.add(lbl_iconPhongsuaChua);
 		// lbl & icon phòng VIP
 		lbl_iconPhongVIP = new JLabel("Phòng VIP");
 		lbl_iconPhongVIP.setIcon(resizedIcon_phongvip);
 		lbl_iconPhongVIP.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lbl_iconPhongVIP.setBounds(850, 5, 140, 35);
+		lbl_iconPhongVIP.setBounds(850, 0, 140, 35);
 		panel_4.add(lbl_iconPhongVIP);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(SystemColor.activeCaption);
+		panel_5.setBounds(0, 663, 1080, 27);
+		panel.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel lblPhieuDatPhong = new JLabel("Quay lại ");
+		lblPhieuDatPhong.setForeground(Color.RED);
+		lblPhieuDatPhong.setBackground(Color.WHITE);
+		lblPhieuDatPhong.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblPhieuDatPhong.setBounds(760, 3, 200, 20);
+		panel_5.add(lblPhieuDatPhong);
 
 		// thêm sự kiện
 		btnUser.addActionListener(this);
@@ -364,6 +377,17 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		// add sự kiện cho nút
 		for (JButton btn : btnPhongList) {
 			btn.addActionListener(this);
+		}
+	}
+	
+	private int calculateSize() {
+		int i = p_dao.getallPhongs().size();
+		if(i <= 15) {
+			return 498;
+		} else if(i <= 20) {
+			return 540;
+		} else {
+			return 540 + (((i - 1) / 5) - 3) * 130 ;
 		}
 	}
 
