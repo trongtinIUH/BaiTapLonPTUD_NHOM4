@@ -291,4 +291,36 @@ public class Phong_dao {
 		}
 		return n > 0;
 	}
+	
+	//tín code
+	public ArrayList<Phong> laydsPhongMoi() {
+	    ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+	    try {
+	        ConnectDB.getInstance();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    Connection con = ConnectDB.getConnection();
+	    try {
+	        String sql = "SELECT Phong.maPhong, LoaiPhong.tenLoaiPhong, LoaiPhong.sucChua, LoaiPhong.donGiaTheoGio, Phong.trangThai " +
+	                "FROM Phong " +
+	                "JOIN LoaiPhong ON Phong.maLoaiPhong = LoaiPhong.maLoaiPhong " +
+	                "WHERE Phong.trangThai = N'Trống'";
+	        Statement stm = con.createStatement();
+	        ResultSet rs = stm.executeQuery(sql);
+	        while (rs.next()) {
+	            Phong phong = new Phong();
+	            phong.setMaPhong(rs.getString(1));
+	            phong.setTenLoaiPhong(rs.getString(2));
+	            phong.setSucChua(rs.getInt(3));
+	            phong.setDonGiaTheoGio(rs.getDouble(4));
+	            phong.setTrangThai(Enum_TrangThai.valueOf(rs.getString(5)));
+	            dsPhong.add(phong);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return dsPhong;
+	}
+
 }

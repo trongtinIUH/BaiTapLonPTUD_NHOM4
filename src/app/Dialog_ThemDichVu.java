@@ -20,7 +20,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.SanPham_dao;
+import entity.LoaiPhong;
 import entity.NhanVien;
+import entity.Phong;
 import entity.SanPham;
 
 import javax.swing.JTextField;
@@ -35,7 +37,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 	
 	private JPanel panel,panel_Phai,panel_Trai,panel_1,pn_dssp,pn_dssp_Phai;
 	private JLabel lblMaSanPham,lblSoLuong;
-	private JTextField txtMaSP,txtSoLuong,txtGiobatdauhat,txtPhong,txtKH,txtNV;
+	private JTextField txtMaSP,txtSoLuong,txtPhong,txtKH,txtNV;
 	private JButton btnTimKiem,btn_DongY,btn_Huy;
 
 
@@ -59,7 +61,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 
 
 
-	public Dialog_ThemDichVu() {
+	public Dialog_ThemDichVu(String hoten) {
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 500);
 		setLocationRelativeTo(null);
@@ -106,42 +108,31 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 		
 		JLabel lblPhong = new JLabel("Phòng");
 		lblPhong.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPhong.setBounds(140, 10, 50, 25);
+		lblPhong.setBounds(230, 10, 50, 25);
 		panel_Phai.add(lblPhong);
-		
-		JLabel lblMaSanPham_4 = new JLabel("Giờ bắt đầu hát");
-		lblMaSanPham_4.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblMaSanPham_4.setBounds(140, 50, 100, 25);
-		panel_Phai.add(lblMaSanPham_4);
 		
 		lblNV = new JLabel("NV");
 		lblNV.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNV.setBounds(5, 50, 20, 25);
 		panel_Phai.add(lblNV);
 		
-		txtKH = new JTextField();
-		txtKH.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtKH.setBounds(30, 10, 100, 25);
+		txtKH = new JTextField(hoten);
+		txtKH.setFont(new Font("Arial", Font.ITALIC, 14));
+		txtKH.setBounds(30, 10, 180, 25);
 		panel_Phai.add(txtKH);
 		txtKH.setColumns(20);
 		
 		txtNV = new JTextField();
-		txtNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtNV.setFont(new Font("Arial", Font.ITALIC, 14));
 		txtNV.setColumns(20);
-		txtNV.setBounds(30, 50, 100, 25);
+		txtNV.setBounds(30, 50, 180, 25);
 		panel_Phai.add(txtNV);
 		
 		txtPhong = new JTextField();
-		txtPhong.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		txtPhong.setColumns(20);
-		txtPhong.setBounds(214, 10, 171, 25);
+		txtPhong.setBounds(285, 10, 100, 25);
 		panel_Phai.add(txtPhong);
-		
-		txtGiobatdauhat = new JTextField();
-		txtGiobatdauhat.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtGiobatdauhat.setColumns(20);
-		txtGiobatdauhat.setBounds(250, 50, 135, 25);
-		panel_Phai.add(txtGiobatdauhat);
 		
 		
 		 pn_dssp_Phai = new JPanel();

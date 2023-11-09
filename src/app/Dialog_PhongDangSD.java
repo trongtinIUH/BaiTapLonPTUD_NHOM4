@@ -28,7 +28,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private JButton btnThemDV,btnChuyenPhong,btnThanhToan;
 
 	private Dialog_ChuyenPhong dialog_ChuyenPhong = new Dialog_ChuyenPhong();
-	private Dialog_ThemDichVu dialog_ThemDichVu = new Dialog_ThemDichVu();
+	private Dialog_ThemDichVu dialog_ThemDichVu;
 	private Dialog_ThanhToan dialog_ThanhToan = new Dialog_ThanhToan();
 	private Phong_dao p_dao = new Phong_dao();
 	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();

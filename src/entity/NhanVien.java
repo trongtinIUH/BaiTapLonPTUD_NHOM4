@@ -19,15 +19,18 @@ public class NhanVien implements Serializable {
 	private String chucVu;
 	private String anhDaiDien;
 
-	public NhanVien() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+
 	public NhanVien(String maNhanVien) {
 		super();
 		this.maNhanVien = maNhanVien;
 	}
 
+	public NhanVien(String maNhanVien, String hoTen, String chucVu) {
+		super();
+		this.maNhanVien = maNhanVien;
+		this.hoTen = hoTen;
+		this.chucVu = chucVu;
+	}
 	public NhanVien(String maNhanVien, String hoTen, String soDienThoai, boolean gioiTinh, Date ngaySinh, String chucVu,
 			String anhDaiDien) {
 		super();

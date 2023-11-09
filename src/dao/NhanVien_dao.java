@@ -175,4 +175,25 @@ public class NhanVien_dao {
 		}
 		return dsNhanVien;
 	}
+	// lấy tên nhân viên 
+	public NhanVien TimkiemMaNhanVien(String maNhanVien){
+		NhanVien nhanVien = null;
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "select * from NhanVien where maNhanVien = N'"+maNhanVien+"'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			if(rs.next()) {
+				String hoTen = rs.getString("hoTen");
+				String chucVu = rs.getString("chucVu");
+				nhanVien = new NhanVien(maNhanVien, hoTen, chucVu);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nhanVien;
+	}
+
+
 }

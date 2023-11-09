@@ -29,8 +29,6 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private Phong p;
 	private LoaiPhong lp;
-	private JLabel lblSoNguoi;
-	private JTextField txtSoNguoi;
 
 	public Dialog_HienThiPhong(String maPhong) {
 		// kích thước
@@ -108,19 +106,6 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		lblgia_1.setFont(new Font("Arial", Font.BOLD, 15));
 		lblgia_1.setBounds(130, 170, 120, 30);
 		getContentPane().add(lblgia_1);
-		// add sự kiện
-		
-		lblSoNguoi = new JLabel("Số người:");
-		lblSoNguoi.setFont(new Font("Arial", Font.BOLD, 18));
-		lblSoNguoi.setBounds(20, 210, 90, 30);
-		getContentPane().add(lblSoNguoi);
-		
-		txtSoNguoi = new JTextField();
-		txtSoNguoi.setText("7");
-		txtSoNguoi.setFont(new Font("Arial", Font.BOLD, 18));
-		txtSoNguoi.setBounds(130, 210, 80, 30);
-		getContentPane().add(txtSoNguoi);
-		txtSoNguoi.setColumns(10);
 		//add sự kiện
 		btnDatPhong.addActionListener(this);
 	}

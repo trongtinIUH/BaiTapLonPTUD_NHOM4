@@ -28,6 +28,8 @@ public class KhachHang implements Serializable {
 		this.soDienThoai = soDienThoai;
 		this.gioiTinh = gioiTinh;
 	}
+
+
 	public String getMaKhachHang() {
 		return maKhachHang;
 	}
