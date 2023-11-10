@@ -24,6 +24,8 @@ import javax.swing.UIManager;
 import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.Temp;
+
 import javax.swing.table.DefaultTableModel;
 
 
@@ -43,6 +45,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 	/**
 	 * 
 	 */
+//	private GD_TrangChu trangChu = new GD_TrangChu();
 	private static final long serialVersionUID = 1L;
 	private JTextField txtSDT;
 	private JButton btn_KiemTraSDT, btn_ThemDV, btn_QuayLai, btn_DatPhong;
@@ -55,7 +58,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 
 	private JTable tblThemPhongMoi;
 	private DefaultTableModel model;
-	private String col[] = { "Mã Phòng", "Loại Phòng", "Số người", "Đơn Giá", "Trạng Thái" };
+	private String col[] = { "STT", "Mã Phòng", "Loại Phòng", "Số người", "Đơn Giá"};
 
 	private Dialog_DatThemPhongTrong dialog_DatThemPhongTrong;
 	private Dialog_ThemDichVu dialog_ThemDichVu ;
@@ -198,13 +201,13 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		btn_DatPhong.setBackground(Color.GREEN);
 		btn_DatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatPhong.setBackground(new Color(33, 167, 38, 255));
-		btn_DatPhong.setBounds(10, 380, 160, 40);
+		btn_DatPhong.setBounds(10, 378, 160, 40);
 		panel_1.add(btn_DatPhong);
 
 		btn_QuayLai = new JButton("Quay Lại");
 		btn_QuayLai.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_QuayLai.setBackground(new Color(255, 83, 83, 255));
-		btn_QuayLai.setBounds(605, 380, 170, 40);
+		btn_QuayLai.setBounds(605, 378, 170, 40);
 		panel_1.add(btn_QuayLai);
 
 		btn_ThemDV = new JButton("Thêm DV");
@@ -216,7 +219,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		btn_KiemTraSDT = new JButton("Kiểm Tra");
 		btn_KiemTraSDT.setBackground(UIManager.getColor("Button.background"));
 		btn_KiemTraSDT.setFont(new Font("Arial", Font.BOLD, 17));
-		btn_KiemTraSDT.setBounds(480, 5, 200, 30);
+		btn_KiemTraSDT.setBounds(480, 5, 200, 32);
 		panel_2.add(btn_KiemTraSDT);
 
 		JLabel lbl_SoNguoi_1_1 = new JLabel(p.getTrangThai() + "");
@@ -232,7 +235,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		btn_DatThemPhong = new JButton("Đặt Thêm Phòng");
 		btn_DatThemPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatThemPhong.setBackground(new Color(109, 197, 112));
-		btn_DatThemPhong.setBounds(180, 380, 200, 40);
+		btn_DatThemPhong.setBounds(191, 378, 200, 40);
 		panel_1.add(btn_DatThemPhong);
 
 		// bảng thêm phòng mới
@@ -306,7 +309,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		btn_XoaPhongDat = new JButton("Xóa Phòng Đặt");
 		btn_XoaPhongDat.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_XoaPhongDat.setBackground(new Color(234,234,114,255));
-		btn_XoaPhongDat.setBounds(390, 380, 170, 40);
+		btn_XoaPhongDat.setBounds(417, 378, 170, 40);
 		panel_1.add(btn_XoaPhongDat);
 
 
@@ -322,11 +325,15 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		btn_XoaPhongDat.addActionListener(this);
 		radGioMacDinh.addActionListener(this);
 		radGioTuDo.addActionListener(this);
-
+//		loadDataPhong();
 	}
-	
 //	private void loadDataPhong() {
-//		for(Phong p : )
+//		int i = 0;
+//		for(Temp tmp: Dialog_HienThiPhong.tempList) {
+//			i++;
+//			Object[] row = {i, tmp.getMaPhong(), tmp.getLoaiPhong(), tmp.getSoNguoi(), tmp.getGia()};
+//			model.addRow(row);
+//		}
 //	}
 	
 	@Override
@@ -377,9 +384,6 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 				JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
 			}
 		}
-
-		
-		
 		
 		}
 	}

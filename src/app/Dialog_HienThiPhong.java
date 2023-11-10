@@ -2,6 +2,8 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,6 +15,7 @@ import javax.swing.JButton;
 import dao.Phong_dao;
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.Temp;
 import dao.LoaiPhong_dao;
 
 public class Dialog_HienThiPhong extends JDialog implements ActionListener {
@@ -75,7 +78,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		btnDatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btnDatPhong.setBackground(new Color(33, 167, 38, 255));
 		btnDatPhong.setBounds(40, 210, 200, 35);
-		btnDatPhong.setBackground(new Color(33,167,38,255));
+		btnDatPhong.setBackground(new Color(33, 167, 38, 255));
 		btnDatPhong.setBounds(40, 250, 200, 40);
 		btnDatPhong.setBorderPainted(false);
 		getContentPane().add(btnDatPhong);
@@ -109,18 +112,18 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		lblgia_1.setFont(new Font("Arial", Font.BOLD, 15));
 		lblgia_1.setBounds(130, 170, 120, 30);
 		getContentPane().add(lblgia_1);
-		
+
 		lblSoNguoi = new JLabel("Số người");
 		lblSoNguoi.setFont(new Font("Arial", Font.BOLD, 18));
 		lblSoNguoi.setBounds(20, 210, 100, 30);
 		getContentPane().add(lblSoNguoi);
-		
+
 		txtSoNguoi = new JTextField();
 		txtSoNguoi.setFont(new Font("Arial", Font.BOLD, 15));
 		txtSoNguoi.setBounds(130, 210, 100, 30);
 		getContentPane().add(txtSoNguoi);
 		txtSoNguoi.setColumns(10);
-		//add sự kiện
+		// add sự kiện
 		btnDatPhong.addActionListener(this);
 	}
 
@@ -128,12 +131,19 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnDatPhong)) {
-			dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()));
-			if(Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
-				dispose();
-				dialog_DatPhongTrong_2.setVisible(true);
+			if (txtSoNguoi.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát!");
 			} else {
-				JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
+				dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp,
+						Integer.parseInt(txtSoNguoi.getText()));
+				if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
+					Temp tmp = new Temp(p.getMaPhong(), lp.getTenLoaiPhong(), p.getTrangThai(), lp.getDonGiaTheoGio(),
+							Integer.parseInt(txtSoNguoi.getText()));
+					dispose();
+					dialog_DatPhongTrong_2.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
+				}
 			}
 		}
 

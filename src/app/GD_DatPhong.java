@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -30,6 +31,7 @@ import dao.Phong_dao;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.Temp;
 import dao.LoaiPhong_dao;
 
 public class GD_DatPhong extends JPanel implements ActionListener, MouseListener {
@@ -58,6 +60,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private JButton btnPhong;
 	ArrayList<JButton> btnPhongList = new ArrayList<>();
+	private JButton btnBackToBook;
 
 	/**
 	 * Create the panel.
@@ -360,12 +363,12 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 		
-		JLabel lblPhieuDatPhong = new JLabel("Quay lại ");
-		lblPhieuDatPhong.setForeground(Color.RED);
-		lblPhieuDatPhong.setBackground(Color.WHITE);
-		lblPhieuDatPhong.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblPhieuDatPhong.setBounds(760, 3, 200, 20);
-		panel_5.add(lblPhieuDatPhong);
+		btnBackToBook = new JButton("Quay về đặt phòng");
+		btnBackToBook.setBorderPainted(false);
+		btnBackToBook.setForeground(Color.RED);
+		btnBackToBook.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		btnBackToBook.setBounds(760, 3, 200, 20);
+		panel_5.add(btnBackToBook);
 
 		// thêm sự kiện
 		btnUser.addActionListener(this);
@@ -378,6 +381,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		for (JButton btn : btnPhongList) {
 			btn.addActionListener(this);
 		}
+		btnBackToBook.addActionListener(this);
 	}
 	
 	private int calculateSize() {
@@ -427,6 +431,9 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		Object o = e.getSource();
 		if (o.equals(btnUser)) {
 			dialog_user.setVisible(true);
+		}
+		if(o.equals(btnBackToBook)) {
+			
 		}
 		if (o instanceof JButton) {
 			JButton clickedButton = (JButton) o;

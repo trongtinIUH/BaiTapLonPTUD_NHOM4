@@ -129,6 +129,16 @@ CREATE TABLE ChiTietDichVu (
 )
 go
 
+CREATE TABLE Temp (
+    maPhong varchar(20) not null,
+    loaiPhong varchar(20) not null,
+	primary key(maPhong),
+    gia float not null,
+	soNguoi int not null
+)
+
+go
+
 
 --Nhân viên
 insert into NhanVien values('2001001',N'Trần Văn Sơn', '0933900911', 1, '1995-2-5 08:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\son2001001.jpg')
