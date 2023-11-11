@@ -27,7 +27,7 @@ public class ChiTietHoaDon_dao {
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
-				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getDouble(3)));
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
 			}
 			
 		} catch (Exception e) {
@@ -50,7 +50,30 @@ public class ChiTietHoaDon_dao {
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
-				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getDouble(3)));
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsChiTietHoaDon;
+	}
+	
+	public ArrayList<ChiTietHoaDon> getChiTietHoaDonTheoMaPhong(String maPhong) {
+		ArrayList<ChiTietHoaDon> dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from ChiTietHoaDon where maPhong='"+ maPhong +"'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
 			}
 			
 		} catch (Exception e) {
@@ -126,10 +149,12 @@ public class ChiTietHoaDon_dao {
 		PreparedStatement stmt = null;
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("insert into ChiTietHoaDon values(?,?,?)");
+			stmt = con.prepareStatement("insert into ChiTietHoaDon values(?,?,?,?,?)");
 			stmt.setString(1, cthd.getHoaDon().getMaHoaDon());
 			stmt.setString(2, cthd.getPhong().getMaPhong());
-			stmt.setDouble(3, cthd.getSoGioHat());
+			stmt.setTimestamp(3, cthd.getGioNhanPhong());
+			stmt.setTimestamp(4, cthd.getGioTraPhong());
+			stmt.setDouble(5, cthd.getSoGioHat());
 			n = stmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
@@ -156,9 +181,43 @@ public class ChiTietHoaDon_dao {
 		PreparedStatement stmt = null;
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("update ChiTietHoaDon set soGioHat=? where maPhong=?");
-			stmt.setDouble(1, cthd.getSoGioHat());
-			stmt.setString(2, cthd.getPhong().getMaPhong());
+			stmt = con.prepareStatement("update ChiTietHoaDon set gioNhanPhong=?, gioTraPhong=? soGioHat=? where maPhong=? and maHoaDon=?");
+			stmt.setTimestamp(1, cthd.getGioNhanPhong());
+			stmt.setTimestamp(2, cthd.getGioTraPhong());
+			stmt.setDouble(3, cthd.getSoGioHat());
+			stmt.setString(4, cthd.getPhong().getMaPhong());
+			stmt.setString(5, cthd.getHoaDon().getMaHoaDon());
+			n = stmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+
+		}
+		return n > 0;
+	}
+	
+	public boolean UpdateChiTietHD_ChuyenPhong(ChiTietHoaDon cthd) {
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n = 0;
+		try {
+			stmt = con.prepareStatement("update ChiTietHoaDon set gioTraPhong=?, soGioHat=? where maPhong=? and maHoaDon=?");
+			stmt.setTimestamp(1, cthd.getGioTraPhong());
+			stmt.setDouble(2, cthd.getSoGioHat());
+			stmt.setString(3, cthd.getPhong().getMaPhong());
+			stmt.setString(4, cthd.getHoaDon().getMaHoaDon());
 			n = stmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception

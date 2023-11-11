@@ -102,6 +102,75 @@ public class LoaiPhong_dao {
 		return dsLoaiPhong;
 	}
 	
+	public String getTenLoaiPhongTheoMaLoaiPhong(String maLoaiPhong) {
+		String tenLoaiPhong = "";
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select tenLoaiPhong from LoaiPhong where maLoaiPhong = '" + maLoaiPhong + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				tenLoaiPhong = rs.getString("tenLoaiPhong");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return tenLoaiPhong;
+	}
+	
+	public int getSucChuaTheoMaLoaiPhong(String maLoaiPhong) {
+		int sucChua = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select sucChua from LoaiPhong where maLoaiPhong = '" + maLoaiPhong + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				sucChua = rs.getInt("sucChua");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return sucChua;
+	}
+	
+	public double getDonGiaTheoMaLoaiPhong(String maLoaiPhong) {
+		double donGia = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select donGiaTheoGio from LoaiPhong where maLoaiPhong = '" + maLoaiPhong + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				donGia = rs.getDouble("donGiaTheoGio");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return donGia;
+	}
+	
 	public boolean addLoaiPhong(LoaiPhong loaiPh) {
 		try {
 			ConnectDB.getInstance();

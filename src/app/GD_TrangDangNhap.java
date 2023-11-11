@@ -34,6 +34,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	private JLabel lblKaeaoke;
 	private DangNhap_dao dangNhap_dao= new DangNhap_dao();
 	private GD_TrangChu gd_TrangChu = new GD_TrangChu();
+	private String username;
 
 	public GD_TrangDangNhap() {
 		setTitle("Đăng Nhập KARAOKE 4T");
@@ -130,6 +131,8 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
                 }
             }
         });
+        
+//        DataManager.setUserName(txtUsername.getText());
 		
         btnLogin.addActionListener(this);
         btnQuenMatKhau.addActionListener(this);
@@ -144,10 +147,10 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		DataManager.setUserName(txtUsername.getText());
 		Object o = e.getSource();
 		if (o.equals(btnLogin)) {
-			String username = txtUsername.getText();
+			username = txtUsername.getText();
 			char[] mk = ((JPasswordField) txtPassword).getPassword();
 			String mkstr=new String(mk);
 			if(dangNhap_dao.Timkiem(username, mkstr)==true){
@@ -164,9 +167,6 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 			quenmk.setVisible(true);	
 			dispose();
 		}
-
-	
-		
 	}	
 }
 

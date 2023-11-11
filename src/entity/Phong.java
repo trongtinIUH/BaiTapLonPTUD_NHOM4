@@ -34,6 +34,12 @@ public class Phong extends LoaiPhong implements Serializable {
 		this.loaiPhong = loaiPhong;
 		this.trangThai = trangThai;
 	}
+	
+	public Phong(String maPhong, Enum_TrangThai trangThai) {
+		super();
+		this.maPhong = maPhong;
+		this.trangThai = trangThai;
+	}
 
 	public Phong(String maPhong) {
 		this.maPhong = maPhong;

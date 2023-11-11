@@ -38,6 +38,29 @@ public class HoaDon_dao {
 		return dsHoaDonDatPhong;
 	}
 	
+	public HoaDonDatPhong getHoaDonTheoMaHoaDon(String maHD) {
+		HoaDonDatPhong hd = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from HoaDonDatPhong where maHoaDon = '" + maHD + "'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				hd = new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
+				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return hd;
+	}
+	
 	public ArrayList<HoaDonDatPhong> getHoaDonDatPhongTheoMaHD(String maHD) {
 		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
 		try {
@@ -182,6 +205,74 @@ public class HoaDon_dao {
 		}
 		return n > 0;
 	}
+	
+	public boolean updateHoaDon2(HoaDonDatPhong hd) {
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement psmt = null;
+		int n = 0;
+		try {
+			psmt = con.prepareStatement("update HoaDonDatPhong set maKhachHang=?, maNhanVien=?, ngayLapHoaDon=?, trangThai=?, tienKhachDua=? where maHoaDon=?");
+			psmt.setString(1, hd.getKhachHang().getMaKhachHang());
+			psmt.setString(2, hd.getNhanVien().getMaNhanVien());
+			psmt.setDate(3, (java.sql.Date) hd.getNgayLapHoaDon());
+			psmt.setBoolean(4, hd.isTrangThai());
+			psmt.setDouble(5, hd.getTienKhachDua());
+			psmt.setString(6, hd.getMaHoaDon());
+			n = psmt.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			try {
+				psmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		return n > 0;
+	}
+	
+	public boolean updateHoaDon3(HoaDonDatPhong hd) {
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement psmt = null;
+		int n = 0;
+		try {
+			psmt = con.prepareStatement("update HoaDonDatPhong set maKhachHang=?, maNhanVien=?, ngayLapHoaDon=?, trangThai=?, maKhuyenMai=?, tienKhachDua=? where maHoaDon=?");
+			psmt.setString(1, hd.getKhachHang().getMaKhachHang());
+			psmt.setString(2, hd.getNhanVien().getMaNhanVien());
+			psmt.setDate(3, (java.sql.Date) hd.getNgayLapHoaDon());
+			psmt.setBoolean(4, hd.isTrangThai());
+			psmt.setString(5, hd.getKhuyenMai().getMaKhuyenMai());
+			psmt.setDouble(6, hd.getTienKhachDua());
+			psmt.setString(7, hd.getMaHoaDon());
+			n = psmt.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			try {
+				psmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		return n > 0;
+	}
+	
 	public boolean deleteHoaDon(String maHD) {
 		try {
 			ConnectDB.getInstance();

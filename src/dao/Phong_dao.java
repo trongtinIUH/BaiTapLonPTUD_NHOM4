@@ -85,6 +85,32 @@ public class Phong_dao {
 			return null;
 		return dsPhong;
 	}
+	
+	public ArrayList<Phong> getPhongTheoTrangThai(String trangThai) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong where trangThai = N'" + trangThai + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(
+						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		if (dsPhong.isEmpty())
+			return null;
+		return dsPhong;
+	}
 
 	public double tinhTongTienPhongTheoMaHoaDon(String maHD) {
 		double tongTien = 0;
@@ -246,11 +272,9 @@ public class Phong_dao {
 		PreparedStatement psmt = null;
 		int n = 0;
 		try {
-			psmt = con.prepareStatement("update Phong set maLoaiPhong=?, trangThai=? where maPhong=?");
-//			psmt.setString(1, maPhongMoi);
-			psmt.setString(1, ph.getLoaiPhong().getMaLoaiPhong());
-			psmt.setString(2, ph.getTrangThai().toString());
-			psmt.setString(3, ph.getMaPhong());
+			psmt = con.prepareStatement("update Phong set trangThai=? where maPhong=?");
+			psmt.setString(1, ph.getTrangThai().toString());
+			psmt.setString(2, ph.getMaPhong());
 			n = psmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception

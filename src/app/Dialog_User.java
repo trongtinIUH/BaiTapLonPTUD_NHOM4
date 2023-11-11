@@ -2,6 +2,9 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JDialog;
 import java.awt.Color;
@@ -15,25 +18,46 @@ import java.awt.Image;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.SystemColor;
 import java.awt.Window;
 
 import javax.swing.UIManager;
 
+import dao.NhanVien_dao;
+import entity.NhanVien;
+
 public class Dialog_User extends JDialog implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txt_HoTen;
 	private JButton btnThot;
-	private Container btnChiTietNV;
+	private JButton btnChiTietNV;
 	private JLabel lbl_HoTen;
 	private JLabel lbl_ChucVu;
 	private JTextField txtQunL;
 	private JLabel hinhNV;
 	private JLabel lbl_nen;
+	private NhanVien_dao nv_dao;
+//	private GD_TrangDangNhap gd_dangNhap = new GD_TrangDangNhap(); 
 	public Dialog_User() {
 		setTitle("User");
 		setSize(400, 300);
 		setLocationRelativeTo(null);
 		//setResizable(false);
+		nv_dao = new NhanVien_dao();
+		
+		this.addWindowListener(new WindowAdapter() {
+		    public void windowOpened(WindowEvent e) {
+				NhanVien nv = null;
+				nv = nv_dao.getNhanVienTheoMa(DataManager.getUserName());
+				txt_HoTen.setText(nv.getHoTen());
+				txtQunL.setText(nv.getChucVu());
+		    }
+		});
 		
 	      ImageIcon phongtrong = new ImageIcon("image\\nv1.jpg");
 	      Image originalImage_phongtrong = phongtrong.getImage();
@@ -73,7 +97,9 @@ public class Dialog_User extends JDialog implements ActionListener{
 		txt_HoTen.setBackground(SystemColor.inactiveCaptionBorder);
 		txt_HoTen.setBounds(210, 50, 160, 30);
 		txt_HoTen.setFont(new Font("Arial", Font.PLAIN, 14));
-		txt_HoTen.setText("Trần Trọng Tín");
+
+
+		txt_HoTen.setEditable(false);
 		getContentPane().add(txt_HoTen);
 		txt_HoTen.setColumns(10);
 		
@@ -90,7 +116,8 @@ public class Dialog_User extends JDialog implements ActionListener{
 		txtQunL = new JTextField();
 		txtQunL.setBackground(SystemColor.inactiveCaptionBorder);
 		txtQunL.setBounds(210, 100, 160, 30);
-		txtQunL.setText("Nhân viên quản lý");
+//		txtQunL.setText("Nhân viên quản lý");
+		txtQunL.setEditable(false);
 		txtQunL.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtQunL.setColumns(10);
 		getContentPane().add(txtQunL);
@@ -101,6 +128,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 		getContentPane().add(lbl_nen);
 		
 		btnThot.addActionListener(this);
+		btnChiTietNV.addActionListener(this);
 	}
 
 	@Override
@@ -113,7 +141,9 @@ public class Dialog_User extends JDialog implements ActionListener{
 			}
 			GD_TrangDangNhap dangNhap = new GD_TrangDangNhap();
 			dangNhap.setVisible(true);
-		}
-	}}	
+		}else if(o.equals(btnChiTietNV)) {
 	
+		}
+	}
+}
 

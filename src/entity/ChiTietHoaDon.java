@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class ChiTietHoaDon implements Serializable {
 
@@ -10,15 +11,19 @@ public class ChiTietHoaDon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private HoaDonDatPhong hoaDon;
 	private Phong phong;
+	private Timestamp gioNhanPhong;
+	private Timestamp gioTraPhong;
 	private double soGioHat;
 	public ChiTietHoaDon() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public ChiTietHoaDon(HoaDonDatPhong hoaDon, Phong phong, double soGioHat) {
+	public ChiTietHoaDon(HoaDonDatPhong hoaDon, Phong phong,  Timestamp gioNhanPhong, Timestamp gioTraPhong, double soGioHat) {
 		super();
 		this.hoaDon = hoaDon;
 		this.phong = phong;
+		this.gioNhanPhong = gioNhanPhong;
+		this.gioTraPhong = gioTraPhong;
 		this.soGioHat = soGioHat;
 	}
 	public HoaDonDatPhong getHoaDon() {
@@ -41,6 +46,19 @@ public class ChiTietHoaDon implements Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	
+	public Timestamp getGioNhanPhong() {
+		return gioNhanPhong;
+	}
+	public void setGioNhanPhong(Timestamp gioNhanPhong) {
+		this.gioNhanPhong = gioNhanPhong;
+	}
+	public Timestamp getGioTraPhong() {
+		return gioTraPhong;
+	}
+	public void setGioTraPhong(Timestamp gioTraPhong) {
+		this.gioTraPhong = gioTraPhong;
 	}
 	@Override
 	public String toString() {
