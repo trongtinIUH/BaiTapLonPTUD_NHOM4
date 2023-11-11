@@ -204,7 +204,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		outerPanel.setPreferredSize(new Dimension(1040, calculateSize()));
 		outerPanel.setLayout(null);
 
-		JPanel panel_ChuaPhong = new JPanel();
+		panel_ChuaPhong = new JPanel();
 		panel_ChuaPhong.setBounds(0, 0, 1059, calculateSize());
 		panel_ChuaPhong.setBackground(new Color(244, 242, 255, 255));
 		outerPanel.add(panel_ChuaPhong);

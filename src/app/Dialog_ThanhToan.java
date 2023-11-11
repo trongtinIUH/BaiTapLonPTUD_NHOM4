@@ -268,7 +268,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd.getGioNhanPhong()));
 			soGioHat_Item = gioHT - gioNhanPhong;
 			soPhutHat_Item = phutHT - phutNhanPhong;
-			thoiGian_Item = soGioHat_Item + soGioHat_Item/60;
+			thoiGian_Item = soGioHat_Item + soPhutHat_Item/60;
 			DecimalFormat df3 = new DecimalFormat("#.##");
 			Phong ph = ph_dao.getPhongTheoMaPhong(cthd.getPhong().getMaPhong());
 			LoaiPhong loaiPhong = loaiPhong_dao.getLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong());
