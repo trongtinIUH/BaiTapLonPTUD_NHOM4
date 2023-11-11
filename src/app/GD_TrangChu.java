@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -19,9 +18,14 @@ import java.awt.Image;
 import java.awt.Panel;
 import javax.swing.JButton;
 import javax.swing.border.CompoundBorder;
+
+import entity.Temp;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.awt.event.ActionEvent;
 
 
@@ -33,7 +37,6 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	 */
 	
 	private static final long serialVersionUID = 1L;
-	private JPanel sidebarPanel;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
 	private final JPanel panel_1 = new JPanel();
@@ -43,13 +46,10 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	private JButton btnKhachHang;
 	private JButton btnSanPham;
 	private JButton btnHoaDon;
-	private JTabbedPane tabbedPane = new JTabbedPane();
 	private JButton btnThongKe;
 	private JButton btnTroGiup;
 	private JLabel lblKaraoke;
-	private JButton btnUser;
-	private GD_TrangDangNhap trangDangNhap;
-
+	private JLabel lblCurrentTime;
 	private  GD_DatPhong datPhong = new GD_DatPhong();
 	GD_DanhSachPhong danhSachPhong = new GD_DanhSachPhong();
 	GD_NhanVien nhanVien = new GD_NhanVien();
@@ -58,12 +58,12 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	GD_SanPham sanPham = new GD_SanPham();
 	GD_ThongKe thongKe = new GD_ThongKe();
 	GD_TroGiup troGiup = new GD_TroGiup();
+	private JPanel panel_chuaTime;
 	public GD_TrangChu() {
 		super("Karaoke 4T");
 		ImageIcon icon = new ImageIcon("icon\\icon_Karaoke3.jpg");
 	    this.setIconImage(icon.getImage());
 		initialize();
-//		this.trangDangNhap = trangDangNhap;
 	}
 
 	public static void main(String[] args) {
@@ -89,16 +89,7 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		panel_2.setBackground(new Color(217, 226, 231));
 		panel_1.add(panel_2);
 		
-		//User
-		 btnUser = new JButton("");
-		 btnUser.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		 btnUser.setForeground(Color.BLACK);
-		 btnUser.setBackground(Color.white);
-		 btnUser.setIcon(new ImageIcon("icon\\nhanvien.png"));
-		 btnUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+
 		
 		 btnDatPhong = new JButton("ĐẶT PHÒNG");
 		 btnDatPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -235,57 +226,80 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		lblKaraoke.setFont(new Font("Arial", Font.BOLD, 14));
 		lblKaraoke.setForeground(Color.black);
 		panel_3.add(lblKaraoke);
+		
+		panel_chuaTime = new JPanel();
+		panel_chuaTime.setBackground(Color.WHITE);
 		 
 		 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addGap(0)
-							.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(btnDatPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-								.addComponent(btnDanhSachPhong, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-								.addComponent(btnNhanVien, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-								.addComponent(btnKhachHang, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-								.addComponent(btnSanPham, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-								.addComponent(btnHoaDon, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-								.addComponent(btnThongKe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-								.addComponent(btnTroGiup, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273,Short.MAX_VALUE)
-								.addComponent(btnUser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 273,Short.MAX_VALUE)
-									)))
-					)
+				.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_panel_2.createSequentialGroup()
+						.addGap(0)
+						.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(btnDatPhong, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+							.addComponent(btnDanhSachPhong, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+							.addComponent(btnNhanVien, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+							.addComponent(btnKhachHang, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+							.addComponent(btnSanPham, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+							.addComponent(btnHoaDon, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+							.addComponent(btnThongKe, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+							.addComponent(btnTroGiup, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))))
+				.addGroup(Alignment.LEADING, gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_chuaTime, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		gl_panel_2.setVerticalGroup(
-				gl_panel_2.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel_2.createSequentialGroup()
-						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnDatPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnDanhSachPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnNhanVien, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnKhachHang, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnSanPham, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnHoaDon, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnThongKe, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(15) // Thêm khoảng cách 10 pixel
-						.addComponent(btnTroGiup, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						.addGap(60)
-						.addComponent(btnUser, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-						
-						.addGap(235))
-			);
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnDatPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnDanhSachPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnNhanVien, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnKhachHang, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnSanPham, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnHoaDon, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnThongKe, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnTroGiup, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(27)
+					.addComponent(panel_chuaTime, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+					.addGap(50))
+		);
+		
+		// CurrentTime
+		 lblCurrentTime = new JLabel();
+		 lblCurrentTime.setHorizontalAlignment(SwingConstants.CENTER);
+		 lblCurrentTime.setFont(new Font("Times New Roman", Font.BOLD, 22));
+		 lblCurrentTime.setForeground(Color.BLACK);
+		 lblCurrentTime.setBackground(Color.WHITE);
+		 new Thread(new Runnable() {
+			  public void run() {
+			    while (true) {
+			      Calendar cal = Calendar.getInstance();
+			      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			      lblCurrentTime.setText(sdf.format(cal.getTime()));
+			      try {
+			        Thread.sleep(1000); 
+			      } catch (InterruptedException e) {}
+			    }
+			  }
+			}).start();
+		 panel_chuaTime.add(lblCurrentTime);
+		 
 		panel_2.setLayout(gl_panel_2);
 		
-		sidebarPanel = new JPanel();
+		new JPanel();
 		cardPanel = new JPanel();
 	    cardLayout = new CardLayout();
 	    cardPanel.setLayout(cardLayout);
@@ -319,7 +333,7 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		btnHoaDon.addActionListener(this);
 		btnThongKe.addActionListener(this);
 		btnTroGiup.addActionListener(this);
-		btnUser.addActionListener(this);
+//		btnUser.addActionListener(this);
 	}
 	
 	private void resetActiveTab() {
