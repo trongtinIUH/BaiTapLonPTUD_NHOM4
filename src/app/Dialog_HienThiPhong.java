@@ -2,7 +2,6 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -13,9 +12,10 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JButton;
 import dao.Phong_dao;
+import dao.TempDatPhong_dao;
 import entity.LoaiPhong;
 import entity.Phong;
-import entity.Temp;
+import entity.TempDatPhong;
 import dao.LoaiPhong_dao;
 
 public class Dialog_HienThiPhong extends JDialog implements ActionListener {
@@ -35,6 +35,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	private LoaiPhong lp;
 	private JLabel lblSoNguoi;
 	private JTextField txtSoNguoi;
+	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 
 	public Dialog_HienThiPhong(String maPhong) {
 		// kích thước
@@ -134,10 +135,10 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 			if (txtSoNguoi.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát!");
 			} else {
-				dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp,
-						Integer.parseInt(txtSoNguoi.getText()));
 				if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
-					Temp tmp = new Temp(p.getMaPhong(), lp.getTenLoaiPhong(), p.getTrangThai(), lp.getDonGiaTheoGio(),
+					TempDatPhong tmp = new TempDatPhong(p.getMaPhong(), Integer.parseInt(txtSoNguoi.getText()));
+					tmp_dao.addTemp(tmp);
+					dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp,
 							Integer.parseInt(txtSoNguoi.getText()));
 					dispose();
 					dialog_DatPhongTrong_2.setVisible(true);
