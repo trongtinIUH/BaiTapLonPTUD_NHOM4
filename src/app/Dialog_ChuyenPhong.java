@@ -13,6 +13,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -85,7 +87,8 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private NhanVien_dao nv_dao;
 	private HoaDon_dao hd_dao;
 	private KhachHang_dao kh_dao;
-
+	private LocalDateTime ngayGioDatPhong ;
+	private LocalDateTime ngay_GioNhanPhong;
 
 	
 	public Dialog_ChuyenPhong(String maPhong, String soNguoi) {
@@ -427,8 +430,8 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		NhanVien nv = new NhanVien(maNV);
 		String maKH = txtMaKH.getText();
 		KhachHang kh = new KhachHang(maKH);
-		java.sql.Date ngayGioDatPhong = new java.sql.Date(System.currentTimeMillis());
-		java.sql.Date ngay_GioNhanPhong = new java.sql.Date(System.currentTimeMillis());
+		ngayGioDatPhong = LocalDateTime.now();
+		ngay_GioNhanPhong = LocalDateTime.now();
 		int songuoiHat = Integer.parseInt(txtNguoi.getText()); 
 		
 		PhieuDatPhong pdp = new PhieuDatPhong(maPhieu, ph1, nv, kh, ngayGioDatPhong, ngay_GioNhanPhong, songuoiHat);

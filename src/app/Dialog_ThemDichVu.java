@@ -6,12 +6,19 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,8 +35,9 @@ import entity.SanPham;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
 import java.awt.Window;
+import javax.swing.UIManager;
 
-public class Dialog_ThemDichVu extends JDialog implements ActionListener {
+public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseListener {
 	/**
 	 * 
 	 */
@@ -47,15 +55,14 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 	private JLabel lblNV;
 	private String col_Trai[] = { "Mã Sản Phẩm", "Tên Sản Phẩm", "Số Lượng", "Đơn Giá"};
 	private String col_Phai[] = { "Mã Sản Phẩm", "Tên Sản Phẩm", "Số Lượng", "Đơn Giá",};
-
 	private JScrollPane sp_phai;
-
 	private JScrollPane sp;
 	private JButton btn_LamMoi;
 	private JLabel lblTongTien;
 	private JTextField txtTongTien;
-
-	private SanPham_dao sp_dao;
+	private SanPham_dao sp_dao;;
+	private JButton btn_XoaDV;
+	private JButton btn_Them;
 
 
 
@@ -169,6 +176,12 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 			txtTongTien.setColumns(20);
 			txtTongTien.setBounds(240, 335, 145, 30);
 			panel_Phai.add(txtTongTien);
+			
+			btn_XoaDV = new JButton("Xóa");
+			btn_XoaDV.setFont(new Font("Arial", Font.BOLD, 18));
+			btn_XoaDV.setBackground(SystemColor.controlHighlight);
+			btn_XoaDV.setBounds(250, 50, 100, 30);
+			panel_Phai.add(btn_XoaDV);
 
 		
 //------------------------------------------------------------------------------------------------------------------
@@ -223,6 +236,12 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 			txtSoLuong.setBounds(300, 340, 65, 25);
 			panel_Trai.add(txtSoLuong);
 			
+			btn_Them = new JButton("Thêm");
+			btn_Them.setFont(new Font("Arial", Font.BOLD, 18));
+			btn_Them.setBackground(UIManager.getColor("Button.light"));
+			btn_Them.setBounds(10, 340, 100, 30);
+			panel_Trai.add(btn_Them);
+			
 			btn_DongY = new JButton("Đồng Ý");
 			btn_DongY.setFont(new Font("Arial", Font.BOLD, 18));
 			btn_DongY.setBackground(new Color(33,167,38,255));
@@ -242,7 +261,47 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 			btn_Huy.addActionListener(this);
 			btn_LamMoi.addActionListener(this);
 			btnTimKiem.addActionListener(this);
+			btn_XoaDV.addActionListener(this);
+
+
+			Object[] selectedRowData = new Object[model_Trai.getColumnCount() + 1];
+
+			// Cập nhật dữ liệu khi chọn một hàng mới từ bảng
+			tblThemDv_Trai.addMouseListener(new MouseAdapter() {
+			    public void mouseClicked(MouseEvent e) {
+			        int selectedRow = tblThemDv_Trai.getSelectedRow();    // Lấy hàng được chọn
+
+			        // Lấy dữ liệu từ hàng được chọn
+			        for (int i = 0; i < model_Trai.getColumnCount(); i++) {
+			            selectedRowData[i] = model_Trai.getValueAt(selectedRow, i);
+			        }
+			    }
+			});
+
+			// Xóa tất cả ActionListener hiện có từ nút 'btnThem'
+			for (ActionListener act : btn_Them.getActionListeners()) {
+			    btn_Them.removeActionListener(act);
+			}
+
+			// Thêm ActionListener vào nút 'btnThem'
+			btn_Them.addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+			        // Lấy số lượng từ 'txtSoLuong'
+			        int soLuong = Integer.parseInt(txtSoLuong.getText());
+
+			        // Thay đổi số lượng trong dữ liệu
+			        selectedRowData[selectedRowData.length - 3] = soLuong;
+
+			        // Thêm dữ liệu vào bảng phía bên phải
+			        model_Phai.addRow(selectedRowData);
+			        capNhatTongTien();
+			    }
+			});
+
+
+
 			 loadData();
+		
 	}
 	public void loadData() {
 		sp_dao = new SanPham_dao();
@@ -253,6 +312,35 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 		}
 	}
 
+	private void xoa() throws SQLException {
+		// TODO Auto-generated method stub
+		int row = tblThemDv_Phai.getSelectedRow();
+		if (row != -1) {
+			int tb = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?", "Delete", JOptionPane.YES_NO_OPTION);
+			if (tb == JOptionPane.YES_OPTION) {
+				model_Phai.removeRow(row);
+				JOptionPane.showMessageDialog(this, "Xoá thành công");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "chưa chọn dòng xóa!");
+		}
+
+	}
+	
+	//tổng tiền dịch vụ
+	public void capNhatTongTien() {
+	    double tongTien = 0;
+
+	    // Giả sử cột đơn giá nằm ở vị trí 3 và cột số lượng nằm ở vị trí 2
+	    for (int i = 0; i < model_Phai.getRowCount(); i++) {
+	        double donGia = Double.parseDouble(model_Phai.getValueAt(i, 3).toString());
+	        int soLuong = Integer.parseInt(model_Phai.getValueAt(i, 2).toString());
+	        tongTien += donGia * soLuong;
+	    }
+
+	    // Đặt tổng tiền vào txtTongTien
+	    txtTongTien.setText(String.valueOf(tongTien));
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -269,6 +357,43 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener {
 		if(o.equals(btn_DongY)) {
 			
 		}
+		if(o.equals(btn_XoaDV)) {
+				try {
+					xoa();
+					capNhatTongTien();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		}
 		
 	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+
 }

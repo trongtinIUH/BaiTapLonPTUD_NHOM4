@@ -52,6 +52,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private Dialog_User dialog_user = new Dialog_User();
 	private Dialog_HienThiPhong dialog_htPhong;
 	private Dialog_PhongDangSD dialog_PhongDangSD;
+	private Dialog_PhongCho dialog_PhongCho;
 	Phong_dao p_dao = new Phong_dao();
 	LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private JButton btnPhong;
@@ -458,6 +459,13 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 						dialog_htPhong.setVisible(true);
 						return;
 					}
+
+					if (p.getTrangThai() == Enum_TrangThai.Chờ) {
+						dialog_PhongCho = new Dialog_PhongCho(maPhong);
+						dialog_PhongCho.setVisible(true);
+						break;
+					}
+
 					if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
 						dialog_PhongDangSD = new Dialog_PhongDangSD(maPhong);
 						dialog_PhongDangSD.setVisible(true);
