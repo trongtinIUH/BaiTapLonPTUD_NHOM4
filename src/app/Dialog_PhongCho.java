@@ -104,27 +104,27 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 		
 		//các lbl góc trái-----------------------------------------------------------------------
 		lblPhong = new JLabel("Phòng:");
-		lblPhong.setBounds(10, 10, 100, 30);
+		lblPhong.setBounds(5, 10, 100, 30);
 		lblPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		getContentPane().add(lblPhong);
 		
 		lblLoai = new JLabel("Loại:");
-		lblLoai.setBounds(10, 50, 100, 30);
+		lblLoai.setBounds(5, 50, 100, 30);
 		lblLoai.setFont(new Font("Arial", Font.BOLD, 18));
 		getContentPane().add(lblLoai);
 		
 		lblSoNguoi = new JLabel("Số người:");
-		lblSoNguoi.setBounds(10, 90, 100, 30);
+		lblSoNguoi.setBounds(5, 90, 100, 30);
 		lblSoNguoi.setFont(new Font("Arial", Font.BOLD, 18));
 		getContentPane().add(lblSoNguoi);
 		
 		lblThoiGianHat = new JLabel("Ngày đặt phòng:");
-		lblThoiGianHat.setBounds(10, 130, 134, 30);
+		lblThoiGianHat.setBounds(5, 130, 134, 30);
 		lblThoiGianHat.setFont(new Font("Arial", Font.BOLD, 16));
 		getContentPane().add(lblThoiGianHat);
 		
 		lblGia = new JLabel("Giá phòng:");
-		lblGia.setBounds(10, 210, 100, 30);
+		lblGia.setBounds(5, 210, 100, 30);
 		lblGia.setFont(new Font("Arial", Font.BOLD, 18));
 		getContentPane().add(lblGia);
 		
@@ -175,9 +175,9 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 		lbl_SoNguoi_1.setBounds(150, 90, 120, 30);
 		getContentPane().add(lbl_SoNguoi_1);
 		
-		lblThoiGianHat_1 = new JLabel("Ngày đặt phòng:");
+		lblThoiGianHat_1 = new JLabel("Ngày nhận phòng:");
 		lblThoiGianHat_1.setFont(new Font("Arial", Font.BOLD, 16));
-		lblThoiGianHat_1.setBounds(10, 170, 134, 30);
+		lblThoiGianHat_1.setBounds(5, 170, 143, 30);
 		getContentPane().add(lblThoiGianHat_1);
 		
 		// hiển thị thời gian đặt phòng chờ
@@ -246,7 +246,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
         
         lbl_KhachHang = new JLabel("Khách hàng:");
         lbl_KhachHang.setFont(new Font("Arial", Font.BOLD, 18));
-        lbl_KhachHang.setBounds(10, 250, 110, 30);
+        lbl_KhachHang.setBounds(5, 250, 110, 30);
         getContentPane().add(lbl_KhachHang);
         
         lbl_KhachHang_1 = new JLabel();

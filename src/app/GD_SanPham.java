@@ -79,6 +79,8 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 	private File selectedFile;
 	private String absolutePath;
 
+	private JButton btnUser;
+	private Dialog_User dialog_User= new Dialog_User();
 	public GD_SanPham() {
 		sp_dao = new SanPham_dao();
 		setBackground(new Color(242, 240, 255));
@@ -103,6 +105,12 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		lblTitle.setBounds(labelX, labelY, labelWidth, labelHeight);
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 25));
 		pnNorth.add(lblTitle);
+		// ---nút user
+		btnUser = new JButton("");
+		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
+		btnUser.setBounds(1019, 5, 61, 45);
+		btnUser.setBackground(new Color(181, 230, 251, 255));
+		pnNorth.add(btnUser);
 
 		JPanel pnlCenter = new JPanel();
 		pnlCenter.setLayout(null);
@@ -323,7 +331,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		btnTimKiem.addActionListener(this);
 		btnXuatExcel.addActionListener(this);
 		table.addMouseListener(this);
-
+		btnUser.addActionListener(this);
 		openButton.addActionListener(this);
 
 		loadData();
@@ -607,6 +615,9 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 			xuatExcel();
 		} else if (obj.equals(openButton)) {
 			chenAnh();
+		}
+		else if(obj.equals(btnUser)) {
+			dialog_User.setVisible(true);
 		}
 	}
 

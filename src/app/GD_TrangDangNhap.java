@@ -2,29 +2,29 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import dao.DangNhap_dao;
-
 
 public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -40,13 +40,11 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		setTitle("Đăng Nhập KARAOKE 4T");
 		setSize(720, 400);
 		setLocationRelativeTo(null);
-		//setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		ImageIcon icon = new ImageIcon("image\\\\hinh_trangdangnhap.jpg");
 	    this.setIconImage(icon.getImage());
-		
-
+	
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(new Color(255,255,255,255));
@@ -58,19 +56,15 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		lblTitle.setForeground(Color.black);
 		panel.add(lblTitle);
 
-
-
 		txtUsername = new JTextField(20);
 		txtUsername.setBounds(60, 95, 200, 25);
 		txtUsername.setFont(new Font("Arial", Font.PLAIN, 12));
 		txtUsername.setText("Tên đăng nhập");
 		panel.add(txtUsername);
-
-
-
+		
 		txtPassword = new JPasswordField(20);
 		txtPassword.setBounds(60, 135, 200, 25);
-		txtPassword.setText("123");
+		txtPassword.setText("Son2001001");
 		panel.add(txtPassword);
 
 		btnLogin = new JButton("Đăng Nhập");
@@ -87,7 +81,6 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		btnQuenMatKhau.setBackground(Color.white);
 		panel.add(btnQuenMatKhau);
 
-		
 		lblKaeaoke= new JLabel("KARAOKE 4T");
 		lblKaeaoke.setHorizontalAlignment(SwingConstants.CENTER);
 		lblKaeaoke.setBounds(30, 330, 250, 30);
@@ -120,31 +113,54 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
             @Override
             public void focusGained(FocusEvent e) {
                 if (txtUsername.getText().equals("Tên đăng nhập")) {
-                    txtUsername.setText("");
+                    txtUsername.setText("2001001");
                 }
             }
-
             @Override
             public void focusLost(FocusEvent e) {
                 if (txtUsername.getText().isEmpty()) {
                     txtUsername.setText("Tên đăng nhập");
                 }
             }
-        });
-        
-//        DataManager.setUserName(txtUsername.getText());
-		
+        });		
+        setEnterKeyAction(btnLogin);
+        setEnterKeyAction(btnQuenMatKhau);
         btnLogin.addActionListener(this);
         btnQuenMatKhau.addActionListener(this);
+        this.getRootPane().setDefaultButton(btnLogin);
         
 	}
-	
 	public static void main(String[] args) {
 		ImageIcon img = new ImageIcon("icon\\icon_Karaoke3.jpg");
 		GD_TrangDangNhap trangDangNhap = new GD_TrangDangNhap();
 		trangDangNhap.setVisible(true);
 		trangDangNhap.setIconImage(img.getImage());
 	}
+	  private void setEnterKeyAction(JButton button) {
+	        // Lấy InputMap và ActionMap của nút
+	        InputMap inputMap = button.getInputMap(JComponent.WHEN_FOCUSED);
+	        ActionMap actionMap = button.getActionMap();
+
+	        // Đặt phím Enter để kích hoạt nút
+	        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+	        actionMap.put("Enter", new AbstractAction() {
+	            /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+	            public void actionPerformed(ActionEvent e) {
+					Object o = e.getSource();
+					if (o.equals(btnLogin)) {
+	                btnLogin.doClick();
+					}
+					else if(o.equals(btnQuenMatKhau)) {
+						 btnQuenMatKhau.doClick();
+					}
+	            }
+	        });}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		DataManager.setUserName(txtUsername.getText());
@@ -167,6 +183,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 			quenmk.setVisible(true);	
 			dispose();
 		}
+		
 	}	
 }
 

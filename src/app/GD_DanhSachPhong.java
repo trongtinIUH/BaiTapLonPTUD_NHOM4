@@ -68,6 +68,9 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 	private JComboBox<String> cbLau;
 	private JTextField txtMa;
 	private JComboBox<String> cbSoPhong;
+	
+	private JButton btnUser;
+	private Dialog_User dialog_user = new Dialog_User();
 
 	public GD_DanhSachPhong() {
 		setBackground(new Color(246, 245, 255));
@@ -80,6 +83,13 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		add(pnNorth);
 		lblTitle = new JLabel("PHÒNG");
 		pnNorth.add(lblTitle);
+		
+		// ---nút user
+		btnUser = new JButton("");
+		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
+		btnUser.setBounds(1019, 5, 61, 45);
+		btnUser.setBackground(new Color(181, 230, 251, 255));
+		pnNorth.add(btnUser);
 
 		// căn giữa title
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -303,6 +313,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		cbSoPhong.addActionListener(this);
 		loadData();
 		table.addMouseListener(this);
+		btnUser.addActionListener(this);
 	}
 
 	@Override
@@ -597,6 +608,9 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object obj = e.getSource();
+		if (obj.equals(btnUser)) {
+			dialog_user.setVisible(true);
+		}
 		if (obj.equals(btnThem)) {
 			them();
 		} else if (obj.equals(btnXoa)) {
