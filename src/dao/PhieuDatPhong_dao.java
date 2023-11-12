@@ -120,8 +120,10 @@ public class PhieuDatPhong_dao {
 			psmt.setString(2, pdp.getPhong().getMaPhong());
 			psmt.setString(3, pdp.getNhanVien().getMaNhanVien());
 			psmt.setString(4, pdp.getKhachHang().getMaKhachHang());
-			LocalDateTime ngayGioDatPhong = ((ResultSet) psmt).getTimestamp(5).toLocalDateTime();
-			LocalDateTime ngayGioNhanPhong = ((ResultSet) psmt).getTimestamp(6).toLocalDateTime();
+//			LocalDateTime ngayGioDatPhong = ((ResultSet) psmt).getTimestamp(5).toLocalDateTime();
+			psmt.setObject(5, pdp.getNgayGioDatPhong());
+//			LocalDateTime ngayGioNhanPhong = ((ResultSet) psmt).getTimestamp(6).toLocalDateTime();
+			psmt.setObject(6, pdp.getNgayGioNhanPhong());
 			psmt.setInt(7, pdp.getSoNguoiHat());
 			n = psmt.executeUpdate();
 		} catch (Exception e) {

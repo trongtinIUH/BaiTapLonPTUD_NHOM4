@@ -135,18 +135,18 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		panel_1.setBackground(new Color(242, 240, 255));
 
 		panel_1.add(lblMaNV = new JLabel("Mã nhân viên: "));
-		lblMaNV.setBounds(30, 20, 130, 25);
+		lblMaNV.setBounds(10, 20, 110, 30);
 		lblMaNV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblMaNV);
 
 		panel_1.add(txtMaNV = new JTextField());
-		txtMaNV.setBounds(150, 20, 80, 30);
+		txtMaNV.setBounds(140, 20, 110, 30);
 		txtMaNV.setEditable(false);
 		txtMaNV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtMaNV);
 
 		panel_1.add(lblMaKH = new JLabel("Mã khách hàng: "));
-		lblMaKH.setBounds(260, 20, 130, 25);
+		lblMaKH.setBounds(280, 20, 120, 30);
 		lblMaKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblMaKH);
 
@@ -162,35 +162,35 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		kh1 = kh_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang());
 
 		panel_1.add(txtMaKH = new JTextField(kh1.getMaKhachHang()));
-		txtMaKH.setBounds(380, 20, 80, 30);
+		txtMaKH.setBounds(405, 20, 150, 30);
 		txtMaKH.setEditable(false);
 		txtMaKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtMaKH);
 
 		panel_1.add(lblPhongHT = new JLabel("Phòng hiện tại: "));
-		lblPhongHT.setBounds(30, 70, 130, 25);
+		lblPhongHT.setBounds(10, 70, 120, 30);
 		lblPhongHT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblPhongHT);
 
 		panel_1.add(txtMa = new JTextField(maPhong));
-		txtMa.setBounds(150, 70, 80, 30);
+		txtMa.setBounds(140, 70, 110, 30);
 		txtMa.setEditable(false);
 		txtMa.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtMa);
 
 		panel_1.add(lblSoNguoi = new JLabel("Số người: "));
-		lblSoNguoi.setBounds(260, 70, 90, 25);
+		lblSoNguoi.setBounds(280, 70, 75, 30);
 		lblSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblSoNguoi);
 
 		panel_1.add(txtNguoi = new JTextField(soNguoi));
-		txtNguoi.setBounds(350, 70, 80, 30);
+		txtNguoi.setBounds(360, 70, 100, 30);
 		txtNguoi.setEditable(false);
 		txtNguoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtNguoi);
 
 		panel_1.add(lblTGHat = new JLabel("Thời gian đã hát: "));
-		lblTGHat.setBounds(450, 70, 150, 25);
+		lblTGHat.setBounds(485, 70, 130, 30);
 		lblTGHat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblTGHat);
 
@@ -214,7 +214,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		DecimalFormat df = new DecimalFormat("#.#");
 		panel_1.add(txtTGHat = new JTextField(df.format(soGioHat) + " giờ " + df.format(soPhutHat) + " phút"));
 
-		txtTGHat.setBounds(600, 70, 150, 30);
+		txtTGHat.setBounds(620, 70, 150, 30);
 		txtTGHat.setEditable(false);
 		txtTGHat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtTGHat);

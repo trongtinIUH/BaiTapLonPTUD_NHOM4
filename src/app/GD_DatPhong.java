@@ -72,6 +72,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private JPanel panel_ChuaPhong;
 	private JPanel panel;
 	private Dialog_HienThiPhongSuaChua dialog_htPhongSuaChua;
+	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong= new Dialog_TimPhieuDatPhong();
 	private JButton btnBackToBook;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(getName(), null, null, ABORT);
@@ -233,6 +234,10 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 					loadData();
 					DataManager.setChuyenPhong(false);
 				}
+				if(DataManager.isDatPhongCho()) {
+					loadData();
+					DataManager.setDatPhongCho(false);
+				}
 			}
 		});
 
@@ -323,6 +328,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnTimKiemPDP.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
+		
 
 		// add sự kiện cho nút
 		btnBackToBook.addActionListener(this);
@@ -547,6 +553,9 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		if (o.equals(btnUser)) {
 			dialog_user.setVisible(true);
 		}
+		if(o.equals(btnTimKiemPDP)) {
+			dialog_TimPhieuDatPhong.setVisible(true);
+		}
 		if (o.equals(btnBackToBook)) {
 			if (tmp_dao.getAllTemp().size() == 1) {
 				JOptionPane.showMessageDialog(this, "Chưa phòng nào được thêm vào danh sách đặt");
@@ -591,5 +600,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			JOptionPane.showMessageDialog(this, "Có thực hiện sự kiện");
 			loadPhong();
 		}
+
 	}
 }

@@ -82,8 +82,8 @@ CREATE TABLE PhieuDatPhong (
 	maPhong varchar(20) not null foreign key references Phong(maPhong) on delete cascade,
 	maNhanVien varchar(20) not null foreign key references NhanVien(maNhanVien) on delete cascade,
 	maKhachHang varchar(20) not null foreign key references KhachHang(maKhachHang) on delete cascade,
-    ngayGioDatPhong date not null,
-    ngayGioNhanPhong date not null,
+    ngayGioDatPhong DateTime not null,
+    ngayGioNhanPhong DateTime not null,
     soNguoiHat int not null,
     CONSTRAINT CHK_SoNguoiHat CHECK (soNguoiHat > 0)
 )
@@ -196,7 +196,7 @@ insert into Phong values('203','PT10',N'Đang_sử_dụng')
 insert into Phong values('204','PV10',N'Trống')
 insert into Phong values('205','PT5',N'Trống')
 insert into Phong values('206','PT5',N'Chờ')
-insert into Phong values('301','PT15',N'Chờ')
+insert into Phong values('301','PT15',N'Trống')
 insert into Phong values('302','PT20',N'Trống')
 insert into Phong values('303','PT15',N'Đang_sửa_chữa')
 insert into Phong values('304','PT10',N'Trống')
@@ -280,9 +280,7 @@ insert into PhieuDatPhong values('PDP2310130001', '306', '2010002', 'KH231013001
 insert into PhieuDatPhong values('PDP2310140001', '105', '2001001', 'KH231014001', '2023-10-14 12:00:00.000', '2023-10-14 12:00:00.000', 5)
 insert into PhieuDatPhong values('PDP2310200001', '206', '2110004', 'KH231020001', '2023-10-20 07:00:00.000', '2023-10-20 21:00:00.000', 4)
 insert into PhieuDatPhong values('PDP2310150001', '403', '2311001', 'KH231015001', '2023-10-15 21:00:00.000', '2023-10-15 21:00:00.000', 10)
-insert into PhieuDatPhong values('PDP2409010001', '403', '2001001', 'KH231015001', '2024-09-01 19:00:00.000', '2024-09-01 19:00:00.000', 25)
-insert into PhieuDatPhong values('PDP2408010001', '404', '2110004', 'KH231014001', '2024-08-01 18:00:00.000', '2024-08-01 18:00:00.000', 3)
-insert into PhieuDatPhong values('PDP2407150001', '306', '2311001', 'KH231014001', '2024-07-15 17:00:00.000', '2024-07-15 17:00:00.000', 17)
+
 go
 
 

@@ -6,7 +6,10 @@ import java.awt.SystemColor;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,8 +28,13 @@ import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.KhachHang_dao;
+import dao.PhieuDatPhong_dao;
+import dao.Phong_dao;
+import entity.Enum_TrangThai;
 import entity.KhachHang;
 import entity.LoaiPhong;
+import entity.NhanVien;
+import entity.PhieuDatPhong;
 import entity.Phong;
 
 public class Dialog_DatPhongCho extends JDialog implements ActionListener {
@@ -67,7 +75,18 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JLabel lbl_loai_1;
 	private JLabel lbl_NgayDatPhong;
 	private JLabel lbl_NgayNhanPhong;
-	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp) {
+	
+	private Phong_dao phong_dao = new Phong_dao();
+	private PhieuDatPhong_dao pdp_dao= new PhieuDatPhong_dao();
+
+	private Date ngayHienTai;
+
+	private Date date;
+
+	private LocalDateTime ngayGioDatPhong;
+
+	private LocalDateTime ngay_GioNhanPhong;
+	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp,int songuoi) {
 		// màn
 		// hình******************************************************************************
 		getContentPane().setBackground(Color.WHITE);
@@ -164,7 +183,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		panel_1.add(lbl_SoNguoi);
 
 		txtSoNguoi = new JTextField();
-		txtSoNguoi.setText(lp.getSucChua() + "");
+		txtSoNguoi.setText(songuoi+"");
 		txtSoNguoi.setFont(new Font("Arial", Font.BOLD, 16));
 		txtSoNguoi.setBounds(550, 5, 100, 25);
 		panel_1.add(txtSoNguoi);
@@ -251,10 +270,10 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		lbl_NgayNhanPhong.setBounds(10, 230, 180, 25);
 		panel_1.add(lbl_NgayNhanPhong);
 		
-		lbl_Phong = new JLabel("Phòng " + maPhong);
+		lbl_Phong = new JLabel(maPhong);
 		lbl_Phong.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl_Phong.setForeground(Color.BLACK);
-		lbl_Phong.setBounds(440, 70, 210, 25);
+		lbl_Phong.setBounds(550, 70, 150, 25);
 		panel_1.add(lbl_Phong);
 		
 		now1 = LocalDateTime.now();
@@ -283,6 +302,11 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
         dateTimePicker_1.setBounds(200, 230, 260, 25);
     	panel_1.add(dateTimePicker_1);
     	dateTimePicker_1.setLayout(null);
+    	
+    	JLabel lbl_MaPhong = new JLabel("Phòng:");
+    	lbl_MaPhong.setFont(new Font("Arial", Font.BOLD, 16));
+    	lbl_MaPhong.setBounds(440, 70, 80, 25);
+    	panel_1.add(lbl_MaPhong);
 	
 		
 		
@@ -302,7 +326,30 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 
 		if (o.equals(btn_DatPhong)) {
 			JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính !");
+			DataManager.setDatPhongCho(true);
+			Enum_TrangThai trangThai = Enum_TrangThai.Chờ;
+			Phong phong = new Phong(lbl_Phong.getText(), trangThai);
+			phong_dao.updatePhong(phong, lbl_Phong.getText());
+			
+			// Tạo Phiếu đặt phòng mới
+			String maPhieu = generateRandomCode();
+			String maPhong = lbl_Phong.getText();
+			Phong ph1 = new Phong(maPhong);
+			String maNV = DataManager.getUserName();
+			NhanVien nv = new NhanVien(maNV);
+			KhachHang kh= khachHang_dao.getKhachHangTheoSDT(txtSDT.getText());
+			String maKH = kh.getMaKhachHang();
+			KhachHang kh2 = new KhachHang(maKH);
+			ngayGioDatPhong = LocalDateTime.now();
+			ngay_GioNhanPhong = dateTimePicker_1.getDateTimePermissive();
+			int songuoiHat = Integer.parseInt(txtSoNguoi.getText());
+
+			PhieuDatPhong pdp = new PhieuDatPhong(maPhieu, ph1, nv, kh2, ngayGioDatPhong, ngay_GioNhanPhong, songuoiHat);
+			pdp_dao.addPhieuDatPhong(pdp);
+			
 			setVisible(false);
+			
+			
 	        Window[] windows = Window.getWindows();
 	        for (Window window : windows) {
 	            if (window instanceof JDialog) {
@@ -333,4 +380,30 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		
 		
 		}
+	// ---- Mã PhieuDatPhong phát sinh tự động tăng dần bắt đầu từ 0001
+	private int ThuTuPDPTrongNgay() {
+		int sl = 1;
+		String maPDP = "";
+		for (PhieuDatPhong pdp : pdp_dao.getAllsPhieuDatPhong()) {
+			maPDP = pdp.getMaPhieu(); // Chạy hết vòng for sẽ lấy được mã Phiếu đặt phòng cuối danh sách
+		}
+		int ngayTrenMaPDPCuoiDS = Integer.parseInt(maPDP.substring(3, 9));
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd"); // Format yyMMdd sẽ so sánh ngày được
+		ngayHienTai = new Date();
+		int ngayHT = Integer.parseInt(dateFormat.format(ngayHienTai));
+		if (ngayHT != ngayTrenMaPDPCuoiDS) {
+			sl = 1;
+		} else if (ngayHT == ngayTrenMaPDPCuoiDS) {
+			sl = Integer.parseInt(maPDP.substring(9, 13)) + 1;
+		}
+		return sl;
+	}
+
+	private String generateRandomCode() {
+		String prefix = "PDP";
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+		date = new Date();
+		String suffix = String.format("%04d", ThuTuPDPTrongNgay());
+		return prefix + dateFormat.format(date) + suffix;
+	}
 }

@@ -31,17 +31,19 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
+	private Dialog_DatPhongCho dialog_DatPhongCho;
 	private Phong p;
 	private LoaiPhong lp;
 	private JLabel lblSoNguoi;
 	private JTextField txtSoNguoi;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private JButton btn_DatPhongCho;
 
 	public Dialog_HienThiPhong(String maPhong) {
 		// kích thước
 		// dialog--------------*****************************************************************
 		getContentPane().setBackground(Color.WHITE);
-		setSize(300, 340);
+		setSize(300, 400);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 
@@ -124,8 +126,17 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		txtSoNguoi.setBounds(130, 210, 100, 30);
 		getContentPane().add(txtSoNguoi);
 		txtSoNguoi.setColumns(10);
+		
+		btn_DatPhongCho = new JButton("Đặt Phòng Chờ");
+		btn_DatPhongCho.setForeground(Color.WHITE);
+		btn_DatPhongCho.setFont(new Font("Arial", Font.BOLD, 18));
+		btn_DatPhongCho.setBorderPainted(false);
+		btn_DatPhongCho.setBackground(new Color(235,235,115,255));
+		btn_DatPhongCho.setBounds(40, 301, 200, 40);
+		getContentPane().add(btn_DatPhongCho);
 		// add sự kiện
 		btnDatPhong.addActionListener(this);
+		btn_DatPhongCho.addActionListener(this);
 	}
 
 	@Override
@@ -150,6 +161,21 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
 				}
 			}
+		}
+		else if(o.equals(btn_DatPhongCho)) {
+
+			if (txtSoNguoi.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát!");
+			} else {
+				if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
+					dialog_DatPhongCho = new Dialog_DatPhongCho(lblPhong_1.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()));
+					dialog_DatPhongCho.setVisible(true);
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
+				}
+			}
+		
 		}
 
 	}
