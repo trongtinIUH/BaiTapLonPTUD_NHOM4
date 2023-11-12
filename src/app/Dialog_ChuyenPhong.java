@@ -53,10 +53,10 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JComboBox<String> comboBox_TrangThai,comboBox_LoaiPhong;
-	private JTextField txtSoNguoi,txtMaPhong;
-	private JButton btnTimKiem,btnLamMoi,btn_ChuyenPhong,btn_QuayLai;
-	private JPanel panel_2,panel,panel_3;
+	private JComboBox<String> comboBox_TrangThai, comboBox_LoaiPhong;
+	private JTextField txtSoNguoi, txtMaPhong;
+	private JButton btnTimKiem, btnLamMoi, btn_ChuyenPhong, btn_QuayLai;
+	private JPanel panel_2, panel, panel_3;
 	private JTable tblChuyenPhong;
 	private DefaultTableModel model;
 	private String col[] = { "Mã Phòng", "Loại Phòng", "Sức Chứa", "Đơn Giá", "Trạng Thái" };
@@ -87,206 +87,203 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private NhanVien_dao nv_dao;
 	private HoaDon_dao hd_dao;
 	private KhachHang_dao kh_dao;
-	private LocalDateTime ngayGioDatPhong ;
+	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
 
-	
 	public Dialog_ChuyenPhong(String maPhong, String soNguoi) {
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 520);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		ph_dao = new Phong_dao();
-		loaiPhong_dao =  new LoaiPhong_dao();
+		loaiPhong_dao = new LoaiPhong_dao();
 		phieuDatPhong_dao = new PhieuDatPhong_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
 		pdp_dao = new PhieuDatPhong_dao();
 		nv_dao = new NhanVien_dao();
 		hd_dao = new HoaDon_dao();
 		kh_dao = new KhachHang_dao();
-		
+
 		this.addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent e) {
 				NhanVien nv = null;
 				nv = nv_dao.getNhanVienTheoMa(DataManager.getUserName());
 				txtMaNV.setText(nv.getMaNhanVien());
-		    }
+			}
 		});
-		
-		//panel chứa tiêu đề--------------------------------------
+
+		// panel chứa tiêu đề--------------------------------------
 		panel = new JPanel();
 		panel.setBounds(0, 0, 784, 35);
 		panel.setBackground(new Color(181, 230, 251));
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		getContentPane().add(panel);
-		
+
 		JLabel lblTieuDe = new JLabel("Chuyển  Phòng");
 		lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTieuDe.setForeground(Color.BLACK);
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 18));
 		lblTieuDe.setBounds(0, 0, 790, 35);
 		panel.add(lblTieuDe);
-		
+
 		panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
 		panel_1.setBounds(0, 34, 784, 120);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		panel_1.setBackground(new Color(242, 240, 255));
-		
+
 		panel_1.add(lblMaNV = new JLabel("Mã nhân viên: "));
-		lblMaNV.setBounds(30,20,130,25);
+		lblMaNV.setBounds(30, 20, 130, 25);
 		lblMaNV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblMaNV);
-		
+
 		panel_1.add(txtMaNV = new JTextField());
-		txtMaNV.setBounds(150,20,80,30);
+		txtMaNV.setBounds(150, 20, 80, 30);
 		txtMaNV.setEditable(false);
 		txtMaNV.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtMaNV);
-		
+
 		panel_1.add(lblMaKH = new JLabel("Mã khách hàng: "));
-		lblMaKH.setBounds(260,20,130,25);
+		lblMaKH.setBounds(260, 20, 130, 25);
 		lblMaKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblMaKH);
-		
+
 		ChiTietHoaDon cthd_hienTaiCuaPhong2 = null;
 		ArrayList<ChiTietHoaDon> dsCTHD2 = cthd_dao.getChiTietHoaDonTheoMaPhong(maPhong);
-		for(ChiTietHoaDon cthd: dsCTHD2) {
+		for (ChiTietHoaDon cthd : dsCTHD2) {
 			cthd_hienTaiCuaPhong2 = cthd;
 		}
-		
+
 		HoaDonDatPhong hd = null;
 		hd = hd_dao.getHoaDonTheoMaHoaDon(cthd_hienTaiCuaPhong2.getHoaDon().getMaHoaDon());
 		KhachHang kh1 = null;
 		kh1 = kh_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang());
-		
+
 		panel_1.add(txtMaKH = new JTextField(kh1.getMaKhachHang()));
-		txtMaKH.setBounds(380,20,80,30);
+		txtMaKH.setBounds(380, 20, 80, 30);
 		txtMaKH.setEditable(false);
 		txtMaKH.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtMaKH);
-		
+
 		panel_1.add(lblPhongHT = new JLabel("Phòng hiện tại: "));
-		lblPhongHT.setBounds(30,70,130,25);
+		lblPhongHT.setBounds(30, 70, 130, 25);
 		lblPhongHT.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblPhongHT);
-		
+
 		panel_1.add(txtMa = new JTextField(maPhong));
-		txtMa.setBounds(150,70,80,30);
+		txtMa.setBounds(150, 70, 80, 30);
 		txtMa.setEditable(false);
 		txtMa.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtMa);
-		
+
 		panel_1.add(lblSoNguoi = new JLabel("Số người: "));
-		lblSoNguoi.setBounds(260,70,90,25);
+		lblSoNguoi.setBounds(260, 70, 90, 25);
 		lblSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblSoNguoi);
-		
+
 		panel_1.add(txtNguoi = new JTextField(soNguoi));
-		txtNguoi.setBounds(350,70,80,30);
+		txtNguoi.setBounds(350, 70, 80, 30);
 		txtNguoi.setEditable(false);
 		txtNguoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtNguoi);
-		
+
 		panel_1.add(lblTGHat = new JLabel("Thời gian đã hát: "));
-		lblTGHat.setBounds(450,70,150,25);
+		lblTGHat.setBounds(450, 70, 150, 25);
 		lblTGHat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(lblTGHat);
-		
+
 		ChiTietHoaDon cthd_hienTaiCuaPhong = null;
 		ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(txtMa.getText());
-		for(ChiTietHoaDon cthd: dsCTHD) {
+		for (ChiTietHoaDon cthd : dsCTHD) {
 			cthd_hienTaiCuaPhong = cthd;
 		}
-		
-		DateFormat dateFormatGio = new SimpleDateFormat("HH"); 
+
+		DateFormat dateFormatGio = new SimpleDateFormat("HH");
 		gioHienTai = new Date();
-		double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));	
-		DateFormat dateFormatPhut = new SimpleDateFormat("mm"); 
+		double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
+		DateFormat dateFormatPhut = new SimpleDateFormat("mm");
 		phutHienTai = new Date();
 		double phutHT = Double.parseDouble(dateFormatPhut.format(phutHienTai));
-		
-		double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));	
+
+		double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));
 		double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));
 		soGioHat = gioHT - gioNhanPhong;
 		soPhutHat = phutHT - phutNhanPhong;
 		DecimalFormat df = new DecimalFormat("#.#");
 		panel_1.add(txtTGHat = new JTextField(df.format(soGioHat) + " giờ " + df.format(soPhutHat) + " phút"));
-		
-		txtTGHat.setBounds(600,70,150,30);
+
+		txtTGHat.setBounds(600, 70, 150, 30);
 		txtTGHat.setEditable(false);
 		txtTGHat.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panel_1.add(txtTGHat);
-		
+
 		panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
 		panel_2.setBounds(0, 154, 784, 98);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 
-		//--- lbl và combox trạng thái
+		// --- lbl và combox trạng thái
 		JLabel lblTrangThai = new JLabel("Trạng Thái");
 		lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblTrangThai.setBounds(10, 10, 90, 25);
 		panel_2.add(lblTrangThai);
-	
+
 		comboBox_TrangThai = new JComboBox<String>();
 		comboBox_TrangThai.setBackground(Color.WHITE);
 		comboBox_TrangThai.setFont(new Font("Tahoma", Font.BOLD, 15));
-		comboBox_TrangThai.setModel(new DefaultComboBoxModel<String>(new String[] {"Trống", "Chờ"}));
+		comboBox_TrangThai.setModel(new DefaultComboBoxModel<String>(new String[] { "Trống", "Chờ" }));
 		comboBox_TrangThai.setBounds(110, 10, 200, 30);
 		panel_2.add(comboBox_TrangThai);
-	
+
 		JLabel lblLoiPhng = new JLabel("Loại Phòng");
 		lblLoiPhng.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblLoiPhng.setBounds(10, 60, 90, 25);
 		panel_2.add(lblLoiPhng);
-		
+
 		comboBox_LoaiPhong = new JComboBox<String>();
-		comboBox_LoaiPhong.setModel(new DefaultComboBoxModel<String>(new String[] {"Phòng Vip", "Phòng Thường"}));
+		comboBox_LoaiPhong.setModel(new DefaultComboBoxModel<String>(new String[] { "Phòng Vip", "Phòng Thường" }));
 		comboBox_LoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		comboBox_LoaiPhong.setBackground(Color.WHITE);
 		comboBox_LoaiPhong.setBounds(110, 60, 200, 30);
 		panel_2.add(comboBox_LoaiPhong);
-		
-	
+
 		JLabel lblMaPhong = new JLabel("Mã Phòng");
 		lblMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblMaPhong.setBounds(330, 35, 80, 30);
 		panel_2.add(lblMaPhong);
-	
-		
+
 		txtMaPhong = new JTextField();
 		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
 //		txtMaPhong.setText("101");
 		txtMaPhong.setColumns(10);
 		txtMaPhong.setBounds(420, 35, 110, 30);
 		panel_2.add(txtMaPhong);
-		
-		//--- cuối góc phải là 3 nút jbutton
+
+		// --- cuối góc phải là 3 nút jbutton
 		btnTimKiem = new JButton("Tìm Kiếm");
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
 		btnTimKiem.setBounds(570, 10, 200, 35);
-		btnTimKiem.setBackground(new Color(13,153,255,255));
+		btnTimKiem.setBackground(new Color(13, 153, 255, 255));
 		panel_2.add(btnTimKiem);
-		
+
 		btnLamMoi = new JButton("Làm Mới");
 		btnLamMoi.setForeground(Color.WHITE);
 		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBounds(570, 55, 200, 35);
-		btnLamMoi.setBackground(new Color(112,210,103,255));
+		btnLamMoi.setBackground(new Color(112, 210, 103, 255));
 		panel_2.add(btnLamMoi);
-		
+
 		panel_3 = new JPanel();
 		panel_3.setBounds(0, 250, 784, 231);
 		getContentPane().add(panel_3);
 		panel_3.setLayout(null);
-		
+
 		// bảng chuyển phòng
 		model = new DefaultTableModel(col, 0);
 		tblChuyenPhong = new JTable(model);
@@ -297,117 +294,132 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		panel_3.add(sp);
 		panel_3.setPreferredSize(new Dimension(800, 300));
 		getContentPane().add(panel_3);
-		
+
 		JLabel lblPhongHienTai = new JLabel("Phòng hiện tại:");
 		lblPhongHienTai.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblPhongHienTai.setBounds(5, 145, 105, 20);
 		panel_3.add(lblPhongHienTai);
-		
+
 		JLabel lblPhongHienTai_1 = new JLabel(maPhong);
 		lblPhongHienTai_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblPhongHienTai_1.setBounds(115, 145, 30, 20);
 		panel_3.add(lblPhongHienTai_1);
-		
+
 		JLabel lblChuyenDen = new JLabel("--->");
 		lblChuyenDen.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblChuyenDen.setBounds(155, 145, 40, 20);
 		panel_3.add(lblChuyenDen);
-		
+
 		lblPhongHienTai_1_1 = new JLabel("...");
 		lblPhongHienTai_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblPhongHienTai_1_1.setBounds(200, 145, 30, 20);
 		panel_3.add(lblPhongHienTai_1_1);
-		
-		// các nút jbutton-------------------------------------------------------------------
+
+		// các nút
+		// jbutton-------------------------------------------------------------------
 		btn_ChuyenPhong = new JButton("Chuyển Phòng");
 		btn_ChuyenPhong.setBackground(Color.GREEN);
 		btn_ChuyenPhong.setForeground(Color.WHITE);
 		btn_ChuyenPhong.setFont(new Font("Arial", Font.BOLD, 18));
-		btn_ChuyenPhong.setBackground(new Color(33,167,38,255));
+		btn_ChuyenPhong.setBackground(new Color(33, 167, 38, 255));
 		btn_ChuyenPhong.setBounds(33, 176, 250, 40);
 		panel_3.add(btn_ChuyenPhong);
-		
+
 		btn_QuayLai = new JButton("Quay Lại");
 		btn_QuayLai.setForeground(Color.WHITE);
 		btn_QuayLai.setFont(new Font("Arial", Font.BOLD, 18));
-		btn_QuayLai.setBackground(new Color(255,83,83,255));
+		btn_QuayLai.setBackground(new Color(255, 83, 83, 255));
 		btn_QuayLai.setBounds(500, 180, 250, 40);
 		panel_3.add(btn_QuayLai);
-	
-		//thêm sự kiện
+
+		// thêm sự kiện
 		btnTimKiem.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btn_ChuyenPhong.addActionListener(this);
 		btn_QuayLai.addActionListener(this);
 		tblChuyenPhong.addMouseListener(this);
 //		cb
-		
+
 		loadData_Phong();
 
 	}
-	
-	
-	
+
 	private void clearTable() {
-		while(tblChuyenPhong.getRowCount()>0) {
+		while (tblChuyenPhong.getRowCount() > 0) {
 			model.removeRow(0);
 		}
 	}
-	
+
 	private void loadData_Phong() {
-		for(Phong ph: ph_dao.getallPhongs()) {
-			if(Integer.parseInt(txtNguoi.getText().trim()) <= loaiPhong_dao.getSucChuaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()) && (ph.getTrangThai()==Enum_TrangThai.Trống || ph.getTrangThai()==Enum_TrangThai.Chờ)) {
-				Object[] row = {ph.getMaPhong(), loaiPhong_dao.getTenLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), loaiPhong_dao.getSucChuaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), loaiPhong_dao.getDonGiaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), ph.getTrangThai()};
+		for (Phong ph : ph_dao.getallPhongs()) {
+			if (Integer.parseInt(txtNguoi.getText().trim()) <= loaiPhong_dao
+					.getSucChuaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong())
+					&& (ph.getTrangThai() == Enum_TrangThai.Trống || ph.getTrangThai() == Enum_TrangThai.Chờ)) {
+				Object[] row = { ph.getMaPhong(),
+						loaiPhong_dao.getTenLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()),
+						loaiPhong_dao.getSucChuaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()),
+						loaiPhong_dao.getDonGiaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), ph.getTrangThai() };
 				model.addRow(row);
-			}	
+			}
 		}
 	}
 
 	private void timKiemPhong() {
 		Phong ph = null;
 		ph = ph_dao.getPhongTheoMaPhong(txtMaPhong.getText().trim());
-		if(ph != null) {
+		if (ph != null) {
 			clearTable();
-			Object[] row = {ph.getMaPhong(), loaiPhong_dao.getTenLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), loaiPhong_dao.getSucChuaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), loaiPhong_dao.getDonGiaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), ph.getTrangThai()};
+			Object[] row = { ph.getMaPhong(),
+					loaiPhong_dao.getTenLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()),
+					loaiPhong_dao.getSucChuaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()),
+					loaiPhong_dao.getDonGiaTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong()), ph.getTrangThai() };
 			model.addRow(row);
 		}
 		ArrayList<Phong> dsPhong = ph_dao.getPhongTheoTrangThai(comboBox_TrangThai.getSelectedItem().toString());
-		if(dsPhong != null) {
+		if (dsPhong != null) {
 			clearTable();
-			for(Phong ph2 : dsPhong) {
-				Object[] row = {ph2.getMaPhong(), loaiPhong_dao.getTenLoaiPhongTheoMaLoaiPhong(ph2.getLoaiPhong().getMaLoaiPhong()), loaiPhong_dao.getSucChuaTheoMaLoaiPhong(ph2.getLoaiPhong().getMaLoaiPhong()), loaiPhong_dao.getDonGiaTheoMaLoaiPhong(ph2.getLoaiPhong().getMaLoaiPhong()), ph2.getTrangThai()};
+			for (Phong ph2 : dsPhong) {
+				Object[] row = { ph2.getMaPhong(),
+						loaiPhong_dao.getTenLoaiPhongTheoMaLoaiPhong(ph2.getLoaiPhong().getMaLoaiPhong()),
+						loaiPhong_dao.getSucChuaTheoMaLoaiPhong(ph2.getLoaiPhong().getMaLoaiPhong()),
+						loaiPhong_dao.getDonGiaTheoMaLoaiPhong(ph2.getLoaiPhong().getMaLoaiPhong()),
+						ph2.getTrangThai() };
 				model.addRow(row);
 			}
 		}
 	}
-	
+
 	private void chuyenPhong() {
-		if(JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn chuyển sang Phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0),"Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		if (JOptionPane.showConfirmDialog(null,
+				"Bạn có chắc chắn muốn chuyển sang Phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0),
+				"Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			String maPhongCu = txtMa.getText().trim();
 			Enum_TrangThai trangThaiPhongCu = Enum_TrangThai.Trống;
 			Phong phongCu = new Phong(maPhongCu, trangThaiPhongCu);
-			
+
 			String maPhongMoi = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
 			Enum_TrangThai trangThaiPhongMoi = Enum_TrangThai.Đang_sử_dụng;
 			Phong phongMoi = new Phong(maPhongMoi, trangThaiPhongMoi);
-			
+
 			ph_dao.updatePhong(phongCu, maPhongCu);
 			ph_dao.updatePhong(phongMoi, maPhongMoi);
-			JOptionPane.showMessageDialog(null, "Chuyển sang phòng " +  model.getValueAt(tblChuyenPhong.getSelectedRow(), 0) + " thành công!!");
+			JOptionPane.showMessageDialog(null,
+					"Chuyển sang phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0) + " thành công!!");
+			DataManager.setChuyenPhong(true);
 			dispose();
 		}
-		
+
 		// update lại giờ trả phòng của phòng cũ
 		tgHT = new Date();
 		Timestamp ngayGioTraPhong = new Timestamp(tgHT.getTime());
-		double thoiGianHat = soGioHat + soPhutHat/60;
-		
+		double thoiGianHat = soGioHat + soPhutHat / 60;
+
 		ChiTietHoaDon cthd_cu = null;
 		ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(txtMa.getText());
-		for(ChiTietHoaDon cthd: dsCTHD) {
+		for (ChiTietHoaDon cthd : dsCTHD) {
 			cthd_cu = cthd;
 		}
-		
+
 		String maHD = cthd_cu.getHoaDon().getMaHoaDon();
 		String maPhongCu = cthd_cu.getPhong().getMaPhong();
 		Timestamp ngayGioNhanPhong = cthd_cu.getGioNhanPhong();
@@ -415,14 +427,14 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		Phong ph = new Phong(maPhongCu);
 		ChiTietHoaDon cthd_cu2 = new ChiTietHoaDon(hd, ph, ngayGioNhanPhong, ngayGioTraPhong, thoiGianHat);
 		cthd_dao.UpdateChiTietHD_ChuyenPhong(cthd_cu2);
-		
-		//Tạo chi tiêt hóa đơn cho phòng mới
+
+		// Tạo chi tiêt hóa đơn cho phòng mới
 		String maPhongMoi = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
 		Phong ph_Moi = new Phong(maPhongMoi);
-		ChiTietHoaDon cthd_moi = new ChiTietHoaDon(hd,ph_Moi,ngayGioTraPhong,null,0);
+		ChiTietHoaDon cthd_moi = new ChiTietHoaDon(hd, ph_Moi, ngayGioTraPhong, null, 0);
 		cthd_dao.addChiTietHD(cthd_moi);
-		
-		//Tạo Phiếu đặt phòng mới
+
+		// Tạo Phiếu đặt phòng mới
 		String maPhieu = generateRandomCode();
 		String maPhong = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
 		Phong ph1 = new Phong(maPhong);
@@ -432,59 +444,58 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		KhachHang kh = new KhachHang(maKH);
 		ngayGioDatPhong = LocalDateTime.now();
 		ngay_GioNhanPhong = LocalDateTime.now();
-		int songuoiHat = Integer.parseInt(txtNguoi.getText()); 
-		
+		int songuoiHat = Integer.parseInt(txtNguoi.getText());
+
 		PhieuDatPhong pdp = new PhieuDatPhong(maPhieu, ph1, nv, kh, ngayGioDatPhong, ngay_GioNhanPhong, songuoiHat);
 		pdp_dao.addPhieuDatPhong(pdp);
 	}
-	
-	//---- Mã PhieuDatPhong phát sinh tự động tăng dần bắt đầu từ 0001
-		private int ThuTuKhachHangTrongNgay() {
-			int sl = 1;
-			String maPDP = "";
-			for (PhieuDatPhong pdp : pdp_dao.getAllsPhieuDatPhong()) {
-				maPDP = pdp.getMaPhieu(); //Chạy hết vòng for sẽ lấy được mã Phiếu đặt phòng cuối danh sách
-			}
-			int ngayTrenMaPDPCuoiDS = Integer.parseInt(maPDP.substring(3, 9));
-			DateFormat dateFormat = new SimpleDateFormat("yyMMdd"); // Format yyMMdd sẽ so sánh ngày được
-			ngayHienTai = new Date();
-			int ngayHT = Integer.parseInt(dateFormat.format(ngayHienTai));
-			if (ngayHT != ngayTrenMaPDPCuoiDS) {
-				sl = 1;
-			} else if (ngayHT == ngayTrenMaPDPCuoiDS) {
-				sl = Integer.parseInt(maPDP.substring(9, 13)) + 1;
-			}
-			return sl;
+
+	// ---- Mã PhieuDatPhong phát sinh tự động tăng dần bắt đầu từ 0001
+	private int ThuTuKhachHangTrongNgay() {
+		int sl = 1;
+		String maPDP = "";
+		for (PhieuDatPhong pdp : pdp_dao.getAllsPhieuDatPhong()) {
+			maPDP = pdp.getMaPhieu(); // Chạy hết vòng for sẽ lấy được mã Phiếu đặt phòng cuối danh sách
 		}
-		
-		private String generateRandomCode() {
-			String prefix = "PDP";
-			DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
-			date = new Date();
-			String suffix = String.format("%04d", ThuTuKhachHangTrongNgay());
-			return prefix + dateFormat.format(date) + suffix;
+		int ngayTrenMaPDPCuoiDS = Integer.parseInt(maPDP.substring(3, 9));
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd"); // Format yyMMdd sẽ so sánh ngày được
+		ngayHienTai = new Date();
+		int ngayHT = Integer.parseInt(dateFormat.format(ngayHienTai));
+		if (ngayHT != ngayTrenMaPDPCuoiDS) {
+			sl = 1;
+		} else if (ngayHT == ngayTrenMaPDPCuoiDS) {
+			sl = Integer.parseInt(maPDP.substring(9, 13)) + 1;
 		}
+		return sl;
+	}
+
+	private String generateRandomCode() {
+		String prefix = "PDP";
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+		date = new Date();
+		String suffix = String.format("%04d", ThuTuKhachHangTrongNgay());
+		return prefix + dateFormat.format(date) + suffix;
+	}
 
 //		private void loadMa() {
 //			String code;
 //			code = generateRandomCode();
 //			txtMa.setText(code);
 //		}
-		//---------------------------------------------------------
+	// ---------------------------------------------------------
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if(o.equals(btn_QuayLai)) {
-		setVisible(false);	
-		}
-		else if(o.equals(btnTimKiem)) {
+		if (o.equals(btn_QuayLai)) {
+			setVisible(false);
+		} else if (o.equals(btnTimKiem)) {
 			timKiemPhong();
-		}else if(o.equals(btnLamMoi)) {
+		} else if (o.equals(btnLamMoi)) {
 			clearTable();
 			loadData_Phong();
 			txtMa.setText("");
-		}else if(o.equals(btn_ChuyenPhong)) {
+		} else if (o.equals(btn_ChuyenPhong)) {
 			chuyenPhong();
 		}
 	}
@@ -498,24 +509,24 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

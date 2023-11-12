@@ -70,7 +70,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 
 		txtPassword = new JPasswordField(20);
 		txtPassword.setBounds(60, 135, 200, 25);
-		txtPassword.setText("123");
+		txtPassword.setText("Son2001001");
 		panel.add(txtPassword);
 
 		btnLogin = new JButton("Đăng Nhập");

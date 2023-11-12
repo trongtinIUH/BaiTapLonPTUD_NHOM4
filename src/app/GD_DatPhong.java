@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -24,11 +25,14 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import dao.Phong_dao;
+import dao.TempDatPhong_dao;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.Phong;
-import entity.Temp;
+import entity.TempDatPhong;
 import dao.LoaiPhong_dao;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class GD_DatPhong extends JPanel implements ActionListener, MouseListener {
 
@@ -46,7 +50,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private JScrollPane scrollPane_Phong;
 	private JPanel panel_3;
 	private JPanel outerPanel;
-	
+
 	private JLabel lbl_iconPhongVIP, lbl_iconPhongsuaChua, lbl_iconPhongCho, lbl_iconPhongTrong;
 
 	private Dialog_User dialog_user = new Dialog_User();
@@ -69,11 +73,14 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private JPanel panel;
 	private Dialog_HienThiPhongSuaChua dialog_htPhongSuaChua;
 	private JButton btnBackToBook;
+	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(getName(), null, null, ABORT);
+	private int sizeDSTmp;
 
 	/**
 	 * Create the panel.
 	 */
-	
+
 	public GD_DatPhong() {
 		this.setSize(1080, 730);
 		setLayout(null);
@@ -211,52 +218,26 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		outerPanel.add(panel_ChuaPhong);
 		panel_ChuaPhong.setLayout(null);
 
-		// chỉnh sửa kích thước các icon thường______________________
-		ImageIcon phongtrong = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
-		Image originalImage_phongtrong = phongtrong.getImage();
-		Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
-		panel_ChuaPhong.setLayout(null);
-		ImageIcon phongsd = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsd.png");
-		Image originalImage_phongsd = phongsd.getImage();
-		Image resizedImage_phongsd = originalImage_phongsd.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongsd = new ImageIcon(resizedImage_phongsd);
+		loadData();
+		setEnabledBtnDatPhong();
+		// Tạo một Timer để gọi lại loadRoomList() mỗi 5000 milliseconds (5 giây)
+		sizeDSTmp = tmp_dao.getAllTemp().size();
+		Timer timer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(sizeDSTmp !=  tmp_dao.getAllTemp().size()) {
+					sizeDSTmp = tmp_dao.getAllTemp().size(); 
+					setEnabledBtnDatPhong();
+				}
+				if(DataManager.isChuyenPhong()) {
+					loadData();
+					DataManager.setChuyenPhong(false);
+				}
+			}
+		});
 
-		ImageIcon phongcho = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongcho.png");
-		Image originalImage_phongcho = phongcho.getImage();
-		Image resizedImage_phongcho = originalImage_phongcho.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongcho = new ImageIcon(resizedImage_phongcho);
-
-		ImageIcon phongsua = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsua.png");
-		Image originalImage_phongsua = phongsua.getImage();
-		Image resizedImage_phongsua = originalImage_phongsua.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongsua = new ImageIcon(resizedImage_phongsua);
-
-		// chỉnh sửa kích thước các icon VIP_______________________________
-		ImageIcon phongtrongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\trong_vip.png");
-		Image originalImage_phongtrongvip = phongtrongvip.getImage();
-		Image resizedImage_phongtrongvip = originalImage_phongtrongvip.getScaledInstance(60, 60,
-				java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongtrongvip = new ImageIcon(resizedImage_phongtrongvip);
-
-		ImageIcon phongsdvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sd_vip.png");
-		Image originalImage_phongsdvip = phongsdvip.getImage();
-		Image resizedImage_phongsdvip = originalImage_phongsdvip.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongsdvip = new ImageIcon(resizedImage_phongsdvip);
-
-		ImageIcon phongchovip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\cho_vip.png");
-		Image originalImage_phongchovip = phongchovip.getImage();
-		Image resizedImage_phongchovip = originalImage_phongchovip.getScaledInstance(60, 60,
-				java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongchovip = new ImageIcon(resizedImage_phongchovip);
-
-		ImageIcon phongsuavip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sua_vip.png");
-		Image originalImage_phongsuavip = phongsuavip.getImage();
-		Image resizedImage_phongsuavip = originalImage_phongsuavip.getScaledInstance(60, 60,
-				java.awt.Image.SCALE_SMOOTH);
-		resizedIcon_phongsuavip = new ImageIcon(resizedImage_phongsuavip);
-
-		loadPhong();
+//		 Bắt đầu Timer
+		timer.start();
 
 		// ---gốc
 		// 4----------------------------------****************************************************************
@@ -322,13 +303,13 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		lbl_iconPhongVIP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lbl_iconPhongVIP.setBounds(850, 0, 140, 35);
 		panel_4.add(lbl_iconPhongVIP);
-		
+
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(SystemColor.activeCaption);
 		panel_5.setBounds(0, 663, 1080, 27);
 		panel.add(panel_5);
 		panel_5.setLayout(null);
-		
+
 		btnBackToBook = new JButton("Quay về đặt phòng");
 		btnBackToBook.setBorderPainted(false);
 		btnBackToBook.setForeground(Color.RED);
@@ -342,22 +323,144 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnTimKiemPDP.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
-		
-				// add sự kiện cho nút
+
+		// add sự kiện cho nút
+		btnBackToBook.addActionListener(this);
+	}
+
+	private void loadData() {
+		// chỉnh sửa kích thước các icon thường______________________
+		ImageIcon phongtrong = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
+		Image originalImage_phongtrong = phongtrong.getImage();
+		Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
+		panel_ChuaPhong.setLayout(null);
+		ImageIcon phongsd = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsd.png");
+		Image originalImage_phongsd = phongsd.getImage();
+		Image resizedImage_phongsd = originalImage_phongsd.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongsd = new ImageIcon(resizedImage_phongsd);
+
+		ImageIcon phongcho = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongcho.png");
+		Image originalImage_phongcho = phongcho.getImage();
+		Image resizedImage_phongcho = originalImage_phongcho.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongcho = new ImageIcon(resizedImage_phongcho);
+
+		ImageIcon phongsua = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsua.png");
+		Image originalImage_phongsua = phongsua.getImage();
+		Image resizedImage_phongsua = originalImage_phongsua.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongsua = new ImageIcon(resizedImage_phongsua);
+
+		// chỉnh sửa kích thước các icon VIP_______________________________
+		ImageIcon phongtrongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\trong_vip.png");
+		Image originalImage_phongtrongvip = phongtrongvip.getImage();
+		Image resizedImage_phongtrongvip = originalImage_phongtrongvip.getScaledInstance(60, 60,
+				java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongtrongvip = new ImageIcon(resizedImage_phongtrongvip);
+
+		ImageIcon phongsdvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sd_vip.png");
+		Image originalImage_phongsdvip = phongsdvip.getImage();
+		Image resizedImage_phongsdvip = originalImage_phongsdvip.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongsdvip = new ImageIcon(resizedImage_phongsdvip);
+
+		ImageIcon phongchovip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\cho_vip.png");
+		Image originalImage_phongchovip = phongchovip.getImage();
+		Image resizedImage_phongchovip = originalImage_phongchovip.getScaledInstance(60, 60,
+				java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongchovip = new ImageIcon(resizedImage_phongchovip);
+
+		ImageIcon phongsuavip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sua_vip.png");
+		Image originalImage_phongsuavip = phongsuavip.getImage();
+		Image resizedImage_phongsuavip = originalImage_phongsuavip.getScaledInstance(60, 60,
+				java.awt.Image.SCALE_SMOOTH);
+		ImageIcon resizedIcon_phongsuavip = new ImageIcon(resizedImage_phongsuavip);
+		int i = 0;
+		int x = 40;
+		int y = -110;
+		int w = 160;
+		int h = 100;
+
+		// Xóa sự kiện thêm trước đó
+		for (JButton btn : btnPhongList) {
+			btn.removeActionListener(this);
+		}
+
+		// Xóa phòng thêm trước đó
+		panel_ChuaPhong.removeAll();
+		panel_ChuaPhong.revalidate();
+		panel_ChuaPhong.repaint();
+
+		for (Phong p : p_dao.getallPhongs()) {
+			if (i % 5 == 0) {
+				y += 130;
+				x = 40;
+			}
+			i++;
+
+			btnPhong = new JButton("Phòng " + p.getMaPhong());
+			btnPhongList.add(btnPhong);
+			LoaiPhong lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+			btnPhong.setBounds(x, y, w, h);
+			x += 210;
+			btnPhong.setBackground(new Color(181, 230, 251, 255));
+			if (lp.getTenLoaiPhong().equals("Phòng VIP")) {
+				if (p.getTrangThai() == Enum_TrangThai.Trống)
+					btnPhong.setIcon(resizedIcon_phongtrongvip);
+				if (p.getTrangThai() == Enum_TrangThai.Chờ)
+					btnPhong.setIcon(resizedIcon_phongchovip);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
+					btnPhong.setIcon(resizedIcon_phongsdvip);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sửa_chữa)
+					btnPhong.setIcon(resizedIcon_phongsuavip);
+			}
+			if (lp.getTenLoaiPhong().equals("Phòng thường")) {
+				if (p.getTrangThai() == Enum_TrangThai.Trống)
+					btnPhong.setIcon(resizedIcon_phongtrong);
+				if (p.getTrangThai() == Enum_TrangThai.Chờ)
+					btnPhong.setIcon(resizedIcon_phongcho);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
+					btnPhong.setIcon(resizedIcon_phongsd);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sửa_chữa)
+					btnPhong.setIcon(resizedIcon_phongsua);
+			}
+
+			btnPhong.setVerticalTextPosition(SwingConstants.BOTTOM);
+			panel_ChuaPhong.add(btnPhong);
+		}
+
+		// Thêm lại sự kiện cho các phòng
 		for (JButton btn : btnPhongList) {
 			btn.addActionListener(this);
 		}
-		btnBackToBook.addActionListener(this);
+
+		// Hiển thị lại giao diện
+		panel_ChuaPhong.revalidate();
+		panel_ChuaPhong.repaint();
+		scrollPane_Phong.setViewportView(outerPanel);
+	}
+
+	private void setEnabledBtnDatPhong() {
+		for (JButton btn : btnPhongList) {
+			boolean kiemTra = true;
+			String soPhong = btn.getText().replace("Phòng ", "");
+			for (TempDatPhong tmp : tmp_dao.getAllTemp()) {
+				if (soPhong.equals(tmp.getMaPhong()))
+					kiemTra = false;
+			}
+			if(kiemTra)
+				btn.setEnabled(true);
+			else
+				btn.setEnabled(false);
+		}
 	}
 	
 	private int calculateSize() {
 		int i = p_dao.getallPhongs().size();
-		if(i <= 15) {
+		if (i <= 15) {
 			return 498;
-		} else if(i <= 20) {
+		} else if (i <= 20) {
 			return 540;
 		} else {
-			return 540 + (((i - 1) / 5) - 3) * 130 ;
+			return 540 + (((i - 1) / 5) - 3) * 130;
 		}
 	}
 	
@@ -438,15 +541,19 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnUser)) {
 			dialog_user.setVisible(true);
 		}
-		if(o.equals(btnBackToBook)) {
-			
+		if (o.equals(btnBackToBook)) {
+			if (tmp_dao.getAllTemp().size() == 1) {
+				JOptionPane.showMessageDialog(this, "Chưa phòng nào được thêm vào danh sách đặt");
+			} else {
+				dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(TOOL_TIP_TEXT_KEY, null, null, ABORT);
+				dialog_DatPhongTrong_2.setVisible(true);
+			}
 		}
 		if (o instanceof JButton) {
 			JButton clickedButton = (JButton) o;

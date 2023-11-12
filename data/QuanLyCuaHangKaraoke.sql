@@ -127,16 +127,13 @@ CREATE TABLE ChiTietDichVu (
     CONSTRAINT CHK_SoLuong CHECK (soLuong > 0),
     CONSTRAINT CHK_Gia CHECK (giaBan > 0)
 )
+
 go
 
-CREATE TABLE Temp (
+CREATE TABLE TempDatPhong (
     maPhong varchar(20) not null,
-    loaiPhong varchar(20) not null,
-	primary key(maPhong),
-    gia float not null,
 	soNguoi int not null
 )
-
 go
 
 
@@ -378,6 +375,9 @@ insert into ChiTietDichVu values('HD2407150001', 'SP026', 20, 90000)
 insert into ChiTietDichVu values('HD2407150001', 'SP014', 20, 80000)
 insert into ChiTietDichVu values('HD2407150001', 'SP001', 25, 9500)
 insert into ChiTietDichVu values('HD2407150001', 'SP018', 20, 180000)
+
+--thêm tmp
+insert into TempDatPhong values('000','00')
 go
 
 --select * from NhanVien
