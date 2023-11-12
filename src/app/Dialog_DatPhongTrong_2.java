@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Locale;
 import java.time.LocalDateTime;
 import javax.swing.JDialog;
@@ -42,7 +44,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
-public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
+public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, MouseListener {
 
 	/**
 	 * 
@@ -78,6 +80,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Phong_dao p_dao = new Phong_dao();
 	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private JLabel lbl_Loai;
+	private JLabel lblMaPhong;
 
 	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp, int soNguoi) {
 		// màn
@@ -108,14 +112,14 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
-		JLabel lbl_TrangThai = new JLabel("Trạng thái:");
-		lbl_TrangThai.setFont(new Font("Arial", Font.BOLD, 16));
-		lbl_TrangThai.setBounds(10, 5, 100, 25);
-		panel_1.add(lbl_TrangThai);
+		lblMaPhong = new JLabel("Mã phòng:");
+		lblMaPhong.setFont(new Font("Arial", Font.BOLD, 16));
+		lblMaPhong.setBounds(10, 5, 200, 25);
+		panel_1.add(lblMaPhong);
 
-		JLabel lbl_Loai = new JLabel("Loại:");
+		lbl_Loai = new JLabel("Loại:");
 		lbl_Loai.setFont(new Font("Arial", Font.BOLD, 16));
-		lbl_Loai.setBounds(10, 40, 60, 25);
+		lbl_Loai.setBounds(10, 40, 200, 25);
 		panel_1.add(lbl_Loai);
 
 		JLabel lbl_LoaiKhachHang = new JLabel("Khách hàng mặc định:");
@@ -326,6 +330,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 		btn_XoaPhongDat.addActionListener(this);
 		radGioMacDinh.addActionListener(this);
 		radGioTuDo.addActionListener(this);
+		tblThemPhongMoi.addMouseListener(this);
 		loadDataPhong();
 	}
 
@@ -337,7 +342,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 				i++;
 				Phong p = p_dao.getPhongTheoMaPhong(tmp.getMaPhong());
 				LoaiPhong lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
-				Object[] row = { i, tmp.getMaPhong(), lp.getTenLoaiPhong(), tmp.getSoNguoiHat(), lp.getDonGiaTheoGio() };
+				Object[] row = { i, tmp.getMaPhong(), lp.getTenLoaiPhong(), tmp.getSoNguoiHat(),
+						lp.getDonGiaTheoGio() };
 				model.addRow(row);
 			}
 		}
@@ -365,8 +371,6 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 			}
 		}
 		if (o.equals(btn_DatThemPhong)) {
-//			dialog_DatThemPhongTrong = new Dialog_DatThemPhongTrong(lbl_TenKH_1.getText());
-//			dialog_DatThemPhongTrong.setVisible(true);
 			setVisible(false);
 		}
 		// chọn nút checkbox mặc định giờ
@@ -391,6 +395,49 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener {
 						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
 			}
 		}
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int row = tblThemPhongMoi.getSelectedRow();
+		lblMaPhong.setText("Mã phòng: " + model.getValueAt(row, 1));
+		lbl_Loai.setText("Loại: " + model.getValueAt(row, 2));
+		txtSoNguoi.setText(model.getValueAt(row, 3).toString());
+		lbl_GiaTien_1.setText(model.getValueAt(row, 4) + "VNĐ");
+
+//		txtMa.setText(model.getValueAt(row, 1).toString());
+//		cbLoaiPhong.setSelectedItem(model.getValueAt(row, 2));
+//		cbTrangThai.setSelectedItem(model.getValueAt(row, 3));
+//		txtSucChua.setText(model.getValueAt(row, 4).toString());
+//		txtDonGia.setText(model.getValueAt(row, 5).toString());
+//		cbLau.setSelectedItem(model.getValueAt(row, 1).toString().substring(0, 1));
+//		cbSoPhong.setSelectedItem(model.getValueAt(row, 1).toString().substring(1, 3));
+//		loadMa();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 }

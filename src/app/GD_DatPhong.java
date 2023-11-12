@@ -380,12 +380,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 		for (Phong p : p_dao.getallPhongs()) {
 			boolean kiemTra = true;
-//			for (TempDatPhong tmp : tmp_dao.getAllTemp()) {
-//				if (p.getMaPhong().equals(tmp.getMaPhong())) {
-//					kiemTra = false;
-//				}
-//			}
-//			if (kiemTra == true) {
 			if (i % 5 == 0) {
 				y += 130;
 				x = 40;
@@ -422,7 +416,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			btnPhong.setVerticalTextPosition(SwingConstants.BOTTOM);
 			panel_ChuaPhong.add(btnPhong);
 		}
-//		}
 
 		// Thêm lại sự kiện cho các phòng
 		for (JButton btn : btnPhongList) {
@@ -452,15 +445,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 	private int calculateSize() {
 		int i = p_dao.getallPhongs().size();
-//		for (Phong p : p_dao.getallPhongs()) {
-//			boolean kiemTra = true;
-//			for (TempDatPhong tmp : tmp_dao.getAllTemp()) {
-//				if (p.getMaPhong().equals(tmp.getMaPhong()))
-//					kiemTra = false;
-//			}
-//			if (kiemTra == true)
-//				i++;
-//		}
 		if (i <= 15) {
 			return 498;
 		} else if (i <= 20) {
@@ -510,7 +494,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			if (tmp_dao.getAllTemp().size() == 1) {
 				JOptionPane.showMessageDialog(this, "Chưa phòng nào được thêm vào danh sách đặt");
 			} else {
-				loadData();
 				dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(TOOL_TIP_TEXT_KEY, null, null, ABORT);
 				dialog_DatPhongTrong_2.setVisible(true);
 			}
