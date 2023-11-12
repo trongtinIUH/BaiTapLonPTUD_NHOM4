@@ -81,6 +81,9 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	private String absolutePath;
 	private File selectedFile;
 	private XSSFWorkbook wordbook;
+	
+	private JButton btnUser;
+	private Dialog_User dialog_user= new Dialog_User();
 
 	public GD_NhanVien() {
 		setBackground(new Color(246, 245, 255));
@@ -93,6 +96,12 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		add(pnNorth);
 		lblTitle = new JLabel("NHÂN VIÊN");
 		pnNorth.add(lblTitle);
+		// ---nút user
+		btnUser = new JButton("");
+		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
+		btnUser.setBounds(1019, 5, 61, 45);
+		btnUser.setBackground(new Color(181, 230, 251, 255));
+		pnNorth.add(btnUser);
 
 		// căn giữa title
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -324,6 +333,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		btnXuatExcel.addActionListener(this);
 		table.addMouseListener(this);
 		openButton.addActionListener(this);
+		btnUser.addActionListener(this);
 
 		loadData();
 		loadMa();
@@ -614,6 +624,9 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			xuatExcel();
 		} else if (obj.equals(openButton)) {
 			chenAnh();
+		}
+		else if(obj.equals(btnUser)) {
+			dialog_user.setVisible(true);
 		}
 	}
 
