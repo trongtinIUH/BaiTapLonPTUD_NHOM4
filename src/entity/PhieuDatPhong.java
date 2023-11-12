@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class PhieuDatPhong implements Serializable{
@@ -14,15 +15,24 @@ public class PhieuDatPhong implements Serializable{
 	private Phong phong;
 	private NhanVien nhanVien;
 	private KhachHang khachHang;
-	private Date ngayGioDatPhong;
-	private Date ngayGioNhanPhong;
+	private LocalDateTime ngayGioDatPhong;
+	private LocalDateTime ngayGioNhanPhong;
 	private int soNguoiHat;
 	public PhieuDatPhong() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public PhieuDatPhong(String maPhieu, Phong phong, NhanVien nhanVien, KhachHang khachHang, Date ngayGioDatPhong,
-			Date ngayGioNhanPhong, int soNguoiHat) {
+	public PhieuDatPhong(Phong phong, KhachHang khachHang, LocalDateTime ngayGioDatPhong, LocalDateTime ngayGioNhanPhong,
+			int soNguoiHat) {
+		super();
+		this.phong = phong;
+		this.khachHang = khachHang;
+		this.ngayGioDatPhong = ngayGioDatPhong;
+		this.ngayGioNhanPhong = ngayGioNhanPhong;
+		this.soNguoiHat = soNguoiHat;
+	}
+	public PhieuDatPhong(String maPhieu, Phong phong, NhanVien nhanVien, KhachHang khachHang, LocalDateTime ngayGioDatPhong,
+			LocalDateTime ngayGioNhanPhong, int soNguoiHat) {
 		super();
 		this.maPhieu = maPhieu;
 		this.phong = phong;
@@ -56,16 +66,16 @@ public class PhieuDatPhong implements Serializable{
 	public void setKhachHang(KhachHang khachHang) {
 		this.khachHang = khachHang;
 	}
-	public Date getNgayGioDatPhong() {
+	public LocalDateTime getNgayGioDatPhong() {
 		return ngayGioDatPhong;
 	}
-	public void setNgayGioDatPhong(Date ngayGioDatPhong) {
+	public void setNgayGioDatPhong(LocalDateTime ngayGioDatPhong) {
 		this.ngayGioDatPhong = ngayGioDatPhong;
 	}
-	public Date getNgayGioNhanPhong() {
+	public LocalDateTime getNgayGioNhanPhong() {
 		return ngayGioNhanPhong;
 	}
-	public void setNgayGioNhanPhong(Date ngayGioNhanPhong) {
+	public void setNgayGioNhanPhong(LocalDateTime ngayGioNhanPhong) {
 		this.ngayGioNhanPhong = ngayGioNhanPhong;
 	}
 	public int getSoNguoiHat() {
