@@ -233,6 +233,10 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 					loadData();
 					DataManager.setChuyenPhong(false);
 				}
+				if(DataManager.isThanhToan()) {
+					loadData();
+					DataManager.setThanhToan(false);
+				}
 			}
 		});
 

@@ -82,10 +82,10 @@ CREATE TABLE PhieuDatPhong (
 	maPhong varchar(20) not null foreign key references Phong(maPhong) on delete cascade,
 	maNhanVien varchar(20) not null foreign key references NhanVien(maNhanVien) on delete cascade,
 	maKhachHang varchar(20) not null foreign key references KhachHang(maKhachHang) on delete cascade,
-    ngayGioDatPhong date not null,
-    ngayGioNhanPhong date not null,
+    ngayGioDatPhong datetime not null,
+    ngayGioNhanPhong datetime not null,
     soNguoiHat int not null,
-    CONSTRAINT CHK_SoNguoiHat CHECK (soNguoiHat > 0)
+    CONSTRAINT CHK_SoNguoiHat CHECK (soNguoiHat >= 0)
 )
 go
 
@@ -280,9 +280,9 @@ insert into PhieuDatPhong values('PDP2310130001', '306', '2010002', 'KH231013001
 insert into PhieuDatPhong values('PDP2310140001', '105', '2001001', 'KH231014001', '2023-10-14 12:00:00.000', '2023-10-14 12:00:00.000', 5)
 insert into PhieuDatPhong values('PDP2310200001', '206', '2110004', 'KH231020001', '2023-10-20 07:00:00.000', '2023-10-20 21:00:00.000', 4)
 insert into PhieuDatPhong values('PDP2310150001', '403', '2311001', 'KH231015001', '2023-10-15 21:00:00.000', '2023-10-15 21:00:00.000', 10)
-insert into PhieuDatPhong values('PDP2409010001', '403', '2001001', 'KH231015001', '2024-09-01 19:00:00.000', '2024-09-01 19:00:00.000', 25)
-insert into PhieuDatPhong values('PDP2408010001', '404', '2110004', 'KH231014001', '2024-08-01 18:00:00.000', '2024-08-01 18:00:00.000', 3)
-insert into PhieuDatPhong values('PDP2407150001', '306', '2311001', 'KH231014001', '2024-07-15 17:00:00.000', '2024-07-15 17:00:00.000', 17)
+insert into PhieuDatPhong values('PDP2209010001', '403', '2001001', 'KH231015001', '2022-09-01 19:00:00.000', '2022-09-01 19:00:00.000', 25)
+insert into PhieuDatPhong values('PDP2208010001', '404', '2110004', 'KH231014001', '2022-08-01 18:00:00.000', '2022-08-01 18:00:00.000', 3)
+insert into PhieuDatPhong values('PDP2207150001', '306', '2311001', 'KH231014001', '2022-07-15 17:00:00.000', '2022-07-15 17:00:00.000', 17)
 go
 
 
@@ -299,9 +299,9 @@ insert into HoaDonDatPhong values('HD2310130001', 'KH231013001', '2010002', '202
 insert into HoaDonDatPhong values('HD2310140001', 'KH231014001', '2001001', '2023-10-14 15:00:00.000', 1, null, 2000000)
 insert into HoaDonDatPhong values('HD2310200001', 'KH231020001', '2110004', '2023-10-21 00:00:00.000', 0, 'KM201023', 0)
 insert into HoaDonDatPhong values('HD2310150001', 'KH231015001', '2311001', '2024-10-15 23:00:00.000', 0, null, 0)
-insert into HoaDonDatPhong values('HD2409010001', 'KH231015001', '2311001', '2024-09-02 01:00:00.000', 0, null, 0)
-insert into HoaDonDatPhong values('HD2408010001', 'KH231014001', '2001001', '2024-08-01 21:00:00.000', 1, null, 10000000)
-insert into HoaDonDatPhong values('HD2407150001', 'KH231014001', '2001001', '2024-07-15 19:00:00.000', 1, null, 10000000)
+insert into HoaDonDatPhong values('HD2209010001', 'KH231015001', '2311001', '2022-09-02 01:00:00.000', 0, null, 0)
+insert into HoaDonDatPhong values('HD2208010001', 'KH231014001', '2001001', '2022-08-01 21:00:00.000', 1, null, 10000000)
+insert into HoaDonDatPhong values('HD2207150001', 'KH231014001', '2001001', '2022-07-15 19:00:00.000', 1, null, 10000000)
 go
 
 --ChiTietHoaDon
@@ -318,10 +318,10 @@ insert into ChiTietHoaDon values('HD2310120001', '404', '2023-10-12 20:00:00.000
 insert into ChiTietHoaDon values('HD2310130001', '306', '2023-10-13 15:00:00.000', '2023-10-13 20:00:00.000', 5)
 insert into ChiTietHoaDon values('HD2310140001', '105', '2023-10-14 12:00:00.000', '2023-10-14 15:00:00.000', 3)
 insert into ChiTietHoaDon values('HD2310200001', '206', '2023-10-20 21:00:00.000', '2023-10-21 00:00:00.000', 3)
-insert into ChiTietHoaDon values('HD2310150001', '403', '2024-10-15 21:00:00.000', '2024-10-15 23:00:00.000', 2)
-insert into ChiTietHoaDon values('HD2409010001', '403', '2024-09-01 22:00:00.000', '2024-09-02 01:00:00.000', 3)
-insert into ChiTietHoaDon values('HD2408010001', '404', '2024-08-01 18:00:00.000', '2024-08-01 21:00:00.000', 3)
-insert into ChiTietHoaDon values('HD2407150001', '306', '2024-07-15 17:00:00.000', '2024-07-15 19:00:00.000',2)
+insert into ChiTietHoaDon values('HD2310150001', '403', '2022-10-15 21:00:00.000', '2022-10-15 23:00:00.000', 2)
+insert into ChiTietHoaDon values('HD2409010001', '403', '2022-09-01 22:00:00.000', '2022-09-02 01:00:00.000', 3)
+insert into ChiTietHoaDon values('HD2408010001', '404', '2022-08-01 18:00:00.000', '2022-08-01 21:00:00.000', 3)
+insert into ChiTietHoaDon values('HD2407150001', '306', '2022-07-15 17:00:00.000', '2022-07-15 19:00:00.000',2)
 go
 
 

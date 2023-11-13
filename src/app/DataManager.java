@@ -3,6 +3,7 @@ package app;
 public class DataManager {
     private static String userName;
     private static boolean chuyenPhong;
+    private static boolean thanhToan;
 
     public static boolean isChuyenPhong() {
 		return chuyenPhong;
@@ -18,5 +19,13 @@ public class DataManager {
 
     public static void setUserName(String userName) {
         DataManager.userName = userName;
+    }
+    
+    public static boolean isThanhToan() {
+        return thanhToan;
+    }
+
+    public static void setThanhToan(boolean thanhToan) {
+        DataManager.thanhToan = thanhToan;
     }
 }
