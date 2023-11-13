@@ -68,17 +68,19 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		panel.add(txtPassword);
 
 		btnLogin = new JButton("Đăng Nhập");
-		btnLogin.setBounds(60, 175, 200, 35);
+		btnLogin.setBounds(60, 175, 200, 40);
 		btnLogin.setFont(new Font("Arial", Font.BOLD, 18));
 		btnLogin.setForeground(Color.white);
 		btnLogin.setBackground(Color.black);
+		btnLogin.setBorder(new RoundedBorder(5));
 		panel.add(btnLogin);
 
 		btnQuenMatKhau = new JButton("Quên Mật Khẩu?");
-		btnQuenMatKhau.setBounds(90, 220, 130, 20);
-		btnQuenMatKhau.setFont(new Font("Arial", Font.PLAIN, 10));
+		btnQuenMatKhau.setBounds(90, 240, 130, 25);
+		btnQuenMatKhau.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnQuenMatKhau.setForeground(Color.black);
 		btnQuenMatKhau.setBackground(Color.white);
+		btnQuenMatKhau.setBorder(new RoundedBorder(5));
 		panel.add(btnQuenMatKhau);
 
 		lblKaeaoke= new JLabel("KARAOKE 4T");
@@ -107,7 +109,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		hinhgt1 = new ImageIcon(newImage1);
 		label1.setIcon(hinhgt1);
 		panel.add(label1);
-		this.add(panel);
+		getContentPane().add(panel);
 		// nhấp nháy 
         txtUsername.addFocusListener(new FocusListener() { // Thêm FocusListener
             @Override

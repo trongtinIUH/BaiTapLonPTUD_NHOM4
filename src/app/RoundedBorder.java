@@ -28,7 +28,7 @@ public class RoundedBorder implements Border {
         this.pointerSize = 1; // Khởi tạo pointerSize
         this.strokePad = 1; // Khởi tạo strokePad
         this.radii = 10.0; // Khởi tạo radii
-        this.color = Color.BLACK; // Khởi tạo color
+        this.color = new Color(0, 0, 0, 0); // Khởi tạo color
         this.stroke = new BasicStroke(1); // Khởi tạo stroke
     }
 
@@ -73,7 +73,3 @@ public class RoundedBorder implements Border {
         g2.draw(area);
     }
 }
-
-
-
-

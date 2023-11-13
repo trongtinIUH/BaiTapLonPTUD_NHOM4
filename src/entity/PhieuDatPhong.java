@@ -22,6 +22,7 @@ public class PhieuDatPhong implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public PhieuDatPhong(Phong phong, KhachHang khachHang, LocalDateTime ngayGioDatPhong, LocalDateTime ngayGioNhanPhong,
 			int soNguoiHat) {
 		super();

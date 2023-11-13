@@ -34,7 +34,7 @@ public class PhieuDatPhong_dao {
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
-				Phong p = new Phong(rs.getString(2));
+				Phong p = new Phong(rs.getString(3));
 				NhanVien nv = new NhanVien(rs.getString(3));
 				KhachHang kh = new KhachHang(rs.getString(4));
 	            LocalDateTime ngayGioDatPhong = rs.getTimestamp("ngayGioDatPhong").toLocalDateTime();
@@ -59,6 +59,61 @@ public class PhieuDatPhong_dao {
 		Connection con = ConnectDB.getConnection();
 		try {
 			String sql = "select * from PhieuDatPhong where maPhong = '" + maPhong + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				Phong p = new Phong(rs.getString(2));
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngayGioNhanPhong = rs.getTimestamp(6).toLocalDateTime();
+				pdp = new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return pdp;
+	}
+	public PhieuDatPhong getPhieuDatPhongTheoMaPDP(String maPhieu) {
+		PhieuDatPhong pdp = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from PhieuDatPhong where maPhieu = '" + maPhieu + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				Phong p = new Phong(rs.getString(2));
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngayGioNhanPhong = rs.getTimestamp(6).toLocalDateTime();
+				pdp = new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return pdp;
+	}
+	
+	public PhieuDatPhong getPhieuDatPhongTheoMaKH(String maKhachHang) {
+		PhieuDatPhong pdp = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from PhieuDatPhong where maKhachHang = '" + maKhachHang + "'";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
@@ -225,6 +280,28 @@ public class PhieuDatPhong_dao {
 		    return pdp;
 		
 	}
+		// xóa phiếu đặt phòng khi hủy phòng chờ
+		public boolean xoaPhieuDatPhongTheoMa(String maPhong) {
+		    boolean result = false;
+		    try {
+		        ConnectDB.getInstance();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		    Connection con = ConnectDB.getConnection();
+		    try {
+		        String sql = "delete from PhieuDatPhong where maPhong = ?";
+		        PreparedStatement stm = con.prepareStatement(sql);
+		        stm.setString(1, maPhong);
+		        int rows = stm.executeUpdate();
+		        if (rows > 0) {
+		            result = true;
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		    return result;
+		}
 }
 
 

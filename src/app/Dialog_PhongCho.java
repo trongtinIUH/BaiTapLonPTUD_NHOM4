@@ -2,6 +2,7 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
@@ -23,6 +24,7 @@ import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
+import entity.Enum_TrangThai;
 import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
@@ -35,7 +37,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel lblPhong,lblGia,lblTrangThai, lblThoiGianHat, lblSoNguoi, lblLoai,lblLoai_1,lblPhong_1,lblgia_1;
-	private JButton btnThemDV,btn_HuyPhong;
+	private JButton btnNhanPhong,btn_HuyPhong;
 	
 	private Phong_dao p_dao = new Phong_dao();
 	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
@@ -76,30 +78,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		
-		System.out.println(maPhong);
-		pdp = pdp_dao.getPhieuDatPhongTheoMa(maPhong);
-		p = p_dao.getPhongTheoMaPhong(maPhong);
-		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
-		kh=kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
-	
-		if (pdp != null) {
-		    // Thực hiện các thao tác trên pdp
-		     songuoihat = pdp.getSoNguoiHat();
-		     dongia = lp.getDonGiaTheoGio();
-		  // Định dạng đơn giá theo định dạng tiền tệ Việt Nam
-		     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-		     donGiaFormatted = currencyFormat.format(dongia);
-		     
-		    ngayGioDatPhong =  pdp.getNgayGioDatPhong();
-		    ngayGioNhanPhong = pdp.getNgayGioNhanPhong();
-		      
-		      hotenKH=kh.getHoTen();
-		    
-		    // ...
-		} else {
-		    // Xử lý trường hợp không tìm thấy phiếu đặt phòng
-			JOptionPane.showMessageDialog(this, "không tìm thấy mã");
-		}
+		laydulieu(maPhong);
 		
 		
 		//các lbl góc trái-----------------------------------------------------------------------
@@ -151,14 +130,14 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 		getContentPane().add(lblgia_1);
 		
 		//nút button---------------------------------------------------------------------------
-		btnThemDV = new JButton("Nhận Phòng");
-		btnThemDV.setBounds(40, 335, 300, 40);
-		btnThemDV.setForeground(Color.WHITE);
-		btnThemDV.setFont(new Font("Arial", Font.BOLD, 18));
-		btnThemDV.setBackground(new Color(33,167,38,255));
-		btnThemDV.setBorder(new RoundedBorder(60));
+		btnNhanPhong = new JButton("Nhận Phòng");
+		btnNhanPhong.setBounds(40, 335, 300, 40);
+		btnNhanPhong.setForeground(Color.WHITE);
+		btnNhanPhong.setFont(new Font("Arial", Font.BOLD, 18));
+		btnNhanPhong.setBackground(new Color(33,167,38,255));
+		btnNhanPhong.setBorder(new RoundedBorder(60));
 //		btnThemDV.setBorderPainted(false);
-		getContentPane().add(btnThemDV);
+		getContentPane().add(btnNhanPhong);
 		
 		btn_HuyPhong = new JButton("Hủy Phòng");
 		btn_HuyPhong.setBounds(40, 380, 300, 40);
@@ -257,39 +236,70 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
         
 		// thêm sự kiện  button
 		btn_HuyPhong.addActionListener(this);
-		btnThemDV.addActionListener(this);
+		btnNhanPhong.addActionListener(this);
 		
-		//loadData(maPhong);
+	
 	}
 
-	public void loadData(String mp) {
-	    // Lấy thông tin phiếu đặt phòng cho phòng được chọn
-		pdp= new PhieuDatPhong();
-	    pdp=pdp_dao.timThongTinPhieuDatPhongTheoMaPhong(mp);
-	    if(pdp != null) {
-	        // Hiển thị thông tin phiếu đặt phòng lên giao diện
-	        // Chuyển đổi java.sql.Date sang java.time.LocalDateTime
-	        LocalDateTime ngayGioDatPhong = pdp.getNgayGioDatPhong().toLocalDate().atStartOfDay();
-	        LocalDateTime ngayGioNhanPhong = pdp.getNgayGioNhanPhong().toLocalDate().atStartOfDay();
-	        lblPhong_1.setText(pdp.getPhong().getMaPhong());
-	        lblLoai_1.setText(pdp.getPhong().getLoaiPhong().getTenLoaiPhong());
-	        lbl_SoNguoi_1.setText(String.valueOf(pdp.getSoNguoiHat()));
-	        dateTimePicker.setDateTimePermissive(ngayGioDatPhong);
-	        dateTimePicker.setDateTimePermissive(ngayGioNhanPhong);
-	        lblgia_1.setText(String.valueOf(pdp.getPhong().getLoaiPhong().getDonGiaTheoGio()));
-	        lbl_KhachHang_1.setText(pdp.getKhachHang().getHoTen());
-	    } else {
-	        JOptionPane.showMessageDialog(this, "Không tìm thấy");
-	    }
-	}
+
 
 	
 
+public void laydulieu(String maPhong) {
+	pdp = pdp_dao.getPhieuDatPhongTheoMa(maPhong);
+	p = p_dao.getPhongTheoMaPhong(maPhong);
+	lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+	kh=kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
 
+	if (pdp != null) {
+	    // Thực hiện các thao tác trên pdp
+	     songuoihat = pdp.getSoNguoiHat();
+	     dongia = lp.getDonGiaTheoGio();
+	  // Định dạng đơn giá theo định dạng tiền tệ Việt Nam
+	     NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+	     donGiaFormatted = currencyFormat.format(dongia);
+	     
+	    ngayGioDatPhong =  pdp.getNgayGioDatPhong();
+	    ngayGioNhanPhong = pdp.getNgayGioNhanPhong();
+	      
+	      hotenKH=kh.getHoTen();
+	    
+	    // ...
+	} else {
+	    // Xử lý trường hợp không tìm thấy phiếu đặt phòng
+		JOptionPane.showMessageDialog(this, "không tìm thấy mã");
+	}
+}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o.equals(btnNhanPhong)) {
+			// nhận phòng chuyển qua 
+		}
+		
+		else if(o.equals(btn_HuyPhong)) {
+			int tb = JOptionPane.showConfirmDialog(null, "Bạn có muốn Hủy Phòng chờ?", "Hủy phòng chờ", JOptionPane.YES_NO_OPTION);
+			if (tb == JOptionPane.YES_OPTION) {
+				JOptionPane.showMessageDialog(this, "Phòng hủy thành công!");
+				pdp_dao.xoaPhieuDatPhongTheoMa(lblPhong_1.getText());
+				DataManager.setDatPhongCho(true);
+				Enum_TrangThai trangThai = Enum_TrangThai.Trống;
+				Phong phong = new Phong(lblPhong_1.getText(), trangThai);
+				p_dao.updatePhong(phong, lblPhong_1.getText());
+				setVisible(false);	
+				
+				
+		        Window[] windows = Window.getWindows();
+		        for (Window window : windows) {
+		            if (window instanceof JDialog) {
+		                window.dispose();
+		            }
+		        }
+			}
+			
+		}
+
 		
 	}
 }

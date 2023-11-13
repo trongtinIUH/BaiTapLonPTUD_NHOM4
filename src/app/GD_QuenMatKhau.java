@@ -58,68 +58,71 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 		
 		//SDT
 		    lblSDT = new JLabel("Số Điện Thoại");
-		    lblSDT.setFont(new Font("Arial", Font.BOLD, 12));
-	        lblSDT.setBounds(10, 80, 80, 20);
+		    lblSDT.setFont(new Font("Arial", Font.BOLD, 15));
+	        lblSDT.setBounds(5, 80, 110, 25);
 	        lblSDT.setForeground(Color.white);
 	        panel.add(lblSDT); 
 	        
 	        txtSDT = new JTextField(20);
-	        txtSDT.setBounds(130, 80, 400, 20);
+	        txtSDT.setBounds(130, 80, 300, 25);
 	        panel.add(txtSDT);
 	        
 		//OTP
 		    lblOTP = new JLabel("Mã OTP");
 		    lblOTP.setFont(new Font("Arial", Font.BOLD, 12));
-		    lblOTP.setBounds(10, 110, 80, 20);
+		    lblOTP.setBounds(5, 120, 110, 25);
 		    lblOTP.setForeground(Color.white);
 	        panel.add(lblOTP); 
 	        
 	        txtOTP = new JTextField(20);
 	        txtOTP.setEditable(false);
-	        txtOTP.setBounds(130, 110, 300, 20);
+	        txtOTP.setBounds(130, 120, 300, 25);
 	        panel.add(txtOTP);
 	        
 	        btnOTP = new JButton("Mã OTP");
-	        btnOTP.setBounds(430, 110, 100, 20);
-	        btnOTP.setFont(new Font("Arial", Font.BOLD, 12));
+	        btnOTP.setBounds(435, 120, 100, 25);
+	        btnOTP.setFont(new Font("Arial", Font.BOLD, 14));
 	        btnOTP.setForeground(Color.black);
 	        btnOTP.setBackground(new Color(64,224,208));
+	        btnOTP.setBorder(new RoundedBorder(5));
 			panel.add(btnOTP);
 			
 		//MK mới
 		    lblMatKhauMoi = new JLabel("Nhập MK Mới");
 		    lblMatKhauMoi.setFont(new Font("Arial", Font.BOLD, 12));
-		    lblMatKhauMoi.setBounds(10, 140, 80, 20);
+		    lblMatKhauMoi.setBounds(5, 160, 110, 25);
 		    lblMatKhauMoi.setForeground(Color.white);
 	        panel.add(lblMatKhauMoi); 
 	        
 	        txtPassword = new JPasswordField(20);
-	        txtPassword.setBounds(130, 140, 300, 20);
+	        txtPassword.setBounds(130, 160, 300, 25);
 	        panel.add(txtPassword);
 			
 		    lblNhapLaiMatKhauMoi = new JLabel("Nhập Lại MK");
 		    lblNhapLaiMatKhauMoi.setFont(new Font("Arial", Font.BOLD, 12));
-		    lblNhapLaiMatKhauMoi.setBounds(10, 170, 80, 20);
+		    lblNhapLaiMatKhauMoi.setBounds(5, 200, 120, 25);
 		    lblNhapLaiMatKhauMoi.setForeground(Color.white);
 	        panel.add(lblNhapLaiMatKhauMoi); 
 	        
 	        txtPassword_New= new JPasswordField(20);
-	        txtPassword_New.setBounds(130, 170, 300, 20);
+	        txtPassword_New.setBounds(130, 200, 300, 25);
 	        panel.add(txtPassword_New);
 	        
 	       
 	         btnXacNhan = new JButton("Xác Nhận");
-	        btnXacNhan.setBounds(130, 210, 100, 30);
-	        btnXacNhan.setFont(new Font("Arial", Font.BOLD, 13));
+	        btnXacNhan.setBounds(130, 240, 140, 35);
+	        btnXacNhan.setFont(new Font("Arial", Font.BOLD, 18));
 	        btnXacNhan.setForeground(Color.black);
 	        btnXacNhan.setBackground(new Color(064,224,208));
+	        btnXacNhan.setBorder(new RoundedBorder(5));
 			panel.add(btnXacNhan);
 			
 	         btnHuy = new JButton("Hủy");
-	        btnHuy.setBounds(300, 210, 100, 30);
-	        btnHuy.setFont(new Font("Arial", Font.BOLD, 13));
+	        btnHuy.setBounds(290, 240, 140, 35);
+	        btnHuy.setFont(new Font("Arial", Font.BOLD, 18));
 	        btnHuy.setForeground(Color.black);
 	        btnHuy.setBackground(Color.white);
+	        btnHuy.setBorder(new RoundedBorder(5));
 			panel.add(btnHuy);
 	        
 	        
