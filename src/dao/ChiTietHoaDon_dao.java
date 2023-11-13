@@ -27,7 +27,7 @@ public class ChiTietHoaDon_dao {
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
-				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getDouble(3)));
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getDate(3), rs.getDate(4), rs.getDouble(5)));
 			}
 			
 		} catch (Exception e) {
@@ -50,7 +50,7 @@ public class ChiTietHoaDon_dao {
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
-				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getDouble(3)));
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getDate(3), rs.getDate(4), rs.getDouble(5)));
 			}
 			
 		} catch (Exception e) {

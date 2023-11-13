@@ -78,4 +78,31 @@ public class ThongKe_dao {
 		}
 		return yearLists;
 	}
+	
+	public ArrayList<ModelThongKe> updateCboMonth(){
+		ArrayList<ModelThongKe> lists = new ArrayList<ModelThongKe>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select MONTH(ngayLapHoaDon) as thang "
+					+ "from HoaDonDatPhong "
+					+ "group by Month(ngayLapHoaDon)";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				ModelThongKe modelTK = new ModelThongKe();
+				modelTK.setMonth(rs.getString(1));
+				lists.add(modelTK);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return lists;
+	}
 }

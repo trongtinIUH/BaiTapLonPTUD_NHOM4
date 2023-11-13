@@ -1,12 +1,13 @@
 package app;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.util.Properties;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,13 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
-
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.SqlDateModel;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
@@ -33,16 +31,14 @@ import dao.KhuyenMai_dao;
 import dao.Phong_dao;
 import dao.ThongKe_dao;
 import entity.CurveLineChart;
-import entity.DateLabelFormatter;
 import entity.DoanhThuLoaiPhong;
 import entity.HoaDonDatPhong;
 import entity.ModelChart;
 import entity.ModelPieChart;
 import entity.ModelThongKe;
-import entity.MonthLabelFormatter;
 import entity.PieChart;
 
-public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener {
+public class GD_ThongKe extends JPanel implements ActionListener{
 	/**
 	 * 
 	 */
@@ -54,12 +50,8 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	private JScrollPane scroll;
 	JLabel lblTitle, lblThongKe, lblLoaihinhTK, lblDate, lblTongDoanhThu, lblChartTitle,
 	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu, lblYearStart, lblYearEnd;
-	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd;
+	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd, cbYear, cbMonth;
 	JButton btnThongKe, btnLamMoi, btnInTK, btnProfile;
-	private SqlDateModel modelNgaylap, modelMonth;
-	private Properties p, m;
-	private JDatePanelImpl datePanel, monthPanel;
-	private JDatePickerImpl datePicker, monthPicker;
 	private HoaDon_dao hoadon_dao;
 	private KhachHang_dao khachhang_dao;
 	private Phong_dao phong_dao;
@@ -72,6 +64,11 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	private CurveLineChart lineChart;
 	private ThongKe_dao thongke_dao;
 	private Dialog_User dialog_user;
+
+	private LocalDateTime now;
+	private DateTimePicker dateTimePicker;
+	private TimePickerSettings timeSettings;
+	private DatePickerSettings dateSettings;
 	public GD_ThongKe() {
 		dialog_user = new Dialog_User();
 		df = new DecimalFormat("#,###,### VNĐ");
@@ -170,40 +167,52 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		pnContent.add(lblDate = new JLabel("Chọn ngày"));
 		lblDate.setFont(new Font("Arial", Font.BOLD, 18));
 		lblDate.setBounds(15, 20, 120, 34);
+		
+		now = LocalDateTime.now();
 
-//		Model Ngay
-		modelNgaylap = new SqlDateModel();
-		p = new Properties();
-		p.put("text.today", "Today");
-		p.put("text.month", "Month");
-		p.put("text.year", "Year");
-		datePanel = new JDatePanelImpl(modelNgaylap, p);
-		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		datePicker.setBounds(208, 26, 164, 34);
-		datePicker.setPreferredSize(new Dimension(164, 34));
-		datePicker.setBackground(Color.white);
-		datePicker.setToolTipText("Chọn ngày lập hóa đơn");
-		modelNgaylap.setDate(2023, 5, 10);
-		modelNgaylap.setSelected(true);
+        dateSettings = new DatePickerSettings();
+        dateSettings.setLocale(new Locale("vi","VN")); // Set the locale to English
+        dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
+
+        timeSettings = new TimePickerSettings();
+        timeSettings.setDisplaySpinnerButtons(true);
+
+	    dateTimePicker = new DateTimePicker(dateSettings, timeSettings);
+	    dateTimePicker.getTimePicker().setVisible(false);
+	    dateTimePicker.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    dateTimePicker.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    dateTimePicker.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
+	    dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
+	    dateTimePicker.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
+	    dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+	    dateTimePicker.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+	    dateTimePicker.timePicker.setBounds(141, 0, 80, 25);
+	    dateTimePicker.datePicker.setBounds(0, 0, 136, 25);
+	    dateTimePicker.getTimePicker().setBounds(150, 0, 110, 25);
+	    dateTimePicker.getTimePicker().setLayout(null);
+	    dateTimePicker.getTimePicker().setBackground(Color.white);
+	    dateTimePicker.getDatePicker().setBounds(0, 0, 136, 25);
+	    dateTimePicker.setDateTimePermissive(now);
+	    dateTimePicker.setBackground(Color.white);
+	    dateTimePicker.setBackground(Color.white);
+
+	    // Add the DateTimePicker to your user interface, e.g. to a JPanel
+	    // panel.add(dateTimePicker);
+	    dateTimePicker.setBounds(208, 20, 164, 34);
+	    pnContent.add(dateTimePicker);
+	    
+	    cbMonth = new JComboBox<String>();
+	    cbMonth.setFont(new Font("Arial", Font.PLAIN, 18));
+	    cbMonth.setVisible(false);
+	    cbMonth.setBounds(208, 20, 80, 34);
+	    pnContent.add(cbMonth);
+	    
+	    cbYear = new JComboBox<String>();
+	    cbYear.setFont(new Font("Arial", Font.PLAIN, 18));
+	    cbYear.setVisible(false);
+	    cbYear.setBounds(308, 20, 84, 34);
+	    pnContent.add(cbYear);
 		
-//		Model Month
-		modelMonth = new SqlDateModel();
-		m = new Properties();
-		m.put("text.month", "Month");
-		m.put("text.year", "Year");
-		monthPanel = new JDatePanelImpl(modelMonth, m);
-		monthPicker = new JDatePickerImpl(monthPanel, new MonthLabelFormatter());
-		monthPicker.setBounds(208, 26, 164, 34);
-		monthPicker.setPreferredSize(new Dimension(164, 34));
-		monthPicker.setBackground(Color.white);
-		monthPicker.setToolTipText("Chọn ngày lập hóa đơn");
-		modelMonth.setMonth(5);
-		modelMonth.setYear(2023);
-		modelMonth.setSelected(true);
-		monthPicker.setVisible(false);
-		
-		pnContent.add(datePicker);
-		pnContent.add(monthPicker);
 		JPanel pnLine = new JPanel();
 		pnLine.setBounds(0, 71, 400, 2);
 		pnLine.setBackground(Color.decode("#CCCCCC"));
@@ -294,13 +303,35 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		pnCurveLineChart.setVisible(false);
 		add(pnCurveLineChart);
 		add(pnNorth);
-		modelNgaylap.addChangeListener(this);
-		modelMonth.addChangeListener(this);
+		
+		dateTimePicker.addDateTimeChangeListener(event -> {
+		    clearDataDoanhThuTheoNgay();
+		    loadDataDoanhThuTheoNgay(); 
+		    try {
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // adjust this pattern to match your SQL Server date/time format
+		        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+
+		        DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(formattedDateTime);
+		        if(dtlp != null) {
+		            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
+		            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
+		        }
+		        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
+		    } catch (Exception e2) {
+		        e2.printStackTrace();
+		    }
+		    if(model.getRowCount() <= 0) {
+		    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+		        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+		    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
+		    }
+		});
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnInTK.addActionListener(this);
 		btnProfile.addActionListener(this);
 		updateYearCbo();
+		updateMonthYearCbo();
 	}
 	
 	public void setCurveLineChartData() {
@@ -314,10 +345,12 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	}
 	
 	public void loadDataDoanhThuTheoNgay() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // adjust this pattern to match your SQL Server date/time format
+		String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
 		double tongDoanhThu = 0;
 		double doanhThuDV = 0;
 		int i = 0;
-		for (HoaDonDatPhong hd : hoadon_dao.getHoaDonTheoNgayLapHD(modelNgaylap.getValue().toString())) {
+		for (HoaDonDatPhong hd : hoadon_dao.getHoaDonTheoNgayLapHD(formattedDateTime)) {
 			i++;
 			tongDoanhThu += hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
 					chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
@@ -344,85 +377,69 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 	public void clearDataDoanhThuTheoNgay() {
 		model.setRowCount(0);
 	}
-
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource().equals(modelNgaylap)) {
-			clearDataDoanhThuTheoNgay();
-		    loadDataDoanhThuTheoNgay(); 
-		    try {
-		    	DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(modelNgaylap.getValue().toString());
+	
+	private void ThongKeMonth() {
+		pieChart.setSelectedIndex(-1);
+		  pieChart.clearData();
+		  String m = cbMonth.getSelectedItem().toString();
+		  int year = Integer.parseInt(cbYear.getSelectedItem().toString());
+		  double tongDoanhThu = 0;
+		  double doanhThuDV = 0;
+			int i = 0;
+			for (HoaDonDatPhong hd : hoadon_dao.getHoaDonTheoThang(m, year)) {
+				i++;
+				tongDoanhThu += hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
+						chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
+						khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()));
+				doanhThuDV += chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon());
+				Object[] row = { i, hd.getMaHoaDon(), 
+				hd.getNgayLapHoaDon(),
+				khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
+				khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getSoDienThoai(),
+				khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()),
+				df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
+				chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
+				khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
+				)),
+				hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+				};
+				model.addRow(row);
+			}
+			lblTongDoanhThu.setText(df.format(tongDoanhThu));
+			lblDoanhThuDichVu.setText(df.format(doanhThuDV));
+			lblTongHoaDon.setText(i+"");
+			try {
+		    	DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoThang(m, year);
 			    if(dtlp != null) {
 			    	lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
 				    lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
+				    if(dtlp.getDoanhThuPhongThuong() > 0) {
+				    	pieChart.addData(new ModelPieChart("Doanh thu phòng thường", dtlp.getDoanhThuPhongThuong(), new Color(23, 126, 238)));
+				    }
+					if(dtlp.getDoanhThuPhongVIP() > 0) {
+						pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
+					}
 			    }
-			    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(modelNgaylap.getValue().toString())+"");
+			    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoThang(m, year)+"");
 		    } catch (Exception e2) {
 		    	e2.printStackTrace();
 			}
-		  }else if(e.getSource().equals(modelMonth)) {
-			  pieChart.setSelectedIndex(-1);
-			  pieChart.clearData();
-			  int month = modelMonth.getMonth() + 1;
-			  String m = "";
-			  if(month < 10) {
-				  m = "0" + month;
-			  } else {
-				  m = month+"";
-			  }
-			  int year = modelMonth.getYear();
-			  double tongDoanhThu = 0;
-				double doanhThuDV = 0;
-				int i = 0;
-				for (HoaDonDatPhong hd : hoadon_dao.getHoaDonTheoThang(m, year)) {
-					i++;
-					tongDoanhThu += hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-							chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
-							khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()));
-					doanhThuDV += chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon());
-					Object[] row = { i, hd.getMaHoaDon(), 
-					hd.getNgayLapHoaDon(),
-					khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
-					khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getSoDienThoai(),
-					khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()),
-					df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-					chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
-					khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-					)),
-					hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
-					};
-					model.addRow(row);
-				}
-				lblTongDoanhThu.setText(df.format(tongDoanhThu));
-				lblDoanhThuDichVu.setText(df.format(doanhThuDV));
-				lblTongHoaDon.setText(i+"");
-				try {
-			    	DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoThang(m, year);
-				    if(dtlp != null) {
-				    	lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
-					    lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
-					    if(dtlp.getDoanhThuPhongThuong() > 0) {
-					    	pieChart.addData(new ModelPieChart("Doanh thu phòng thường", dtlp.getDoanhThuPhongThuong(), new Color(23, 126, 238)));
-					    }
-						if(dtlp.getDoanhThuPhongVIP() > 0) {
-							pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
-						}
-				    }
-				    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoThang(m, year)+"");
-			    } catch (Exception e2) {
-			    	e2.printStackTrace();
-				}
-				if(doanhThuDV > 0) {
-					pieChart.addData(new ModelPieChart("Doanh thu dịch vụ", doanhThuDV, new Color(47, 157, 64)));
-				}
-		  }
+			if(doanhThuDV > 0) {
+				pieChart.addData(new ModelPieChart("Doanh thu dịch vụ", doanhThuDV, new Color(47, 157, 64)));
+			}
 	}
 	
 	public void updateYearCbo() {
 		for (ModelThongKe tk: thongke_dao.updateCboYear()) {
 			cbYearStart.addItem(tk.getYear());
 			cbYearEnd.addItem(tk.getYear());
+			cbYear.addItem(tk.getYear());
+		}
+	}
+	
+	public void updateMonthYearCbo() {
+		for (ModelThongKe tk: thongke_dao.updateCboMonth()) {
+			cbMonth.addItem(tk.getMonth());
 		}
 	}
 	
@@ -448,10 +465,16 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 				pnCurveLineChart.setVisible(false);
 				pnPieChart.setVisible(false);
 				lblDate.setText("Chọn ngày");
-				datePicker.setVisible(true);
-				monthPicker.setVisible(false);
+				dateTimePicker.setVisible(true);
+				cbMonth.setVisible(false);
+				cbYear.setVisible(false);
 				pnTable.setVisible(true);
 				resetField();
+				if(model.getRowCount() <= 0) {
+			    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+			        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+			    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
+			    }
 			} else if (cbDate.getSelectedItem().equals("Tháng")) {
 				pnContent.setVisible(true);
 				cbYearStart.setEnabled(false);
@@ -459,11 +482,18 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 				pnCurveLineChart.setVisible(false);
 				pnPieChart.setVisible(true);
 				lblDate.setText("Chọn tháng");
-				monthPicker.setVisible(true);
+				cbMonth.setVisible(true);
+				cbYear.setVisible(true);
 				pnPieChart.setVisible(true);
-				datePicker.setVisible(false);
+				dateTimePicker.setVisible(false);
 				pnTable.setVisible(false);
 				resetField();
+				ThongKeMonth();
+				if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
+					JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của tháng: "
+					+ cbMonth.getSelectedItem() + " năm: " + cbYear.getSelectedItem()
+					);
+				}
 			} else if(cbDate.getSelectedItem().equals("Năm")) {
 				pnPieChart.setVisible(false);;
 				cbYearStart.setEnabled(true);

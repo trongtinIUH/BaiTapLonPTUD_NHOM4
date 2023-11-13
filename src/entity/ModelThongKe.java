@@ -3,12 +3,19 @@ package entity;
 import java.util.Objects;
 
 public class ModelThongKe {
+	private String month;
 	private String year;
 	private double tongDoanhThu;
 	private double doanhThuPhong;
 	private double doanhThuDichVu;
 	public String getYear() {
 		return year;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
 	}
 	public void setYear(String year) {
 		this.year = year;
@@ -42,6 +49,8 @@ public class ModelThongKe {
 		super();
 		this.year = year;
 	}
+	
+	
 	public ModelThongKe() {
 		super();
 	}

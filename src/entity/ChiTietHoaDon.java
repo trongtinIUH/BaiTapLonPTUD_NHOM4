@@ -1,6 +1,8 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 
 public class ChiTietHoaDon implements Serializable {
 
@@ -10,17 +12,9 @@ public class ChiTietHoaDon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private HoaDonDatPhong hoaDon;
 	private Phong phong;
+	private Date gioNhanPhong;
+	private Date gioTraPhong;
 	private double soGioHat;
-	public ChiTietHoaDon() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public ChiTietHoaDon(HoaDonDatPhong hoaDon, Phong phong, double soGioHat) {
-		super();
-		this.hoaDon = hoaDon;
-		this.phong = phong;
-		this.soGioHat = soGioHat;
-	}
 	public HoaDonDatPhong getHoaDon() {
 		return hoaDon;
 	}
@@ -33,20 +27,57 @@ public class ChiTietHoaDon implements Serializable {
 	public void setPhong(Phong phong) {
 		this.phong = phong;
 	}
+	public Date getGioNhanPhong() {
+		return gioNhanPhong;
+	}
+	public void setGioNhanPhong(Date gioNhanPhong) {
+		this.gioNhanPhong = gioNhanPhong;
+	}
+	public Date getGioTraPhong() {
+		return gioTraPhong;
+	}
+	public void setGioTraPhong(Date gioTraPhong) {
+		this.gioTraPhong = gioTraPhong;
+	}
 	public double getSoGioHat() {
 		return soGioHat;
-	}
-	public void setSoGioHat(double soGioHat) {
-		this.soGioHat = soGioHat;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public ChiTietHoaDon(HoaDonDatPhong hoaDon, Phong phong, Date gioNhanPhong, Date gioTraPhong, double soGioHat) {
+		super();
+		this.hoaDon = hoaDon;
+		this.phong = phong;
+		this.gioNhanPhong = gioNhanPhong;
+		this.gioTraPhong = gioTraPhong;
+		this.soGioHat = soGioHat;
+	}
+	public ChiTietHoaDon() {
+		super();
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(gioNhanPhong, gioTraPhong, hoaDon, phong, soGioHat);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChiTietHoaDon other = (ChiTietHoaDon) obj;
+		return Objects.equals(gioNhanPhong, other.gioNhanPhong) && Objects.equals(gioTraPhong, other.gioTraPhong)
+				&& Objects.equals(hoaDon, other.hoaDon) && Objects.equals(phong, other.phong)
+				&& Double.doubleToLongBits(soGioHat) == Double.doubleToLongBits(other.soGioHat);
+	}
 	@Override
 	public String toString() {
-		return String.format("ChiTietHoaDon [hoaDon=%s, phong=%s, soGioHat=%s]", hoaDon, phong, soGioHat);
+		return "ChiTietHoaDon [hoaDon=" + hoaDon + ", phong=" + phong + ", gioNhanPhong=" + gioNhanPhong
+				+ ", gioTraPhong=" + gioTraPhong + ", soGioHat=" + soGioHat + "]";
 	}
 	
-	
-
 }

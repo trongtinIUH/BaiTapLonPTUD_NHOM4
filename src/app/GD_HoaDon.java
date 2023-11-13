@@ -1,7 +1,6 @@
 package app;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,12 +8,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -35,9 +34,10 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.SqlDateModel;
+
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
@@ -48,7 +48,6 @@ import dao.Phong_dao;
 import dao.SanPham_dao;
 import entity.ChiTietDichVu;
 import entity.ChiTietHoaDon;
-import entity.DateLabelFormatter;
 import entity.HoaDonDatPhong;
 
 
@@ -70,10 +69,6 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private JButton btnXoa, btnSua, btnTimKiem, btnXuatDSHD, btnProfile;
 	private JComboBox<String> cbTrangThai, cbTimKiem;
 	private JTextField txtMaHD, txtTenKH, txtMaNV, txtKhuyenMai, txtTongTien, txtTimKiem;
-	private SqlDateModel modelNgaylap;
-	private Properties p;
-	private JDatePanelImpl datePanel;
-	private JDatePickerImpl datePicker;
 	private HoaDon_dao hoadon_dao;
 	private KhachHang_dao khachhang_dao;
 	private Phong_dao phong_dao;
@@ -84,6 +79,10 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private XSSFWorkbook wordbook;
 	private DecimalFormat df;
 	private Dialog_User dialog_user = new Dialog_User();
+	private LocalDateTime now;
+	private DateTimePicker dateTimePicker;
+	private TimePickerSettings timeSettings;
+	private DatePickerSettings dateSettings;
 	public GD_HoaDon() {
 		df = new DecimalFormat("#,###,### VNĐ");
 		hoadon_dao = new HoaDon_dao();
@@ -156,20 +155,40 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		pnOrderInfo.add(lblNgayLapHD = new JLabel("Ngày lập hóa đơn"));
 		lblNgayLapHD.setFont(new Font("Arial", Font.BOLD, 18));
 		lblNgayLapHD.setBounds(10, 181, 170, 34);
-		modelNgaylap = new SqlDateModel();
-		p = new Properties();
-		p.put("text.today", "Today");
-		p.put("text.month", "Month");
-		p.put("text.year", "Year");
-		datePanel = new JDatePanelImpl(modelNgaylap, p);
-		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		datePicker.setBounds(187, 185, 164, 34);
-		datePicker.setPreferredSize(new Dimension(164, 34));
-		datePicker.setBackground(Color.white);
-		datePicker.setToolTipText("Chọn ngày lập hóa đơn");
-		modelNgaylap.setDate(2023, 26, 10);
-		modelNgaylap.setSelected(true);
-		pnOrderInfo.add(datePicker);
+		
+		now = LocalDateTime.now();
+
+	        dateSettings = new DatePickerSettings();
+        dateSettings.setLocale(new Locale("vi","VN")); // Set the locale to Vietnam
+        dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
+
+        timeSettings = new TimePickerSettings();
+        timeSettings.setDisplaySpinnerButtons(true);
+
+        dateTimePicker = new DateTimePicker(dateSettings, timeSettings);
+        dateTimePicker.getTimePicker().setVisible(false);
+        dateTimePicker.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+        dateTimePicker.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+        dateTimePicker.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
+        dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
+        dateTimePicker.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
+        dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+        dateTimePicker.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+        dateTimePicker.timePicker.setBounds(141, 0, 80, 25);
+        dateTimePicker.datePicker.setBounds(0, 0, 136, 25);
+        dateTimePicker.getTimePicker().setBounds(150, 0, 110, 25);
+        dateTimePicker.getTimePicker().setLayout(null);
+        dateTimePicker.getTimePicker().setBackground(Color.white);
+        dateTimePicker.getDatePicker().setBounds(0, 0, 136, 25);
+        dateTimePicker.setDateTimePermissive(now);
+        dateTimePicker.setBackground(Color.white);
+        dateTimePicker.setBackground(Color.white);
+
+        // Add the DateTimePicker to your user interface, e.g. to a JPanel
+        // panel.add(dateTimePicker);
+        dateTimePicker.setBounds(187, 185, 164, 34);
+        pnOrderInfo.add(dateTimePicker);
+        
 		pnContent.add(pnOrderInfo);
 		add(pnContent);
 		
@@ -387,28 +406,29 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	}
 	
 	public void sua() {
-		if (tableOrderList.getSelectedRow() == -1) {
-			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để sửa!");
-		} else if (tableOrderList.getSelectedRowCount() > 1) {
-			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để sửa!");
-		} else {
-			String maHD = txtMaHD.getText().trim();
-			Date ngayLapHD = (Date) datePicker.getModel().getValue();
-			String trangThai = (String) cbTrangThai.getSelectedItem();
-			Boolean status = false;
-			if(trangThai.equals("Đã thanh toán")) {
-				status = true;
-			}
-			if(trangThai.equals("Chưa thanh toán")) {
-				status = false;
-			}
-			String maNV = txtMaNV.getText().trim();
-			if (hoadon_dao.updateHoaDon(maHD, ngayLapHD, status, maNV)) {
-				clearTableOrderList();
-				loadOrderListData();
-				JOptionPane.showMessageDialog(null, "Sửa thành công!");
-			}
-		}
+	    if (tableOrderList.getSelectedRow() == -1) {
+	        JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để sửa!");
+	    } else if (tableOrderList.getSelectedRowCount() > 1) {
+	        JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để sửa!");
+	    } else {
+	        String maHD = txtMaHD.getText().trim();
+	        LocalDateTime ngayLapHD = dateTimePicker.getDateTimeStrict();
+	        java.sql.Date sqlDate = java.sql.Date.valueOf(ngayLapHD.toLocalDate());
+	        String trangThai = (String) cbTrangThai.getSelectedItem();
+	        Boolean status = false;
+	        if(trangThai.equals("Đã thanh toán")) {
+	            status = true;
+	        }
+	        if(trangThai.equals("Chưa thanh toán")) {
+	            status = false;
+	        }
+	        String maNV = txtMaNV.getText().trim();
+	        if (hoadon_dao.updateHoaDon(maHD, sqlDate, status, maNV)) {
+	            clearTableOrderList();
+	            loadOrderListData();
+	            JOptionPane.showMessageDialog(null, "Sửa thành công!");
+	        }
+	    }
 	}
 	
 	public void xoa() {
@@ -626,9 +646,18 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 			txtTenKH.setText(modelOrderList.getValueAt(row, 2).toString());
 			txtMaNV.setText(modelOrderList.getValueAt(row, 3).toString());
 			try {
-				modelNgaylap.setValue((java.sql.Date) modelOrderList.getValueAt(row, 4));
+			    Object dateValue = modelOrderList.getValueAt(row, 4);
+			    LocalDateTime dateTime;
+			    if (dateValue instanceof java.sql.Timestamp) {
+			        dateTime = ((java.sql.Timestamp) dateValue).toLocalDateTime();
+			    } else if (dateValue instanceof java.sql.Date) {
+			        dateTime = ((java.sql.Date) dateValue).toLocalDate().atStartOfDay();
+			    } else {
+			        throw new IllegalArgumentException("Unsupported date type");
+			    }
+			    dateTimePicker.setDateTimeStrict(dateTime);
 			} catch (Exception e2) {
-				// TODO: handle exception
+			    // TODO: handle exception
 			}
 			cbTrangThai.setSelectedItem(modelOrderList.getValueAt(row, 5));
 			txtKhuyenMai.setText(modelOrderList.getValueAt(row, 6).toString());
