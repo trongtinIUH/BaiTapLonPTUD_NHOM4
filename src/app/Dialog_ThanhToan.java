@@ -4,6 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -21,6 +25,20 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Desktop;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
@@ -42,13 +60,12 @@ import entity.NhanVien;
 import entity.Phong;
 import entity.SanPham;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Window;
 
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Dialog_ThanhToan extends JDialog implements ActionListener {
@@ -61,13 +78,11 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private JLabel lblSDTKhach;
 	private JLabel lblTenKhach;
 	private JLabel lblTenNV;
-	private JLabel lblGioNhanPhong;
 	private JLabel lblGioTraPhong;
 	private JLabel lblTngThiLng;
 	private JLabel lbl_sdtKH_1;
 	private JLabel lbl_tenKH_1;
 	private JLabel lbl_TenNV_1;
-	private JLabel lbl_GioNhanPhong_1;
 	private JLabel lbl_GioTraPhong_1;
 	private JLabel lbl_TongThoiLuong_1;
 	
@@ -83,7 +98,6 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private JTextField txtChiecKhau;
 	private JTextField txtTienNhan;
 	private JTextField txtTienThua;
-	private JButton btnNewButton;
 	private JLabel lbl_TongThanhTien_1;
 	private JLabel lblThu_1;
 	private JLabel lblVn;
@@ -104,13 +118,10 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private SanPham_dao sp_dao;
 	private int tongTienDichVu;
 	private int tongTienPhong;
-	private String maPhong;
 	private JCheckBox chckbx_XuatHoaDon;
 	private Date tgHT;
 	private Date gioHienTai;
 	private Date phutHienTai;
-	private double soGioHat;
-	private double soPhutHat;
 	private int gioThua;
 	private double phutChinhXac;
 	private double tongSoGioHat;
@@ -120,10 +131,10 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private double thoiGian_Item;
 	private KhuyenMai_dao km_dao;
 	private JButton btnKiemTra;
+	private int xacNhan;
 	
 	
 	public Dialog_ThanhToan(String maPhong) {
-		this.maPhong = maPhong;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		setSize(800, 550);
@@ -255,8 +266,6 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		
 		int i=1;
 		tongTienPhong = 0;
-		soGioHat = 0;
-		soPhutHat = 0;
 		for(ChiTietHoaDon cthd : cthd_dao.getChiTietHoaDonTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
 			DateFormat dateFormatGio = new SimpleDateFormat("HH"); 
 			gioHienTai = new Date();
@@ -275,7 +284,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			Object[] rowPhong = {i++,cthd.getPhong().getMaPhong(), df3.format(thoiGian_Item), loaiPhong.getDonGiaTheoGio(),"", df3.format(thoiGian_Item * loaiPhong.getDonGiaTheoGio())};
 			model.addRow(rowPhong);
 			tongTienPhong += thoiGian_Item * loaiPhong.getDonGiaTheoGio();
-			
+
 			tongSoGioHat += (gioHT - gioNhanPhong);
 			tongSoPhutHat += (phutHT - phutNhanPhong);
 		}
@@ -460,8 +469,59 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		txtTienNhan.getDocument().addDocumentListener(documentListener);
 	}
 	
-	private void inHoaDon() {
-		
+	private void inHoaDon(String path) {
+		path = "D:\\BaiTapLonPTUD_NHOM4\\LuuFile_PDF\\" + path + ".pdf";
+		if (!path.matches("(.)+(\\.pdf)$")) {
+			path += ".pdf";
+		}
+		Container content = this.getContentPane();
+		int height = content.getHeight();
+		int width = content.getHeight();
+		BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = img.createGraphics();
+		content.printAll(g2d);
+		g2d.dispose();
+		try {
+			Document d = new Document();
+			PdfWriter writer = PdfWriter.getInstance(d, new FileOutputStream(path));
+			d.open();
+
+			PdfContentByte contentByte = writer.getDirectContent();
+			Image image = Image.getInstance(contentByte, scaleImage(520, height, img), 1);
+
+			PdfTemplate template = contentByte.createTemplate(width, height);
+			image.setAbsolutePosition(0, 0);
+			template.addImage(image);
+			contentByte.addTemplate(template, 0, 100);
+			d.close();
+
+			if (xacNhan == JOptionPane.YES_OPTION)
+				Desktop.getDesktop().open(new File(path));
+			else {
+				JOptionPane.showMessageDialog(this, "Xuất hóa đơn " + lbl_MaHoaDon_1.getText() + " Thành công");
+			}
+		} catch (IOException | DocumentException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Không thành công");
+		}
+		setVisible(false);
+		dispose();
+	}
+	
+	public BufferedImage scaleImage(int WIDTH, int HEIGHT, BufferedImage img) {
+		BufferedImage bi = null;
+		try {
+			ImageIcon ii = new ImageIcon(img);
+			bi = new BufferedImage(WIDTH + 210, HEIGHT - 73, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g2d = (Graphics2D) bi.createGraphics();
+			g2d.addRenderingHints(
+					new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+			g2d.drawImage(ii.getImage(), 0, 0, WIDTH, HEIGHT, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return bi;
 	}
 
 	private void thanhToan() {
@@ -492,6 +552,10 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 				double tienKhachDua = Double.parseDouble(txtTienNhan.getText().trim());
 				if(txtMaGiamGia.getText().equals(""))
 				{
+					@SuppressWarnings("deprecation")
+					java.sql.Date ngayCoDinh = new java.sql.Date(2020, 10, 10);
+					km = new KhuyenMai("NULL", "NULL", ngayCoDinh, ngayCoDinh, 0);
+					km_dao.addKhuyenMai(km);
 					HoaDonDatPhong hd_update1 = new HoaDonDatPhong(maHD, kh_update, nv, ngayLap, trangThai_ThanhToan, km, tienKhachDua);
 					hd_dao.updateHoaDon2(hd_update1);
 							
@@ -521,9 +585,10 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 				}
 				
 				JOptionPane.showMessageDialog(this, "Thanh Toán thành công");	
+				DataManager.setThanhToan(true);
 				
 				if(chckbx_XuatHoaDon.isSelected()) {
-					inHoaDon();
+					inHoaDon(lbl_MaHoaDon_1.getText());
 				}
 
 		        Window[] windows = Window.getWindows();
@@ -546,6 +611,8 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			DecimalFormat ddd = new DecimalFormat("#.#");
 			lbl_TongThanhTien_1.setText(ddd.format((Double.parseDouble(lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", "")) - 
 					Double.parseDouble(lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", ""))*km.getPhanTramKhuyenMai())) + " VNĐ");
+		}else if(maKhuyenMai.equals("")) {
+			txtMaGiamGia.setEditable(false);
 		}else {
 			JOptionPane.showMessageDialog(null, "Không tồn tại mã khuyến mãi bạn vừa nhập!!");
 			txtMaGiamGia.setText("");
