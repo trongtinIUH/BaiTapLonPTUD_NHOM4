@@ -1,4 +1,10 @@
-﻿create database QuanLyCuaHangKaraoke4T
+﻿use master
+go
+DROP DATABASE IF EXISTS QuanLyCuaHangKaraoke4T;
+
+go
+
+create database QuanLyCuaHangKaraoke4T
 go
 
 use QuanLyCuaHangKaraoke4T
@@ -82,8 +88,8 @@ CREATE TABLE PhieuDatPhong (
 	maPhong varchar(20) not null foreign key references Phong(maPhong) on delete cascade,
 	maNhanVien varchar(20) not null foreign key references NhanVien(maNhanVien) on delete cascade,
 	maKhachHang varchar(20) not null foreign key references KhachHang(maKhachHang) on delete cascade,
-    ngayGioDatPhong date not null,
-    ngayGioNhanPhong date not null,
+    ngayGioDatPhong datetime not null,
+    ngayGioNhanPhong datetime not null,
     soNguoiHat int not null,
     CONSTRAINT CHK_SoNguoiHat CHECK (soNguoiHat > 0)
 )
@@ -253,6 +259,7 @@ go
 
 
 --Khách hàng
+insert into KhachHang values ('KH00000000', N'Nguyễn Văn A', '0000000000', 1)
 insert into KhachHang values('KH231010001', N'Lương Văn Hòa', '0788343289', 1)
 insert into KhachHang values('KH231010002', N'Trần Thị Lan', '0654212611', 0)
 insert into KhachHang values('KH231010003', N'Nguyễn Chí Nam', '0433212922', 1)
@@ -280,9 +287,9 @@ insert into PhieuDatPhong values('PDP2310130001', '306', '2010002', 'KH231013001
 insert into PhieuDatPhong values('PDP2310140001', '105', '2001001', 'KH231014001', '2023-10-14 12:00:00.000', '2023-10-14 12:00:00.000', 5)
 insert into PhieuDatPhong values('PDP2310200001', '206', '2110004', 'KH231020001', '2023-10-20 07:00:00.000', '2023-10-20 21:00:00.000', 4)
 insert into PhieuDatPhong values('PDP2310150001', '403', '2311001', 'KH231015001', '2023-10-15 21:00:00.000', '2023-10-15 21:00:00.000', 10)
-insert into PhieuDatPhong values('PDP2409010001', '403', '2001001', 'KH231015001', '2024-09-01 19:00:00.000', '2024-09-01 19:00:00.000', 25)
-insert into PhieuDatPhong values('PDP2408010001', '404', '2110004', 'KH231014001', '2024-08-01 18:00:00.000', '2024-08-01 18:00:00.000', 3)
-insert into PhieuDatPhong values('PDP2407150001', '306', '2311001', 'KH231014001', '2024-07-15 17:00:00.000', '2024-07-15 17:00:00.000', 17)
+insert into PhieuDatPhong values('PDP2209010001', '403', '2001001', 'KH231015001', '2024-09-01 19:00:00.000', '2024-09-01 19:00:00.000', 25)
+insert into PhieuDatPhong values('PDP2208010001', '404', '2110004', 'KH231014001', '2024-08-01 18:00:00.000', '2024-08-01 18:00:00.000', 3)
+insert into PhieuDatPhong values('PDP2207150001', '306', '2311001', 'KH231014001', '2024-07-15 17:00:00.000', '2024-07-15 17:00:00.000', 17)
 go
 
 

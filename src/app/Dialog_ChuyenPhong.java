@@ -451,7 +451,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	}
 
 	// ---- Mã PhieuDatPhong phát sinh tự động tăng dần bắt đầu từ 0001
-	private int ThuTuKhachHangTrongNgay() {
+	private int ThuTuPhieuDatPhongTrongNgay() {
 		int sl = 1;
 		String maPDP = "";
 		for (PhieuDatPhong pdp : pdp_dao.getAllsPhieuDatPhong()) {
@@ -473,7 +473,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		String prefix = "PDP";
 		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
 		date = new Date();
-		String suffix = String.format("%04d", ThuTuKhachHangTrongNgay());
+		String suffix = String.format("%04d", ThuTuPhieuDatPhongTrongNgay());
 		return prefix + dateFormat.format(date) + suffix;
 	}
 

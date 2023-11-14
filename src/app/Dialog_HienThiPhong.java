@@ -141,8 +141,9 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 					dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp,
 							Integer.parseInt(txtSoNguoi.getText()));
 					dispose();
-					if(tmp_dao.getAllTemp().size() == 1) {
-						dialog_DatPhongTrong_2.setVisible(true);						
+					if(tmp_dao.getAllTemp().size() == 2) {
+						DataManager.setSoDienThoaiKHDat("");
+						dialog_DatPhongTrong_2.setVisible(true);
 					} else {
 						JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách đặt phòng thành công.");
 					}
