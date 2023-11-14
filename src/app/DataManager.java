@@ -1,11 +1,29 @@
 package app;
 
 public class DataManager {
-    private static String userName;
-    private static boolean chuyenPhong;
-    private static boolean thanhToan;
+	private static String userName;
+	private static boolean chuyenPhong;
+	private static boolean thanhToan;
+	private static boolean datPhong;
+	private static String soDienThoaiKHDat = "";
 
-    public static boolean isChuyenPhong() {
+	public static String getSoDienThoaiKHDat() {
+		return soDienThoaiKHDat;
+	}
+
+	public static void setSoDienThoaiKHDat(String soDienThoaiKHDat) {
+		DataManager.soDienThoaiKHDat = soDienThoaiKHDat;
+	}
+
+	public static boolean isDatPhong() {
+		return datPhong;
+	}
+
+	public static void setDatPhong(boolean datPhong) {
+		DataManager.datPhong = datPhong;
+	}
+
+	public static boolean isChuyenPhong() {
 		return chuyenPhong;
 	}
 
@@ -14,18 +32,19 @@ public class DataManager {
 	}
 
 	public static String getUserName() {
-        return userName;
-    }
+		return userName;
+	}
 
-    public static void setUserName(String userName) {
-        DataManager.userName = userName;
-    }
-    
-    public static boolean isThanhToan() {
-        return thanhToan;
-    }
+	public static void setUserName(String userName) {
+		DataManager.userName = userName;
+	}
 
-    public static void setThanhToan(boolean thanhToan) {
-        DataManager.thanhToan = thanhToan;
-    }
+	public static boolean isThanhToan() {
+		return thanhToan;
+	}
+
+	public static void setThanhToan(boolean thanhToan) {
+		DataManager.thanhToan = thanhToan;
+	}
+
 }
