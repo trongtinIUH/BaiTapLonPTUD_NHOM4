@@ -108,6 +108,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
 		btnUser.setBounds(1019, 5, 61, 45);
 		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser.setBorderPainted(false);
 		panel_1.add(btnUser);
 
 		// ---gốc
@@ -176,6 +177,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
 		btnTimKiem.setBounds(672, 10, 180, 40);
+		btnTimKiem.setBorder(new RoundedBorder(5));
 		btnTimKiem.setBackground(new Color(13, 153, 255, 255));
 		panel_2.add(btnTimKiem);
 
@@ -184,6 +186,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBounds(879, 10, 180, 40);
+		btnLamMoi.setBorder(new RoundedBorder(5));
 		btnLamMoi.setBackground(new Color(112, 210, 103, 255));
 		panel_2.add(btnLamMoi);
 
@@ -192,6 +195,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnTimKiemPDP.setForeground(Color.WHITE);
 		btnTimKiemPDP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTimKiemPDP.setBounds(672, 55, 387, 40);
+		btnTimKiemPDP.setBorder(new RoundedBorder(5));
 		btnTimKiemPDP.setBackground(new Color(255, 180, 0, 255));
 
 		panel_2.add(btnTimKiemPDP);
@@ -320,6 +324,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnBackToBook.setForeground(Color.RED);
 		btnBackToBook.setFont(new Font("Tahoma", Font.ITALIC, 15));
 		btnBackToBook.setBounds(760, 3, 200, 20);
+		btnBackToBook.setBorder(new RoundedBorder(5));
 		panel_5.add(btnBackToBook);
 
 		// thêm sự kiện

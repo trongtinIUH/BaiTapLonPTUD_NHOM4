@@ -43,13 +43,12 @@ public class RoundedBorder implements Border {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g;
-        int bottomLineY = height - thickness - pointerSize;
 
         RoundRectangle2D.Double bubble = new RoundRectangle2D.Double(
             0 + strokePad,
             0 + strokePad,
             width - thickness,
-            bottomLineY,
+            height - thickness,
             radii,
             radii
         );
@@ -72,4 +71,5 @@ public class RoundedBorder implements Border {
         g2.setStroke(stroke);
         g2.draw(area);
     }
+
 }

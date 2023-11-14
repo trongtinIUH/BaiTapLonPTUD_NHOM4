@@ -204,6 +204,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXoa.setFont(new Font("Arial", Font.BOLD, 18));
 		btnXoa.setIcon(new ImageIcon("icon\\Delete_icon.png"));
 		btnXoa.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnXoa.setBorder(new RoundedBorder(5));
 		btnXoa.setIconTextGap(18);
 		
 		pnOrderInfo.add(btnSua = new JButton("Sửa"));
@@ -213,6 +214,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnSua.setFont(new Font("Arial", Font.BOLD, 18));
 		btnSua.setIcon(new ImageIcon("icon\\Edit_icon.png"));
 		btnSua.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnSua.setBorder(new RoundedBorder(5));
 		btnSua.setIconTextGap(18);
 		
 		JPanel pnSearch = new JPanel();
@@ -249,6 +251,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnTimKiem.setForeground(Color.white);
 		btnTimKiem.setFont(new Font("Arial", Font.BOLD, 18));
 		btnTimKiem.setIcon(new ImageIcon("icon\\Research_icon.png"));
+		btnTimKiem.setBorder(new RoundedBorder(5));
 		btnTimKiem.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnTimKiem.setIconTextGap(18);
 		pnContent.add(pnSearch);

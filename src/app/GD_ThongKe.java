@@ -144,6 +144,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		btnThongKe.setForeground(Color.white);
 		btnThongKe.setFont(new Font("Arial", Font.BOLD, 18));
 		btnThongKe.setIcon(new ImageIcon("icon\\ThongKe_icon.png"));
+		btnThongKe.setBorder(new RoundedBorder(5));
 		btnThongKe.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnThongKe.setIconTextGap(18);
 		pnMenu.add(btnLamMoi = new JButton("Làm mới"));
@@ -153,6 +154,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 18));
 		btnLamMoi.setIcon(new ImageIcon("icon\\Refresh_icon.png"));
 		btnLamMoi.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnLamMoi.setBorder(new RoundedBorder(5));
 		btnLamMoi.setIconTextGap(18);
 		pnMenu.add(btnInTK = new JButton("In báo cáo thống kê"));
 		btnInTK.setBounds(680, 70, 383, 42);
@@ -161,6 +163,7 @@ public class GD_ThongKe extends JPanel implements ActionListener, ChangeListener
 		btnInTK.setFont(new Font("Arial", Font.BOLD, 18));
 		btnInTK.setIcon(new ImageIcon("icon\\Print_icon.png"));
 		btnInTK.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnInTK.setBorder(new RoundedBorder(5));
 		btnInTK.setIconTextGap(18);
 		add(pnMenu);
 		pnContent = new JPanel();

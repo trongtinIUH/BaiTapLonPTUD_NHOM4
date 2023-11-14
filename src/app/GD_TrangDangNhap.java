@@ -72,7 +72,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		btnLogin.setFont(new Font("Arial", Font.BOLD, 18));
 		btnLogin.setForeground(Color.white);
 		btnLogin.setBackground(Color.black);
-		btnLogin.setBorder(new RoundedBorder(5));
+		btnLogin.setBorder(new RoundedBorder(10));
 		panel.add(btnLogin);
 
 		btnQuenMatKhau = new JButton("Quên Mật Khẩu?");
@@ -80,7 +80,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		btnQuenMatKhau.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnQuenMatKhau.setForeground(Color.black);
 		btnQuenMatKhau.setBackground(Color.white);
-		btnQuenMatKhau.setBorder(new RoundedBorder(5));
+		btnQuenMatKhau.setBorder(new RoundedBorder(10));
 		panel.add(btnQuenMatKhau);
 
 		lblKaeaoke= new JLabel("KARAOKE 4T");
@@ -124,7 +124,21 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
                     txtUsername.setText("Tên đăng nhập");
                 }
             }
-        });		
+        });	
+        txtPassword.addFocusListener(new FocusListener() { // Thêm FocusListener
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtPassword.getText().equals("Mật khẩu")) {
+                	txtPassword.setText("Son2001001");
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtPassword.getText().isEmpty()) {
+                	txtPassword.setText("Mật khẩu");
+                }
+            }
+        });	
         setEnterKeyAction(btnLogin);
         setEnterKeyAction(btnQuenMatKhau);
         btnLogin.addActionListener(this);
