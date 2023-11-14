@@ -2,6 +2,8 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
+
 
 public class ChiTietHoaDon implements Serializable {
 
@@ -11,6 +13,7 @@ public class ChiTietHoaDon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private HoaDonDatPhong hoaDon;
 	private Phong phong;
+
 	private Timestamp gioNhanPhong;
 	private Timestamp gioTraPhong;
 	private double soGioHat;
@@ -38,16 +41,6 @@ public class ChiTietHoaDon implements Serializable {
 	public void setPhong(Phong phong) {
 		this.phong = phong;
 	}
-	public double getSoGioHat() {
-		return soGioHat;
-	}
-	public void setSoGioHat(double soGioHat) {
-		this.soGioHat = soGioHat;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
 	public Timestamp getGioNhanPhong() {
 		return gioNhanPhong;
 	}
@@ -60,11 +53,33 @@ public class ChiTietHoaDon implements Serializable {
 	public void setGioTraPhong(Timestamp gioTraPhong) {
 		this.gioTraPhong = gioTraPhong;
 	}
+	public double getSoGioHat() {
+		return soGioHat;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(gioNhanPhong, gioTraPhong, hoaDon, phong, soGioHat);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChiTietHoaDon other = (ChiTietHoaDon) obj;
+		return Objects.equals(gioNhanPhong, other.gioNhanPhong) && Objects.equals(gioTraPhong, other.gioTraPhong)
+				&& Objects.equals(hoaDon, other.hoaDon) && Objects.equals(phong, other.phong)
+				&& Double.doubleToLongBits(soGioHat) == Double.doubleToLongBits(other.soGioHat);
+	}
 	@Override
 	public String toString() {
-		return String.format("ChiTietHoaDon [hoaDon=%s, phong=%s, soGioHat=%s]", hoaDon, phong, soGioHat);
+		return "ChiTietHoaDon [hoaDon=" + hoaDon + ", phong=" + phong + ", gioNhanPhong=" + gioNhanPhong
+				+ ", gioTraPhong=" + gioTraPhong + ", soGioHat=" + soGioHat + "]";
 	}
 	
-	
-
 }

@@ -28,6 +28,7 @@ public class ChiTietHoaDon_dao {
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
 				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
+
 			}
 			
 		} catch (Exception e) {
