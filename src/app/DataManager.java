@@ -3,10 +3,11 @@ package app;
 public class DataManager {
 
     private static String userName;
-    private static boolean chuyenPhong,datPhongCho;
 	private static boolean thanhToan;
 	private static boolean datPhong;
 	private static String soDienThoaiKHDat = "";
+    private static boolean chuyenPhong,datPhongCho,phongTrong;
+
 
 	public static String getSoDienThoaiKHDat() {
 		return soDienThoaiKHDat;
@@ -36,6 +37,12 @@ public class DataManager {
 	}
 	public static void setDatPhongCho(boolean datPhongCho) {
 		DataManager.datPhongCho = datPhongCho;
+	}
+    public static boolean isChuyenPhongTrong() {
+		return phongTrong;
+	}
+	public static void setChuyenPhongTrong(boolean phongTrong) {
+		DataManager.phongTrong = phongTrong;
 	}
 	public static String getUserName() {
 		return userName;

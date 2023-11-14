@@ -22,7 +22,7 @@ public class Phong extends LoaiPhong implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Phong(String maLoaiPhong, String tenLoaiPhong, int sucChua, double donGiaTheoGio) {
 		super(maLoaiPhong, tenLoaiPhong, sucChua, donGiaTheoGio);
 		// TODO Auto-generated constructor stub

@@ -105,6 +105,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
 		btnUser.setBounds(1019, 5, 61, 45);
 		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser.setBorderPainted(false);
 		pnNorth.add(btnUser);
 
 		JPanel pnlCenter = new JPanel();
@@ -175,18 +176,22 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 		btnThem.setFont(font);
 		btnThem.setBounds(60, 180, 130, 35);
 		btnThem.setBackground(new Color(109, 197, 112));
+		btnThem.setBorder(new RoundedBorder(5));
 		pnlThongTin.add(btnXoa = new JButton("XÓA", new ImageIcon("icon\\Delete_icon.png")));
 		btnXoa.setFont(font);
 		btnXoa.setBounds(208, 180, 130, 35);
 		btnXoa.setBackground(new Color(228, 50, 51));
+		btnXoa.setBorder(new RoundedBorder(5));
 		pnlThongTin.add(btnSua = new JButton("SỬA", new ImageIcon("icon\\Edit_icon.png")));
 		btnSua.setFont(font);
 		btnSua.setBounds(356, 180, 130, 35);
 		btnSua.setBackground(new Color(74, 131, 215));
+		btnSua.setBorder(new RoundedBorder(5));
 		pnlThongTin.add(btnLamMoi = new JButton("LÀM MỚI", new ImageIcon("icon\\Refresh_icon.png")));
 		btnLamMoi.setFont(font);
 		btnLamMoi.setBounds(504, 180, 130, 35);
 		btnLamMoi.setBackground(new Color(104, 211, 211));
+		btnLamMoi.setBorder(new RoundedBorder(5));
 		pnlCenter.add(pnlThongTin);
 
 		JPanel pnlTimKiem = new JPanel();
@@ -223,6 +228,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 		btnTimKiem.setFont(font);
 		btnTimKiem.setBounds(112, 180, 140, 35);
 		btnTimKiem.setBackground(new Color(238, 233, 233));
+		btnTimKiem.setBorder(new RoundedBorder(5));
 		pnlTimKiem.add(btnTimKiem);
 
 		pnlCenter.add(pnlTimKiem);
@@ -242,6 +248,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 		pnlTable.add(btnXuatExcel = new JButton("Xuất danh sách khách hàng", new ImageIcon("icon\\Excel_icon.png")));
 		btnXuatExcel.setFont(font);
 		btnXuatExcel.setBounds(798, 14, 270, 30);
+		btnXuatExcel.setBorder(new RoundedBorder(5));
 
 		model = new DefaultTableModel(col, 0);
 		table = new JTable(model);
