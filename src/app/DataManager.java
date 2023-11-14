@@ -7,7 +7,16 @@ public class DataManager {
 	private static boolean datPhong;
 	private static String soDienThoaiKHDat = "";
     private static boolean chuyenPhong,datPhongCho,phongTrong;
+    private static String sdtKHNew = "0788343289";
 
+
+	public static String getSdtKHNew() {
+		return sdtKHNew;
+	}
+
+	public static void setSdtKHNew(String sdtKHNew) {
+		DataManager.sdtKHNew = sdtKHNew;
+	}
 
 	public static String getSoDienThoaiKHDat() {
 		return soDienThoaiKHDat;

@@ -34,7 +34,6 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	/**
 	 * 
 	 */
-	
 	private static final long serialVersionUID = 1L;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
@@ -49,17 +48,18 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	private JButton btnTroGiup;
 	private JLabel lblKaraoke;
 	private JLabel lblCurrentTime;
-	private  GD_DatPhong datPhong = new GD_DatPhong();
-	GD_DanhSachPhong danhSachPhong = new GD_DanhSachPhong();
-	GD_NhanVien nhanVien = new GD_NhanVien();
-	GD_KhachHang khachHang = new GD_KhachHang();
-	GD_HoaDon hoaDon = new GD_HoaDon();
-	GD_SanPham sanPham = new GD_SanPham();
-	GD_ThongKe thongKe = new GD_ThongKe();
-	GD_TroGiup troGiup = new GD_TroGiup();
+	private  GD_DatPhong datPhong;
+	private GD_DanhSachPhong danhSachPhong = new GD_DanhSachPhong();
+	private GD_NhanVien nhanVien = new GD_NhanVien();
+	private GD_KhachHang khachHang = new GD_KhachHang();
+	private GD_HoaDon hoaDon = new GD_HoaDon();
+	private GD_SanPham sanPham = new GD_SanPham();
+	private GD_ThongKe thongKe = new GD_ThongKe();
+	private GD_TroGiup troGiup = new GD_TroGiup();
 	private JPanel panel_chuaTime;
 	public GD_TrangChu() {
 		super("Karaoke 4T");
+		datPhong = new GD_DatPhong(this);
 		ImageIcon icon = new ImageIcon("icon\\icon_Karaoke3.jpg");
 	    this.setIconImage(icon.getImage());
 		initialize();
@@ -333,6 +333,13 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 		btnThongKe.addActionListener(this);
 		btnTroGiup.addActionListener(this);
 //		btnUser.addActionListener(this);
+	}
+	
+	
+	public void showKhachHangCard() {
+	    resetActiveTab();
+	    btnKhachHang.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "KhachHang");
 	}
 	
 	private void resetActiveTab() {

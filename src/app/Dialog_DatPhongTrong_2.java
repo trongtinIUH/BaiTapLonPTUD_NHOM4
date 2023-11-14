@@ -56,7 +56,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	/**
 	 * 
 	 */
-//	private GD_TrangChu trangChu = new GD_TrangChu();
+	private GD_TrangChu trangChu;
 	private static final long serialVersionUID = 1L;
 	private JTextField txtSDT;
 	private JButton btn_KiemTraSDT, btn_ThemDV, btn_Sua, btn_DatPhong;
@@ -95,10 +95,11 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private Date date;
 	private KhachHang_dao kh_dao = new KhachHang_dao();
 
-	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp, int soNguoi) {
+	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp, int soNguoi, GD_TrangChu trangChu) {
 
 		// màn
 		// hình******************************************************************************
+		this.trangChu = trangChu;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		setSize(800, 500);
@@ -163,7 +164,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		txtSDT = new JTextField();
 		txtSDT.setHorizontalAlignment(SwingConstants.LEFT);
 		txtSDT.setFont(new Font("Arial", Font.BOLD, 16));
-		txtSDT.setText("0788343289");
+		txtSDT.setText("");
 		txtSDT.setBounds(140, 5, 300, 30);
 		panel_2.add(txtSDT);
 		txtSDT.setColumns(10);
@@ -345,6 +346,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		radGioTuDo.addActionListener(this);
 		tblThemPhongMoi.addMouseListener(this);
 		checkBox_KH.addActionListener(this);
+		txtSDT.setText(DataManager.getSdtKHNew());
 		loadDataPhong();
 	}
 
@@ -488,8 +490,12 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				lbl_TenKH_1.setText(hoTen);
 				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
 			} else {
-				JOptionPane.showConfirmDialog(this,
+				int checkCustomer = JOptionPane.showConfirmDialog(this,
 						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+				if(checkCustomer == JOptionPane.YES_OPTION) {
+					trangChu.showKhachHangCard();
+					setVisible(false);
+				}
 			}
 		}
 		if (o.equals(checkBox_KH)) {

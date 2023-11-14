@@ -23,6 +23,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	/**
 	 * 
 	 */
+	private GD_TrangChu trangChu;
 	private static final long serialVersionUID = 1L;
 	private JLabel lblPhong, lblLoai, lblSucChua, lblTrangThai, lblGia, lblLoai_1, lblSucChua_1, lbltrangthai_1,
 			lblgia_1, lblPhong_1;
@@ -39,7 +40,8 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private JButton btn_DatPhongCho;
 
-	public Dialog_HienThiPhong(String maPhong) {
+	public Dialog_HienThiPhong(String maPhong, GD_TrangChu trangChu) {
+		this.trangChu = trangChu;
 		// kích thước
 		// dialog--------------*****************************************************************
 		getContentPane().setBackground(Color.WHITE);
@@ -150,7 +152,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 					TempDatPhong tmp = new TempDatPhong(p.getMaPhong(), Integer.parseInt(txtSoNguoi.getText()));
 					tmp_dao.addTemp(tmp);
 					dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp,
-							Integer.parseInt(txtSoNguoi.getText()));
+							Integer.parseInt(txtSoNguoi.getText()), trangChu);
 					dispose();
 					if(tmp_dao.getAllTemp().size() == 2) {
 						DataManager.setSoDienThoaiKHDat("");

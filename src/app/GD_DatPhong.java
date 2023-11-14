@@ -39,6 +39,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	/**
 	 * 
 	 */
+	private GD_TrangChu trangChu;
 	private static final long serialVersionUID = 1L;
 	private JButton btnUser;
 	private JComboBox<String> comboBox_TrangThai, comboBox_LoaiPhong;
@@ -75,15 +76,16 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong= new Dialog_TimPhieuDatPhong();
 	private JButton btnBackToBook;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
-	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(getName(), null, null, ABORT);
+	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private int sizeDSTmp;
 
 	/**
 	 * Create the panel.
 	 */
 
-	public GD_DatPhong() {
+	public GD_DatPhong(GD_TrangChu trangChu) {
 		this.setSize(1080, 730);
+		this.trangChu = trangChu;
 		setLayout(null);
 		// ---gốc chứa all panel
 		// con--------------------------********************************************************************
@@ -533,7 +535,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			if (tmp_dao.getAllTemp().size() == 1) {
 				JOptionPane.showMessageDialog(this, "Chưa phòng nào được thêm vào danh sách đặt");
 			} else {
-				dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(TOOL_TIP_TEXT_KEY, null, null, 0);
+				dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(TOOL_TIP_TEXT_KEY, null, null, 0, trangChu);
 				dialog_DatPhongTrong_2.setVisible(true);
 			}
 		}
@@ -544,7 +546,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 					String maPhong = clickedButton.getText().replace("Phòng ", "");
 					Phong p = p_dao.getPhongTheoMaPhong(maPhong);
 					if (p.getTrangThai() == Enum_TrangThai.Trống) {
-						dialog_htPhong = new Dialog_HienThiPhong(maPhong);
+						dialog_htPhong = new Dialog_HienThiPhong(maPhong, trangChu);
 						dialog_htPhong.setVisible(true);
 						return;
 					}
