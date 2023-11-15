@@ -68,7 +68,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 	private JComboBox<String> cbLau;
 	private JTextField txtMa;
 	private JComboBox<String> cbSoPhong;
-	
+
 	private JButton btnUser;
 	private Dialog_User dialog_user = new Dialog_User();
 
@@ -83,7 +83,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		add(pnNorth);
 		lblTitle = new JLabel("PHÒNG");
 		pnNorth.add(lblTitle);
-		
+
 		// ---nút user
 		btnUser = new JButton("");
 		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
@@ -493,17 +493,18 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			LoaiPhong lp = new LoaiPhong(maLP, tenLoaiPhong, sucChua, donGia);
 			Phong p = new Phong(maP, lp, trangThai);
 			lp_dao.addLoaiPhong(lp);
-			if(p_dao.updatePhong(p, generateRandomCode())) {
+			if (p_dao.updatePhong(p, generateRandomCode())) {
 //				if(txtMa.getText().trim() != model.getValueAt(table.getSelectedRow(), 1).toString()){
 //					JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
 //				}else if(txtMa.getText().trim() == model.getValueAt(table.getSelectedRow(), 1).toString()){
 //					System.out.println( model.getValueAt(table.getSelectedRow(), 1).toString());
-					clearTable();
-					loadData();
-					xoaTrang();
-					JOptionPane.showMessageDialog(this, "Sửa thành công!");
+
+				clearTable();
+				loadData();
+				xoaTrang();
+				JOptionPane.showMessageDialog(this, "Sửa thành công!");
 //				}
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
 			}
 		}
@@ -634,9 +635,9 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			tim();
 		} else if (obj.equals(btnXuatExcel)) {
 			xuatExcel();
-		}else if(obj.equals(cbLau)) {
+		} else if (obj.equals(cbLau)) {
 			loadMa();
-		}else if(obj.equals(cbSoPhong)) {
+		} else if (obj.equals(cbSoPhong)) {
 			loadMa();
 		}
 	}

@@ -27,8 +27,8 @@ public class Phong_dao {
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
-				dsPhong.add(
-						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -51,7 +51,8 @@ public class Phong_dao {
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
-				ph = new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3)));
+				ph = new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -74,8 +75,8 @@ public class Phong_dao {
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
-				dsPhong.add(
-						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -85,7 +86,7 @@ public class Phong_dao {
 			return null;
 		return dsPhong;
 	}
-	
+
 	public ArrayList<Phong> getPhongTheoTrangThai(String trangThai) {
 		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
 		try {
@@ -100,8 +101,8 @@ public class Phong_dao {
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
-				dsPhong.add(
-						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -153,8 +154,8 @@ public class Phong_dao {
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
-				dsPhong.add(
-						new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)), Enum_TrangThai.valueOf(rs.getString(3))));
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -315,36 +316,142 @@ public class Phong_dao {
 		}
 		return n > 0;
 	}
-	
-	//tín code
+
+	// tín code
 	public ArrayList<Phong> laydsPhongMoi() {
-	    ArrayList<Phong> dsPhong = new ArrayList<Phong>();
-	    try {
-	        ConnectDB.getInstance();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    Connection con = ConnectDB.getConnection();
-	    try {
-	        String sql = "SELECT Phong.maPhong, LoaiPhong.tenLoaiPhong, LoaiPhong.sucChua, LoaiPhong.donGiaTheoGio, Phong.trangThai " +
-	                "FROM Phong " +
-	                "JOIN LoaiPhong ON Phong.maLoaiPhong = LoaiPhong.maLoaiPhong " +
-	                "WHERE Phong.trangThai = N'Trống'";
-	        Statement stm = con.createStatement();
-	        ResultSet rs = stm.executeQuery(sql);
-	        while (rs.next()) {
-	            Phong phong = new Phong();
-	            phong.setMaPhong(rs.getString(1));
-	            phong.setTenLoaiPhong(rs.getString(2));
-	            phong.setSucChua(rs.getInt(3));
-	            phong.setDonGiaTheoGio(rs.getDouble(4));
-	            phong.setTrangThai(Enum_TrangThai.valueOf(rs.getString(5)));
-	            dsPhong.add(phong);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return dsPhong;
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT Phong.maPhong, LoaiPhong.tenLoaiPhong, LoaiPhong.sucChua, LoaiPhong.donGiaTheoGio, Phong.trangThai "
+					+ "FROM Phong " + "JOIN LoaiPhong ON Phong.maLoaiPhong = LoaiPhong.maLoaiPhong "
+					+ "WHERE Phong.trangThai = N'Trống'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				Phong phong = new Phong();
+				phong.setMaPhong(rs.getString(1));
+				phong.setTenLoaiPhong(rs.getString(2));
+				phong.setSucChua(rs.getInt(3));
+				phong.setDonGiaTheoGio(rs.getDouble(4));
+				phong.setTrangThai(Enum_TrangThai.valueOf(rs.getString(5)));
+				dsPhong.add(phong);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsPhong;
 	}
 
+	public ArrayList<Phong> getPhongTKTheoTrangThai(String trangThai, int soNguoi) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong join LoaiPhong on Phong.maLoaiPhong = LoaiPhong.maLoaiPhong where trangThai = N'"
+					+ trangThai + "' and sucChua >= " + soNguoi + "";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		if (dsPhong.isEmpty())
+			return null;
+		return dsPhong;
+	}
+
+	public ArrayList<Phong> getPhongTKTheoLoaiPhong(String loaiPhong, int soNguoi) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong join LoaiPhong on Phong.maLoaiPhong = LoaiPhong.maLoaiPhong where tenLoaiPhong = N'"
+					+ loaiPhong + "' and sucChua >= " + soNguoi + "";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		if (dsPhong.isEmpty())
+			return null;
+		return dsPhong;
+	}
+
+	public ArrayList<Phong> getPhongTKTheoLoaiPhongVaTrangThai(String loaiPhong, String trangThai, int soNguoi) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong join LoaiPhong on Phong.maLoaiPhong = LoaiPhong.maLoaiPhong where tenLoaiPhong = N'"
+					+ loaiPhong + "' and sucChua >= " + soNguoi + " and trangThai = N'" + trangThai + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		if (dsPhong.isEmpty())
+			return null;
+		return dsPhong;
+	}
+
+	public ArrayList<Phong> getPhongTKTheoSoNguoiHat(int soNguoi) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong join LoaiPhong on Phong.maLoaiPhong = LoaiPhong.maLoaiPhong where sucChua >= "
+					+ soNguoi + "";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		if (dsPhong.isEmpty())
+			return null;
+		return dsPhong;
+	}
 }
