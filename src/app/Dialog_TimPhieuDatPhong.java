@@ -2,7 +2,11 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -26,6 +30,7 @@ import entity.PhieuDatPhong;
 import entity.Phong;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -40,7 +45,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 	
 	private JTable tblPhieuDatPhong;
 	private DefaultTableModel model;
-	private String col[] = { "Mã PDP", "Phòng", "Mã NV", "Mã KH", "Ngày Giờ Đặt","Ngày Giờ Nhận","Số Người Hát" };
+	private String col[] = { "Mã PDP", "Phòng", "Mã NV", "Mã KH", "   Ngày Giờ Đặt   ","   Ngày Giờ Nhận   ","Số Người","Hình Thức"};
 	private JButton btn_QuayLai;
 
 
@@ -59,13 +64,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 	public Dialog_TimPhieuDatPhong() {
 		//kích thước
 		getContentPane().setBackground(Color.WHITE);
-		setSize(800, 450);
+		setSize(820, 450);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		
 		//panel chứa tiêu đề-------------------------------------------------------------------------
 		panel = new JPanel();
-		panel.setBounds(0, 0, 784, 35);
+		panel.setBounds(0, 0, 804, 35);
 		panel.setBackground(new Color(181,230,251,255));
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -75,12 +80,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 		lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTieuDe.setForeground(Color.BLACK);
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 18));
-		lblTieuDe.setBounds(0, 0, 790, 35);
+		lblTieuDe.setBounds(0, 0, 803, 35);
 		panel.add(lblTieuDe);
 		
 		// panel 1 chứa thông tin kh, nhân viên và bảng table-------------------------------------------
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 34, 784, 380);
+		panel_1.setBounds(0, 34, 804, 380);
 		panel_1.setBackground(SystemColor.menu);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
@@ -133,7 +138,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 		btnLamMoi.setForeground(Color.WHITE);
 		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 15));
-		btnLamMoi.setBounds(650, 5, 125, 30);
+		btnLamMoi.setBounds(660, 5, 125, 30);
 		btnLamMoi.setBackground(new Color(112,210,103,255));
 		btnLamMoi.setBorder(new RoundedBorder(10));
 		panel_1.add(btnLamMoi);
@@ -144,8 +149,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 		tblPhieuDatPhong = new JTable(model);
 		tblPhieuDatPhong.setFont(new Font("Arial", Font.PLAIN, 12));
 		tblPhieuDatPhong.setBackground(Color.WHITE);
+		tblPhieuDatPhong.getColumnModel().getColumn(4).setMinWidth(100);
+		tblPhieuDatPhong.getColumnModel().getColumn(5).setMinWidth(100);
+		tblPhieuDatPhong.getColumnModel().getColumn(6).setMaxWidth(70);;
+		
 		JScrollPane sp = new JScrollPane(tblPhieuDatPhong);
-		sp.setBounds(5, 90, 770, 210);
+		sp.setBounds(0, 90, 804, 210);
 		panel_1.add(sp);
 		panel_1.setPreferredSize(new Dimension(800, 300));
 		
@@ -180,7 +189,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 		btn_XuatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_XuatPhong.setBackground(new Color(13,153,255,255));
 		btn_XuatPhong.setBorder(new RoundedBorder(5));
-		btn_XuatPhong.setBounds(575, 330, 200, 40);
+		btn_XuatPhong.setBounds(590, 330, 200, 40);
 		panel_1.add(btn_XuatPhong);
 		
 		btn_QuayLai = new JButton("Quay Lại");
@@ -188,7 +197,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 		btn_QuayLai.setFont(new Font("Arial", Font.BOLD, 15));
 		btn_QuayLai.setBackground(new Color(236,52,52,255));
 		btn_QuayLai.setBorder(new RoundedBorder(5));
-		btn_QuayLai.setBounds(650, 45, 125, 30);
+		btn_QuayLai.setBounds(660, 45, 125, 30);
 		panel_1.add(btn_QuayLai);
 		
 		//add sự kiện
@@ -199,10 +208,9 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 		btn_XuatPhong.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
-		
-		
-		loadData();
-		MyTable(model, tblPhieuDatPhong);
+				
+			loadData();
+			MyTable(model, tblPhieuDatPhong);
 	}
 
 	// hàm căn giữa nội dung trong bảng
@@ -226,23 +234,39 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 	    	tblPhieuDatPhong.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 	    }
     }
-	
+    
+
+ 
     //hàm load sữ liệu
-	public void loadData() {
-	//	pdp_dao = new PhieuDatPhong_dao();
-		for (PhieuDatPhong x : pdp_dao.getAllsPhieuDatPhong()) {
-			Object[] row = {x.getMaPhieu(),x.getPhong().getMaPhong(),x.getNhanVien().getMaNhanVien(),x.getKhachHang().getMaKhachHang(),x.getNgayGioDatPhong(),x.getNgayGioNhanPhong(),x.getSoNguoiHat()};
-			model.addRow(row);
-		}
-		Canh_Deu_Bang();
-	}
-	//clear bảng
+    public void loadData() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+        String hinhthuc="";
+        // Lấy tất cả phiếu đặt phòng
+        ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong();
+        
+        // Sắp xếp danh sách theo ngày giờ đặt phòng
+        Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
+        
+        for (PhieuDatPhong x : allPhieuDatPhong) {
+            String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
+            String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+            if(!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
+            	hinhthuc="Đặt trước";
+            }
+            else hinhthuc="Đặt trực tiếp";
+            Object[] row = {x.getMaPhieu(),x.getPhong().getMaPhong(),x.getNhanVien().getMaNhanVien(),x.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc};
+            model.addRow(row);
+        }
+        Canh_Deu_Bang();
+    }
+
+//clear bảng
 	public void clearTable() {
 		while (tblPhieuDatPhong.getRowCount() > 0) {
 			model.removeRow(0);
 		}
 	}
-	
+
 	//hàm tìm 
 	public void tim() {
 	    String maPhieu = txtMaPDP.getText();

@@ -155,7 +155,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		cbTrangThai.setBounds(x, y, w, h);
 		cbTrangThai.addItem("Đang sử dụng");
 		cbTrangThai.addItem("Trống");
-		cbTrangThai.addItem("Đang sửa");
+		cbTrangThai.addItem("Đang sửa chữa");
 		cbTrangThai.addItem("Chờ");
 		pnSouth.add(cbTrangThai);
 
@@ -494,14 +494,15 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 			Phong p = new Phong(maP, lp, trangThai);
 			lp_dao.addLoaiPhong(lp);
 			if(p_dao.updatePhong(p, generateRandomCode())) {
-				if(txtMa.getText().trim() != model.getValueAt(table.getSelectedRow(), 1).toString()){
-					JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
-				}else {
+//				if(txtMa.getText().trim() != model.getValueAt(table.getSelectedRow(), 1).toString()){
+//					JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
+//				}else if(txtMa.getText().trim() == model.getValueAt(table.getSelectedRow(), 1).toString()){
+//					System.out.println( model.getValueAt(table.getSelectedRow(), 1).toString());
 					clearTable();
 					loadData();
 					xoaTrang();
 					JOptionPane.showMessageDialog(this, "Sửa thành công!");
-				}
+//				}
 			}else {
 				JOptionPane.showMessageDialog(null, "Không được sửa mã phòng!!");
 			}

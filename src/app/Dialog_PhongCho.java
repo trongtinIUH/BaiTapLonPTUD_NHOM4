@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
 import javax.swing.JButton;
@@ -24,11 +25,13 @@ import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
+import dao.TempDatPhong_dao;
 import entity.Enum_TrangThai;
 import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
+import entity.TempDatPhong;
 
 public class Dialog_PhongCho extends JDialog implements ActionListener{
 
@@ -56,12 +59,13 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 	private DatePickerSettings dateSettings;
 	private DatePickerSettings dateSettings_1;
 	private LocalDateTime now1;
+	private LocalDateTime GioHienTai = LocalDateTime.now();
 	private TimePickerSettings timeSettings_1;
 	private DateTimePicker dateTimePicker_1;
 	private JLabel lbl_KhachHang;
 	private JLabel lbl_KhachHang_1;
 	private JLabel lbl_SoNguoi_1;
-	
+	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngayGioNhanPhong;
@@ -69,6 +73,8 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 	private int songuoihat;
 	private double dongia;
 	private String donGiaFormatted,hotenKH;
+	
+	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	
 	
 	public Dialog_PhongCho(String maPhong) {
@@ -242,7 +248,6 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 	}
 
 
-
 	
 
 public void laydulieu(String maPhong) {
@@ -263,8 +268,7 @@ public void laydulieu(String maPhong) {
 	    ngayGioNhanPhong = pdp.getNgayGioNhanPhong();
 	      
 	      hotenKH=kh.getHoTen();
-	    
-	    // ...
+	
 	} else {
 	    // Xử lý trường hợp không tìm thấy phiếu đặt phòng
 		JOptionPane.showMessageDialog(this, "không tìm thấy mã");
@@ -275,8 +279,76 @@ public void laydulieu(String maPhong) {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnNhanPhong)) {
-			// nhận phòng chuyển qua 
-		}
+			// giờ phút hiện tại
+			int gio_ht=LocalDateTime.now().getHour();
+			int phut_ht=LocalDateTime.now().getMinute();
+			int tongsophut_ht= gio_ht*60+phut_ht;
+			//giờ phút nhận phòng
+			pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
+			int gio_np= pdp.getNgayGioNhanPhong().getHour();
+			int phut_np=pdp.getNgayGioNhanPhong().getMinute();
+			int tongsophut_np= gio_np*60+phut_np;
+			int ngayht= LocalDateTime.now().getDayOfMonth();
+			int ngaynp=pdp.getNgayGioNhanPhong().getDayOfMonth();
+			
+			
+if(ngayht<ngaynp) {
+				 // Khách hàng đến sớm hơn giờ nhận phòng 30 phút
+			    JOptionPane.showMessageDialog(this, "Hãy đến đúng giờ nhận hoặc trước 30 phút!");
+			}
+else if (ngayht==ngaynp) { 
+	if(tongsophut_np-tongsophut_ht>30) {
+		JOptionPane.showMessageDialog(this, "Hãy đến đúng giờ nhận hoặc trước 30 phút!");
+	}
+	else if(tongsophut_np-tongsophut_ht<=30&&tongsophut_np-tongsophut_ht>-30) {
+		// Khách hàng đến đúng giờ
+	    TempDatPhong tmp = new TempDatPhong(p.getMaPhong(), Integer.parseInt(lbl_SoNguoi_1.getText()));
+	    tmp_dao.addTemp(tmp);
+	    dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp, Integer.parseInt(lbl_SoNguoi_1.getText()));
+	    dispose();
+	    JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách đặt phòng thành công.");
+	    DataManager.setSoDienThoaiKHDat("");
+	    dialog_DatPhongTrong_2.setVisible(true);
+	} 
+	else if(tongsophut_np-tongsophut_ht<-30) {
+	    // Khách hàng đến trễ hơn giờ nhận phòng 30 phút
+	    // Thực hiện công việc B
+	    JOptionPane.showMessageDialog(this, "Phòng hủy do đến trễ quá 30 phút!");
+	    pdp_dao.xoaPhieuDatPhongTheoMa(lblPhong_1.getText());
+	    DataManager.setDatPhongCho(true);
+	    Enum_TrangThai trangThai = Enum_TrangThai.Trống;
+	    Phong phong = new Phong(lblPhong_1.getText(), trangThai);
+	    p_dao.updatePhong(phong, lblPhong_1.getText());
+	    setVisible(false);  
+	    Window[] windows = Window.getWindows();
+	    for (Window window : windows) {
+	        if (window instanceof JDialog) {
+	            window.dispose();
+	        }
+	    }
+
+	}
+}else {
+
+    // Khách hàng đến trễ hơn giờ nhận phòng 30 phút
+    // Thực hiện công việc B
+    JOptionPane.showMessageDialog(this, "Phòng hủy do đến trễ quá 30 phút!");
+    pdp_dao.xoaPhieuDatPhongTheoMa(lblPhong_1.getText());
+    DataManager.setDatPhongCho(true);
+    Enum_TrangThai trangThai = Enum_TrangThai.Trống;
+    Phong phong = new Phong(lblPhong_1.getText(), trangThai);
+    p_dao.updatePhong(phong, lblPhong_1.getText());
+    setVisible(false);  
+    Window[] windows = Window.getWindows();
+    for (Window window : windows) {
+        if (window instanceof JDialog) {
+            window.dispose();
+        }
+    }
+
+
+}
+	}	
 		
 		else if(o.equals(btn_HuyPhong)) {
 			int tb = JOptionPane.showConfirmDialog(null, "Bạn có muốn Hủy Phòng chờ?", "Hủy phòng chờ", JOptionPane.YES_NO_OPTION);

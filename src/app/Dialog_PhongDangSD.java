@@ -40,10 +40,8 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private Dialog_ThanhToan dialog_ThanhToan;
 	private Phong_dao p_dao = new Phong_dao();
 	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
-	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private Phong p;
 	private LoaiPhong lp;
-	private PhieuDatPhong pdp = new PhieuDatPhong();
 	private PhieuDatPhong_dao phieuDatPhong_dao;
 	private ChiTietHoaDon_dao cthd_dao;
 	private Date gioHienTai;
@@ -148,8 +146,11 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		lbltrangthai_1.setBounds(150, 170, 120, 30);
 		getContentPane().add(lbltrangthai_1);
 		
+		p = p_dao.getPhongTheoMaPhong(maPhong);
+		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+		
 		lblgia_1 = new JLabel();
-		lblgia_1.setText("80,000 VNĐ");
+		lblgia_1.setText(lp.getDonGiaTheoGio() + "VNĐ");
 		lblgia_1.setBackground(Color.WHITE);
 		lblgia_1.setForeground(Color.RED);
 		lblgia_1.setFont(new Font("Arial", Font.BOLD, 15));
