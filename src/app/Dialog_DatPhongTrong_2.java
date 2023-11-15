@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.time.LocalDateTime;
 import javax.swing.JDialog;
@@ -393,7 +394,6 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		tblThemPhongMoi.addMouseListener(this);
 		checkBox_KH.addActionListener(this);
 		loadDataPhong();
-		loadDataDV(model.getValueAt(0, 1).toString());
 		checkDefaultCustomer();
 		timer.start();
 	}
@@ -460,34 +460,50 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	}
 
 	private void xoa() {
-		if (tblThemPhongMoi.getSelectedRow() == -1) {
-			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!!");
-		} else if (tblThemPhongMoi.getSelectedRowCount() > 1) {
-			int[] selectedRows = tblThemPhongMoi.getSelectedRows();
-			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa các phòng đã chọn không?", "Thông báo",
-					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				for (int i = selectedRows.length - 1; i >= 0; i--) {
-					int row = selectedRows[i];
-					tmpDatPhong_dao.deleteTempDP(model.getValueAt(row, 1).toString());
-					model.removeRow(row);
-				}
-				clearTable();
-				loadDataPhong();
-				JOptionPane.showMessageDialog(this, "Xóa thành công!!");
-			}
-		} else {
-			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa phòng này không?", "Thông báo",
-					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				int row = tblThemPhongMoi.getSelectedRow();
-				tmpDatPhong_dao.deleteTempDP(model.getValueAt(row, 1).toString());
-				model.removeRow(row);
-				clearTable();
-				loadDataPhong();
-				JOptionPane.showMessageDialog(this, "Xóa thành công!!");
-			}
-		}
-		if (tmpDatPhong_dao.getAllTemp().size() == 1)
-			setVisible(false);
+	    if (tblThemPhongMoi.getSelectedRow() == -1) {
+	        JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!!");
+	    } else if (tblThemPhongMoi.getSelectedRowCount() > 1) {
+	        int[] selectedRows = tblThemPhongMoi.getSelectedRows();
+	        if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa các phòng đã chọn không?", "Thông báo",
+	                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+	            for (int i = selectedRows.length - 1; i >= 0; i--) {
+	                int row = selectedRows[i];
+	                String maPhong = model.getValueAt(row, 1).toString();
+	                tmpDatPhong_dao.deleteTempDP(maPhong);
+	                model.removeRow(row);
+	                Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
+	                while (iterator.hasNext()) {
+	                    TempThemDV tmp = iterator.next();
+	                    if (tmp.getMaPhong().equals(maPhong)) {
+	                        iterator.remove();
+	                    }
+	                }
+	            }
+	            clearTable();
+	            loadDataPhong();
+	            JOptionPane.showMessageDialog(this, "Xóa thành công!!");
+	        }
+	    } else {
+	        if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa phòng này không?", "Thông báo",
+	                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+	            int row = tblThemPhongMoi.getSelectedRow();
+	            String maPhong = model.getValueAt(row, 1).toString();
+	            tmpDatPhong_dao.deleteTempDP(maPhong);
+	            model.removeRow(row);
+	            Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
+	            while (iterator.hasNext()) {
+	                TempThemDV tmp = iterator.next();
+	                if (tmp.getMaPhong().equals(maPhong)) {
+	                    iterator.remove();
+	                }
+	            }
+	            clearTable();
+	            loadDataPhong();
+	            JOptionPane.showMessageDialog(this, "Xóa thành công!!");
+	        }
+	    }
+	    if (tmpDatPhong_dao.getAllTemp().size() == 1)
+	        setVisible(false);
 	}
 
 	private void sua() {

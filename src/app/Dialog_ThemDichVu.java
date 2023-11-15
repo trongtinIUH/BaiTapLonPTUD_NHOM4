@@ -302,19 +302,38 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			btn_Them.addActionListener(new ActionListener() {
 			    public void actionPerformed(ActionEvent e) {
 			        // Lấy số lượng từ 'txtSoLuong'
-			        int soLuong = Integer.parseInt(txtSoLuong.getText());
-			        int selectedRow = tblThemDv_Trai.getSelectedRow();
-			        int soLuongTon = Integer.parseInt(model_Trai.getValueAt(tblThemDv_Trai.getSelectedRow(), 2).toString());
-			        // Thay đổi số lượng trong dữ liệu
-			        if(soLuong < soLuongTon) {
-				        // Thêm dữ liệu vào bảng phía bên phải
-			        	selectedRowData[selectedRowData.length - 3] = soLuong;
-				        model_Phai.addRow(selectedRowData);
-				        soLuongTon -= soLuong;
-			            model_Trai.setValueAt(soLuongTon, selectedRow, 2);
-				        capNhatTongTien();
+			    	int selectedRow = tblThemDv_Trai.getSelectedRow();
+			        if(selectedRow == -1) {
+			        	JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm!");
 			        } else {
-			        	JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng nhỏ hơn số lượng tồn!");
+			        	if(txtSoLuong.getText().equals("")) {
+			        		JOptionPane.showMessageDialog(null, "Bạn chưa nhập số lượng!");
+			        	} else {
+			        		int soLuong = Integer.parseInt(txtSoLuong.getText());
+					        int soLuongTon = Integer.parseInt(model_Trai.getValueAt(tblThemDv_Trai.getSelectedRow(), 2).toString());
+					        // Thay đổi số lượng trong dữ liệu
+					        if(soLuong < soLuongTon) {
+					            String maSP = model_Trai.getValueAt(selectedRow, 0).toString();  // Assuming maSP is in the first column
+					            boolean found = false;
+					            for (int i = 0; i < model_Phai.getRowCount(); i++) {
+					                if (model_Phai.getValueAt(i, 0).equals(maSP)) {  // Assuming maSP is in the first column
+					                    int existingSoLuong = Integer.parseInt(model_Phai.getValueAt(i, selectedRowData.length - 3).toString());
+					                    model_Phai.setValueAt(existingSoLuong + soLuong, i, selectedRowData.length - 3);
+					                    found = true;
+					                    break;
+					                }
+					            }
+					            if (!found) {
+					                selectedRowData[selectedRowData.length - 3] = soLuong;
+					                model_Phai.addRow(selectedRowData);
+					            }
+					            soLuongTon -= soLuong;
+					            model_Trai.setValueAt(soLuongTon, selectedRow, 2);
+					            capNhatTongTien();
+					        } else {
+					            JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng nhỏ hơn số lượng tồn!");
+					        }
+			        	}
 			        }
 			    }
 			});
@@ -389,6 +408,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 
 	    // Đặt tổng tiền vào txtTongTien
 	    txtTongTien.setText(df.format(tongTien));
+	    txtTongTien.setEnabled(false);
 	}
 	public void clearTable() {
 		while (tblThemDv_Trai.getRowCount() > 0) {
