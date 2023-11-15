@@ -26,17 +26,18 @@ public class ChiTietHoaDon_dao {
 			String sql = "select * from ChiTietHoaDon";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
+			while (rs.next()) {
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)),
+						rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
 
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsChiTietHoaDon;
 	}
-	
+
 	public ArrayList<ChiTietHoaDon> getChiTietHoaDonTheoMaHD(String maHD) {
 		ArrayList<ChiTietHoaDon> dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
 		try {
@@ -47,19 +48,20 @@ public class ChiTietHoaDon_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from ChiTietHoaDon where maHoaDon='"+ maHD +"'";
+			String sql = "select * from ChiTietHoaDon where maHoaDon='" + maHD + "'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
+			while (rs.next()) {
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)),
+						rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsChiTietHoaDon;
 	}
-	
+
 	public ArrayList<ChiTietHoaDon> getChiTietHoaDonTheoMaPhong(String maPhong) {
 		ArrayList<ChiTietHoaDon> dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
 		try {
@@ -70,19 +72,20 @@ public class ChiTietHoaDon_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from ChiTietHoaDon where maPhong='"+ maPhong +"'";
+			String sql = "select * from ChiTietHoaDon where maPhong='" + maPhong + "'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
+			while (rs.next()) {
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)),
+						rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsChiTietHoaDon;
 	}
-	
+
 	public double tinhSoGioHatTheoNgay(String date) {
 		double soGioHat = 0;
 		try {
@@ -93,14 +96,12 @@ public class ChiTietHoaDon_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "SELECT SUM(CTHD.soGioHat) AS TongSoGioHat "
-					+ "FROM HoaDonDatPhong HDP "
-					+ "INNER JOIN ChiTietHoaDon CTHD ON HDP.maHoaDon = CTHD.maHoaDon "
-					+ "where ngayLapHoaDon = '" + date + "' "
-					+ "GROUP BY ngayLapHoaDon";
+			String sql = "SELECT SUM(CTHD.soGioHat) AS TongSoGioHat " + "FROM HoaDonDatPhong HDP "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDP.maHoaDon = CTHD.maHoaDon " + "where ngayLapHoaDon = '"
+					+ date + "' " + "GROUP BY ngayLapHoaDon";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
-			while(rs.next()) {
+			while (rs.next()) {
 				soGioHat = rs.getDouble(1);
 			}
 		} catch (Exception e) {
@@ -109,7 +110,7 @@ public class ChiTietHoaDon_dao {
 		}
 		return soGioHat;
 	}
-	
+
 	public double tinhSoGioHatTheoThang(String thang, int nam) {
 		double soGioHat = 0;
 		try {
@@ -120,16 +121,14 @@ public class ChiTietHoaDon_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "SELECT "
-					+ "FORMAT(ngayLapHoaDon, 'yyyy-MM') AS Thang, "
-					+ "SUM(CTHD.soGioHat) AS TongSoGioHat "
-					+ "FROM HoaDonDatPhong HDP "
+			String sql = "SELECT " + "FORMAT(ngayLapHoaDon, 'yyyy-MM') AS Thang, "
+					+ "SUM(CTHD.soGioHat) AS TongSoGioHat " + "FROM HoaDonDatPhong HDP "
 					+ "INNER JOIN ChiTietHoaDon CTHD ON HDP.maHoaDon = CTHD.maHoaDon "
-					+ "WHERE FORMAT(ngayLapHoaDon, 'yyyy-MM') = '"+nam+"-"+thang+"' "
+					+ "WHERE FORMAT(ngayLapHoaDon, 'yyyy-MM') = '" + nam + "-" + thang + "' "
 					+ "GROUP BY FORMAT(ngayLapHoaDon, 'yyyy-MM')";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
-			while(rs.next()) {
+			while (rs.next()) {
 				soGioHat = rs.getDouble(2);
 			}
 		} catch (Exception e) {
@@ -138,7 +137,7 @@ public class ChiTietHoaDon_dao {
 		}
 		return soGioHat;
 	}
-	
+
 	public boolean addChiTietHD(ChiTietHoaDon cthd) {
 		try {
 			ConnectDB.getInstance();
@@ -171,7 +170,7 @@ public class ChiTietHoaDon_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean UpdateChiTietHD(ChiTietHoaDon cthd) {
 		try {
 			ConnectDB.getInstance();
@@ -182,7 +181,8 @@ public class ChiTietHoaDon_dao {
 		PreparedStatement stmt = null;
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("update ChiTietHoaDon set gioNhanPhong=?, gioTraPhong=? soGioHat=? where maPhong=? and maHoaDon=?");
+			stmt = con.prepareStatement(
+					"update ChiTietHoaDon set gioNhanPhong=?, gioTraPhong=? soGioHat=? where maPhong=? and maHoaDon=?");
 			stmt.setTimestamp(1, cthd.getGioNhanPhong());
 			stmt.setTimestamp(2, cthd.getGioTraPhong());
 			stmt.setDouble(3, cthd.getSoGioHat());
@@ -203,7 +203,7 @@ public class ChiTietHoaDon_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean UpdateChiTietHD_ChuyenPhong(ChiTietHoaDon cthd) {
 		try {
 			ConnectDB.getInstance();
@@ -214,7 +214,8 @@ public class ChiTietHoaDon_dao {
 		PreparedStatement stmt = null;
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("update ChiTietHoaDon set gioTraPhong=?, soGioHat=? where maPhong=? and maHoaDon=?");
+			stmt = con.prepareStatement(
+					"update ChiTietHoaDon set gioTraPhong=?, soGioHat=? where maPhong=? and maHoaDon=?");
 			stmt.setTimestamp(1, cthd.getGioTraPhong());
 			stmt.setDouble(2, cthd.getSoGioHat());
 			stmt.setString(3, cthd.getPhong().getMaPhong());
@@ -234,7 +235,7 @@ public class ChiTietHoaDon_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean deleteChiTietHD(String maPhong) {
 		try {
 			ConnectDB.getInstance();
@@ -262,5 +263,29 @@ public class ChiTietHoaDon_dao {
 
 		}
 		return n > 0;
+	}
+
+	public ArrayList<ChiTietHoaDon> getCTHDPhongDangSD() {
+		ArrayList<ChiTietHoaDon> dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT * FROM ChiTietHoaDon JOIN Phong ON ChiTietHoaDon.maPhong = Phong.maPhong where Phong.trangThai = N'Đang_sử_dụng'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while (rs.next()) {
+				dsChiTietHoaDon.add(new ChiTietHoaDon(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)),
+						rs.getTimestamp(3), rs.getTimestamp(4), rs.getDouble(5)));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsChiTietHoaDon;
 	}
 }
