@@ -8,6 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entity.HoaDonDatPhong;
+import entity.KhachHang;
+import entity.KhuyenMai;
+import entity.NhanVien;
 import entity.SanPham;
 
 public class SanPham_dao {
@@ -102,6 +106,50 @@ public class SanPham_dao {
 			e.printStackTrace();
 		}
 		return dsSanPham;
+	}
+	
+	public ArrayList<SanPham> getAllSanPhamTheoTenSP(String tenSP) {
+		ArrayList<SanPham> dsSP = new ArrayList<SanPham>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select *from SanPham where tenSanPham like N'%"+tenSP+"%'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				dsSP.add(new SanPham(rs.getString(1), rs.getString(2),rs.getDate(3), rs.getString(4), rs.getDouble(5), rs.getString(6), rs.getInt(7), rs.getString(8)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsSP;
+	}
+	
+	public ArrayList<SanPham> getAllSanPhamTheoMaSP(String maSP) {
+		ArrayList<SanPham> dsSP = new ArrayList<SanPham>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select *from SanPham where maSanPham = '"+maSP+"'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				dsSP.add(new SanPham(rs.getString(1), rs.getString(2),rs.getDate(3), rs.getString(4), rs.getDouble(5), rs.getString(6), rs.getInt(7), rs.getString(8)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsSP;
 	}
 	
 	public boolean addSanPham(SanPham sp) {

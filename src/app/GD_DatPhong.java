@@ -535,6 +535,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			if (tmp_dao.getAllTemp().size() == 1) {
 				JOptionPane.showMessageDialog(this, "Chưa phòng nào được thêm vào danh sách đặt");
 			} else {
+				DataManager.setLoadDV(true);
 				dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(TOOL_TIP_TEXT_KEY, null, null, 0, trangChu);
 				dialog_DatPhongTrong_2.setVisible(true);
 			}

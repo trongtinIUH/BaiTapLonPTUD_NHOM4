@@ -1,5 +1,10 @@
 package app;
 
+import java.util.ArrayList;
+
+import entity.ChiTietDichVu;
+import entity.TempThemDV;
+
 public class DataManager {
 
     private static String userName;
@@ -7,16 +12,35 @@ public class DataManager {
 	private static boolean datPhong;
 	private static String soDienThoaiKHDat = "";
     private static boolean chuyenPhong,datPhongCho,phongTrong;
-    private static String sdtKHNew = "0788343289";
+    private static ArrayList<TempThemDV> ctdvTempList;
+    private static double tongTienDV;
 
-
-	public static String getSdtKHNew() {
-		return sdtKHNew;
+	public static boolean isLoadDV() {
+		return loadDV;
 	}
 
-	public static void setSdtKHNew(String sdtKHNew) {
-		DataManager.sdtKHNew = sdtKHNew;
+	public static void setLoadDV(boolean loadDV) {
+		DataManager.loadDV = loadDV;
 	}
+
+	private static boolean loadDV = false;
+
+	public static double getTongTienDV() {
+		return tongTienDV;
+	}
+
+	public static void setTongTienDV(double tongTienDV) {
+		DataManager.tongTienDV = tongTienDV;
+	}
+
+	public static ArrayList<TempThemDV> getCtdvTempList() {
+		return ctdvTempList;
+	}
+
+	public static void setCtdvTempList(ArrayList<TempThemDV> ctdvTempList) {
+		DataManager.ctdvTempList = ctdvTempList;
+	}
+
 
 	public static String getSoDienThoaiKHDat() {
 		return soDienThoaiKHDat;

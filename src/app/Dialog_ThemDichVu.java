@@ -9,13 +9,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.reflect.Array;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,10 +31,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.SanPham_dao;
+import entity.ChiTietDichVu;
 import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.Phong;
 import entity.SanPham;
+import entity.TempThemDV;
 
 import javax.swing.JTextField;
 import java.awt.SystemColor;
@@ -44,8 +50,9 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel panel,panel_Phai,panel_Trai,panel_1,pn_dssp,pn_dssp_Phai;
-	private JLabel lblMaSanPham,lblSoLuong;
-	private JTextField txtMaSP,txtSoLuong,txtPhong,txtKH,txtNV;
+	private JLabel lblSoLuong, lblTenKH, lblTenNV, lblPhong;
+	private JComboBox<String> cbTimKiem;
+	private JTextField txtTenSP,txtSoLuong;
 	private JButton btnTimKiem,btn_DongY,btn_Huy;
 
 
@@ -60,15 +67,20 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	private JButton btn_LamMoi;
 	private JLabel lblTongTien;
 	private JTextField txtTongTien;
-	private SanPham_dao sp_dao;;
+	private SanPham_dao sp_dao;
 	private JButton btn_XoaDV;
 	private JButton btn_Them;
+	private DecimalFormat df;
+	private String ma;
+	private double tongTien;
 
 
 
 
 
-	public Dialog_ThemDichVu(String hoten) {
+	public Dialog_ThemDichVu(String customer, String employee, String maPhong) {
+		this.ma = maPhong;
+		df = new DecimalFormat("#,###,### VNĐ");
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 500);
 		setLocationRelativeTo(null);
@@ -108,9 +120,9 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		panel_1.add(panel_Phai);
 		
 		// lbl và các thành phần góc phải
-		JLabel lblKH = new JLabel("KH");
+		JLabel lblKH = new JLabel("Khách hàng");
 		lblKH.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblKH.setBounds(5, 10, 20, 25);
+		lblKH.setBounds(5, 10, 89, 25);
 		panel_Phai.add(lblKH);
 		
 		JLabel lblPhong = new JLabel("Phòng");
@@ -118,28 +130,25 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		lblPhong.setBounds(230, 10, 50, 25);
 		panel_Phai.add(lblPhong);
 		
-		lblNV = new JLabel("NV");
+		lblNV = new JLabel("Nhân viên");
 		lblNV.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNV.setBounds(5, 50, 20, 25);
+		lblNV.setBounds(5, 50, 89, 25);
 		panel_Phai.add(lblNV);
 		
-		txtKH = new JTextField(hoten);
-		txtKH.setFont(new Font("Arial", Font.ITALIC, 14));
-		txtKH.setBounds(30, 10, 180, 25);
-		panel_Phai.add(txtKH);
-		txtKH.setColumns(20);
+		lblKH = new JLabel(customer);
+		lblKH.setFont(new Font("Arial", Font.ITALIC, 14));
+		lblKH.setBounds(105, 10, 115, 25);
+		panel_Phai.add(lblKH);
 		
-		txtNV = new JTextField();
-		txtNV.setFont(new Font("Arial", Font.ITALIC, 14));
-		txtNV.setColumns(20);
-		txtNV.setBounds(30, 50, 180, 25);
-		panel_Phai.add(txtNV);
+		lblTenNV = new JLabel(employee);
+		lblTenNV.setFont(new Font("Arial", Font.ITALIC, 14));
+		lblTenNV.setBounds(105, 50, 115, 25);
+		panel_Phai.add(lblTenNV);
 		
-		txtPhong = new JTextField();
-		txtPhong.setFont(new Font("Arial", Font.BOLD, 18));
-		txtPhong.setColumns(20);
-		txtPhong.setBounds(285, 10, 100, 25);
-		panel_Phai.add(txtPhong);
+		lblPhong = new JLabel(maPhong);
+		lblPhong.setFont(new Font("Arial", Font.BOLD, 18));
+		lblPhong.setBounds(285, 10, 100, 25);
+		panel_Phai.add(lblPhong);
 		
 		
 		 pn_dssp_Phai = new JPanel();
@@ -186,15 +195,17 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		
 //------------------------------------------------------------------------------------------------------------------
 		//--- các thành phần  panel trái
-		lblMaSanPham = new JLabel("Mã sản phẩm");
-		lblMaSanPham.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblMaSanPham.setBounds(5, 5, 100, 30);
-		panel_Trai.add(lblMaSanPham);
+			cbTimKiem = new JComboBox<>();
+			cbTimKiem.setFont(new Font("Tahoma", Font.BOLD, 14));
+			cbTimKiem.setBounds(5, 5, 130, 30);
+			cbTimKiem.addItem("Mã sản phẩm");
+			cbTimKiem.addItem("Tên sản phẩm");
+		panel_Trai.add(cbTimKiem);
 		
-		txtMaSP = new JTextField();
-		txtMaSP.setBounds(110, 5, 130, 30);
-		panel_Trai.add(txtMaSP);
-		txtMaSP.setColumns(20);
+		txtTenSP = new JTextField();
+		txtTenSP.setBounds(145, 5, 110, 30);
+		panel_Trai.add(txtTenSP);
+		txtTenSP.setColumns(20);
 		
         ImageIcon iconTimKiem = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png");
         Image originalImage_iconTimKiem = iconTimKiem.getImage();
@@ -205,7 +216,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnTimKiem.setIcon(resizedIcon_iconTimKiem);
-		btnTimKiem.setBounds(250, 5, 115, 30);
+		btnTimKiem.setBounds(260, 5, 110, 30);
 		btnTimKiem.setBackground(new Color(13,153,255,255));
 		panel_Trai.add(btnTimKiem);
 		
@@ -220,6 +231,10 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			tblThemDv_Trai = new JTable(model_Trai);
 			tblThemDv_Trai.setFont(new Font("Arial", Font.PLAIN, 12));
 			tblThemDv_Trai.setBackground(Color.WHITE);
+			tblThemDv_Trai.getColumnModel().getColumn(0).setMaxWidth(60);
+			tblThemDv_Trai.getColumnModel().getColumn(1).setMaxWidth(160);
+			tblThemDv_Trai.getColumnModel().getColumn(2).setMaxWidth(70);
+			tblThemDv_Trai.getColumnModel().getColumn(3).setMaxWidth(70);
 			sp = new JScrollPane(tblThemDv_Trai);
 			sp.setBounds(5, 15, 360, 277);
 			pn_dssp.add(sp);
@@ -288,13 +303,19 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			    public void actionPerformed(ActionEvent e) {
 			        // Lấy số lượng từ 'txtSoLuong'
 			        int soLuong = Integer.parseInt(txtSoLuong.getText());
-
+			        int selectedRow = tblThemDv_Trai.getSelectedRow();
+			        int soLuongTon = Integer.parseInt(model_Trai.getValueAt(tblThemDv_Trai.getSelectedRow(), 2).toString());
 			        // Thay đổi số lượng trong dữ liệu
-			        selectedRowData[selectedRowData.length - 3] = soLuong;
-
-			        // Thêm dữ liệu vào bảng phía bên phải
-			        model_Phai.addRow(selectedRowData);
-			        capNhatTongTien();
+			        if(soLuong < soLuongTon) {
+				        // Thêm dữ liệu vào bảng phía bên phải
+			        	selectedRowData[selectedRowData.length - 3] = soLuong;
+				        model_Phai.addRow(selectedRowData);
+				        soLuongTon -= soLuong;
+			            model_Trai.setValueAt(soLuongTon, selectedRow, 2);
+				        capNhatTongTien();
+			        } else {
+			        	JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng nhỏ hơn số lượng tồn!");
+			        }
 			    }
 			});
 
@@ -306,6 +327,32 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	public void loadData() {
 		sp_dao = new SanPham_dao();
 		for (SanPham x : sp_dao.getallSp()) {
+			if(DataManager.getCtdvTempList() != null) {
+				int soLuong = x.getSoLuongTon();
+				for (TempThemDV tmp : DataManager.getCtdvTempList()) {
+					if(tmp.getMaSP().equals(x.getMaSanPham())) {
+						soLuong -= tmp.getSoLuong();
+					}
+				}
+				Object[] row = { x.getMaSanPham(), x.getTenSanPham(), soLuong, x.getDonGia()};
+				model_Trai.addRow(row);
+			} else {
+				Object[] row = { x.getMaSanPham(), x.getTenSanPham(), x.getSoLuongTon(), x.getDonGia()};
+				model_Trai.addRow(row);
+			}
+		}
+	}
+	
+	public void loadDataTheoMa(ArrayList<SanPham> ds) {
+		for (SanPham x : ds) {
+			Object[] row = { x.getMaSanPham(), x.getTenSanPham(), x.getSoLuongTon(), x.getDonGia()};
+			model_Trai.addRow(row);
+
+		}
+	}
+	
+	public void loadDataTheoTenSP(ArrayList<SanPham> ds) {
+		for (SanPham x : ds) {
 			Object[] row = { x.getMaSanPham(), x.getTenSanPham(), x.getSoLuongTon(), x.getDonGia()};
 			model_Trai.addRow(row);
 
@@ -337,9 +384,44 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	        int soLuong = Integer.parseInt(model_Phai.getValueAt(i, 2).toString());
 	        tongTien += donGia * soLuong;
 	    }
+	    
+	    this.tongTien = tongTien;
 
 	    // Đặt tổng tiền vào txtTongTien
-	    txtTongTien.setText(String.valueOf(tongTien));
+	    txtTongTien.setText(df.format(tongTien));
+	}
+	public void clearTable() {
+		while (tblThemDv_Trai.getRowCount() > 0) {
+			model_Trai.removeRow(0);
+		}
+	}
+	public void tim() {
+		sp_dao = new SanPham_dao();
+		if (btnTimKiem.getText().equals("Tìm kiếm")) {
+			if (cbTimKiem.getSelectedItem().equals("Mã sản phẩm")) {
+				ArrayList<SanPham> ds = sp_dao.getAllSanPhamTheoMaSP(txtTenSP.getText());
+				if(ds!=null) {
+					btnTimKiem.setText("Hủy tìm");
+					clearTable();
+					loadDataTheoMa(ds);
+				} else {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+				}
+			} else if (cbTimKiem.getSelectedItem().equals("Tên sản phẩm")) {
+				ArrayList<SanPham> ds = sp_dao.getAllSanPhamTheoTenSP(txtTenSP.getText());
+				if (ds != null) {
+					btnTimKiem.setText("Hủy tìm");
+					clearTable();
+					loadDataTheoTenSP(ds);
+				} else {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+				}
+			}
+		} else {
+			clearTable();
+			loadData();
+			btnTimKiem.setText("Tìm kiếm");
+		}
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -355,7 +437,44 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 //		        }
 //		    }
 		if(o.equals(btn_DongY)) {
-			
+			if(DataManager.getCtdvTempList() != null) {
+				ArrayList<TempThemDV> ctdvTempList = DataManager.getCtdvTempList();
+				for (int i = 0; i < model_Phai.getRowCount(); i++) {
+				    // Assuming ChiTietDichVu has a constructor that accepts the column values as parameters
+				    TempThemDV ctdv = new TempThemDV(
+				    		ma,
+				        model_Phai.getValueAt(i, 0).toString(),  // Replace with the actual column indices
+				        model_Phai.getValueAt(i, 1).toString(),  // and types if they are not strings
+				        Integer.parseInt(model_Phai.getValueAt(i, 2).toString()),
+				        Double.parseDouble(model_Phai.getValueAt(i, 3).toString())
+				    );
+
+				    ctdvTempList.add(ctdv);
+				}
+
+				DataManager.setCtdvTempList(ctdvTempList);
+				double tongTienOld = DataManager.getTongTienDV();
+				DataManager.setTongTienDV( tongTienOld + tongTien);
+			} else if(DataManager.getCtdvTempList() == null) {
+				ArrayList<TempThemDV> ctdvTempList = new ArrayList<TempThemDV>();
+				for (int i = 0; i < model_Phai.getRowCount(); i++) {
+				    // Assuming ChiTietDichVu has a constructor that accepts the column values as parameters
+				    TempThemDV ctdv = new TempThemDV(
+				    		ma,
+				        model_Phai.getValueAt(i, 0).toString(),  // Replace with the actual column indices
+				        model_Phai.getValueAt(i, 1).toString(),  // and types if they are not strings
+				        Integer.parseInt(model_Phai.getValueAt(i, 2).toString()),
+				        Double.parseDouble(model_Phai.getValueAt(i, 3).toString())
+				    );
+
+				    ctdvTempList.add(ctdv);
+				}
+
+				DataManager.setCtdvTempList(ctdvTempList);
+				DataManager.setTongTienDV(tongTien);
+			}
+			DataManager.setLoadDV(true);
+			setVisible(false);
 		}
 		if(o.equals(btn_XoaDV)) {
 				try {
@@ -365,6 +484,9 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+		}
+		if(o.equals(btnTimKiem)) {
+			tim();
 		}
 		
 	}

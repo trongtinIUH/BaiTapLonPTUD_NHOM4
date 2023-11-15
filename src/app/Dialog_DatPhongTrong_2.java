@@ -7,7 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -33,6 +36,7 @@ import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TempDatPhong;
+import entity.TempThemDV;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -42,6 +46,7 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
+import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
@@ -50,6 +55,7 @@ import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import java.awt.Component;
 
 public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, MouseListener {
 
@@ -63,13 +69,22 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private JPanel panel_1, panel_2;
 	private JCheckBox checkBox_KH;
 	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1;
-	private JTextArea txtThemDV;
 	private JTextField txtSoNguoi;
 	private JButton btn_DatThemPhong;
+	private NhanVien_dao nv_dao = new NhanVien_dao();
+	private NhanVien nv;
 
-	private JTable tblThemPhongMoi;
-	private DefaultTableModel model;
+	private JTable tblThemPhongMoi, tblDV;
+	private DefaultTableModel model, modelDV;
 	private String col[] = { "STT", "Mã Phòng", "Loại Phòng", "Số người", "Đơn Giá" };
+	private String colDV[] = {
+			"STT",
+			"Mã sản phẩm",
+			"Tên sản phẩm",
+			"Số lượng", 
+			"Đơn giá",
+			"Tổng tiền"
+	};
 
 	private Dialog_DatThemPhongTrong dialog_DatThemPhongTrong;
 	private Dialog_ThemDichVu dialog_ThemDichVu;
@@ -79,7 +94,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private DateTimePicker dateTimePicker;
 	private TimePickerSettings timeSettings;
 	private DatePickerSettings dateSettings;
-	private JButton btn_XoaPhongDat;
+	private JButton btn_XoaPhongDat, btnXoaDV;
 	private JRadioButton radGioMacDinh, radGioTuDo;
 	private ButtonGroup grpGio = new ButtonGroup();
 
@@ -94,15 +109,16 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private Date ngayHienTai;
 	private Date date;
 	private KhachHang_dao kh_dao = new KhachHang_dao();
+	private DecimalFormat df;
 
 	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp, int soNguoi, GD_TrangChu trangChu) {
-
+		df = new DecimalFormat("#,###,### VNĐ");
 		// màn
 		// hình******************************************************************************
 		this.trangChu = trangChu;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		setSize(800, 500);
+		setSize(800, 629);
 		setLocationRelativeTo(null);
 
 		// panel chứa tiêu đề--------------------------------------
@@ -123,7 +139,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		// pane; chứa các phần còn lại---------------------------------
 		panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(0, 35, 784, 426);
+		panel_1.setBounds(0, 35, 784, 557);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -164,7 +180,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		txtSDT = new JTextField();
 		txtSDT.setHorizontalAlignment(SwingConstants.LEFT);
 		txtSDT.setFont(new Font("Arial", Font.BOLD, 16));
-		txtSDT.setText("");
+		txtSDT.setText("0788343289");
 		txtSDT.setBounds(140, 5, 300, 30);
 		panel_2.add(txtSDT);
 		txtSDT.setColumns(10);
@@ -210,33 +226,25 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		lbl_TenKH_1.setBounds(165, 200, 180, 30);
 		panel_1.add(lbl_TenKH_1);
 
-		txtThemDV = new JTextArea();
-		txtThemDV.setFont(new Font("Monospaced", Font.BOLD, 13));
-		txtThemDV.setEditable(false);
-		txtThemDV.setText("bia, nước ngọt, bánh trung thu");
-		txtThemDV.setBackground(SystemColor.control);
-		txtThemDV.setBounds(150, 340, 625, 30);
-		panel_1.add(txtThemDV);
-
 		// các nút
 		// jbutton-------------------------------------------------------------------
 		btn_DatPhong = new JButton("Đặt Phòng");
 		btn_DatPhong.setBackground(Color.GREEN);
 		btn_DatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatPhong.setBackground(new Color(33, 167, 38, 255));
-		btn_DatPhong.setBounds(10, 378, 160, 40);
+		btn_DatPhong.setBounds(10, 507, 160, 40);
 		panel_1.add(btn_DatPhong);
 
 		btn_Sua = new JButton("Sửa");
 		btn_Sua.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_Sua.setBackground(new Color(255, 83, 83, 255));
-		btn_Sua.setBounds(605, 378, 170, 40);
+		btn_Sua.setBounds(600, 507, 170, 40);
 		panel_1.add(btn_Sua);
 
-		btn_ThemDV = new JButton("Thêm DV");
+		btn_ThemDV = new JButton("Thêm dịch vụ");
 		btn_ThemDV.setBackground(Color.LIGHT_GRAY);
 		btn_ThemDV.setFont(new Font("Arial", Font.BOLD, 15));
-		btn_ThemDV.setBounds(10, 340, 120, 30);
+		btn_ThemDV.setBounds(225, 350, 135, 30);
 		panel_1.add(btn_ThemDV);
 
 		btn_KiemTraSDT = new JButton("Kiểm Tra");
@@ -258,7 +266,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		btn_DatThemPhong = new JButton("Đặt Thêm Phòng");
 		btn_DatThemPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatThemPhong.setBackground(new Color(109, 197, 112));
-		btn_DatThemPhong.setBounds(191, 378, 200, 40);
+		btn_DatThemPhong.setBounds(193, 507, 200, 40);
 		panel_1.add(btn_DatThemPhong);
 
 		// bảng thêm phòng mới
@@ -332,8 +340,45 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		btn_XoaPhongDat = new JButton("Xóa Phòng Đặt");
 		btn_XoaPhongDat.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_XoaPhongDat.setBackground(new Color(234, 234, 114, 255));
-		btn_XoaPhongDat.setBounds(417, 378, 170, 40);
+		btn_XoaPhongDat.setBounds(413, 507, 170, 40);
 		panel_1.add(btn_XoaPhongDat);
+		
+		modelDV = new DefaultTableModel(colDV, 0);
+		tblDV = new JTable(modelDV);
+		tblDV.setFont(new Font("Arial", Font.PLAIN, 12));
+		tblDV.setBackground(Color.WHITE);
+		JScrollPane sp_ListDV = new JScrollPane(tblDV);
+		sp_ListDV.setBounds(10, 397, 765, 100);
+		panel_1.add(sp_ListDV);
+		
+		btnXoaDV = new JButton("Xóa dịch vụ");
+		btnXoaDV.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnXoaDV.setFont(new Font("Arial", Font.BOLD, 15));
+		btnXoaDV.setBackground(Color.LIGHT_GRAY);
+		btnXoaDV.setBounds(393, 350, 134, 30);
+		panel_1.add(btnXoaDV);
+		
+		Timer timer = new Timer(1000, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(DataManager.isLoadDV()) {
+					clearTableDV();
+					if(tmpDatPhong_dao.getAllTemp().size() == 2) {
+						loadDataDV(model.getValueAt(0, 1).toString());
+						DataManager.setLoadDV(false);
+					} else {
+						DataManager.setLoadDV(false);
+						clearTableDV();
+						clearTable();
+						loadDataPhong();
+					}
+				}
+			}
+		});
 
 		// thêm sự kiện button
 		btn_DatPhong.addActionListener(this);
@@ -342,12 +387,25 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		btn_ThemDV.addActionListener(this);
 		btn_DatThemPhong.addActionListener(this);
 		btn_XoaPhongDat.addActionListener(this);
+		btnXoaDV.addActionListener(this);
 		radGioMacDinh.addActionListener(this);
 		radGioTuDo.addActionListener(this);
 		tblThemPhongMoi.addMouseListener(this);
 		checkBox_KH.addActionListener(this);
-		txtSDT.setText(DataManager.getSdtKHNew());
 		loadDataPhong();
+		loadDataDV(model.getValueAt(0, 1).toString());
+		checkDefaultCustomer();
+		timer.start();
+	}
+	
+	private void checkDefaultCustomer() {
+		if(DataManager.getSoDienThoaiKHDat().equals("0000000000")) {
+			checkBox_KH.setSelected(true);
+			lbl_TenKH_1.setText("Nguyễn Văn A");
+			lbl_GioiTinh_1.setText("Nam");
+			txtSDT.setEnabled(false);
+			btn_KiemTraSDT.setEnabled(false);
+		}
 	}
 
 	private void loadDataPhong() {
@@ -374,10 +432,30 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			lbl_TenKH_1.setText(hoTen);
 		}
 	}
+	
+	private void loadDataDV(String maPhong) {
+		if(DataManager.getCtdvTempList() != null) {
+			int i = 0;
+			for (TempThemDV tmp : DataManager.getCtdvTempList()) {
+				if(tmp.getMaPhong().equals(maPhong)) {
+					i++;
+					Object[] row = { i, tmp.getMaSP(), tmp.getTenSP(), tmp.getSoLuong(),
+							tmp.getDonGia(), df.format(tmp.getDonGia() * tmp.getSoLuong()) };
+					modelDV.addRow(row);
+				}
+			}
+		}
+	}
 
 	private void clearTable() {
 		while (tblThemPhongMoi.getRowCount() > 0) {
 			model.removeRow(0);
+		}
+	}
+	
+	private void clearTableDV() {
+		while (tblDV.getRowCount() > 0) {
+			modelDV.removeRow(0);
 		}
 	}
 
@@ -424,6 +502,21 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			JOptionPane.showMessageDialog(this, "Sửa thành công!");
 		}
 	}
+	private void themDV() {
+		if(tblThemPhongMoi.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn phòng để thêm dịch vụ!");
+		} else if(tblThemPhongMoi.getSelectedRowCount() > 1) {
+			JOptionPane.showMessageDialog(null, "Chỉ thêm dịch vụ được 1 phòng!");
+		} else {
+			String customer = lbl_TenKH_1.getText();
+			String employee = DataManager.getUserName();
+			nv = nv_dao.TimkiemMaNhanVien(employee);
+			String maPhong = lblMaPhong.getText();
+			String ma = maPhong.substring(maPhong.indexOf(":") + 1).trim();
+			dialog_ThemDichVu = new Dialog_ThemDichVu(customer, nv.getHoTen(), ma);
+			dialog_ThemDichVu.setVisible(true);
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -432,9 +525,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			sua();
 		}
 		if (o.equals(btn_ThemDV)) {
-
-			dialog_ThemDichVu = new Dialog_ThemDichVu(lbl_TenKH_1.getText());
-			dialog_ThemDichVu.setVisible(true);
+			themDV();
 		}
 		if (o.equals(btn_DatPhong)) {
 			for (TempDatPhong tmpDatPhong : tmpDatPhong_dao.getAllTemp()) {
@@ -466,6 +557,9 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			setVisible(false);
 		}
 		if (o.equals(btn_DatThemPhong)) {
+			if(checkBox_KH.isSelected()) {
+				DataManager.setSoDienThoaiKHDat("0000000000");
+			}
 			setVisible(false);
 		}
 		if (o.equals(btn_XoaPhongDat)) {
@@ -509,7 +603,28 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				btn_KiemTraSDT.setEnabled(true);
 			}
 		}
+		if(o.equals(btnXoaDV)) {
+			xoaDV();
+		}
 
+	}
+	
+	public void xoaDV() {
+		if (tblDV.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
+		} else if (tblDV.getSelectedRowCount() > 1) {
+			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để xóa!");
+		} else {
+			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				int row = tblDV.getSelectedRow();
+				modelDV.removeRow(row);
+				ArrayList<TempThemDV> tmp = DataManager.getCtdvTempList();
+				tmp.remove(row);
+				DataManager.setCtdvTempList(tmp);
+				JOptionPane.showMessageDialog(this, "Xóa thành công!");
+			}
+		}
 	}
 
 	private int ThuTuPhieuDatPhongTrongNgay() {
@@ -546,6 +661,12 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		lbl_Loai.setText("Loại: " + model.getValueAt(row, 2));
 		txtSoNguoi.setText(model.getValueAt(row, 3).toString());
 		lbl_GiaTien_1.setText(model.getValueAt(row, 4) + "VNĐ");
+//		if(model.getValueAt(row, 1).equals(DataManager.getMaPhong())) {
+//			clearTableDV();
+//			loadDataDV(DataManager.getMaPhong());
+//		}
+		clearTableDV();
+		loadDataDV(model.getValueAt(row, 1).toString());
 	}
 
 	@Override
