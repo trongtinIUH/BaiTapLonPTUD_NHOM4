@@ -24,15 +24,10 @@ import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.Phong_dao;
-import dao.SanPham_dao;
-import entity.LoaiPhong;
 import entity.Phong;
-import entity.SanPham;
 
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class Dialog_DatThemPhongTrong extends JDialog implements ActionListener{
@@ -249,7 +244,7 @@ public class Dialog_DatThemPhongTrong extends JDialog implements ActionListener{
 	public void loadDataPhongMoi() {
 		phong_dao = new Phong_dao();
 		for (Phong x : phong_dao.laydsPhongMoi()) {
-			Object[] row = { x.getMaPhong(),x.getTenLoaiPhong(),x.getSucChua(),x.getDonGiaTheoGio(),x.getTrangThai().Trống};
+			Object[] row = { x.getMaPhong(),x.getTenLoaiPhong(),x.getSucChua(),x.getDonGiaTheoGio(),x.getTrangThai()};
 			model.addRow(row);
 
 		}

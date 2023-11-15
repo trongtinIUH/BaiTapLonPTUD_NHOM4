@@ -273,11 +273,27 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			DateFormat dateFormatPhut = new SimpleDateFormat("mm"); 
 			phutHienTai = new Date();
 			double phutHT = Double.parseDouble(dateFormatPhut.format(phutHienTai));
+
 			double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd.getGioNhanPhong()));	
 			double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd.getGioNhanPhong()));
-			soGioHat_Item = gioHT - gioNhanPhong;
-			soPhutHat_Item = phutHT - phutNhanPhong;
-			thoiGian_Item = soGioHat_Item + soPhutHat_Item/60;
+			
+			if(gioHT >= gioNhanPhong && phutHT >= phutNhanPhong) {
+				soGioHat_Item = gioHT - gioNhanPhong;
+				soPhutHat_Item = phutHT - phutNhanPhong;
+				thoiGian_Item = soGioHat_Item + soPhutHat_Item/60;
+			}else if(gioHT <= gioNhanPhong && phutHT >= phutNhanPhong) {
+				soGioHat_Item = gioHT - gioNhanPhong + 24.0;
+				soPhutHat_Item = phutHT - phutNhanPhong;
+				thoiGian_Item = (soGioHat_Item + soPhutHat_Item/60);
+			}else if(gioHT >= gioNhanPhong && phutHT <= phutNhanPhong) {
+				soGioHat_Item = gioHT - gioNhanPhong - 1;
+				soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
+				thoiGian_Item = (soGioHat_Item + soPhutHat_Item/60);
+			}else if(gioHT <= gioNhanPhong && phutHT <= phutNhanPhong) {
+				soGioHat_Item = gioHT - gioNhanPhong + 24.0 - 1.0;
+				soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
+				thoiGian_Item = (soGioHat_Item + soPhutHat_Item/60);
+			}
 			DecimalFormat df3 = new DecimalFormat("#.##");
 			Phong ph = ph_dao.getPhongTheoMaPhong(cthd.getPhong().getMaPhong());
 			LoaiPhong loaiPhong = loaiPhong_dao.getLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong());
@@ -285,8 +301,8 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			model.addRow(rowPhong);
 			tongTienPhong += thoiGian_Item * loaiPhong.getDonGiaTheoGio();
 
-			tongSoGioHat += (gioHT - gioNhanPhong);
-			tongSoPhutHat += (phutHT - phutNhanPhong);
+			tongSoGioHat += soGioHat_Item;
+			tongSoPhutHat += soPhutHat_Item;
 		}
 		gioThua = (int) (tongSoPhutHat/60);
 		phutChinhXac = tongSoPhutHat%60;

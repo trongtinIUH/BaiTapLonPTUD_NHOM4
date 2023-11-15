@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JCheckBox;
 import java.awt.SystemColor;
-import java.awt.Window;
 import javax.swing.UIManager;
 
 import entity.Enum_TrangThai;
@@ -71,7 +70,6 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private DefaultTableModel model;
 	private String col[] = { "STT", "Mã Phòng", "Loại Phòng", "Số người", "Đơn Giá" };
 
-	private Dialog_DatThemPhongTrong dialog_DatThemPhongTrong;
 	private Dialog_ThemDichVu dialog_ThemDichVu;
 	private JLabel lbl_TenKH;
 

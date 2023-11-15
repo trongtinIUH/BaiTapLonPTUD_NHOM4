@@ -46,6 +46,10 @@ import entity.DateLabelFormatter;
 import entity.NhanVien;
 
 public class GD_NhanVien extends JPanel implements ActionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Font font = new Font("Arial", Font.BOLD, 16); // khung tittle
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield

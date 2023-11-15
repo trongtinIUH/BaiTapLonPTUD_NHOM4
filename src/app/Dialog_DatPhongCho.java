@@ -49,9 +49,8 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JPanel panel_1, panel_2;
 	private JCheckBox checkBox_KH;
 	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1, lbl_sdtKH,lbl_GioiTinh;
-	private final JPanel contentPanel = new JPanel();
 	private JTextField txtSoNguoi;
-	private String col[] = { "Mã Phòng", "Loại Phòng", "Số Người", "Đơn Giá", "Trạng Thái" };
+
 	private JLabel lbl_TenKH;
 	private LocalDateTime now;
 	private DateTimePicker dateTimePicker;

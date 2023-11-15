@@ -16,7 +16,12 @@ import javax.swing.border.EmptyBorder;
 
 public class BlankPlotChart extends JComponent {
 
-    public BlankPlotChatRender getBlankPlotChatRender() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public BlankPlotChatRender getBlankPlotChatRender() {
         return blankPlotChatRender;
     }
 

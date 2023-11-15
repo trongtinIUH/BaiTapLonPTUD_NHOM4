@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -31,8 +30,6 @@ import entity.LoaiPhong;
 import entity.Phong;
 import entity.TempDatPhong;
 import dao.LoaiPhong_dao;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class GD_DatPhong extends JPanel implements ActionListener, MouseListener {
 
@@ -62,14 +59,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private JButton btnPhong;
 	ArrayList<JButton> btnPhongList = new ArrayList<>();
-	private ImageIcon resizedIcon_phongsdvip;
-	private ImageIcon resizedIcon_phongchovip;
-	private ImageIcon resizedIcon_phongsuavip;
-	private ImageIcon resizedIcon_phongtrongvip;
-	private ImageIcon resizedIcon_phongcho;
-	private ImageIcon resizedIcon_phongsd;
-	private ImageIcon resizedIcon_phongtrong;
-	private ImageIcon resizedIcon_phongsua;
 	private JPanel panel_ChuaPhong;
 	private JPanel panel;
 	private Dialog_HienThiPhongSuaChua dialog_htPhongSuaChua;

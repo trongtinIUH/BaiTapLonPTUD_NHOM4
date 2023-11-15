@@ -5,9 +5,7 @@ import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Timestamp;
 import java.text.NumberFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -36,7 +34,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JLabel lblPhong,lblGia,lblTrangThai, lblThoiGianHat, lblSoNguoi, lblLoai,lblLoai_1,lblPhong_1,lblgia_1;
+	private JLabel lblPhong,lblGia, lblThoiGianHat, lblSoNguoi, lblLoai,lblLoai_1,lblPhong_1,lblgia_1;
 	private JButton btnNhanPhong,btn_HuyPhong;
 	
 	private Phong_dao p_dao = new Phong_dao();
@@ -50,12 +48,10 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 	
 	private JLabel lblThoiGianHat_1;
 	
-	private LocalDateTime now;
 	private DateTimePicker dateTimePicker;
 	private TimePickerSettings timeSettings;
 	private DatePickerSettings dateSettings;
 	private DatePickerSettings dateSettings_1;
-	private LocalDateTime now1;
 	private TimePickerSettings timeSettings_1;
 	private DateTimePicker dateTimePicker_1;
 	private JLabel lbl_KhachHang;
@@ -160,7 +156,6 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
 		getContentPane().add(lblThoiGianHat_1);
 		
 		// hiển thị thời gian đặt phòng chờ
-		now = LocalDateTime.now();
 
 	    dateSettings = new DatePickerSettings();
         dateSettings.setLocale(new Locale("vi","VN")); // Set the locale to English
@@ -190,9 +185,8 @@ public class Dialog_PhongCho extends JDialog implements ActionListener{
         dateTimePicker.getDatePicker().setLayout(null);
         getContentPane().add(dateTimePicker);
         dateTimePicker.setLayout(null);
+        
 		// hiển thị thời gian nhận phòng chờ
-		now1 = LocalDateTime.now();
-
 	    dateSettings_1 = new DatePickerSettings();
 	    dateSettings_1.setLocale(new Locale("vi","VN")); // Set the locale to English
 	    dateSettings_1.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format

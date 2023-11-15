@@ -2,7 +2,6 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class NhanVien implements Serializable {

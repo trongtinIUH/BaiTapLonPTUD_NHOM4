@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +53,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	 */
 	private static final long serialVersionUID = 1L;
 	private JComboBox<String> comboBox_TrangThai, comboBox_LoaiPhong;
-	private JTextField txtSoNguoi, txtMaPhong;
+	private JTextField txtMaPhong;
 	private JButton btnTimKiem, btnLamMoi, btn_ChuyenPhong, btn_QuayLai;
 	private JPanel panel_2, panel, panel_3;
 	private JTable tblChuyenPhong;
@@ -71,7 +70,6 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private JTextField txtNguoi;
 	private JTextField txtTGHat;
 	private Date gioHienTai;
-	private PhieuDatPhong_dao phieuDatPhong_dao;
 	private Date phutHienTai;
 	private Date tgHT;
 	private double soGioHat;
@@ -97,7 +95,6 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		getContentPane().setLayout(null);
 		ph_dao = new Phong_dao();
 		loaiPhong_dao = new LoaiPhong_dao();
-		phieuDatPhong_dao = new PhieuDatPhong_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
 		pdp_dao = new PhieuDatPhong_dao();
 		nv_dao = new NhanVien_dao();
@@ -200,6 +197,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 			cthd_hienTaiCuaPhong = cthd;
 		}
 
+
 		DateFormat dateFormatGio = new SimpleDateFormat("HH");
 		gioHienTai = new Date();
 		double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
@@ -209,8 +207,20 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 
 		double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));
 		double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));
-		soGioHat = gioHT - gioNhanPhong;
-		soPhutHat = phutHT - phutNhanPhong;
+		
+		if(gioHT >= gioNhanPhong && phutHT >= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong;
+			soPhutHat = phutHT - phutNhanPhong;
+		}else if(gioHT <= gioNhanPhong && phutHT >= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong + 24.0;
+			soPhutHat = phutHT - phutNhanPhong;
+		}else if(gioHT >= gioNhanPhong && phutHT <= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong - 1;
+			soPhutHat = phutHT - phutNhanPhong + 60.0;
+		}else if(gioHT <= gioNhanPhong && phutHT <= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong + 24.0 - 1.0;
+			soPhutHat = phutHT - phutNhanPhong + 60.0;
+		}
 		DecimalFormat df = new DecimalFormat("#.#");
 		panel_1.add(txtTGHat = new JTextField(df.format(soGioHat) + " giờ " + df.format(soPhutHat) + " phút"));
 

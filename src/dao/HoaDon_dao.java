@@ -12,7 +12,6 @@ import entity.HoaDonDatPhong;
 import entity.KhachHang;
 import entity.KhuyenMai;
 import entity.NhanVien;
-import entity.SanPham;
 
 public class HoaDon_dao {
 	public ArrayList<HoaDonDatPhong> getAllHoaDonDatPhong() {

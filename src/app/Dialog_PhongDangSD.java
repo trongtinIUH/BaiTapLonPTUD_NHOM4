@@ -15,7 +15,6 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import dao.ChiTietHoaDon_dao;
 import dao.LoaiPhong_dao;
@@ -40,10 +39,8 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private Dialog_ThanhToan dialog_ThanhToan;
 	private Phong_dao p_dao = new Phong_dao();
 	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
-	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private Phong p;
 	private LoaiPhong lp;
-	private PhieuDatPhong pdp = new PhieuDatPhong();
 	private PhieuDatPhong_dao phieuDatPhong_dao;
 	private ChiTietHoaDon_dao cthd_dao;
 	private Date gioHienTai;
@@ -133,8 +130,20 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		double phutHT = Double.parseDouble(dateFormatPhut.format(phutHienTai));
 		double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));	
 		double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));
-		soGioHat = gioHT - gioNhanPhong;
-		soPhutHat = phutHT - phutNhanPhong;
+		
+		if(gioHT >= gioNhanPhong && phutHT >= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong;
+			soPhutHat = phutHT - phutNhanPhong;
+		}else if(gioHT <= gioNhanPhong && phutHT >= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong + 24.0;
+			soPhutHat = phutHT - phutNhanPhong;
+		}else if(gioHT >= gioNhanPhong && phutHT <= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong - 1;
+			soPhutHat = phutHT - phutNhanPhong + 60.0;
+		}else if(gioHT <= gioNhanPhong && phutHT <= phutNhanPhong) {
+			soGioHat = gioHT - gioNhanPhong + 24.0 - 1.0;
+			soPhutHat = phutHT - phutNhanPhong + 60.0;
+		}
 		DecimalFormat df = new DecimalFormat("#.#");
 		lblThoiGianHat = new JLabel();
 		lblThoiGianHat.setText(df.format(soGioHat) + " giờ " + df.format(soPhutHat) + " phút");

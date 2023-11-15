@@ -27,7 +27,12 @@ import org.jdesktop.animation.timing.interpolation.PropertySetter;
 
 public class CurveLineChart extends JComponent {
 
-    public boolean isFillColor() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public boolean isFillColor() {
         return fillColor;
     }
 

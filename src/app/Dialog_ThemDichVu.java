@@ -10,8 +10,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -27,14 +25,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.SanPham_dao;
-import entity.LoaiPhong;
-import entity.NhanVien;
-import entity.Phong;
 import entity.SanPham;
 
 import javax.swing.JTextField;
 import java.awt.SystemColor;
-import java.awt.Window;
 import javax.swing.UIManager;
 
 public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseListener {

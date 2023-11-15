@@ -2,7 +2,6 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -21,9 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import dao.KhachHang_dao;
 import dao.PhieuDatPhong_dao;
 import entity.KhachHang;
-import entity.NhanVien;
 import entity.PhieuDatPhong;
-import entity.Phong;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -54,7 +51,6 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 	private KhachHang_dao kh_dao= new KhachHang_dao();
 	private KhachHang kh= new KhachHang();
 	private PhieuDatPhong pdp= new PhieuDatPhong();
-	private Phong p =new Phong();
 
 	public Dialog_TimPhieuDatPhong() {
 		//kích thước

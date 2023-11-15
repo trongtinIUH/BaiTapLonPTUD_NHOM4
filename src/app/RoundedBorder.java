@@ -16,7 +16,6 @@ import javax.swing.border.Border;
 public class RoundedBorder implements Border {
     private int radius;
     private int thickness;
-    private int pointerSize;
     private int strokePad;
     private double radii;
     private Color color;
@@ -25,7 +24,6 @@ public class RoundedBorder implements Border {
     public RoundedBorder(int radius) {
         this.radius = radius;
         this.thickness = 1; // Khởi tạo thickness
-        this.pointerSize = 1; // Khởi tạo pointerSize
         this.strokePad = 1; // Khởi tạo strokePad
         this.radii = 10.0; // Khởi tạo radii
         this.color = new Color(0, 0, 0, 0); // Khởi tạo color

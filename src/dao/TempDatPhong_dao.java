@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.Phong;
-import entity.SanPham;
 import entity.TempDatPhong;
 
 public class TempDatPhong_dao {
