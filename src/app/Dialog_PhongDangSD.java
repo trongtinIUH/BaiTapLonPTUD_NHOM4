@@ -144,6 +144,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 			soGioHat = gioHT - gioNhanPhong + 24.0 - 1.0;
 			soPhutHat = phutHT - phutNhanPhong + 60.0;
 		}
+		
 		DecimalFormat df = new DecimalFormat("#.#");
 		lblThoiGianHat = new JLabel();
 		lblThoiGianHat.setText(df.format(soGioHat) + " giờ " + df.format(soPhutHat) + " phút");
