@@ -158,8 +158,11 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		lbltrangthai_1.setBounds(150, 170, 120, 30);
 		getContentPane().add(lbltrangthai_1);
 		
+		p = p_dao.getPhongTheoMaPhong(maPhong);
+		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+		
 		lblgia_1 = new JLabel();
-		lblgia_1.setText("80,000 VNĐ");
+		lblgia_1.setText(lp.getDonGiaTheoGio() + "VNĐ");
 		lblgia_1.setBackground(Color.WHITE);
 		lblgia_1.setForeground(Color.RED);
 		lblgia_1.setFont(new Font("Arial", Font.BOLD, 15));

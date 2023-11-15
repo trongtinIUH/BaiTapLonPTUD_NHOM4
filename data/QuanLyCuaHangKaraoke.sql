@@ -270,6 +270,7 @@ insert into KhachHang values('KH231013001', N'Nguyễn Ngọc Tân', '0212999568
 insert into KhachHang values('KH231014001', N'Trần Thị Lan Chi', '0688519418', 0)
 insert into KhachHang values('KH231020001', N'Lê Văn Việt', '0788222194', 1)
 insert into KhachHang values('KH231015001', N'Phạm Gia Khải', '0654323943', 1)
+insert into KhachHang values('KH231015544', N'Trần Trọng Tín', '0947672072', 1)
 go
 
 --PhieuDatPhong
@@ -285,12 +286,9 @@ insert into PhieuDatPhong values('PDP2310110002', '203', '2111002', 'KH231011002
 insert into PhieuDatPhong values('PDP2310120001', '404', '2301002', 'KH231012001', '2023-10-12 20:00:00.000', '2023-10-12 20:00:00.000', 5)
 insert into PhieuDatPhong values('PDP2310130001', '306', '2010002', 'KH231013001', '2023-10-13 15:00:00.000', '2023-10-13 15:00:00.000', 18)
 insert into PhieuDatPhong values('PDP2310140001', '105', '2001001', 'KH231014001', '2023-10-14 12:00:00.000', '2023-10-14 12:00:00.000', 5)
-insert into PhieuDatPhong values('PDP2310200001', '206', '2110004', 'KH231020001', '2023-10-20 07:00:00.000', '2023-10-20 21:00:00.000', 4)
+insert into PhieuDatPhong values('PDP2310200001', '206', '2110004', 'KH231020001', '2023-11-15 16:00:00.000', '2023-11-15 16:50:00.000', 4)
 insert into PhieuDatPhong values('PDP2310150001', '403', '2311001', 'KH231015001', '2023-10-15 21:00:00.000', '2023-10-15 21:00:00.000', 10)
 
-insert into PhieuDatPhong values('PDP2209010001', '403', '2001001', 'KH231015001', '2022-09-01 19:00:00.000', '2022-09-01 19:00:00.000', 25)
-insert into PhieuDatPhong values('PDP2208010001', '404', '2110004', 'KH231014001', '2022-08-01 18:00:00.000', '2022-08-01 18:00:00.000', 3)
-insert into PhieuDatPhong values('PDP2207150001', '306', '2311001', 'KH231014001', '2022-07-15 17:00:00.000', '2022-07-15 17:00:00.000', 17)
 
 go
 
