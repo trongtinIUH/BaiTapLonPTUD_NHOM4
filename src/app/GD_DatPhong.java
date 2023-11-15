@@ -37,7 +37,7 @@ import entity.TempDatPhong;
 import dao.ChiTietHoaDon_dao;
 import dao.LoaiPhong_dao;
 
-public class GD_DatPhong extends JPanel implements ActionListener, MouseListener {
+public class GD_DatPhong extends JPanel implements ActionListener {
 
 	/**
 	 * 
@@ -74,6 +74,16 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private int sizeDSTmp;
 	private ChiTietHoaDon_dao cthd_dao = new ChiTietHoaDon_dao();
+	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
+	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
+	private ImageIcon resizedIcon_phongtrong;
+	private ImageIcon resizedIcon_phongsd;
+	private ImageIcon resizedIcon_phongcho;
+	private ImageIcon resizedIcon_phongsua;
+	private ImageIcon resizedIcon_phongtrongvip;
+	private ImageIcon resizedIcon_phongsdvip;
+	private ImageIcon resizedIcon_phongchovip;
+	private ImageIcon resizedIcon_phongsuavip;
 
 	/**
 	 * Create the panel.
@@ -93,13 +103,22 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		// ---gốc
 		// 1--------------------------***********************************************************************
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 0, 1080, 60);
-		panel_1.setBackground(new Color(181, 230, 251, 255));
+		panel_1.setBounds(0, 0, 1078, 60);
+		panel_1.setBackground(new Color(187, 231, 252));
 		panel_1.setLayout(null);
 		JLabel lblTieuDe = new JLabel("ĐẶT PHÒNG");
-		lblTieuDe.setBounds(501, 10, 130, 30);
-		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 18));
+		// căn giữa title
+		lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTieuDe.setVerticalAlignment(SwingConstants.CENTER);
+
+		// Đặt kích thước và tọa độ cho lblTitle
+		int labelWidth = 500; // Thay đổi kích thước theo ý muốn
+		int labelHeight = 40; // Thay đổi kích thước theo ý muốn
+		int labelX = (panel_1.getWidth() - labelWidth) / 2; // Căn giữa theo chiều ngang
+		int labelY = (panel_1.getHeight() - labelHeight) / 2; // Căn giữa theo chiều dọc
+		lblTieuDe.setBounds(labelX, labelY, labelWidth, labelHeight);
 		panel_1.add(lblTieuDe);
+		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 25));
 		panel.add(panel_1);
 		// ---nút user
 		btnUser = new JButton("");
@@ -117,54 +136,50 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		// --- lbl và combox trạng thái
-		JLabel lblTrangThai = new JLabel("Trạng Thái");
-		lblTrangThai.setFont(new Font("Tahoma", Font.BOLD, 18));
+		JLabel lblTrangThai = new JLabel("Trạng thái");
+		lblTrangThai.setFont(font2);
 		lblTrangThai.setBounds(10, 10, 100, 25);
 		panel_2.add(lblTrangThai);
 
 		comboBox_TrangThai = new JComboBox<String>();
 		comboBox_TrangThai.setBackground(Color.WHITE);
-		comboBox_TrangThai.setFont(new Font("Tahoma", Font.BOLD, 15));
+		comboBox_TrangThai.setFont(font3);
 		comboBox_TrangThai.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Trống", "Chờ", "Đang Sử Dụng", "Sửa Chửa" }));
+				new DefaultComboBoxModel<String>(new String[] { "", "Trống", "Chờ", "Đang sử dụng", "Đang sửa chữa" }));
 		comboBox_TrangThai.setBounds(130, 10, 212, 30);
 		panel_2.add(comboBox_TrangThai);
 
-		JLabel lblLoiPhng = new JLabel("Loại Phòng");
-		lblLoiPhng.setFont(new Font("Tahoma", Font.BOLD, 18));
+		JLabel lblLoiPhng = new JLabel("Loại phòng");
+		lblLoiPhng.setFont(font2);
 		lblLoiPhng.setBounds(10, 60, 150, 25);
 		panel_2.add(lblLoiPhng);
 
 		comboBox_LoaiPhong = new JComboBox<String>();
-		comboBox_LoaiPhong.setModel(new DefaultComboBoxModel<String>(new String[] { "Phòng Vip", "Phòng Thường" }));
-		comboBox_LoaiPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
+		comboBox_LoaiPhong.setModel(new DefaultComboBoxModel<String>(new String[] { "", "Phòng VIP", "Phòng thường" }));
+		comboBox_LoaiPhong.setFont(font3);
 		comboBox_LoaiPhong.setBackground(Color.WHITE);
 		comboBox_LoaiPhong.setBounds(130, 60, 212, 30);
 		panel_2.add(comboBox_LoaiPhong);
 
 		// ---lbl số người và mã phòng & txt
-		JLabel lblSoNguoi = new JLabel("Số Người");
-		lblSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 18));
+		JLabel lblSoNguoi = new JLabel("Số người");
+		lblSoNguoi.setFont(font2);
 		lblSoNguoi.setBounds(380, 10, 100, 25);
 		panel_2.add(lblSoNguoi);
 
-		JLabel lblMaPhong = new JLabel("Mã Phòng");
-		lblMaPhong.setFont(new Font("Tahoma", Font.BOLD, 18));
+		JLabel lblMaPhong = new JLabel("Mã phòng");
+		lblMaPhong.setFont(font2);
 		lblMaPhong.setBounds(380, 60, 100, 30);
 		panel_2.add(lblMaPhong);
 
 		txtSoNguoi = new JTextField();
-		txtSoNguoi.setFont(new Font("Tahoma", Font.BOLD, 15));
-		txtSoNguoi.setEditable(false);
-		txtSoNguoi.setText("10");
+		txtSoNguoi.setFont(font3);
 		txtSoNguoi.setBounds(509, 10, 102, 30);
 		panel_2.add(txtSoNguoi);
 		txtSoNguoi.setColumns(10);
 
 		txtMaPhong = new JTextField();
-		txtMaPhong.setFont(new Font("Tahoma", Font.BOLD, 15));
-		txtMaPhong.setText("101");
-		txtMaPhong.setEditable(false);
+		txtMaPhong.setFont(font3);
 		txtMaPhong.setColumns(10);
 		txtMaPhong.setBounds(509, 60, 102, 30);
 		panel_2.add(txtMaPhong);
@@ -197,6 +212,50 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnTimKiemPDP.setBackground(new Color(255, 180, 0, 255));
 
 		panel_2.add(btnTimKiemPDP);
+
+		ImageIcon phongtrong = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
+		Image originalImage_phongtrong = phongtrong.getImage();
+		Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
+//		panel_ChuaPhong.setLayout(null);
+		ImageIcon phongsd = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsd.png");
+		Image originalImage_phongsd = phongsd.getImage();
+		Image resizedImage_phongsd = originalImage_phongsd.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongsd = new ImageIcon(resizedImage_phongsd);
+
+		ImageIcon phongcho = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongcho.png");
+		Image originalImage_phongcho = phongcho.getImage();
+		Image resizedImage_phongcho = originalImage_phongcho.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongcho = new ImageIcon(resizedImage_phongcho);
+
+		ImageIcon phongsua = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsua.png");
+		Image originalImage_phongsua = phongsua.getImage();
+		Image resizedImage_phongsua = originalImage_phongsua.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongsua = new ImageIcon(resizedImage_phongsua);
+
+		// chỉnh sửa kích thước các icon VIP_______________________________
+		ImageIcon phongtrongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\trong_vip.png");
+		Image originalImage_phongtrongvip = phongtrongvip.getImage();
+		Image resizedImage_phongtrongvip = originalImage_phongtrongvip.getScaledInstance(60, 60,
+				java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongtrongvip = new ImageIcon(resizedImage_phongtrongvip);
+
+		ImageIcon phongsdvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sd_vip.png");
+		Image originalImage_phongsdvip = phongsdvip.getImage();
+		Image resizedImage_phongsdvip = originalImage_phongsdvip.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongsdvip = new ImageIcon(resizedImage_phongsdvip);
+
+		ImageIcon phongchovip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\cho_vip.png");
+		Image originalImage_phongchovip = phongchovip.getImage();
+		Image resizedImage_phongchovip = originalImage_phongchovip.getScaledInstance(60, 60,
+				java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongchovip = new ImageIcon(resizedImage_phongchovip);
+
+		ImageIcon phongsuavip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sua_vip.png");
+		Image originalImage_phongsuavip = phongsuavip.getImage();
+		Image resizedImage_phongsuavip = originalImage_phongsuavip.getScaledInstance(60, 60,
+				java.awt.Image.SCALE_SMOOTH);
+		resizedIcon_phongsuavip = new ImageIcon(resizedImage_phongsuavip);
 
 		// ---gốc
 		// 3----------------------------------****************************************************************
@@ -302,11 +361,11 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 				timeHienTai = new Date();
 				DateFormat dateFormatGiay = new SimpleDateFormat("ss");
 				String giayHT = dateFormatGiay.format(timeHienTai);
-				if(giayHT.equals("00")) {
+				if (giayHT.equals("00")) {
 					timerThongBao.start();
 				}
 			}
-			
+
 		});
 		timerChayThongBao.start();
 		// ---gốc
@@ -390,7 +449,6 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 
 		// thêm sự kiện
 		btnUser.addActionListener(this);
-		btnUser.addMouseListener(this);
 		btnTimKiemPDP.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
@@ -398,52 +456,9 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		// add sự kiện cho nút
 		btnBackToBook.addActionListener(this);
 	}
-	
+
 	private void loadData() {
 		// chỉnh sửa kích thước các icon thường______________________
-		ImageIcon phongtrong = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
-		Image originalImage_phongtrong = phongtrong.getImage();
-		Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
-		panel_ChuaPhong.setLayout(null);
-		ImageIcon phongsd = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsd.png");
-		Image originalImage_phongsd = phongsd.getImage();
-		Image resizedImage_phongsd = originalImage_phongsd.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongsd = new ImageIcon(resizedImage_phongsd);
-
-		ImageIcon phongcho = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongcho.png");
-		Image originalImage_phongcho = phongcho.getImage();
-		Image resizedImage_phongcho = originalImage_phongcho.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongcho = new ImageIcon(resizedImage_phongcho);
-
-		ImageIcon phongsua = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsua.png");
-		Image originalImage_phongsua = phongsua.getImage();
-		Image resizedImage_phongsua = originalImage_phongsua.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongsua = new ImageIcon(resizedImage_phongsua);
-
-		// chỉnh sửa kích thước các icon VIP_______________________________
-		ImageIcon phongtrongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\trong_vip.png");
-		Image originalImage_phongtrongvip = phongtrongvip.getImage();
-		Image resizedImage_phongtrongvip = originalImage_phongtrongvip.getScaledInstance(60, 60,
-				java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongtrongvip = new ImageIcon(resizedImage_phongtrongvip);
-
-		ImageIcon phongsdvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sd_vip.png");
-		Image originalImage_phongsdvip = phongsdvip.getImage();
-		Image resizedImage_phongsdvip = originalImage_phongsdvip.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongsdvip = new ImageIcon(resizedImage_phongsdvip);
-
-		ImageIcon phongchovip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\cho_vip.png");
-		Image originalImage_phongchovip = phongchovip.getImage();
-		Image resizedImage_phongchovip = originalImage_phongchovip.getScaledInstance(60, 60,
-				java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongchovip = new ImageIcon(resizedImage_phongchovip);
-
-		ImageIcon phongsuavip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sua_vip.png");
-		Image originalImage_phongsuavip = phongsuavip.getImage();
-		Image resizedImage_phongsuavip = originalImage_phongsuavip.getScaledInstance(60, 60,
-				java.awt.Image.SCALE_SMOOTH);
-		ImageIcon resizedIcon_phongsuavip = new ImageIcon(resizedImage_phongsuavip);
 		int i = 0;
 		int x = 40;
 		int y = -110;
@@ -535,34 +550,132 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		}
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-//		loadPhong();
+	private void loadTimKiem(ArrayList<Phong> DSPhong) {
+		// chỉnh sửa kích thước các icon thường______________________
+		int i = 0;
+		int x = 40;
+		int y = -110;
+		int w = 160;
+		int h = 100;
+
+		// Xóa sự kiện thêm trước đó
+		for (JButton btn : btnPhongList) {
+			btn.removeActionListener(this);
+		}
+
+		// Xóa phòng thêm trước đó
+		panel_ChuaPhong.removeAll();
+		panel_ChuaPhong.revalidate();
+		panel_ChuaPhong.repaint();
+
+		for (Phong p : DSPhong) {
+			if (i % 5 == 0) {
+				y += 130;
+				x = 40;
+			}
+			i++;
+
+			btnPhong = new JButton("Phòng " + p.getMaPhong());
+			btnPhongList.add(btnPhong);
+			LoaiPhong lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+			btnPhong.setBounds(x, y, w, h);
+			x += 210;
+			btnPhong.setBackground(new Color(181, 230, 251, 255));
+			if (lp.getTenLoaiPhong().equals("Phòng VIP")) {
+				if (p.getTrangThai() == Enum_TrangThai.Trống)
+					btnPhong.setIcon(resizedIcon_phongtrongvip);
+				if (p.getTrangThai() == Enum_TrangThai.Chờ)
+					btnPhong.setIcon(resizedIcon_phongchovip);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
+					btnPhong.setIcon(resizedIcon_phongsdvip);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sửa_chữa)
+					btnPhong.setIcon(resizedIcon_phongsuavip);
+			}
+			if (lp.getTenLoaiPhong().equals("Phòng thường")) {
+				if (p.getTrangThai() == Enum_TrangThai.Trống)
+					btnPhong.setIcon(resizedIcon_phongtrong);
+				if (p.getTrangThai() == Enum_TrangThai.Chờ)
+					btnPhong.setIcon(resizedIcon_phongcho);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
+					btnPhong.setIcon(resizedIcon_phongsd);
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sửa_chữa)
+					btnPhong.setIcon(resizedIcon_phongsua);
+			}
+
+			btnPhong.setVerticalTextPosition(SwingConstants.BOTTOM);
+			panel_ChuaPhong.add(btnPhong);
+		}
+
+		// Thêm lại sự kiện cho các phòng
+		for (JButton btn : btnPhongList) {
+			btn.addActionListener(this);
+		}
+
+		// Hiển thị lại giao diện
+		panel_ChuaPhong.revalidate();
+		panel_ChuaPhong.repaint();
+		scrollPane_Phong.setViewportView(outerPanel);
 	}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+	private void Tim() {
+		thoat: if (btnTimKiem.getText().equals("Tìm kiếm")) {
+			ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+			int soNguoi = 0;
+			String loaiPhong = comboBox_LoaiPhong.getSelectedItem().toString();
+			String trangThai = comboBox_TrangThai.getSelectedItem().toString();
+			if (trangThai.equals("Đang sử dụng"))
+				trangThai = "Đang_sử_dụng";
+			else if (trangThai.equals("Đang sửa chữa"))
+				trangThai = "Đang_sửa_chữa";
 
-	}
+			if (!txtSoNguoi.getText().trim().equals("")) {
+				try {
+					soNguoi = Integer.parseInt(txtSoNguoi.getText());
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(this, "Số người hát phải là số nguyên dương");
+					break thoat;
+				}
+				if (soNguoi < 0) {
+					JOptionPane.showMessageDialog(this, "Số người hát phải là số nguyên dương");
+					break thoat;
+				}
+			}
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+			if (txtMaPhong.getText().trim().equals("") && txtSoNguoi.getText().trim().equals("")
+					&& comboBox_LoaiPhong.getSelectedItem().equals("")
+					&& comboBox_TrangThai.getSelectedItem().equals("")) {
+				JOptionPane.showMessageDialog(this, "Bạn chưa nhập bất kì thông tin nào để tìm");
+			} else {
+				if (!txtMaPhong.getText().trim().equals("")) {
+					if (p_dao.getPhongTheoMaPhong(txtMaPhong.getText()) != null) {
+						dsPhong.add(p_dao.getPhongTheoMaPhong(txtMaPhong.getText()));
+					}
+				} else if (!comboBox_LoaiPhong.getSelectedItem().toString().equals("")
+						&& comboBox_TrangThai.getSelectedItem().toString().equals("")) {
+					dsPhong = p_dao.getPhongTKTheoLoaiPhong(loaiPhong, soNguoi);
+				} else if (comboBox_LoaiPhong.getSelectedItem().toString().equals("")
+						&& !comboBox_TrangThai.getSelectedItem().toString().equals("")) {
+					dsPhong = p_dao.getPhongTKTheoTrangThai(trangThai, soNguoi);
+				} else if (!comboBox_LoaiPhong.getSelectedItem().toString().equals("")
+						&& !comboBox_TrangThai.getSelectedItem().toString().equals("")) {
+					dsPhong = p_dao.getPhongTKTheoLoaiPhongVaTrangThai(loaiPhong, trangThai, soNguoi);
+				} else if (comboBox_LoaiPhong.getSelectedItem().toString().equals("")
+						&& comboBox_TrangThai.getSelectedItem().toString().equals("") && soNguoi != 0) {
+					dsPhong = p_dao.getPhongTKTheoSoNguoiHat(soNguoi);
+				}
 
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+				// Kiểm tra điều kiện tìm thấy hay không
+				if (dsPhong != null && dsPhong.size() != 0) {
+					loadTimKiem(dsPhong);
+					btnTimKiem.setText("Hủy tìm");
+				} else {
+					JOptionPane.showMessageDialog(this, "Không tìm thấy phòng phù hợp");
+				}
+			}
+		} else {
+			loadData();
+			btnTimKiem.setText("Tìm kiếm");
+		}
 	}
 
 	@Override
@@ -570,6 +683,9 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		Object o = e.getSource();
 		if (o.equals(btnUser)) {
 			dialog_user.setVisible(true);
+		}
+		if (o.equals(btnTimKiem)) {
+			Tim();
 		}
 		if (o.equals(btnTimKiemPDP)) {
 			dialog_TimPhieuDatPhong.setVisible(true);
@@ -613,8 +729,12 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 					return;
 				}
 			}
-		} else if (o.equals(btnLamMoi)) {
-			JOptionPane.showMessageDialog(this, "Có thực hiện sự kiện");
+		}
+		if (o.equals(btnLamMoi)) {
+			comboBox_LoaiPhong.setSelectedIndex(0);
+			comboBox_TrangThai.setSelectedIndex(0);
+			txtSoNguoi.setText("");
+			txtMaPhong.setText("");
 		}
 
 	}
