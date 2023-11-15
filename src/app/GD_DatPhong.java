@@ -21,16 +21,25 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
+import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
+import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TempDatPhong;
+import dao.ChiTietHoaDon_dao;
 import dao.LoaiPhong_dao;
+import dao.PhieuDatPhong_dao;
+
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -62,22 +71,15 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private JButton btnPhong;
 	ArrayList<JButton> btnPhongList = new ArrayList<>();
-	private ImageIcon resizedIcon_phongsdvip;
-	private ImageIcon resizedIcon_phongchovip;
-	private ImageIcon resizedIcon_phongsuavip;
-	private ImageIcon resizedIcon_phongtrongvip;
-	private ImageIcon resizedIcon_phongcho;
-	private ImageIcon resizedIcon_phongsd;
-	private ImageIcon resizedIcon_phongtrong;
-	private ImageIcon resizedIcon_phongsua;
 	private JPanel panel_ChuaPhong;
 	private JPanel panel;
 	private Dialog_HienThiPhongSuaChua dialog_htPhongSuaChua;
-	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong= new Dialog_TimPhieuDatPhong();
+	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong = new Dialog_TimPhieuDatPhong();
 	private JButton btnBackToBook;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private int sizeDSTmp;
+	private ChiTietHoaDon_dao cthd_dao = new ChiTietHoaDon_dao();
 
 	/**
 	 * Create the panel.
@@ -230,6 +232,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		// Tạo một Timer để gọi lại loadRoomList() mỗi 5000 milliseconds (5 giây)
 		sizeDSTmp = tmp_dao.getAllTemp().size();
 		Timer timer = new Timer(1000, new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (sizeDSTmp != tmp_dao.getAllTemp().size()) {
@@ -241,12 +244,12 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 					DataManager.setChuyenPhong(false);
 				}
 
-				if(DataManager.isDatPhongCho()) {
+				if (DataManager.isDatPhongCho()) {
 					loadData();
 					DataManager.setDatPhongCho(false);
 				}
 
-				if(DataManager.isThanhToan()) {
+				if (DataManager.isThanhToan()) {
 					loadData();
 					DataManager.setThanhToan(false);
 				}
@@ -258,13 +261,60 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 					btnBackToBook.setEnabled(false);
 				else
 					btnBackToBook.setEnabled(true);
-
 			}
 		});
 
-//		 Bắt đầu Timer
+//		Bắt đầu Timer
 		timer.start();
 
+		Timer timerThongBao = new Timer(60000, new ActionListener() {
+
+			private Date gioHienTai;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				for (ChiTietHoaDon cthd : cthd_dao.getCTHDPhongDangSD()) {
+					DateFormat dateFormatGio = new SimpleDateFormat("HH");
+					gioHienTai = new Date();
+					double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
+					DateFormat dateFormatPhut = new SimpleDateFormat("mm");
+					double phutHT = Double.parseDouble(dateFormatPhut.format(gioHienTai));
+					double gioTraPhong = Double.parseDouble(dateFormatGio.format(cthd.getGioTraPhong()));
+					double phutTraPhong = Double.parseDouble(dateFormatPhut.format(cthd.getGioTraPhong()));
+					if (gioHT == gioTraPhong && phutHT < phutTraPhong && (phutTraPhong - phutHT == 5)) {
+						JOptionPane.showMessageDialog(null,
+								"Phòng " + cthd.getPhong().getMaPhong() + " còn khoảng 5 phút nữa hết thời gian!");
+					}
+					if (gioHT < gioTraPhong && phutHT > phutTraPhong && (phutTraPhong - phutHT + 60) == 5) {
+						JOptionPane.showMessageDialog(null,
+								"Phòng " + cthd.getPhong().getMaPhong() + " còn khoảng 5 phút nữa hết thời gian!");
+					}
+					if (gioHT == gioTraPhong && phutHT == phutTraPhong) {
+						JOptionPane.showMessageDialog(null,
+								"Phòng " + cthd.getPhong().getMaPhong() + " đã hết thời giian vui lòng thanh toán");
+					}
+				}
+			}
+		});
+
+		Timer timerChayThongBao = new Timer(1000, new ActionListener() {
+
+			private Date timeHienTai;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				timeHienTai = new Date();
+				DateFormat dateFormatGiay = new SimpleDateFormat("ss");
+				String giayHT = dateFormatGiay.format(timeHienTai);
+				if(giayHT.equals("00")) {
+					timerThongBao.start();
+				}
+			}
+			
+		});
+		timerChayThongBao.start();
 		// ---gốc
 		// 4----------------------------------****************************************************************
 		// set size icon cho gốc 4
@@ -350,12 +400,11 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		btnTimKiemPDP.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
-		
 
 		// add sự kiện cho nút
 		btnBackToBook.addActionListener(this);
 	}
-
+	
 	private void loadData() {
 		// chỉnh sửa kích thước các icon thường______________________
 		ImageIcon phongtrong = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
@@ -528,7 +577,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 		if (o.equals(btnUser)) {
 			dialog_user.setVisible(true);
 		}
-		if(o.equals(btnTimKiemPDP)) {
+		if (o.equals(btnTimKiemPDP)) {
 			dialog_TimPhieuDatPhong.setVisible(true);
 		}
 		if (o.equals(btnBackToBook)) {

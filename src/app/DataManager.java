@@ -2,13 +2,12 @@ package app;
 
 public class DataManager {
 
-    private static String userName;
+	private static String userName;
 	private static boolean thanhToan;
 	private static boolean datPhong;
 	private static String soDienThoaiKHDat = "";
-    private static boolean chuyenPhong,datPhongCho,phongTrong;
-    private static String sdtKHNew = "0788343289";
-
+	private static boolean chuyenPhong, datPhongCho, phongTrong;
+	private static String sdtKHNew = "0788343289";
 
 	public static String getSdtKHNew() {
 		return sdtKHNew;
@@ -41,18 +40,23 @@ public class DataManager {
 	public static void setChuyenPhong(boolean chuyenPhong) {
 		DataManager.chuyenPhong = chuyenPhong;
 	}
-    public static boolean isDatPhongCho() {
+
+	public static boolean isDatPhongCho() {
 		return datPhongCho;
 	}
+
 	public static void setDatPhongCho(boolean datPhongCho) {
 		DataManager.datPhongCho = datPhongCho;
 	}
-    public static boolean isChuyenPhongTrong() {
+
+	public static boolean isChuyenPhongTrong() {
 		return phongTrong;
 	}
+
 	public static void setChuyenPhongTrong(boolean phongTrong) {
 		DataManager.phongTrong = phongTrong;
 	}
+
 	public static String getUserName() {
 		return userName;
 	}

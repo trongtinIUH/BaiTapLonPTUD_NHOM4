@@ -76,6 +76,7 @@ public class PhieuDatPhong_dao {
 		}
 		return pdp;
 	}
+
 	public PhieuDatPhong getPhieuDatPhongTheoMaPDP(String maPhieu) {
 		PhieuDatPhong pdp = null;
 		try {
@@ -103,7 +104,7 @@ public class PhieuDatPhong_dao {
 		}
 		return pdp;
 	}
-	
+
 	public PhieuDatPhong getPhieuDatPhongTheoMaKH(String maKhachHang) {
 		PhieuDatPhong pdp = null;
 		try {
@@ -275,26 +276,27 @@ public class PhieuDatPhong_dao {
 		return pdp;
 
 	}
-		// xóa phiếu đặt phòng khi hủy phòng chờ
-		public boolean xoaPhieuDatPhongTheoMa(String maPhong) {
-		    boolean result = false;
-		    try {
-		        ConnectDB.getInstance();
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		    Connection con = ConnectDB.getConnection();
-		    try {
-		        String sql = "delete from PhieuDatPhong where maPhong = ?";
-		        PreparedStatement stm = con.prepareStatement(sql);
-		        stm.setString(1, maPhong);
-		        int rows = stm.executeUpdate();
-		        if (rows > 0) {
-		            result = true;
-		        }
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		    return result;
+
+	// xóa phiếu đặt phòng khi hủy phòng chờ
+	public boolean xoaPhieuDatPhongTheoMa(String maPhong) {
+		boolean result = false;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "delete from PhieuDatPhong where maPhong = ?";
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setString(1, maPhong);
+			int rows = stm.executeUpdate();
+			if (rows > 0) {
+				result = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }
