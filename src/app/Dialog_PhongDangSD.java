@@ -237,7 +237,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		}
 		
 		if(o.equals(btnThemDV)) {
-			dialog_ThemDichVu = new Dialog_ThemDichVu(lblTenKH_1.getText());
+			dialog_ThemDichVu = new Dialog_ThemDichVu(lblTenKH_1.getText(),DataManager.getUserName(), lblPhong_1.getText());
 			dialog_ThemDichVu.setVisible(true);	
 			dispose();
 		}

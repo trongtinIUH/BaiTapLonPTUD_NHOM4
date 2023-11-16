@@ -88,7 +88,6 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
 	private String loaiPhong;
-	private String trangThai;
 
 	public Dialog_ChuyenPhong(String maPhong, String soNguoi) {
 		getContentPane().setBackground(Color.WHITE);
