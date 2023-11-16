@@ -95,6 +95,8 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		setSize(820, 450);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 		
 		//panel chứa tiêu đề-------------------------------------------------------------------------
 		panel = new JPanel();

@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -59,6 +60,9 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		setSize(335, 450);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
+	    
 		phieuDatPhong_dao = new PhieuDatPhong_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
 		kh_dao = new KhachHang_dao();

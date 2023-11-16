@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -88,6 +90,8 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		getContentPane().setLayout(null);
 		setSize(800, 400);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 
 		// panel chứa tiêu đề--------------------------------------
 		JPanel panel = new JPanel();
