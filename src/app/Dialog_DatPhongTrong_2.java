@@ -45,6 +45,7 @@ import entity.TempDatPhong;
 import entity.TempThemDV;
 
 import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.Data;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
@@ -509,8 +510,10 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				JOptionPane.showMessageDialog(this, "Xóa thành công!!");
 			}
 		}
-		if (tmpDatPhong_dao.getAllTemp().size() == 1)
+		if (tmpDatPhong_dao.getAllTemp().size() == 1) {
+			DataManager.setSoDienThoaiKHDat("");
 			setVisible(false);
+		}
 	}
 
 	private void sua() {
@@ -532,13 +535,17 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		} else if (tblThemPhongMoi.getSelectedRowCount() > 1) {
 			JOptionPane.showMessageDialog(null, "Chỉ thêm dịch vụ được 1 phòng!");
 		} else {
-			String customer = lbl_TenKH_1.getText();
-			String employee = DataManager.getUserName();
-			nv = nv_dao.TimkiemMaNhanVien(employee);
-			String maPhong = lblMaPhong.getText();
-			String ma = maPhong.substring(maPhong.indexOf(":") + 1).trim();
-			dialog_ThemDichVu = new Dialog_ThemDichVu(customer, nv.getHoTen(), ma);
-			dialog_ThemDichVu.setVisible(true);
+			if(!lbl_TenKH_1.getText().equals("")) {				
+				String customer = lbl_TenKH_1.getText();
+				String employee = DataManager.getUserName();
+				nv = nv_dao.TimkiemMaNhanVien(employee);
+				String maPhong = lblMaPhong.getText();
+				String ma = maPhong.substring(maPhong.indexOf(":") + 1).trim();
+				dialog_ThemDichVu = new Dialog_ThemDichVu(customer, nv.getHoTen(), ma);
+				dialog_ThemDichVu.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(this, "Bạn chưa thêm khách hàng!");
+			}
 		}
 	}
 
@@ -554,64 +561,70 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		if (o.equals(btn_DatPhong)) {
 			int check = 0;
 			String maHoaDon = TaoMaHDDP();
-			for (TempDatPhong tmpDatPhong : tmpDatPhong_dao.getAllTemp()) {
-				// Sửa trống -> Đang sử dụng
-				if (!tmpDatPhong.getMaPhong().equals("000")) {
-					Phong p = p_dao.getPhongTheoMaPhong(tmpDatPhong.getMaPhong());
-					p.setTrangThai(Enum_TrangThai.Đang_sử_dụng);
-					p_dao.updatePhong(p, p.getMaPhong());
-
-					// Thêm phiếu đặt phòng
-					NhanVien nv = new NhanVien(DataManager.getUserName());
-					KhachHang kh = new KhachHang();
-					if (checkBox_KH.isSelected())
-						kh = kh_dao.getKhachHangTheoSDT("0000000000");
-					else
-						kh = kh_dao.getKhachHangTheoSDT(txtSDT.getText());
-					LocalDateTime NgayDatPhong = LocalDateTime.now();
-					if (p.getTrangThai() == Enum_TrangThai.Chờ) {
-						// Nếu là chờ thì sửa lại.
-					}
-					PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, NgayDatPhong, LocalDateTime.now(),
-							tmpDatPhong.getSoNguoiHat());
-					pdp_dao.addPhieuDatPhong(pdb);
-
-					// Thêm vào HoaDonDatPhong
-					KhuyenMai km = new KhuyenMai(null);
-					java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-					HoaDonDatPhong hddp = new HoaDonDatPhong(maHoaDon, kh, nv, sqlDate, false, km, 0.0);
-					if(check == 0) {						
-						hddp_dao.addHoaDonDatPhong(hddp);
-						check = 1;
-					}
-
-					// Thêm chi tiết hóa đơn
-					ChiTietHoaDon cthd;
-					if (radGioTuDo.isSelected()) {
-						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
-								Timestamp.valueOf(LocalDateTime.now()), 0);
-					} else {
-						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
-								Timestamp.valueOf(dateTimePicker.getDateTimeStrict()), 0);
-					}
-					cthd_dao.addChiTietHD(cthd);
-
-					// Thêm chi tiết dịch vụ
-					if (DataManager.getCtdvTempList() != null) {
-						for (TempThemDV tmp : DataManager.getCtdvTempList()) {
-							ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
-									new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
-							if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
-								ctdv_dao.addChiTietDV(ctdv);
+			if(!lbl_TenKH_1.getText().equals("")) {
+				for (TempDatPhong tmpDatPhong : tmpDatPhong_dao.getAllTemp()) {
+					// Sửa trống -> Đang sử dụng
+					if (!tmpDatPhong.getMaPhong().equals("000")) {
+						Phong p = p_dao.getPhongTheoMaPhong(tmpDatPhong.getMaPhong());
+						
+						// Thêm phiếu đặt phòng
+						NhanVien nv = new NhanVien(DataManager.getUserName());
+						KhachHang kh = new KhachHang();
+						if (checkBox_KH.isSelected())
+							kh = kh_dao.getKhachHangTheoSDT("0000000000");
+						else
+							kh = kh_dao.getKhachHangTheoSDT(txtSDT.getText());
+						LocalDateTime NgayDatPhong = LocalDateTime.now();
+						
+						PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, NgayDatPhong, LocalDateTime.now(),
+								tmpDatPhong.getSoNguoiHat());
+						if (p.getTrangThai() != Enum_TrangThai.Chờ) {
+							pdp_dao.addPhieuDatPhong(pdb);
+							// Nếu là chờ thì sửa lại.
+						}
+						
+						p.setTrangThai(Enum_TrangThai.Đang_sử_dụng);
+						p_dao.updatePhong(p, p.getMaPhong());
+						
+						// Thêm vào HoaDonDatPhong
+						KhuyenMai km = new KhuyenMai(null);
+						java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+						HoaDonDatPhong hddp = new HoaDonDatPhong(maHoaDon, kh, nv, sqlDate, false, km, 0.0);
+						if(check == 0) {						
+							hddp_dao.addHoaDonDatPhong(hddp);
+							check = 1;
+						}
+						
+						// Thêm chi tiết hóa đơn
+						ChiTietHoaDon cthd;
+						if (radGioTuDo.isSelected()) {
+							cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
+									Timestamp.valueOf(LocalDateTime.now()), 0);
+						} else {
+							cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
+									Timestamp.valueOf(dateTimePicker.getDateTimeStrict()), 0);
+						}
+						cthd_dao.addChiTietHD(cthd);
+						
+						// Thêm chi tiết dịch vụ
+						if (DataManager.getCtdvTempList() != null) {
+							for (TempThemDV tmp : DataManager.getCtdvTempList()) {
+								ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
+										new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
+								if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
+									ctdv_dao.addChiTietDV(ctdv);
+								}
 							}
 						}
 					}
 				}
+				tmpDatPhong_dao.deleteALLTempDatPhong();
+				DataManager.setDatPhong(true);
+				JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính!");
+				setVisible(false);
+			} else {
+				JOptionPane.showMessageDialog(this, "Bạn chưa thêm khách hàng!");
 			}
-			tmpDatPhong_dao.deleteALLTempDatPhong();
-			DataManager.setDatPhong(true);
-			JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính!");
-			setVisible(false);
 		}
 		if (o.equals(btn_DatThemPhong)) {
 			if (checkBox_KH.isSelected()) {
@@ -643,6 +656,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			} else {
 				int checkCustomer = JOptionPane.showConfirmDialog(this,
 						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
+				DataManager.setLoadSDT(true);
 				if (checkCustomer == JOptionPane.YES_OPTION) {
 					trangChu.showKhachHangCard();
 					setVisible(false);
@@ -673,11 +688,16 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				int row = tblDV.getSelectedRow();
-				modelDV.removeRow(row);
-				ArrayList<TempThemDV> tmp = DataManager.getCtdvTempList();
-				tmp.remove(row);
-				DataManager.setCtdvTempList(tmp);
-				JOptionPane.showMessageDialog(this, "Xóa thành công!");
+				ArrayList<TempThemDV> ds = DataManager.getCtdvTempList();
+				for(TempThemDV temp : ds) {
+					if(temp.getMaPhong().equals(model.getValueAt(tblThemPhongMoi.getSelectedRow(), 1).toString()) 
+							&& temp.getMaSP().equals(modelDV.getValueAt(row, 1).toString())) {
+						ds.remove(temp);
+						JOptionPane.showMessageDialog(this, "Xóa thành công!");
+						modelDV.removeRow(row);
+					}
+				}
+				DataManager.setCtdvTempList(ds);
 			}
 		}
 	}

@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-
+import javax.xml.crypto.Data;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
@@ -47,7 +47,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JTextField txtSDT;
 	private JButton btn_KiemTraSDT, btn_QuayLai, btn_DatPhong;
 	private JPanel panel_1, panel_2;
-	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1, lbl_sdtKH,lbl_GioiTinh;
+	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1, lbl_sdtKH, lbl_GioiTinh;
 	private JTextField txtSoNguoi;
 
 	private JLabel lbl_TenKH;
@@ -55,7 +55,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private DateTimePicker dateTimePicker;
 	private TimePickerSettings timeSettings;
 	private DatePickerSettings dateSettings;
-	
+
 	private KhachHang_dao khachHang_dao = new KhachHang_dao();
 
 	private JLabel lbl_Phong;
@@ -72,18 +72,20 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JLabel lbl_loai_1;
 	private JLabel lbl_NgayDatPhong;
 	private JLabel lbl_NgayNhanPhong;
-	
+
 	private Phong_dao phong_dao = new Phong_dao();
-	private PhieuDatPhong_dao pdp_dao= new PhieuDatPhong_dao();
+	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private KhachHang kh = new KhachHang();
 	private Date ngayHienTai;
 	private Date date;
 	private GD_TrangChu trangChu;
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
-	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp,int songuoi) {
+
+	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp, int songuoi, GD_TrangChu trangChu) {
 		// màn
 		// hình******************************************************************************
+		this.trangChu = trangChu;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		setSize(800, 400);
@@ -135,7 +137,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		txtSDT = new JTextField();
 		txtSDT.setHorizontalAlignment(SwingConstants.LEFT);
 		txtSDT.setFont(new Font("Arial", Font.BOLD, 16));
-		txtSDT.setText("0947677077");
+		txtSDT.setText("0788343289");
 		txtSDT.setBounds(140, 5, 300, 30);
 		panel_2.add(txtSDT);
 		txtSDT.setColumns(10);
@@ -166,7 +168,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		panel_1.add(lbl_SoNguoi);
 
 		txtSoNguoi = new JTextField();
-		txtSoNguoi.setText(songuoi+"");
+		txtSoNguoi.setText(songuoi + "");
 		txtSoNguoi.setFont(new Font("Arial", Font.BOLD, 16));
 		txtSoNguoi.setBounds(550, 5, 100, 25);
 		panel_1.add(txtSoNguoi);
@@ -212,94 +214,93 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		lbl_loai_1.setBounds(140, 40, 200, 25);
 		panel_1.add(lbl_loai_1);
 
-		
 		lbl_NgayDatPhong = new JLabel("Ngày đặt  phòng:");
 		lbl_NgayDatPhong.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl_NgayDatPhong.setBounds(10, 190, 135, 25);
 		panel_1.add(lbl_NgayDatPhong);
-		
+
 		now = LocalDateTime.now();
 
- 	        dateSettings = new DatePickerSettings();
-	        dateSettings.setLocale(new Locale("vi","VN")); // Set the locale to English
-	        dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
+		dateSettings = new DatePickerSettings();
+		dateSettings.setLocale(new Locale("vi", "VN")); // Set the locale to English
+		dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
 
-	        timeSettings = new TimePickerSettings();
-	        timeSettings.setDisplaySpinnerButtons(true);
+		timeSettings = new TimePickerSettings();
+		timeSettings.setDisplaySpinnerButtons(true);
 
-	        dateTimePicker = new DateTimePicker(dateSettings, timeSettings);
-	        dateTimePicker.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
-	        dateTimePicker.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
-	        dateTimePicker.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
-	        dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
-	        dateTimePicker.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
-	        dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
-	        dateTimePicker.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
-	        dateTimePicker.timePicker.setBounds(141, 0, 80, 25);
-	        dateTimePicker.datePicker.setBounds(0, 0, 136, 25);
-	        dateTimePicker.getTimePicker().setBounds(150, 0, 110, 25);
-	        dateTimePicker.getTimePicker().setLayout(null);
-	        dateTimePicker.getDatePicker().setBounds(0, 0, 136, 25);
-	        dateTimePicker.setDateTimePermissive(now);
+		dateTimePicker = new DateTimePicker(dateSettings, timeSettings);
+		dateTimePicker.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+		dateTimePicker.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+		dateTimePicker.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
+		dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
+		dateTimePicker.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
+		dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+		dateTimePicker.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+		dateTimePicker.timePicker.setBounds(141, 0, 80, 25);
+		dateTimePicker.datePicker.setBounds(0, 0, 136, 25);
+		dateTimePicker.getTimePicker().setBounds(150, 0, 110, 25);
+		dateTimePicker.getTimePicker().setLayout(null);
+		dateTimePicker.getDatePicker().setBounds(0, 0, 136, 25);
+		dateTimePicker.setDateTimePermissive(now);
 
-	        // Add the DateTimePicker to your user interface, e.g. to a JPanel
-	        // panel.add(dateTimePicker);
-	        dateTimePicker.setBounds(200, 190, 260, 25);
+		// Add the DateTimePicker to your user interface, e.g. to a JPanel
+		// panel.add(dateTimePicker);
+		dateTimePicker.setBounds(200, 190, 260, 25);
 		panel_1.add(dateTimePicker);
 		dateTimePicker.setLayout(null);
-		
+
 		lbl_NgayNhanPhong = new JLabel("Ngày nhận phòng:");
 		lbl_NgayNhanPhong.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl_NgayNhanPhong.setBounds(10, 230, 180, 25);
 		panel_1.add(lbl_NgayNhanPhong);
-		
+
 		lbl_Phong = new JLabel(maPhong);
 		lbl_Phong.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl_Phong.setForeground(Color.BLACK);
 		lbl_Phong.setBounds(550, 70, 150, 25);
 		panel_1.add(lbl_Phong);
-		
+
 		now1 = LocalDateTime.now();
 
-	    dateSettings_1 = new DatePickerSettings();
-	    dateSettings_1.setLocale(new Locale("vi","VN")); // Set the locale to English
-	    dateSettings_1.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
+		dateSettings_1 = new DatePickerSettings();
+		dateSettings_1.setLocale(new Locale("vi", "VN")); // Set the locale to English
+		dateSettings_1.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
 
-        timeSettings_1 = new TimePickerSettings();
-        timeSettings_1.setDisplaySpinnerButtons(true);
+		timeSettings_1 = new TimePickerSettings();
+		timeSettings_1.setDisplaySpinnerButtons(true);
 
-        dateTimePicker_1 = new DateTimePicker(dateSettings_1, timeSettings_1);
-        dateTimePicker_1.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
-        dateTimePicker_1.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
-        dateTimePicker_1.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
-        dateTimePicker_1.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
-        dateTimePicker_1.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
-        dateTimePicker_1.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
-        dateTimePicker_1.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
-        dateTimePicker_1.timePicker.setBounds(141, 0, 80, 25);
-        dateTimePicker_1.datePicker.setBounds(0, 0, 136, 25);
-        dateTimePicker_1.getTimePicker().setBounds(150, 0, 110, 25);
-        dateTimePicker_1.getTimePicker().setLayout(null);
-        dateTimePicker_1.getDatePicker().setBounds(0, 0, 136, 25);
-        dateTimePicker_1.setDateTimePermissive(now1);
-        dateTimePicker_1.setBounds(200, 230, 260, 25);
-    	panel_1.add(dateTimePicker_1);
-    	dateTimePicker_1.setLayout(null);
-    	
-    	JLabel lbl_MaPhong = new JLabel("Phòng:");
-    	lbl_MaPhong.setFont(new Font("Arial", Font.BOLD, 16));
-    	lbl_MaPhong.setBounds(440, 70, 80, 25);
-    	panel_1.add(lbl_MaPhong);
-	
-		
-		
+		dateTimePicker_1 = new DateTimePicker(dateSettings_1, timeSettings_1);
+		dateTimePicker_1.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+		dateTimePicker_1.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+		dateTimePicker_1.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
+		dateTimePicker_1.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
+		dateTimePicker_1.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
+		dateTimePicker_1.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+		dateTimePicker_1.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+		dateTimePicker_1.timePicker.setBounds(141, 0, 80, 25);
+		dateTimePicker_1.datePicker.setBounds(0, 0, 136, 25);
+		dateTimePicker_1.getTimePicker().setBounds(150, 0, 110, 25);
+		dateTimePicker_1.getTimePicker().setLayout(null);
+		dateTimePicker_1.getDatePicker().setBounds(0, 0, 136, 25);
+		dateTimePicker_1.setDateTimePermissive(now1);
+		dateTimePicker_1.setBounds(200, 230, 260, 25);
+		panel_1.add(dateTimePicker_1);
+		dateTimePicker_1.setLayout(null);
+
+		JLabel lbl_MaPhong = new JLabel("Phòng:");
+		lbl_MaPhong.setFont(new Font("Arial", Font.BOLD, 16));
+		lbl_MaPhong.setBounds(440, 70, 80, 25);
+		panel_1.add(lbl_MaPhong);
+
 		// thêm sự kiện button
 		btn_DatPhong.addActionListener(this);
 		btn_KiemTraSDT.addActionListener(this);
 		btn_QuayLai.addActionListener(this);
-		txtSDT.setText(DataManager.getSoDienThoaiKHDat());
+		if (!DataManager.getSoDienThoaiKHDat().equals("")) {
+			txtSDT.setText(DataManager.getSoDienThoaiKHDat());
+		}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -311,61 +312,69 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 			khachHang_dao = new KhachHang_dao();
 			String sdt = txtSDT.getText();
 			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
-			if(khachHang != null){
-			JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính !");
-			DataManager.setDatPhongCho(true);
-			Enum_TrangThai trangThai = Enum_TrangThai.Chờ;
-			Phong phong = new Phong(lbl_Phong.getText(), trangThai);
-			phong_dao.updatePhong(phong, lbl_Phong.getText());
-			
-			// Tạo Phiếu đặt phòng mới
-			String maPhieu = generateRandomCode();
-			String maPhong = lbl_Phong.getText();
-			Phong ph1 = new Phong(maPhong);
-			String maNV = DataManager.getUserName();
-			NhanVien nv = new NhanVien(maNV);
-			kh = khachHang_dao.TimkiemSDT_KHachHang(sdt);
-			String maKH = kh.getMaKhachHang();
-			KhachHang kh2 = new KhachHang(maKH);
-			ngayGioDatPhong = LocalDateTime.now();
-			ngay_GioNhanPhong = dateTimePicker_1.getDateTimePermissive();
-			int songuoiHat = Integer.parseInt(txtSoNguoi.getText());
+			if (khachHang != null && khachHang.getHoTen().equals(lbl_TenKH_1.getText())) {
+				JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính !");
+				DataManager.setSoDienThoaiKHDat("");
+				DataManager.setDatPhongCho(true);
+				Enum_TrangThai trangThai = Enum_TrangThai.Chờ;
+				Phong phong = new Phong(lbl_Phong.getText(), trangThai);
+				phong_dao.updatePhong(phong, lbl_Phong.getText());
 
-			PhieuDatPhong pdp = new PhieuDatPhong(maPhieu, ph1, nv, kh2, ngayGioDatPhong, ngay_GioNhanPhong, songuoiHat);
-			pdp_dao.addPhieuDatPhong(pdp);
-			
-			setVisible(false);
-			}
-			else {
-				JOptionPane.showMessageDialog(this, "Khách hàng phải có thông tin trên hệ thống mới được phép đặt phòng trước!");
-			}
-	
-	    }
+				// Tạo Phiếu đặt phòng mới
+				String maPhieu = generateRandomCode();
+				String maPhong = lbl_Phong.getText();
+				Phong ph1 = new Phong(maPhong);
+				String maNV = DataManager.getUserName();
+				NhanVien nv = new NhanVien(maNV);
+				kh = khachHang_dao.TimkiemSDT_KHachHang(sdt);
+				String maKH = kh.getMaKhachHang();
+				KhachHang kh2 = new KhachHang(maKH);
+				ngayGioDatPhong = LocalDateTime.now();
+				ngay_GioNhanPhong = dateTimePicker_1.getDateTimePermissive();
+				int songuoiHat = Integer.parseInt(txtSoNguoi.getText());
 
-		//kiem tra khach hang
-		if (o.equals(btn_KiemTraSDT)) {
-			khachHang_dao = new KhachHang_dao();
-			String sdt = txtSDT.getText();
-			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
-			if(khachHang != null){
-				String hoTen = khachHang.getHoTen();
-				boolean gioiTinh = khachHang.isGioiTinh();
-				String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
-				lbl_GioiTinh_1.setText(gioiTinhStr);
-				lbl_TenKH_1.setText(hoTen);
-				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
+				PhieuDatPhong pdp = new PhieuDatPhong(maPhieu, ph1, nv, kh2, ngayGioDatPhong, ngay_GioNhanPhong,
+						songuoiHat);
+				pdp_dao.addPhieuDatPhong(pdp);
+
+				setVisible(false);
+			} else if(khachHang != null && !khachHang.getHoTen().equals(lbl_TenKH_1.getText())) {
+				JOptionPane.showMessageDialog(this, "Bạn chưa kiểm tra số điện thoại khách hàng");
+			}else {
+				JOptionPane.showMessageDialog(this,
+						"Khách hàng phải có thông tin trên hệ thống mới được phép đặt phòng trước!");
 			}
-			else {
-				int checkCustomer = JOptionPane.showConfirmDialog(this,
-						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
-				if(checkCustomer == JOptionPane.YES_OPTION) {
-					trangChu.showKhachHangCard();
-					setVisible(false);
-				}
+
+		}
+
+	// kiem tra khach hang
+	if(o.equals(btn_KiemTraSDT))
+
+	{
+		khachHang_dao = new KhachHang_dao();
+		String sdt = txtSDT.getText();
+		KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
+		if (khachHang != null) {
+			String hoTen = khachHang.getHoTen();
+			boolean gioiTinh = khachHang.isGioiTinh();
+			String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
+			lbl_GioiTinh_1.setText(gioiTinhStr);
+			lbl_TenKH_1.setText(hoTen);
+			DataManager.setSoDienThoaiKHDat(txtSDT.getText());
+		} else {
+			int checkCustomer = JOptionPane.showConfirmDialog(this,
+					"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+			DataManager.setSoDienThoaiKHDat(txtSDT.getText());
+			DataManager.setLoadSDT(true);
+			if (checkCustomer == JOptionPane.YES_OPTION) {
+				trangChu.showKhachHangCard();
+				setVisible(false);
 			}
 		}
-		
-		}
+	}
+
+	}
+
 	// ---- Mã PhieuDatPhong phát sinh tự động tăng dần bắt đầu từ 0001
 	private int ThuTuPDPTrongNgay() {
 		int sl = 1;

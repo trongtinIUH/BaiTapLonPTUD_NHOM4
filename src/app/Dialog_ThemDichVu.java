@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -356,18 +357,19 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			for (ChiTietDichVu ctdv : dsCTDV) {
 				ctdv_hienTaiCuaPhong2 = ctdv;
 			}
-			ArrayList<ChiTietDichVu> dsctdv = ctdv_dao
-					.getChiTietDichVuTheoMaHD(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon());
-			maHoaDon = ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon();
-			for (ChiTietDichVu ctdv : dsctdv) {
-				if (ctdv.getPhong().getMaPhong().equals(ma)) {
-					SanPham sp = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
-					Object[] row = { ctdv.getSanPham().getMaSanPham(), sp.getTenSanPham(), ctdv.getSoLuong(),
-							ctdv.getGia() };
-					model_Phai.addRow(row);
+			if(ctdv_hienTaiCuaPhong2 != null) {
+				ArrayList<ChiTietDichVu> dsctdv = ctdv_dao
+						.getChiTietDichVuTheoMaHD(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon());
+				maHoaDon = ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon();
+				for (ChiTietDichVu ctdv : dsctdv) {
+					if (ctdv.getPhong().getMaPhong().equals(ma)) {
+						SanPham sp = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
+						Object[] row = { ctdv.getSanPham().getMaSanPham(), sp.getTenSanPham(), ctdv.getSoLuong(),
+								ctdv.getGia() };
+						model_Phai.addRow(row);
+					}
 				}
 			}
-
 		}
 	}
 
@@ -488,21 +490,29 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 //		        }
 //		    }
 		if (o.equals(btn_DongY)) {
+			int flag = 0;
 			Phong p = p_dao.getPhongTheoMaPhong(ma);
-			if (p.getTrangThai() == Enum_TrangThai.Trống) {
+			if (p.getTrangThai() == Enum_TrangThai.Trống || p.getTrangThai() == Enum_TrangThai.Chờ) {
 				if (DataManager.getCtdvTempList() != null) {
 					ArrayList<TempThemDV> ctdvTempList = DataManager.getCtdvTempList();
 					for (int i = 0; i < model_Phai.getRowCount(); i++) {
-						// Assuming ChiTietDichVu has a constructor that accepts the column values as
-						// parameters
-						TempThemDV ctdv = new TempThemDV(ma, model_Phai.getValueAt(i, 0).toString(), // Replace with the
-								// actual column
-								// indices
-								model_Phai.getValueAt(i, 1).toString(), // and types if they are not strings
-								Integer.parseInt(model_Phai.getValueAt(i, 2).toString()),
-								Double.parseDouble(model_Phai.getValueAt(i, 3).toString()));
 
-						ctdvTempList.add(ctdv);
+						for(TempThemDV temp : ctdvTempList) {
+							if(temp.getMaPhong().equals(ma) && temp.getMaSP().equals(model_Phai.getValueAt(i, 0).toString())) {
+								temp.setSoLuong(temp.getSoLuong() + Integer.parseInt(model_Phai.getValueAt(i, 2).toString()));
+								flag = 1;
+							}
+						}
+						if(flag != 1) {
+							TempThemDV ctdv = new TempThemDV(ma, model_Phai.getValueAt(i, 0).toString(), // Replace with the
+									// actual column
+									// indices
+									model_Phai.getValueAt(i, 1).toString(), // and types if they are not strings
+									Integer.parseInt(model_Phai.getValueAt(i, 2).toString()),
+									Double.parseDouble(model_Phai.getValueAt(i, 3).toString()));
+							ctdvTempList.add(ctdv);
+							flag = 0;
+						}
 					}
 
 					DataManager.setCtdvTempList(ctdvTempList);
