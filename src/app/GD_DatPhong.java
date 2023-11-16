@@ -68,7 +68,7 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 	private JPanel panel_ChuaPhong;
 	private JPanel panel;
 	private Dialog_HienThiPhongSuaChua dialog_htPhongSuaChua;
-	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong = new Dialog_TimPhieuDatPhong();
+	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong;
 	private JButton btnBackToBook;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
@@ -572,7 +572,9 @@ public class GD_DatPhong extends JPanel implements ActionListener, MouseListener
 			dialog_user.setVisible(true);
 		}
 		if (o.equals(btnTimKiemPDP)) {
+			dialog_TimPhieuDatPhong = new Dialog_TimPhieuDatPhong();
 			dialog_TimPhieuDatPhong.setVisible(true);
+			
 		}
 		if (o.equals(btnBackToBook)) {
 			if (tmp_dao.getAllTemp().size() == 1) {

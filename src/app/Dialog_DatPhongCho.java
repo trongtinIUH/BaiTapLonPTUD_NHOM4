@@ -47,7 +47,6 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JTextField txtSDT;
 	private JButton btn_KiemTraSDT, btn_QuayLai, btn_DatPhong;
 	private JPanel panel_1, panel_2;
-	private JCheckBox checkBox_KH;
 	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1, lbl_sdtKH,lbl_GioiTinh;
 	private JTextField txtSoNguoi;
 
@@ -57,7 +56,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private TimePickerSettings timeSettings;
 	private DatePickerSettings dateSettings;
 	
-	private KhachHang_dao khachHang_dao;
+	private KhachHang_dao khachHang_dao = new KhachHang_dao();
 
 	private JLabel lbl_Phong;
 	private LocalDateTime now1;
@@ -66,7 +65,6 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private DateTimePicker dateTimePicker_1;
 	private JLabel lbl_TrangThai;
 	private JLabel lbl_Loai;
-	private JLabel lbl_LoaiKhachHang;
 	private JLabel lblTieuDe;
 	private JLabel lbl_GiaTien;
 	private JLabel lbl_SoNguoi;
@@ -77,13 +75,11 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	
 	private Phong_dao phong_dao = new Phong_dao();
 	private PhieuDatPhong_dao pdp_dao= new PhieuDatPhong_dao();
-
+	private KhachHang kh = new KhachHang();
 	private Date ngayHienTai;
-
 	private Date date;
-
+	private GD_TrangChu trangChu;
 	private LocalDateTime ngayGioDatPhong;
-
 	private LocalDateTime ngay_GioNhanPhong;
 	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp,int songuoi) {
 		// màn
@@ -123,18 +119,6 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		lbl_Loai.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl_Loai.setBounds(10, 40, 60, 25);
 		panel_1.add(lbl_Loai);
-
-		lbl_LoaiKhachHang = new JLabel("Khách hàng mặc định:");
-		lbl_LoaiKhachHang.setFont(new Font("Arial", Font.BOLD, 16));
-		lbl_LoaiKhachHang.setBounds(10, 70, 180, 25);
-		panel_1.add(lbl_LoaiKhachHang);
-
-		checkBox_KH = new JCheckBox("");
-		checkBox_KH.setBackground(Color.WHITE);
-		checkBox_KH.setHorizontalAlignment(SwingConstants.LEFT);
-		checkBox_KH.setFont(new Font("Arial", Font.BOLD, 15));
-		checkBox_KH.setBounds(210, 70, 30, 25);
-		panel_1.add(checkBox_KH);
 
 		panel_2 = new JPanel();
 		panel_2.setBackground(SystemColor.menu);
@@ -313,7 +297,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		btn_DatPhong.addActionListener(this);
 		btn_KiemTraSDT.addActionListener(this);
 		btn_QuayLai.addActionListener(this);
-
+		txtSDT.setText(DataManager.getSdtKHNew());
 	}
 	
 	@Override
@@ -324,6 +308,10 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		}
 
 		if (o.equals(btn_DatPhong)) {
+			khachHang_dao = new KhachHang_dao();
+			String sdt = txtSDT.getText();
+			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
+			if(khachHang != null){
 			JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính !");
 			DataManager.setDatPhongCho(true);
 			Enum_TrangThai trangThai = Enum_TrangThai.Chờ;
@@ -336,7 +324,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 			Phong ph1 = new Phong(maPhong);
 			String maNV = DataManager.getUserName();
 			NhanVien nv = new NhanVien(maNV);
-			KhachHang kh= khachHang_dao.getKhachHangTheoSDT(txtSDT.getText());
+			kh = khachHang_dao.TimkiemSDT_KHachHang(sdt);
 			String maKH = kh.getMaKhachHang();
 			KhachHang kh2 = new KhachHang(maKH);
 			ngayGioDatPhong = LocalDateTime.now();
@@ -347,14 +335,11 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 			pdp_dao.addPhieuDatPhong(pdp);
 			
 			setVisible(false);
-			
-			
-	        Window[] windows = Window.getWindows();
-	        for (Window window : windows) {
-	            if (window instanceof JDialog) {
-	                window.dispose();
-	            }
-	        }
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Khách hàng phải có thông tin trên hệ thống mới được phép đặt phòng trước!");
+			}
+	
 	    }
 
 		//kiem tra khach hang
@@ -363,20 +348,22 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 			String sdt = txtSDT.getText();
 			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
 			if(khachHang != null){
-				JOptionPane.showMessageDialog(this, "Khách hàng đã có trong hệ thống!");
 				String hoTen = khachHang.getHoTen();
 				boolean gioiTinh = khachHang.isGioiTinh();
 				String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
 				lbl_GioiTinh_1.setText(gioiTinhStr);
 				lbl_TenKH_1.setText(hoTen);
+				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
 			}
 			else {
-				JOptionPane.showConfirmDialog(this, "Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+				int checkCustomer = JOptionPane.showConfirmDialog(this,
+						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+				if(checkCustomer == JOptionPane.YES_OPTION) {
+					trangChu.showKhachHangCard();
+					setVisible(false);
+				}
 			}
 		}
-
-		
-		
 		
 		}
 	// ---- Mã PhieuDatPhong phát sinh tự động tăng dần bắt đầu từ 0001
