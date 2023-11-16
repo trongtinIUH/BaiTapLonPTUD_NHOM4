@@ -297,7 +297,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		btn_DatPhong.addActionListener(this);
 		btn_KiemTraSDT.addActionListener(this);
 		btn_QuayLai.addActionListener(this);
-		txtSDT.setText(DataManager.getSdtKHNew());
+		txtSDT.setText(DataManager.getSoDienThoaiKHDat());
 	}
 	
 	@Override
