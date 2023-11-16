@@ -2,6 +2,9 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,19 +27,23 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.KhachHang_dao;
 import dao.PhieuDatPhong_dao;
+import dao.Phong_dao;
+import entity.Enum_TrangThai;
 import entity.KhachHang;
 import entity.PhieuDatPhong;
+import entity.Phong;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
+import java.awt.Window;
 
-public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
+public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, MouseListener {
 	private JPanel panel;
 	private JLabel lblTieuDe,lblTrangThai,lblMaPDP,lblSDTKhach;
-
+	private Phong_dao p_dao = new Phong_dao();
 	private JComboBox<String> comboBox_TrangThai;
 	private JButton btnTimKiem,btnLamMoi,btn_XuatPhong,btn_XemPhong,btn_HuyPhong,btn_NhanPhong;
 	
@@ -56,6 +63,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 	private KhachHang_dao kh_dao= new KhachHang_dao();
 	private KhachHang kh= new KhachHang();
 	private PhieuDatPhong pdp= new PhieuDatPhong();
+	private Phong p = new Phong();
 
 	public Dialog_TimPhieuDatPhong() {
 		//kích thước
@@ -247,14 +255,18 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
             String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
             String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
             if(!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
-            	hinhthuc="Đặt trước";
+                hinhthuc="Đặt trước";
             }
             else hinhthuc="Đặt trực tiếp";
-            Object[] row = {x.getMaPhieu(),x.getPhong().getMaPhong(),x.getNhanVien().getMaNhanVien(),x.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc};
+            String mp=x.getMaPhieu();
+            pdp=pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+            p=pdp.getPhong();
+            Object[] row = {x.getMaPhieu(),p.getMaPhong(),x.getNhanVien().getMaNhanVien(),x.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc};
             model.addRow(row);
         }
         Canh_Deu_Bang();
     }
+
 
 //clear bảng
 	public void clearTable() {
@@ -329,8 +341,67 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener {
 			clearTable();
 			loadData();
 		}
+		if(o.equals(btn_HuyPhong)) {
+			try {
+				HuyPhieu();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	
+	public void HuyPhieu() throws SQLException {
+		int row = tblPhieuDatPhong.getSelectedRow();
+		String maphong = (String) tblPhieuDatPhong.getValueAt(row, 1);
+		if (row != -1) {
+			int tb = JOptionPane.showConfirmDialog(null, "Bạn có hủy phòng?", "Hủy phòng chờ", JOptionPane.YES_NO_OPTION);
+			if (tb == JOptionPane.YES_OPTION) {
+				JOptionPane.showMessageDialog(this, "Phòng hủy thành công!");
+				pdp_dao.xoaPhieuDatPhongTheoMa(maphong);
+				DataManager.setDatPhongCho(true);
+				Enum_TrangThai trangThai = Enum_TrangThai.Trống;
+				Phong phong = new Phong(maphong, trangThai);
+				p_dao.updatePhong(phong, maphong);
+				model.removeRow(row);
+				setVisible(false);	
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "chưa chọn dòng xóa!");
+		}
+
+		
+	}
 	
 }
