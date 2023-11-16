@@ -345,7 +345,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					}
 					if (gioHT == gioTraPhong && phutHT == phutTraPhong) {
 						JOptionPane.showMessageDialog(null,
-								"Phòng " + cthd.getPhong().getMaPhong() + " đã hết thời giian vui lòng thanh toán");
+								"Phòng " + cthd.getPhong().getMaPhong() + " đã hết thời gian vui lòng thanh toán");
 					}
 				}
 			}
@@ -692,7 +692,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		if (o.equals(btnTimKiemPDP)) {
 			dialog_TimPhieuDatPhong = new Dialog_TimPhieuDatPhong();
 			dialog_TimPhieuDatPhong.setVisible(true);
-			
+
 		}
 		if (o.equals(btnBackToBook)) {
 			if (tmp_dao.getAllTemp().size() == 1) {
