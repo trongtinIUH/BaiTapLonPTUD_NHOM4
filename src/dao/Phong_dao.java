@@ -112,6 +112,33 @@ public class Phong_dao {
 			return null;
 		return dsPhong;
 	}
+	
+	public ArrayList<Phong> getPhongTheoLoaiPhongVaTrangThai(String loaiPhong, String trangThai) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong join LoaiPhong on Phong.maLoaiPhong = LoaiPhong.maLoaiPhong where tenLoaiPhong = N'"
+					+ loaiPhong + "' and trangThai = N'" + trangThai + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		if (dsPhong.isEmpty())
+			return null;
+		return dsPhong;
+	}
 
 	public double tinhTongTienPhongTheoMaHoaDon(String maHD) {
 		double tongTien = 0;
@@ -166,6 +193,34 @@ public class Phong_dao {
 		return dsPhong;
 
 	}
+	
+	public ArrayList<Phong> getPhongTheoLoaiPhong(String loaiPhong) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong join LoaiPhong on Phong.maLoaiPhong = LoaiPhong.maLoaiPhong where tenLoaiPhong = N'"+ loaiPhong + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		if (dsPhong.isEmpty())
+			return null;
+		return dsPhong;
+	}
+	
+	
 
 	public DoanhThuLoaiPhong tinhTongDoanhThuLoaiPhongTheoNgay(String ngay) {
 		DoanhThuLoaiPhong dtlp = null;

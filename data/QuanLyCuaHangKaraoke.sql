@@ -394,6 +394,39 @@ insert into ChiTietDichVu values('HD2407150001', 'SP018', '306', 20, 180000)
 insert into TempDatPhong values('000','00')
 go
 
+--trigger
+CREATE TRIGGER tr_insteadofinsert_ChiTietDichVu
+ON ChiTietDichVu
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Kiểm tra sự trùng lặp trước khi thực hiện chèn
+    IF NOT EXISTS (
+        SELECT 1
+        FROM ChiTietDichVu c
+        INNER JOIN INSERTED i ON c.maHoaDon = i.maHoaDon AND c.maSanPham = i.maSanPham AND c.maPhong = i.maPhong
+    )
+    BEGIN
+        -- Thực hiện chèn chỉ khi không có bản ghi trùng lặp
+        INSERT INTO ChiTietDichVu (maHoaDon, maSanPham, maPhong, soLuong, giaBan)
+        SELECT maHoaDon, maSanPham, maPhong, soLuong, giaBan
+        FROM INSERTED;
+    END
+    ELSE
+    BEGIN
+        -- Xử lý trường hợp phát hiện bản ghi trùng lặp
+        UPDATE c
+        SET soLuong = i.soLuong
+        FROM ChiTietDichVu c
+        INNER JOIN INSERTED i ON c.maHoaDon = i.maHoaDon AND c.maSanPham = i.maSanPham AND c.maPhong = i.maPhong;
+
+        -- Nếu bạn muốn tránh sự mâu thuẫn giữa các dòng cùng khóa chính, hãy xóa dòng đã chèn vào bảng
+ 
+    END
+END;
+
 --select * from NhanVien
 --select * from TaiKhoan
 --select * from ChiTietLuong
