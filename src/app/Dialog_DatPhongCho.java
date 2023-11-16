@@ -81,9 +81,10 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private GD_TrangChu trangChu;
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
-	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp,int songuoi) {
+	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp,int songuoi, GD_TrangChu trangChu) {
 		// màn
 		// hình******************************************************************************
+		this.trangChu = trangChu;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		setSize(800, 400);
@@ -358,6 +359,8 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 			else {
 				int checkCustomer = JOptionPane.showConfirmDialog(this,
 						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
+				DataManager.setLoadSDT(true);
 				if(checkCustomer == JOptionPane.YES_OPTION) {
 					trangChu.showKhachHangCard();
 					setVisible(false);

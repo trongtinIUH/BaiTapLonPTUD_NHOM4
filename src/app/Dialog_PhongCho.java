@@ -228,7 +228,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 
 		lbl_KhachHang = new JLabel("Khách hàng:");
 		lbl_KhachHang.setFont(new Font("Arial", Font.BOLD, 18));
-		lbl_KhachHang.setBounds(5, 250, 110, 30);
+		lbl_KhachHang.setBounds(5, 250, 115, 30);
 		getContentPane().add(lbl_KhachHang);
 
 		lbl_KhachHang_1 = new JLabel();

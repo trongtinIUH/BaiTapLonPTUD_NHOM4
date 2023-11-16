@@ -558,9 +558,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				// Sửa trống -> Đang sử dụng
 				if (!tmpDatPhong.getMaPhong().equals("000")) {
 					Phong p = p_dao.getPhongTheoMaPhong(tmpDatPhong.getMaPhong());
-					p.setTrangThai(Enum_TrangThai.Đang_sử_dụng);
-					p_dao.updatePhong(p, p.getMaPhong());
-
+					
 					// Thêm phiếu đặt phòng
 					NhanVien nv = new NhanVien(DataManager.getUserName());
 					KhachHang kh = new KhachHang();
@@ -569,12 +567,16 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 					else
 						kh = kh_dao.getKhachHangTheoSDT(txtSDT.getText());
 					LocalDateTime NgayDatPhong = LocalDateTime.now();
-					if (p.getTrangThai() == Enum_TrangThai.Chờ) {
-						// Nếu là chờ thì sửa lại.
-					}
+					
 					PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, NgayDatPhong, LocalDateTime.now(),
 							tmpDatPhong.getSoNguoiHat());
-					pdp_dao.addPhieuDatPhong(pdb);
+					if (p.getTrangThai() != Enum_TrangThai.Chờ) {
+						pdp_dao.addPhieuDatPhong(pdb);
+						// Nếu là chờ thì sửa lại.
+					}
+					
+					p.setTrangThai(Enum_TrangThai.Đang_sử_dụng);
+					p_dao.updatePhong(p, p.getMaPhong());
 
 					// Thêm vào HoaDonDatPhong
 					KhuyenMai km = new KhuyenMai(null);
@@ -643,6 +645,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			} else {
 				int checkCustomer = JOptionPane.showConfirmDialog(this,
 						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
+				DataManager.setLoadSDT(true);
 				if (checkCustomer == JOptionPane.YES_OPTION) {
 					trangChu.showKhachHangCard();
 					setVisible(false);
@@ -673,11 +677,16 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				int row = tblDV.getSelectedRow();
-				modelDV.removeRow(row);
-				ArrayList<TempThemDV> tmp = DataManager.getCtdvTempList();
-				tmp.remove(row);
-				DataManager.setCtdvTempList(tmp);
-				JOptionPane.showMessageDialog(this, "Xóa thành công!");
+				ArrayList<TempThemDV> ds = DataManager.getCtdvTempList();
+				for(TempThemDV temp : ds) {
+					if(temp.getMaPhong().equals(model.getValueAt(tblThemPhongMoi.getSelectedRow(), 1).toString()) 
+							&& temp.getMaSP().equals(modelDV.getValueAt(row, 1).toString())) {
+						ds.remove(temp);
+						JOptionPane.showMessageDialog(this, "Xóa thành công!");
+						modelDV.removeRow(row);
+					}
+				}
+				DataManager.setCtdvTempList(ds);
 			}
 		}
 	}

@@ -15,6 +15,15 @@ public class DataManager {
     private static ArrayList<TempThemDV> ctdvTempList;
     private static double tongTienDV;
 	private static boolean loadDV = false;
+	private static boolean loadSDT = false;
+
+	public static boolean isLoadSDT() {
+		return loadSDT;
+	}
+
+	public static void setLoadSDT(boolean loadSDT) {
+		DataManager.loadSDT = loadSDT;
+	}
 
 	public static boolean isLoadDV() {
 		return loadDV;

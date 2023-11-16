@@ -384,22 +384,22 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 		JLabel lbl_MaGiamGia = new JLabel("Mã giảm giá:");
 		lbl_MaGiamGia.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_MaGiamGia.setBounds(360, 300, 100, 25);
+		lbl_MaGiamGia.setBounds(355, 300, 100, 25);
 		getContentPane().add(lbl_MaGiamGia);
 
 		JLabel lbl_PhanTtramKM = new JLabel("Phần trăm KM:");
 		lbl_PhanTtramKM.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_PhanTtramKM.setBounds(360, 330, 105, 25);
+		lbl_PhanTtramKM.setBounds(355, 330, 110, 25);
 		getContentPane().add(lbl_PhanTtramKM);
 
 		JLabel lbl_TienNhan = new JLabel("Tiền nhận:");
 		lbl_TienNhan.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TienNhan.setBounds(360, 360, 90, 25);
+		lbl_TienNhan.setBounds(355, 360, 90, 25);
 		getContentPane().add(lbl_TienNhan);
 
 		JLabel lbl_TienThua = new JLabel("Tiền thừa:");
 		lbl_TienThua.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TienThua.setBounds(360, 390, 90, 25);
+		lbl_TienThua.setBounds(355, 390, 90, 25);
 		getContentPane().add(lbl_TienThua);
 
 		txtMaGiamGia = new JTextField();

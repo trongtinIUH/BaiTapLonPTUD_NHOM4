@@ -171,7 +171,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát!");
 			} else {
 				if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
-					dialog_DatPhongCho = new Dialog_DatPhongCho(lblPhong_1.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()));
+					dialog_DatPhongCho = new Dialog_DatPhongCho(lblPhong_1.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()), trangChu);
 					dialog_DatPhongCho.setVisible(true);
 					dispose();
 				} else {
