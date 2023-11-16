@@ -185,7 +185,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		panel_2.add(txtMaPhong);
 
 		// --- cuối góc phải là 3 nút jbutton
-		btnTimKiem = new JButton("Tìm Kiếm");
+		btnTimKiem = new JButton("Tìm kiếm");
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
@@ -194,7 +194,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		btnTimKiem.setBackground(new Color(13, 153, 255, 255));
 		panel_2.add(btnTimKiem);
 
-		btnLamMoi = new JButton("Làm Mới");
+		btnLamMoi = new JButton("Làm mới");
 		btnLamMoi.setForeground(Color.WHITE);
 		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -203,7 +203,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		btnLamMoi.setBackground(new Color(112, 210, 103, 255));
 		panel_2.add(btnLamMoi);
 
-		btnTimKiemPDP = new JButton("Tìm Phiếu Đặt Phòng");
+		btnTimKiemPDP = new JButton("Tìm phiếu đặt phòng");
 		btnTimKiemPDP.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
 		btnTimKiemPDP.setForeground(Color.WHITE);
 		btnTimKiemPDP.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -522,6 +522,8 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		panel_ChuaPhong.revalidate();
 		panel_ChuaPhong.repaint();
 		scrollPane_Phong.setViewportView(outerPanel);
+
+		setEnabledBtnDatPhong();
 	}
 
 	private void setEnabledBtnDatPhong() {
