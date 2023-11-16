@@ -10,6 +10,8 @@ import javax.swing.JTextField;
 
 import java.awt.Font;
 import java.awt.Color;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
@@ -48,6 +50,8 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		setSize(300, 400);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 
 		// các
 		// lbl-----------------------------------------------------------------------
@@ -133,7 +137,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		btn_DatPhongCho.setForeground(Color.WHITE);
 		btn_DatPhongCho.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatPhongCho.setBorderPainted(false);
-		btn_DatPhongCho.setBackground(new Color(235,235,115,255));
+		btn_DatPhongCho.setBackground(new Color(222, 222, 36,255));
 		btn_DatPhongCho.setBounds(40, 301, 200, 40);
 		getContentPane().add(btn_DatPhongCho);
 		// add sự kiện

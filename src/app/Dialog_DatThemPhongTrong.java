@@ -27,6 +27,7 @@ import dao.Phong_dao;
 import entity.Phong;
 
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
@@ -70,6 +71,8 @@ public class Dialog_DatThemPhongTrong extends JDialog implements ActionListener{
 		getContentPane().setLayout(null);
 		setSize(800, 450);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 
 		txtHoten = new JTextField();
 		txtHoten.setText(hoten);

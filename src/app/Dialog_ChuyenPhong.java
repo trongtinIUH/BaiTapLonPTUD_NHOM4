@@ -94,6 +94,9 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		setSize(800, 480);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
+	    
 		ph_dao = new Phong_dao();
 		loaiPhong_dao = new LoaiPhong_dao();
 		cthd_dao = new ChiTietHoaDon_dao();

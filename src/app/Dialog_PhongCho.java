@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -81,7 +82,10 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		getContentPane().setBackground(Color.WHITE);
 		setSize(400, 465);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 		getContentPane().setLayout(null);
+		
 
 		laydulieu(maPhong);
 

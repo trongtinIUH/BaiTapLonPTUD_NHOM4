@@ -63,6 +63,7 @@ import dao.TempDatPhong_dao;
 
 import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.Component;
@@ -125,6 +126,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		getContentPane().setLayout(null);
 		setSize(800, 629);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 
 		// panel chứa tiêu đề--------------------------------------
 		JPanel panel = new JPanel();

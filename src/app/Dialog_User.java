@@ -44,6 +44,8 @@ public class Dialog_User extends JDialog implements ActionListener{
 		setTitle("User");
 		setSize(400, 300);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 		//setResizable(false);
 		nv_dao = new NhanVien_dao();
 		
