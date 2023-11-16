@@ -545,33 +545,36 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	}
 
 	private void thanhToan() {
-		if (txtTienNhan.getText().trim().equals("")) {
-			JOptionPane.showMessageDialog(null, "Bạn chưa nhập tiền nhận từ khách hàng!!");
+		double tienThua = Double.parseDouble(txtTienThua.getText().replaceAll(" VNĐ", "").replaceAll(",", ""));
+		if (txtTienNhan.getText().trim().equals("") || tienThua<0) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa nhập tiền nhận từ khách hàng hoặc tiền thừa đang âm!!");
 		} else {
 			if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thanh toán hóa đơn này", "Thông báo",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				// Update Phòng
-				for (int row = 0; row < tblThanhToan.getRowCount(); row++) {
-					String maPhong_Item = model.getValueAt(row, 1).toString();
-					Enum_TrangThai trangThaiPhong = Enum_TrangThai.Trống;
-					Phong phong = new Phong(maPhong_Item, trangThaiPhong);
-					ph_dao.updatePhong(phong, maPhong_Item);
-				}
-
-				// Update lại hóa đơn
-				String maHD = lbl_MaHoaDon_1.getText().trim();
-				KhachHang kh = kh_dao.getKhachHangTheoSDT(lbl_sdtKH_1.getText().trim());
-				String maKH = kh.getMaKhachHang();
-				KhachHang kh_update = new KhachHang(maKH);
-				String maNV = DataManager.getUserName();
-				NhanVien nv = new NhanVien(maNV);
-				java.sql.Date ngayLap = new java.sql.Date(System.currentTimeMillis());
-				Boolean trangThai_ThanhToan = true;
-				KhuyenMai km = null;
-				KhuyenMai km2 = null;
-				String maKhuyenMai = "";
-				double tienKhachDua = Double.parseDouble(txtTienNhan.getText().trim());
 				if (kiemTra()) {
+					
+					// Update Phòng
+					for (int row = 0; row < tblThanhToan.getRowCount(); row++) {
+						String maPhong_Item = model.getValueAt(row, 1).toString();
+						Enum_TrangThai trangThaiPhong = Enum_TrangThai.Trống;
+						Phong phong = new Phong(maPhong_Item, trangThaiPhong);
+						ph_dao.updatePhong(phong, maPhong_Item);
+					}
+
+					// Update lại hóa đơn
+					String maHD = lbl_MaHoaDon_1.getText().trim();
+					KhachHang kh = kh_dao.getKhachHangTheoSDT(lbl_sdtKH_1.getText().trim());
+					String maKH = kh.getMaKhachHang();
+					KhachHang kh_update = new KhachHang(maKH);
+					String maNV = DataManager.getUserName();
+					NhanVien nv = new NhanVien(maNV);
+					java.sql.Date ngayLap = new java.sql.Date(System.currentTimeMillis());
+					Boolean trangThai_ThanhToan = true;
+					KhuyenMai km = null;
+					KhuyenMai km2 = null;
+					String maKhuyenMai = "";
+					double tienKhachDua = Double.parseDouble(txtTienNhan.getText().trim());
+					
 					if (txtMaGiamGia.getText().trim().equals("")) {
 						@SuppressWarnings("deprecation")
 						java.sql.Date ngayCoDinh = new java.sql.Date(2020, 10, 10);
