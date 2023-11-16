@@ -239,7 +239,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
 				
-		loadData();
+			loadData();
 			MyTable(model, tblPhieuDatPhong);
 	}
 
