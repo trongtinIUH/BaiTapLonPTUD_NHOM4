@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import connectDB.ConnectDB;
 import entity.ChiTietDichVu;
 import entity.HoaDonDatPhong;
+import entity.Phong;
 import entity.SanPham;
 
 public class ChiTietDichVu_dao {
@@ -27,7 +28,7 @@ public class ChiTietDichVu_dao {
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
-				dsChiTietDichVu.add(new ChiTietDichVu(new HoaDonDatPhong(rs.getString(1)), new SanPham(rs.getString(2)), rs.getInt(3),  rs.getDouble(4)));
+				dsChiTietDichVu.add(new ChiTietDichVu(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(2)), new SanPham(rs.getString(3)), rs.getInt(4),  rs.getDouble(5)));
 			}
 			
 		} catch (Exception e) {
@@ -50,7 +51,7 @@ public class ChiTietDichVu_dao {
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
 			while(rs.next()) {
-				dsChiTietDichVu.add(new ChiTietDichVu(new HoaDonDatPhong(rs.getString(1)), new SanPham(rs.getString(2)), rs.getInt(3),  rs.getDouble(4)));
+				dsChiTietDichVu.add(new ChiTietDichVu(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(3)), new SanPham(rs.getString(2)), rs.getInt(4),  rs.getDouble(5)));
 			}
 			
 		} catch (Exception e) {
@@ -96,11 +97,12 @@ public class ChiTietDichVu_dao {
 		PreparedStatement stmt = null;
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("insert into ChiTietDichVu values(?,?,?,?)");
+			stmt = con.prepareStatement("insert into ChiTietDichVu values(?,?,?,?,?)");
 			stmt.setString(1, ctdv.getHoaDon().getMaHoaDon());
 			stmt.setString(2, ctdv.getSanPham().getMaSanPham());
-			stmt.setInt(3, ctdv.getSoLuong());
-			stmt.setDouble(4, ctdv.getGia());
+			stmt.setString(3, ctdv.getPhong().getMaPhong());
+			stmt.setInt(4, ctdv.getSoLuong());
+			stmt.setDouble(5, ctdv.getGia());
 			n = stmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception

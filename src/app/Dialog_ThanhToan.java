@@ -42,7 +42,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
-import dao.HoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
 import dao.LoaiPhong_dao;
@@ -107,7 +107,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private JButton btnQuayLai;
 	private NhanVien_dao nv_dao;
 	private ChiTietHoaDon_dao cthd_dao;
-	private HoaDon_dao hd_dao;
+	private HoaDonDatPhong_dao hd_dao;
 	private KhachHang_dao kh_dao;
 	private JLabel lblMaHD;
 	private JLabel lbl_MaHoaDon_1;
@@ -142,7 +142,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		nv_dao = new NhanVien_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
 		ctdv_dao = new ChiTietDichVu_dao();
-		hd_dao = new HoaDon_dao();
+		hd_dao = new HoaDonDatPhong_dao();
 		kh_dao = new KhachHang_dao();
 		ph_dao = new Phong_dao();
 		loaiPhong_dao = new LoaiPhong_dao();

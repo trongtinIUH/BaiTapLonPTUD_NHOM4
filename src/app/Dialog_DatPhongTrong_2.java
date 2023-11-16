@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -27,15 +28,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JCheckBox;
 import java.awt.SystemColor;
-import java.awt.Window;
 import javax.swing.UIManager;
 
+import entity.ChiTietDichVu;
+import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
+import entity.HoaDonDatPhong;
 import entity.KhachHang;
+import entity.KhuyenMai;
 import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
+import entity.SanPham;
 import entity.TempDatPhong;
 import entity.TempThemDV;
 
@@ -45,6 +50,9 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
+import dao.ChiTietDichVu_dao;
+import dao.ChiTietHoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
 import dao.NhanVien_dao;
@@ -74,6 +82,9 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private JButton btn_DatThemPhong;
 	private NhanVien_dao nv_dao = new NhanVien_dao();
 	private NhanVien nv;
+	private HoaDonDatPhong_dao hddp_dao = new HoaDonDatPhong_dao();
+	private ChiTietHoaDon_dao cthd_dao = new ChiTietHoaDon_dao();
+	private ChiTietDichVu_dao ctdv_dao = new ChiTietDichVu_dao();
 
 	private JTable tblThemPhongMoi, tblDV;
 	private DefaultTableModel model, modelDV;
@@ -471,12 +482,14 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	                String maPhong = model.getValueAt(row, 1).toString();
 	                tmpDatPhong_dao.deleteTempDP(maPhong);
 	                model.removeRow(row);
-	                Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
-	                while (iterator.hasNext()) {
-	                    TempThemDV tmp = iterator.next();
-	                    if (tmp.getMaPhong().equals(maPhong)) {
-	                        iterator.remove();
-	                    }
+	                if(DataManager.getCtdvTempList() != null) {
+	                	Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
+		                while (iterator.hasNext()) {
+		                    TempThemDV tmp = iterator.next();
+		                    if (tmp.getMaPhong().equals(maPhong)) {
+		                        iterator.remove();
+		                    }
+		                }
 	                }
 	            }
 	            clearTable();
@@ -490,12 +503,14 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	            String maPhong = model.getValueAt(row, 1).toString();
 	            tmpDatPhong_dao.deleteTempDP(maPhong);
 	            model.removeRow(row);
-	            Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
-	            while (iterator.hasNext()) {
-	                TempThemDV tmp = iterator.next();
-	                if (tmp.getMaPhong().equals(maPhong)) {
-	                    iterator.remove();
-	                }
+	            if(DataManager.getCtdvTempList() != null) {
+	            	Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
+		            while (iterator.hasNext()) {
+		                TempThemDV tmp = iterator.next();
+		                if (tmp.getMaPhong().equals(maPhong)) {
+		                    iterator.remove();
+		                }
+		            }
 	            }
 	            clearTable();
 	            loadDataPhong();
@@ -565,6 +580,29 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 					PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, NgayDatPhong, LocalDateTime.now(),
 							tmpDatPhong.getSoNguoiHat());
 					pdp_dao.addPhieuDatPhong(pdb);
+					
+					//	Thêm vào HoaDonDatPhong
+					KhuyenMai km = new KhuyenMai(null);
+					java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+					HoaDonDatPhong hddp = new HoaDonDatPhong(TaoMaHDDP(), kh, nv, sqlDate, false, km, 0.0);
+					System.out.println(hddp);
+					hddp_dao.addHoaDonDatPhong(hddp);
+					ChiTietHoaDon cthd;
+					if(radGioTuDo.isSelected()) {
+						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), 0);
+					}
+					else{
+						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(dateTimePicker.getDateTimeStrict()), 0);
+					}
+					cthd_dao.addChiTietHD(cthd);
+					if(DataManager.getCtdvTempList() != null) {
+						for(TempThemDV tmp : DataManager.getCtdvTempList()) {
+							ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()), new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
+							if(ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
+								ctdv_dao.addChiTietDV(ctdv);
+							}
+						}
+					}
 				}
 			}
 			tmpDatPhong_dao.deleteALLTempDatPhong();
@@ -628,8 +666,6 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	public void xoaDV() {
 		if (tblDV.getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
-		} else if (tblDV.getSelectedRowCount() > 1) {
-			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để xóa!");
 		} else {
 			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -666,6 +702,32 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
 		date = new Date();
 		String suffix = String.format("%04d", ThuTuPhieuDatPhongTrongNgay());
+		return prefix + dateFormat.format(date) + suffix;
+	}
+	
+	private int ThuTuHoaDonDatPhongTrongNgay() {
+		int sl = 1;
+		String maHDDP = "";
+		for (HoaDonDatPhong hddp : hddp_dao.getAllHoaDonDatPhong()) {
+			maHDDP = hddp.getMaHoaDon(); // Chạy hết vòng for sẽ lấy được mã Phiếu đặt phòng cuối danh sách
+		}
+		int ngayTrenMaHDDPCuoiDS = Integer.parseInt(maHDDP.substring(2, 8));
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd"); // Format yyMMdd sẽ so sánh ngày được
+		ngayHienTai = new Date();
+		int ngayHT = Integer.parseInt(dateFormat.format(ngayHienTai));
+		if (ngayHT != ngayTrenMaHDDPCuoiDS) {
+			sl = 1;
+		} else if (ngayHT == ngayTrenMaHDDPCuoiDS) {
+			sl = Integer.parseInt(maHDDP.substring(8, 12)) + 1;
+		}
+		return sl;
+	}
+	
+	private String TaoMaHDDP() {
+		String prefix = "HD";
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+		date = new Date();
+		String suffix = String.format("%04d", ThuTuHoaDonDatPhongTrongNgay());
 		return prefix + dateFormat.format(date) + suffix;
 	}
 

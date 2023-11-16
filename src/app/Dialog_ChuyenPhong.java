@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import dao.ChiTietHoaDon_dao;
-import dao.HoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
 import dao.NhanVien_dao;
@@ -85,7 +85,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private JLabel lblMaKH;
 	private JTextField txtMaKH;
 	private NhanVien_dao nv_dao;
-	private HoaDon_dao hd_dao;
+	private HoaDonDatPhong_dao hd_dao;
 	private KhachHang_dao kh_dao;
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
@@ -101,7 +101,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		cthd_dao = new ChiTietHoaDon_dao();
 		pdp_dao = new PhieuDatPhong_dao();
 		nv_dao = new NhanVien_dao();
-		hd_dao = new HoaDon_dao();
+		hd_dao = new HoaDonDatPhong_dao();
 		kh_dao = new KhachHang_dao();
 
 		this.addWindowListener(new WindowAdapter() {

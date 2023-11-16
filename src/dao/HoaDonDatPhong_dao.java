@@ -1,20 +1,21 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 
 import connectDB.ConnectDB;
 import entity.HoaDonDatPhong;
 import entity.KhachHang;
 import entity.KhuyenMai;
 import entity.NhanVien;
+import entity.Phong;
 import entity.SanPham;
 
-public class HoaDon_dao {
+public class HoaDonDatPhong_dao {
 	public ArrayList<HoaDonDatPhong> getAllHoaDonDatPhong() {
 		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
 		try {
@@ -268,6 +269,38 @@ public class HoaDon_dao {
 			} catch (Exception e2) {
 				// TODO: handle exception
 				e2.printStackTrace();
+			}
+		}
+		return n > 0;
+	}
+	
+	public boolean addHoaDonDatPhong(HoaDonDatPhong hddp) {
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement psmt = null;
+		int n = 0;
+		try {
+			psmt = con.prepareStatement("insert into HoaDonDatPhong values(?,?,?,?,?,?,?)");
+			psmt.setString(1, hddp.getMaHoaDon());
+			psmt.setString(2, hddp.getKhachHang().getMaKhachHang());
+			psmt.setString(3, hddp.getNhanVien().getMaNhanVien());
+			psmt.setDate(4, hddp.getNgayLapHoaDon());
+			psmt.setBoolean(5, hddp.isTrangThai());
+			psmt.setString(6, hddp.getKhuyenMai().getMaKhuyenMai());
+			psmt.setDouble(7, hddp.getTienKhachDua());
+			n = psmt.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				psmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
 			}
 		}
 		return n > 0;

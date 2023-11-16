@@ -324,8 +324,17 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 					                }
 					            }
 					            if (!found) {
-					                selectedRowData[selectedRowData.length - 3] = soLuong;
-					                model_Phai.addRow(selectedRowData);
+//					                selectedRowData[selectedRowData.length - 3] = soLuong;
+			            			int currentRow = tblThemDv_Trai.getSelectedRow();
+			            			
+					            	Object[] row = {
+					            			model_Trai.getValueAt(currentRow, 0),
+					            			model_Trai.getValueAt(currentRow, 1),
+					            			soLuong,
+					            			model_Trai.getValueAt(currentRow, 3),
+					            			
+					            	};
+					                model_Phai.addRow(row);
 					            }
 					            soLuongTon -= soLuong;
 					            model_Trai.setValueAt(soLuongTon, selectedRow, 2);
