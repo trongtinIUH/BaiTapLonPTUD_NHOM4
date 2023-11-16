@@ -299,6 +299,8 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			DecimalFormat df3 = new DecimalFormat("#.##");
 			Phong ph = ph_dao.getPhongTheoMaPhong(cthd.getPhong().getMaPhong());
 			LoaiPhong loaiPhong = loaiPhong_dao.getLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong());
+			if (cthd.getSoGioHat() != 0)
+				thoiGian_Item = cthd.getSoGioHat();
 			Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(thoiGian_Item),
 					loaiPhong.getDonGiaTheoGio(), "", df3.format(thoiGian_Item * loaiPhong.getDonGiaTheoGio()) };
 			model.addRow(rowPhong);
@@ -545,14 +547,20 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	}
 
 	private void thanhToan() {
-		double tienThua = Double.parseDouble(txtTienThua.getText().replaceAll(" VNĐ", "").replaceAll(",", ""));
-		if (txtTienNhan.getText().trim().equals("") || tienThua<0) {
+		double tienThua = -1;
+		try {
+			tienThua = Double.parseDouble(txtTienThua.getText().replaceAll(" VNĐ", "").replaceAll(",", ""));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		if (txtTienNhan.getText().trim().equals("") || tienThua < 0) {
 			JOptionPane.showMessageDialog(null, "Bạn chưa nhập tiền nhận từ khách hàng hoặc tiền thừa đang âm!!");
 		} else {
 			if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thanh toán hóa đơn này", "Thông báo",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				if (kiemTra()) {
-					
+
 					// Update Phòng
 					for (int row = 0; row < tblThanhToan.getRowCount(); row++) {
 						String maPhong_Item = model.getValueAt(row, 1).toString();
@@ -574,7 +582,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 					KhuyenMai km2 = null;
 					String maKhuyenMai = "";
 					double tienKhachDua = Double.parseDouble(txtTienNhan.getText().trim());
-					
+
 					if (txtMaGiamGia.getText().trim().equals("")) {
 						@SuppressWarnings("deprecation")
 						java.sql.Date ngayCoDinh = new java.sql.Date(2020, 10, 10);
@@ -645,11 +653,11 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			} else {
 //				JOptionPane.showMessageDialog(this, "Thêm mã khuyến mãi thành công!!");
 				DecimalFormat ddd = new DecimalFormat("#.#");
-				lbl_TongThanhTien_1
-						.setText(ddd.format((Double.parseDouble(lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", "").replaceAll(",", ""))
-								- Double.parseDouble(lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", "").replaceAll(",", ""))
-										* km.getPhanTramKhuyenMai()))
-								+ " VNĐ");
+				lbl_TongThanhTien_1.setText(ddd.format((Double
+						.parseDouble(lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", "").replaceAll(",", ""))
+						- Double.parseDouble(lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", "").replaceAll(",", ""))
+								* km.getPhanTramKhuyenMai()))
+						+ " VNĐ");
 				txtPhanTramKM.setText(km.getPhanTramKhuyenMai() + "");
 				return true;
 			}

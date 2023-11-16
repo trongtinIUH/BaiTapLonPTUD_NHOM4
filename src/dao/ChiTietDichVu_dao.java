@@ -60,6 +60,29 @@ public class ChiTietDichVu_dao {
 		return dsChiTietDichVu;
 	}
 	
+	public ArrayList<ChiTietDichVu> getChiTietDichVuTheoMaPhong(String maPhong) {
+		ArrayList<ChiTietDichVu> dsChiTietDichVu = new ArrayList<ChiTietDichVu>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from ChiTietDichVu where maPhong='"+ maPhong +"'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				dsChiTietDichVu.add(new ChiTietDichVu(new HoaDonDatPhong(rs.getString(1)), new Phong(rs.getString(3)), new SanPham(rs.getString(2)), rs.getInt(4),  rs.getDouble(5)));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsChiTietDichVu;
+	}
+	
 	public double tinhTongTienDVTheoMaHoaDon(String maHD) {
 		double tongTienDV = 0;
 		try {

@@ -89,14 +89,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private JTable tblThemPhongMoi, tblDV;
 	private DefaultTableModel model, modelDV;
 	private String col[] = { "STT", "Mã Phòng", "Loại Phòng", "Số người", "Đơn Giá" };
-	private String colDV[] = {
-			"STT",
-			"Mã sản phẩm",
-			"Tên sản phẩm",
-			"Số lượng", 
-			"Đơn giá",
-			"Tổng tiền"
-	};
+	private String colDV[] = { "STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Tổng tiền" };
 
 	private Dialog_ThemDichVu dialog_ThemDichVu;
 	private JLabel lbl_TenKH;
@@ -353,7 +346,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		btn_XoaPhongDat.setBackground(new Color(234, 234, 114, 255));
 		btn_XoaPhongDat.setBounds(413, 507, 170, 40);
 		panel_1.add(btn_XoaPhongDat);
-		
+
 		modelDV = new DefaultTableModel(colDV, 0);
 		tblDV = new JTable(modelDV);
 		tblDV.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -361,7 +354,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		JScrollPane sp_ListDV = new JScrollPane(tblDV);
 		sp_ListDV.setBounds(10, 397, 765, 100);
 		panel_1.add(sp_ListDV);
-		
+
 		btnXoaDV = new JButton("Xóa dịch vụ");
 		btnXoaDV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -371,14 +364,14 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		btnXoaDV.setBackground(Color.LIGHT_GRAY);
 		btnXoaDV.setBounds(393, 350, 134, 30);
 		panel_1.add(btnXoaDV);
-		
+
 		Timer timer = new Timer(1000, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(DataManager.isLoadDV()) {
+				if (DataManager.isLoadDV()) {
 					clearTableDV();
-					if(tmpDatPhong_dao.getAllTemp().size() == 2) {
+					if (tmpDatPhong_dao.getAllTemp().size() == 2) {
 						loadDataDV(model.getValueAt(0, 1).toString());
 						DataManager.setLoadDV(false);
 					} else {
@@ -407,9 +400,9 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		checkDefaultCustomer();
 		timer.start();
 	}
-	
+
 	private void checkDefaultCustomer() {
-		if(DataManager.getSoDienThoaiKHDat().equals("0000000000")) {
+		if (DataManager.getSoDienThoaiKHDat().equals("0000000000")) {
 			checkBox_KH.setSelected(true);
 			lbl_TenKH_1.setText("Nguyễn Văn A");
 			lbl_GioiTinh_1.setText("Nam");
@@ -442,15 +435,15 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			lbl_TenKH_1.setText(hoTen);
 		}
 	}
-	
+
 	private void loadDataDV(String maPhong) {
-		if(DataManager.getCtdvTempList() != null) {
+		if (DataManager.getCtdvTempList() != null) {
 			int i = 0;
 			for (TempThemDV tmp : DataManager.getCtdvTempList()) {
-				if(tmp.getMaPhong().equals(maPhong)) {
+				if (tmp.getMaPhong().equals(maPhong)) {
 					i++;
-					Object[] row = { i, tmp.getMaSP(), tmp.getTenSP(), tmp.getSoLuong(),
-							tmp.getDonGia(), df.format(tmp.getDonGia() * tmp.getSoLuong()) };
+					Object[] row = { i, tmp.getMaSP(), tmp.getTenSP(), tmp.getSoLuong(), tmp.getDonGia(),
+							df.format(tmp.getDonGia() * tmp.getSoLuong()) };
 					modelDV.addRow(row);
 				}
 			}
@@ -462,7 +455,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			model.removeRow(0);
 		}
 	}
-	
+
 	private void clearTableDV() {
 		while (tblDV.getRowCount() > 0) {
 			modelDV.removeRow(0);
@@ -470,54 +463,54 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	}
 
 	private void xoa() {
-	    if (tblThemPhongMoi.getSelectedRow() == -1) {
-	        JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!!");
-	    } else if (tblThemPhongMoi.getSelectedRowCount() > 1) {
-	        int[] selectedRows = tblThemPhongMoi.getSelectedRows();
-	        if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa các phòng đã chọn không?", "Thông báo",
-	                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-	            for (int i = selectedRows.length - 1; i >= 0; i--) {
-	                int row = selectedRows[i];
-	                String maPhong = model.getValueAt(row, 1).toString();
-	                tmpDatPhong_dao.deleteTempDP(maPhong);
-	                model.removeRow(row);
-	                if(DataManager.getCtdvTempList() != null) {
-	                	Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
-		                while (iterator.hasNext()) {
-		                    TempThemDV tmp = iterator.next();
-		                    if (tmp.getMaPhong().equals(maPhong)) {
-		                        iterator.remove();
-		                    }
-		                }
-	                }
-	            }
-	            clearTable();
-	            loadDataPhong();
-	            JOptionPane.showMessageDialog(this, "Xóa thành công!!");
-	        }
-	    } else {
-	        if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa phòng này không?", "Thông báo",
-	                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-	            int row = tblThemPhongMoi.getSelectedRow();
-	            String maPhong = model.getValueAt(row, 1).toString();
-	            tmpDatPhong_dao.deleteTempDP(maPhong);
-	            model.removeRow(row);
-	            if(DataManager.getCtdvTempList() != null) {
-	            	Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
-		            while (iterator.hasNext()) {
-		                TempThemDV tmp = iterator.next();
-		                if (tmp.getMaPhong().equals(maPhong)) {
-		                    iterator.remove();
-		                }
-		            }
-	            }
-	            clearTable();
-	            loadDataPhong();
-	            JOptionPane.showMessageDialog(this, "Xóa thành công!!");
-	        }
-	    }
-	    if (tmpDatPhong_dao.getAllTemp().size() == 1)
-	        setVisible(false);
+		if (tblThemPhongMoi.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!!");
+		} else if (tblThemPhongMoi.getSelectedRowCount() > 1) {
+			int[] selectedRows = tblThemPhongMoi.getSelectedRows();
+			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa các phòng đã chọn không?", "Thông báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				for (int i = selectedRows.length - 1; i >= 0; i--) {
+					int row = selectedRows[i];
+					String maPhong = model.getValueAt(row, 1).toString();
+					tmpDatPhong_dao.deleteTempDP(maPhong);
+					model.removeRow(row);
+					if (DataManager.getCtdvTempList() != null) {
+						Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
+						while (iterator.hasNext()) {
+							TempThemDV tmp = iterator.next();
+							if (tmp.getMaPhong().equals(maPhong)) {
+								iterator.remove();
+							}
+						}
+					}
+				}
+				clearTable();
+				loadDataPhong();
+				JOptionPane.showMessageDialog(this, "Xóa thành công!!");
+			}
+		} else {
+			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa phòng này không?", "Thông báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				int row = tblThemPhongMoi.getSelectedRow();
+				String maPhong = model.getValueAt(row, 1).toString();
+				tmpDatPhong_dao.deleteTempDP(maPhong);
+				model.removeRow(row);
+				if (DataManager.getCtdvTempList() != null) {
+					Iterator<TempThemDV> iterator = DataManager.getCtdvTempList().iterator();
+					while (iterator.hasNext()) {
+						TempThemDV tmp = iterator.next();
+						if (tmp.getMaPhong().equals(maPhong)) {
+							iterator.remove();
+						}
+					}
+				}
+				clearTable();
+				loadDataPhong();
+				JOptionPane.showMessageDialog(this, "Xóa thành công!!");
+			}
+		}
+		if (tmpDatPhong_dao.getAllTemp().size() == 1)
+			setVisible(false);
 	}
 
 	private void sua() {
@@ -532,10 +525,11 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			JOptionPane.showMessageDialog(this, "Sửa thành công!");
 		}
 	}
+
 	private void themDV() {
-		if(tblThemPhongMoi.getSelectedRow() == -1) {
+		if (tblThemPhongMoi.getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(null, "Bạn chưa chọn phòng để thêm dịch vụ!");
-		} else if(tblThemPhongMoi.getSelectedRowCount() > 1) {
+		} else if (tblThemPhongMoi.getSelectedRowCount() > 1) {
 			JOptionPane.showMessageDialog(null, "Chỉ thêm dịch vụ được 1 phòng!");
 		} else {
 			String customer = lbl_TenKH_1.getText();
@@ -558,6 +552,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			themDV();
 		}
 		if (o.equals(btn_DatPhong)) {
+			int check = 0;
+			String maHoaDon = TaoMaHDDP();
 			for (TempDatPhong tmpDatPhong : tmpDatPhong_dao.getAllTemp()) {
 				// Sửa trống -> Đang sử dụng
 				if (!tmpDatPhong.getMaPhong().equals("000")) {
@@ -579,25 +575,33 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 					PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, NgayDatPhong, LocalDateTime.now(),
 							tmpDatPhong.getSoNguoiHat());
 					pdp_dao.addPhieuDatPhong(pdb);
-					
-					//	Thêm vào HoaDonDatPhong
+
+					// Thêm vào HoaDonDatPhong
 					KhuyenMai km = new KhuyenMai(null);
 					java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-					HoaDonDatPhong hddp = new HoaDonDatPhong(TaoMaHDDP(), kh, nv, sqlDate, false, km, 0.0);
-					System.out.println(hddp);
-					hddp_dao.addHoaDonDatPhong(hddp);
-					ChiTietHoaDon cthd;
-					if(radGioTuDo.isSelected()) {
-						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now()), 0);
+					HoaDonDatPhong hddp = new HoaDonDatPhong(maHoaDon, kh, nv, sqlDate, false, km, 0.0);
+					if(check == 0) {						
+						hddp_dao.addHoaDonDatPhong(hddp);
+						check = 1;
 					}
-					else{
-						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(dateTimePicker.getDateTimeStrict()), 0);
+
+					// Thêm chi tiết hóa đơn
+					ChiTietHoaDon cthd;
+					if (radGioTuDo.isSelected()) {
+						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
+								Timestamp.valueOf(LocalDateTime.now()), 0);
+					} else {
+						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
+								Timestamp.valueOf(dateTimePicker.getDateTimeStrict()), 0);
 					}
 					cthd_dao.addChiTietHD(cthd);
-					if(DataManager.getCtdvTempList() != null) {
-						for(TempThemDV tmp : DataManager.getCtdvTempList()) {
-							ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()), new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
-							if(ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
+
+					// Thêm chi tiết dịch vụ
+					if (DataManager.getCtdvTempList() != null) {
+						for (TempThemDV tmp : DataManager.getCtdvTempList()) {
+							ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
+									new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
+							if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
 								ctdv_dao.addChiTietDV(ctdv);
 							}
 						}
@@ -610,7 +614,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			setVisible(false);
 		}
 		if (o.equals(btn_DatThemPhong)) {
-			if(checkBox_KH.isSelected()) {
+			if (checkBox_KH.isSelected()) {
 				DataManager.setSoDienThoaiKHDat("0000000000");
 			}
 			setVisible(false);
@@ -639,7 +643,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			} else {
 				int checkCustomer = JOptionPane.showConfirmDialog(this,
 						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
-				if(checkCustomer == JOptionPane.YES_OPTION) {
+				if (checkCustomer == JOptionPane.YES_OPTION) {
 					trangChu.showKhachHangCard();
 					setVisible(false);
 				}
@@ -656,12 +660,12 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				btn_KiemTraSDT.setEnabled(true);
 			}
 		}
-		if(o.equals(btnXoaDV)) {
+		if (o.equals(btnXoaDV)) {
 			xoaDV();
 		}
 
 	}
-	
+
 	public void xoaDV() {
 		if (tblDV.getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
@@ -703,7 +707,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		String suffix = String.format("%04d", ThuTuPhieuDatPhongTrongNgay());
 		return prefix + dateFormat.format(date) + suffix;
 	}
-	
+
 	private int ThuTuHoaDonDatPhongTrongNgay() {
 		int sl = 1;
 		String maHDDP = "";
@@ -721,7 +725,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		}
 		return sl;
 	}
-	
+
 	private String TaoMaHDDP() {
 		String prefix = "HD";
 		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
