@@ -212,6 +212,11 @@ insert into Phong values('401','PV30',N'Đang_sử_dụng')
 insert into Phong values('402','PV30',N'Trống')
 insert into Phong values('403','PV10',N'Đang_sử_dụng')
 insert into Phong values('404','PV5',N'Trống')
+
+insert into Phong values('405','PV5',N'Trống')
+insert into Phong values('406','PV5',N'Trống')
+insert into Phong values('407','PV5',N'Trống')
+insert into Phong values('408','PV5',N'Trống')
 go
 
 --Sản phẩm
