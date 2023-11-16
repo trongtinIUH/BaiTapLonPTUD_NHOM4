@@ -4,7 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,13 +29,26 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import dao.KhachHang_dao;
+import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
+import dao.TempDatPhong_dao;
 import entity.Enum_TrangThai;
 import entity.KhachHang;
+import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
+import entity.TempDatPhong;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -64,7 +81,14 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	private KhachHang kh= new KhachHang();
 	private PhieuDatPhong pdp= new PhieuDatPhong();
 	private Phong p = new Phong();
-
+	private Dialog_PhongCho dialog_PhongCho;
+	private XSSFWorkbook wordbook;
+	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
+	private GD_TrangChu trangChu;
+	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private LoaiPhong lp;
+	private Dialog_PhongDangSD dialog_PhongDangSD;
 	public Dialog_TimPhieuDatPhong() {
 		//kích thước
 		getContentPane().setBackground(Color.WHITE);
@@ -155,7 +179,9 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		tblPhieuDatPhong.setBackground(Color.WHITE);
 		tblPhieuDatPhong.getColumnModel().getColumn(4).setMinWidth(100);
 		tblPhieuDatPhong.getColumnModel().getColumn(5).setMinWidth(100);
-		tblPhieuDatPhong.getColumnModel().getColumn(6).setMaxWidth(70);;
+		tblPhieuDatPhong.getColumnModel().getColumn(6).setMaxWidth(70);
+		tblPhieuDatPhong.getColumnModel().getColumn(1).setMaxWidth(70);
+		tblPhieuDatPhong.getColumnModel().getColumn(0).setMinWidth(100);
 		
 		JScrollPane sp = new JScrollPane(tblPhieuDatPhong);
 		sp.setBounds(0, 90, 804, 210);
@@ -188,7 +214,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btn_XemPhong.setBounds(330, 330, 150, 40);
 		panel_1.add(btn_XemPhong);
 		
-		btn_XuatPhong = new JButton("Xuất PDF");
+		btn_XuatPhong = new JButton("Xuất Excel");
 		btn_XuatPhong.setForeground(Color.WHITE);
 		btn_XuatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_XuatPhong.setBackground(new Color(13,153,255,255));
@@ -213,7 +239,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
 				
-			loadData();
+		loadData();
 			MyTable(model, tblPhieuDatPhong);
 	}
 
@@ -277,9 +303,22 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 	//hàm tìm 
 	public void tim() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+        String hinhthuc="";
+
 	    String maPhieu = txtMaPDP.getText();
 	    String sdt = txtSDTKH.getText();
-
+	    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(maPhieu);
+	    
+	    String ngayGioDat = pdp.getNgayGioDatPhong().format(formatter);
+        String ngayGioNhan = pdp.getNgayGioNhanPhong().format(formatter);
+        
+        if(!pdp.getNgayGioDatPhong().isEqual(pdp.getNgayGioNhanPhong())) {
+            hinhthuc="Đặt trước";
+        }
+        else hinhthuc="Đặt trực tiếp";
+        
+	    if (btnTimKiem.getText().equals("Tìm kiếm")) {
 	    if (!maPhieu.isEmpty() && !sdt.isEmpty()) {
 	        JOptionPane.showMessageDialog(null, "Chỉ nhập vào 1 ô tìm kiếm!");
 	        return;
@@ -290,11 +329,11 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	    }
 	    if (!maPhieu.isEmpty()) {
 	        // Tìm kiếm theo mã phiếu
-	        pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(maPhieu);
+	    	
 	        if (pdp != null) {
 	            btnTimKiem.setText("Hủy tìm");
 	            clearTable();
-	            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),pdp.getNgayGioDatPhong(),pdp.getNgayGioNhanPhong(),pdp.getSoNguoiHat()};
+	            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc};
 	            model.addRow(row);
 	            Canh_Deu_Bang();
 	        } else {
@@ -308,8 +347,8 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	            if (pdp != null) {
 	                btnTimKiem.setText("Hủy tìm");
 	                clearTable();
-	                Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),pdp.getNgayGioDatPhong(),pdp.getNgayGioNhanPhong(),pdp.getSoNguoiHat()};
-	                model.addRow(row);
+		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc};
+		            model.addRow(row);
 	                Canh_Deu_Bang();
 	            } else {
 	                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
@@ -317,7 +356,9 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	        } else {
 	            JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 	        }
-	    } else {
+	    }
+	    }
+	    else {
 	        clearTable();
 	        loadData();
 	        btnTimKiem.setText("Tìm kiếm");
@@ -333,6 +374,17 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		}
 		if(o.equals(btnTimKiem)) {
 			tim();
+		}
+		if(o.equals(btn_XemPhong)) {
+			xemPhong();
+		}
+		if(o.equals(btn_XuatPhong)){
+			xuatExcel();
+		}
+		if(o.equals(btn_NhanPhong)) {
+			nhanPhong();
+			clearTable();
+			loadData();
 		}
 		if(o.equals(btnLamMoi)){
 			txtMaPDP.setText("");
@@ -385,7 +437,9 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	public void HuyPhieu() throws SQLException {
 		int row = tblPhieuDatPhong.getSelectedRow();
 		String maphong = (String) tblPhieuDatPhong.getValueAt(row, 1);
-		if (row != -1) {
+		String hinhthuc=(String) tblPhieuDatPhong.getValueAt(row, 7);
+		if(row!=1) {
+					if(hinhthuc.equals("Đặt trước")) {
 			int tb = JOptionPane.showConfirmDialog(null, "Bạn có hủy phòng?", "Hủy phòng chờ", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				JOptionPane.showMessageDialog(this, "Phòng hủy thành công!");
@@ -395,13 +449,210 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				Phong phong = new Phong(maphong, trangThai);
 				p_dao.updatePhong(phong, maphong);
 				model.removeRow(row);
-				setVisible(false);	
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "chưa chọn dòng xóa!");
+		}
+					else {
+						JOptionPane.showMessageDialog(null, "Phòng đặt trực tiếp không thể hủy!");
+					}
+					}
+		else {
+			JOptionPane.showMessageDialog(null, "chưa chọn phòng hủy!");
 		}
 
 		
 	}
-	
+	public void xemPhong() {
+		int row = tblPhieuDatPhong.getSelectedRow();
+		String maphong = (String) tblPhieuDatPhong.getValueAt(row, 1);
+		String hinhthuc=(String) tblPhieuDatPhong.getValueAt(row, 7);
+		if (row != -1) {
+			if(hinhthuc.equals("Đặt trước")) {
+				dialog_PhongCho = new Dialog_PhongCho(maphong);
+				DataManager.setDatPhongCho(true);
+				dialog_PhongCho.setVisible(true);
+			}
+			else {
+				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong);
+				DataManager.setDatPhong(true);
+				dialog_PhongDangSD.setVisible(true);
+			}
+				
+		}
+		 else 
+			JOptionPane.showMessageDialog(null, "chưa chọn phòng chờ hiển thị!");
+	}
+	public void nhanPhong() {
+		int row= tblPhieuDatPhong.getSelectedRow();
+		String maphong = (String) tblPhieuDatPhong.getValueAt(row, 1).toString();
+		String songuoi = (String) tblPhieuDatPhong.getValueAt(row, 6).toString();
+		pdp = pdp_dao.getPhieuDatPhongTheoMa(maphong);
+		p = p_dao.getPhongTheoMaPhong(maphong);
+		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+		kh=kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
+		String hinhthuc=(String) tblPhieuDatPhong.getValueAt(row, 7);
+
+		if(row!=1) {
+					if(hinhthuc.equals("Đặt trước")) {
+
+
+						// giờ phút hiện tại
+						int gio_ht=LocalDateTime.now().getHour();
+						int phut_ht=LocalDateTime.now().getMinute();
+						int tongsophut_ht= gio_ht*60+phut_ht;
+						//giờ phút nhận phòng
+						pdp = pdp_dao.getPhieuDatPhongTheoMa(maphong);
+						int gio_np= pdp.getNgayGioNhanPhong().getHour();
+						int phut_np=pdp.getNgayGioNhanPhong().getMinute();
+						int tongsophut_np= gio_np*60+phut_np;
+						int ngayht= LocalDateTime.now().getDayOfMonth();
+						int ngaynp=pdp.getNgayGioNhanPhong().getDayOfMonth();
+						
+						
+			if(ngayht<ngaynp) {
+							 // Khách hàng đến sớm hơn giờ nhận phòng 30 phút
+						    JOptionPane.showMessageDialog(this, "Hãy đến đúng giờ nhận hoặc trước 30 phút!");
+						}
+			else if (ngayht==ngaynp) { 
+				if(tongsophut_np-tongsophut_ht>30) {
+					JOptionPane.showMessageDialog(this, "Hãy đến đúng giờ nhận hoặc trước 30 phút!");
+				}
+				else if(tongsophut_np-tongsophut_ht<=30&&tongsophut_np-tongsophut_ht>-30) {
+					// Khách hàng đến đúng giờ
+				    TempDatPhong tmp = new TempDatPhong(p.getMaPhong(), Integer.parseInt(songuoi));
+				    tmp_dao.addTemp(tmp);
+				    dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(maphong, p, lp, Integer.parseInt(songuoi),trangChu);
+				    dispose();
+				    JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách đặt phòng thành công.");
+				    DataManager.setSoDienThoaiKHDat("");
+				    dialog_DatPhongTrong_2.setVisible(true);
+				} 
+				else if(tongsophut_np-tongsophut_ht<-30) {
+				    // Khách hàng đến trễ hơn giờ nhận phòng 30 phút
+				    // Thực hiện công việc B
+				    JOptionPane.showMessageDialog(this, "Phòng hủy do đến trễ quá 30 phút!");
+				    pdp_dao.xoaPhieuDatPhongTheoMa(maphong);
+				    DataManager.setDatPhongCho(true);
+				    Enum_TrangThai trangThai = Enum_TrangThai.Trống;
+				    Phong phong = new Phong(maphong, trangThai);
+				    p_dao.updatePhong(phong, maphong);
+				    setVisible(false);  
+				    Window[] windows = Window.getWindows();
+				    for (Window window : windows) {
+				        if (window instanceof JDialog) {
+				            window.dispose();
+				        }
+				    }
+
+				}
+			}else {
+
+			    // Khách hàng đến trễ hơn giờ nhận phòng 30 phút
+			    // Thực hiện công việc B
+			    JOptionPane.showMessageDialog(this, "Phòng hủy do đến trễ quá 30 phút!");
+			    pdp_dao.xoaPhieuDatPhongTheoMa(maphong);
+			    DataManager.setDatPhongCho(true);
+			    Enum_TrangThai trangThai = Enum_TrangThai.Trống;
+			    Phong phong = new Phong(maphong, trangThai);
+			    p_dao.updatePhong(phong, maphong);
+			}
+						
+		}else {
+			JOptionPane.showMessageDialog(null, "Phòng bạn chọn là phòng đặt trực tiếp nên không thể nhận !");
+		}
+		}else {
+			JOptionPane.showMessageDialog(null, "Chưa chọn phòng chờ để nhận!");
+		}
+	}
+	public void xuatExcel() {
+		try {
+			wordbook = new XSSFWorkbook();
+			XSSFSheet sheet = wordbook.createSheet("Danh sách phiếu đặt phòng");
+			 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+
+				XSSFCellStyle style = wordbook.createCellStyle();
+				// Đặt chữ in đậm
+				XSSFFont font = wordbook.createFont();
+				font.setBold(true);
+				style.setFont(font);
+				// Căn giữa
+				style.setAlignment(HorizontalAlignment.CENTER);
+			XSSFRow row = null;
+			Cell cell = null;
+			String hinhthuc="";
+			row = sheet.createRow(2);// Tạo 2 dòng trống trong excel
+			cell = row.createCell(0, CellType.STRING);
+			cell.setCellValue("STT");
+			cell = row.createCell(1, CellType.STRING);
+			cell.setCellValue("Mã PDP");
+			cell = row.createCell(2, CellType.STRING);
+			cell.setCellValue("Phòng");
+			cell = row.createCell(3, CellType.STRING);
+			cell.setCellValue("Mã NV");
+			cell = row.createCell(4, CellType.STRING);
+			cell.setCellValue("Mã KH");
+			cell = row.createCell(5, CellType.STRING);
+			cell.setCellValue("Ngày Giờ Đặt");
+			cell = row.createCell(6, CellType.STRING);
+			cell.setCellValue("Ngày Giờ Nhận");
+			cell = row.createCell(7, CellType.STRING);
+			cell.setCellValue("Số Người");
+			cell = row.createCell(8, CellType.STRING);
+			cell.setCellValue("Hình Thức");
+
+			for (int i = 0; i < pdp_dao.getAllsPhieuDatPhong().size(); i++) {
+				   String ngayGioDat = pdp_dao.getAllsPhieuDatPhong().get(i).getNgayGioDatPhong().format(formatter);
+		            String ngayGioNhan =pdp_dao.getAllsPhieuDatPhong().get(i).getNgayGioNhanPhong().format(formatter);
+		            if(!pdp_dao.getAllsPhieuDatPhong().get(i).getNgayGioDatPhong().isEqual(pdp_dao.getAllsPhieuDatPhong().get(i).getNgayGioNhanPhong())) {
+		                hinhthuc="Đặt trước";
+		            }
+		            else hinhthuc="Đặt trực tiếp";
+				row = sheet.createRow(3 + i); // Bỏ qua 2 dòng trống
+				cell = row.createCell(0, CellType.NUMERIC);
+				cell.setCellValue(i + 1);
+				
+				cell = row.createCell(1, CellType.STRING);
+				cell.setCellValue(pdp_dao.getAllsPhieuDatPhong().get(i).getMaPhieu());
+				
+				cell = row.createCell(2, CellType.STRING);
+	            String mp=pdp_dao.getAllsPhieuDatPhong().get(i).getMaPhieu();
+	            pdp=pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+	            p=pdp.getPhong();
+				cell.setCellValue(p.getMaPhong());
+				
+				cell = row.createCell(3, CellType.STRING);
+				cell.setCellValue(pdp_dao.getAllsPhieuDatPhong().get(i).getNhanVien().getMaNhanVien());
+				
+				cell = row.createCell(4, CellType.STRING);
+				cell.setCellValue(pdp_dao.getAllsPhieuDatPhong().get(i).getKhachHang().getMaKhachHang());
+				
+				cell = row.createCell(5, CellType.STRING);
+				cell.setCellValue(ngayGioDat);
+				
+				cell = row.createCell(6, CellType.STRING);
+				cell.setCellValue(ngayGioNhan);
+				
+				cell = row.createCell(7, CellType.STRING);
+				cell.setCellValue(pdp_dao.getAllsPhieuDatPhong().get(i).getSoNguoiHat());
+				
+				cell = row.createCell(8, CellType.STRING);
+				cell.setCellValue(hinhthuc);
+			}
+
+			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSachPhieuDatPhong.xlsx");
+			try {
+				FileOutputStream file_out = new FileOutputStream(file);
+				wordbook.write(file_out);
+				file_out.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+
+			JOptionPane.showMessageDialog(this, "In file danh sách thành công!!");
+		} catch (Exception e1) {
+			// TODO: handle exception
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Không in được");
+		}
+	}
 }
