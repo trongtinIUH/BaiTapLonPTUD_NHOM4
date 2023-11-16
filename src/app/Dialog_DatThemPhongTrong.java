@@ -268,7 +268,7 @@ public class Dialog_DatThemPhongTrong extends JDialog implements ActionListener{
 		}
 		if(o.equals(btn_ThemDV)) {
 			
-			dialog_ThemDichVu = new Dialog_ThemDichVu(txtHoten.getText());
+			dialog_ThemDichVu = new Dialog_ThemDichVu(txtHoten.getText(), DataManager.getUserName(), "");
 			dialog_ThemDichVu.setVisible(true);
 			}
 		

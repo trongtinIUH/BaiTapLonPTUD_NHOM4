@@ -27,6 +27,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -41,7 +43,7 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
-import dao.HoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
 import dao.Phong_dao;
@@ -69,7 +71,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private JButton btnXoa, btnSua, btnTimKiem, btnXuatDSHD, btnProfile;
 	private JComboBox<String> cbTrangThai, cbTimKiem;
 	private JTextField txtMaHD, txtTenKH, txtMaNV, txtKhuyenMai, txtTongTien, txtTimKiem;
-	private HoaDon_dao hoadon_dao;
+	private HoaDonDatPhong_dao hoadon_dao;
 	private KhachHang_dao khachhang_dao;
 	private Phong_dao phong_dao;
 	private ChiTietDichVu_dao chitietdichvu_dao;
@@ -85,7 +87,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private DatePickerSettings dateSettings;
 	public GD_HoaDon() {
 		df = new DecimalFormat("#,###,### VNĐ");
-		hoadon_dao = new HoaDon_dao();
+		hoadon_dao = new HoaDonDatPhong_dao();
 		khachhang_dao = new KhachHang_dao();
 		phong_dao = new Phong_dao();
 		chitietdichvu_dao = new ChiTietDichVu_dao();
@@ -360,6 +362,15 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXuatDSHD.addActionListener(this);
 		loadOrderListData();
 		tableOrderList.addMouseListener(this);
+		tableOrderDetail.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		    public void valueChanged(ListSelectionEvent event) {
+		        int orderDetailRow = tableOrderDetail.getSelectedRow();
+		        if(orderDetailRow >= 0) {
+		            clearTableServiceDetail();
+		            loadServiceDetailData(modelOrderList.getValueAt(tableOrderList.getSelectedRow(), 1).toString(), modelOrderDetail.getValueAt(orderDetailRow, 1).toString());
+		        }
+		    }
+		});
 		btnProfile.addActionListener(this);
 	}
 	@Override
@@ -399,12 +410,14 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 	
-	public void loadServiceDetailData(String maHD) {
+	public void loadServiceDetailData(String maHD, String maPhong) {
 		for (ChiTietDichVu ctdv : chitietdichvu_dao.getChiTietDichVuTheoMaHD(maHD)) {
-			Object[] row = { ctdv.getHoaDon().getMaHoaDon(), 
-			sanpham_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham()).getTenSanPham(),
-			ctdv.getGia(), ctdv.getSoLuong()};
-			modelServiceDetail.addRow(row);
+			if(ctdv.getPhong().getMaPhong().equals(maPhong)) {
+				Object[] row = { ctdv.getHoaDon().getMaHoaDon(), 
+						sanpham_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham()).getTenSanPham(),
+						ctdv.getGia(), ctdv.getSoLuong()};
+						modelServiceDetail.addRow(row);
+			}
 		}
 	}
 	
@@ -669,7 +682,6 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		clearTableOrderDetail(); 
 		clearTableServiceDetail();
 		loadOrderDetailData(modelOrderList.getValueAt(row, 1).toString());
-		loadServiceDetailData(modelOrderList.getValueAt(row, 1).toString());
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {

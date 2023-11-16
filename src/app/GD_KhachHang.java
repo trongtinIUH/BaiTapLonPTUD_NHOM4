@@ -358,7 +358,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 				} else
 					hienThiGioiTinh = "Nữ";
 				model.addRow(new Object[] { model.getRowCount() + 1, ma, ten, sdt, hienThiGioiTinh });
-				DataManager.setSdtKHNew(txtSDT.getText());
+				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
 				JOptionPane.showMessageDialog(this, "Thêm thành công!!");
 				xoaTrang();
 				loadMa();

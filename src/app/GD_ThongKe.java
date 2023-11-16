@@ -25,7 +25,7 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
-import dao.HoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
 import dao.Phong_dao;
@@ -52,7 +52,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu, lblYearStart, lblYearEnd;
 	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd, cbYear, cbMonth;
 	JButton btnThongKe, btnLamMoi, btnInTK, btnProfile;
-	private HoaDon_dao hoadon_dao;
+	private HoaDonDatPhong_dao hoadon_dao;
 	private KhachHang_dao khachhang_dao;
 	private Phong_dao phong_dao;
 	private ChiTietDichVu_dao chitietdichvu_dao;
@@ -74,7 +74,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		df = new DecimalFormat("#,###,### VNĐ");
 		setLayout(null);
 		setBackground(Color.decode("#FAFAFF"));
-		hoadon_dao = new HoaDon_dao();
+		hoadon_dao = new HoaDonDatPhong_dao();
 		khachhang_dao = new KhachHang_dao();
 		phong_dao = new Phong_dao();
 		chitietdichvu_dao = new ChiTietDichVu_dao();

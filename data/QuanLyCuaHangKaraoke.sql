@@ -125,11 +125,13 @@ go
 CREATE TABLE ChiTietDichVu (
     maHoaDon varchar(20) not null,
     maSanPham varchar(20) not null,
-	primary key(maHoaDon,maSanPham),
+	maPhong varchar(20) not null,
+	primary key(maHoaDon,maSanPham, maPhong),
     soLuong int not null,
     giaBan float not null,
 	foreign key(maHoaDon) references HoaDonDatPhong(maHoaDon) on delete cascade,
 	foreign key(maSanPham) references SanPham(maSanPham) on delete cascade,
+	foreign key(maPhong) references Phong(maPhong),
     CONSTRAINT CHK_SoLuong CHECK (soLuong > 0),
     CONSTRAINT CHK_Gia CHECK (giaBan > 0)
 )
@@ -338,55 +340,55 @@ go
 
 
 --ChiTietDichVu
-insert into ChiTietDichVu values('HD2310100001', 'SP001', 50, 9500)
-insert into ChiTietDichVu values('HD2310100001', 'SP013', 5, 210000)
-insert into ChiTietDichVu values('HD2310100001', 'SP014', 3, 80000)
-insert into ChiTietDichVu values('HD2310100001', 'SP017', 6 , 195000)
-insert into ChiTietDichVu values('HD2310100001', 'SP021', 4, 9000)
+insert into ChiTietDichVu values('HD2310100001', 'SP001', '305', 50, 9500)
+insert into ChiTietDichVu values('HD2310100001', 'SP013', '305', 5, 210000)
+insert into ChiTietDichVu values('HD2310100001', 'SP014', '305', 3, 80000)
+insert into ChiTietDichVu values('HD2310100001', 'SP017', '306', 6 , 195000)
+insert into ChiTietDichVu values('HD2310100001', 'SP021', '306', 4, 9000)
 
-insert into ChiTietDichVu values('HD2310100002', 'SP003', 30, 10000)
-insert into ChiTietDichVu values('HD2310100002', 'SP008', 10, 85000)
-insert into ChiTietDichVu values('HD2310100002', 'SP012', 4, 165000)
+insert into ChiTietDichVu values('HD2310100002', 'SP003', '204', 30, 10000)
+insert into ChiTietDichVu values('HD2310100002', 'SP008', '204', 10, 85000)
+insert into ChiTietDichVu values('HD2310100002', 'SP012', '204', 4, 165000)
 
-insert into ChiTietDichVu values('HD2310100003', 'SP002', 25, 10000)
-insert into ChiTietDichVu values('HD2310100003', 'SP014', 7, 80000)
-insert into ChiTietDichVu values('HD2310100003', 'SP018', 3, 180000)
-insert into ChiTietDichVu values('HD2310100003', 'SP021', 4, 9000)
+insert into ChiTietDichVu values('HD2310100003', 'SP002', '102', 25, 10000)
+insert into ChiTietDichVu values('HD2310100003', 'SP014', '102', 7, 80000)
+insert into ChiTietDichVu values('HD2310100003', 'SP018', '101', 3, 180000)
+insert into ChiTietDichVu values('HD2310100003', 'SP021', '101', 4, 9000)
 
-insert into ChiTietDichVu values('HD2310110001', 'SP016', 2, 115000)
-insert into ChiTietDichVu values('HD2310110001', 'SP023', 5, 40000)
+insert into ChiTietDichVu values('HD2310110001', 'SP016', '401', 2, 115000)
+insert into ChiTietDichVu values('HD2310110001', 'SP023', '401', 5, 40000)
 
-insert into ChiTietDichVu values('HD2310110002', 'SP010', 10, 35000)
-insert into ChiTietDichVu values('HD2310110002', 'SP011', 14, 90000)
+insert into ChiTietDichVu values('HD2310110002', 'SP010', '203', 10, 35000)
+insert into ChiTietDichVu values('HD2310110002', 'SP011', '203', 14, 90000)
 
-insert into ChiTietDichVu values('HD2310120001', 'SP020', 5, 120000)
-insert into ChiTietDichVu values('HD2310120001', 'SP003', 25, 10000)
+insert into ChiTietDichVu values('HD2310120001', 'SP020', '404', 5, 120000)
+insert into ChiTietDichVu values('HD2310120001', 'SP003', '404', 25, 10000)
 
-insert into ChiTietDichVu values('HD2310130001', 'SP024', 23, 30000)
-insert into ChiTietDichVu values('HD2310130001', 'SP025', 25, 45000)
-insert into ChiTietDichVu values('HD2310130001', 'SP026', 20, 90000)
+insert into ChiTietDichVu values('HD2310130001', 'SP024', '306', 23, 30000)
+insert into ChiTietDichVu values('HD2310130001', 'SP025', '306', 25, 45000)
+insert into ChiTietDichVu values('HD2310130001', 'SP026', '306', 20, 90000)
 
-insert into ChiTietDichVu values('HD2310140001', 'SP015', 6, 140000)
+insert into ChiTietDichVu values('HD2310140001', 'SP015', '105', 6, 140000)
 
-insert into ChiTietDichVu values('HD2310200001', 'SP014', 4, 80000)
-insert into ChiTietDichVu values('HD2310200001', 'SP018', 9, 180000)
+insert into ChiTietDichVu values('HD2310200001', 'SP014', '206', 4, 80000)
+insert into ChiTietDichVu values('HD2310200001', 'SP018', '206', 9, 180000)
 
-insert into ChiTietDichVu values('HD2310150001', 'SP001', 27, 9500)
-insert into ChiTietDichVu values('HD2310150001', 'SP014', 9, 80000)
+insert into ChiTietDichVu values('HD2310150001', 'SP001', '403',27, 9500)
+insert into ChiTietDichVu values('HD2310150001', 'SP014','403',  9, 80000)
 
-insert into ChiTietDichVu values('HD2409010001', 'SP001', 27, 9500)
-insert into ChiTietDichVu values('HD2409010001', 'SP014', 9, 80000)
+insert into ChiTietDichVu values('HD2409010001', 'SP001', '403', 27, 9500)
+insert into ChiTietDichVu values('HD2409010001', 'SP014', '403', 9, 80000)
 
-insert into ChiTietDichVu values('HD2408010001', 'SP024', 40, 30000)
-insert into ChiTietDichVu values('HD2408010001', 'SP025', 25, 45000)
-insert into ChiTietDichVu values('HD2408010001', 'SP026', 20, 90000)
+insert into ChiTietDichVu values('HD2408010001', 'SP024', '404', 40, 30000)
+insert into ChiTietDichVu values('HD2408010001', 'SP025', '404', 25, 45000)
+insert into ChiTietDichVu values('HD2408010001', 'SP026', '404', 20, 90000)
 
-insert into ChiTietDichVu values('HD2407150001', 'SP024', 40, 30000)
-insert into ChiTietDichVu values('HD2407150001', 'SP025', 25, 45000)
-insert into ChiTietDichVu values('HD2407150001', 'SP026', 20, 90000)
-insert into ChiTietDichVu values('HD2407150001', 'SP014', 20, 80000)
-insert into ChiTietDichVu values('HD2407150001', 'SP001', 25, 9500)
-insert into ChiTietDichVu values('HD2407150001', 'SP018', 20, 180000)
+insert into ChiTietDichVu values('HD2407150001', 'SP024', '306', 40, 30000)
+insert into ChiTietDichVu values('HD2407150001', 'SP025', '306', 25, 45000)
+insert into ChiTietDichVu values('HD2407150001', 'SP026', '306', 20, 90000)
+insert into ChiTietDichVu values('HD2407150001', 'SP014', '306', 20, 80000)
+insert into ChiTietDichVu values('HD2407150001', 'SP001', '306', 25, 9500)
+insert into ChiTietDichVu values('HD2407150001', 'SP018', '306', 20, 180000)
 
 --thêm tmp
 insert into TempDatPhong values('000','00')

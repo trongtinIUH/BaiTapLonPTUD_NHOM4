@@ -9,6 +9,7 @@ public class ChiTietDichVu  implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private HoaDonDatPhong hoaDon;
+	private Phong phong;
 	private SanPham sanPham;
 	private int soLuong;
 	private double gia;
@@ -16,12 +17,19 @@ public class ChiTietDichVu  implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public ChiTietDichVu(HoaDonDatPhong hoaDon, SanPham sanPham, int soLuong, double gia) {
+	public ChiTietDichVu(HoaDonDatPhong hoaDon, Phong phong, SanPham sanPham, int soLuong, double gia) {
 		super();
 		this.hoaDon = hoaDon;
+		this.phong = phong;
 		this.sanPham = sanPham;
 		this.soLuong = soLuong;
 		this.gia = gia;
+	}
+	public Phong getPhong() {
+		return phong;
+	}
+	public void setPhong(Phong phong) {
+		this.phong = phong;
 	}
 	public HoaDonDatPhong getHoaDon() {
 		return hoaDon;
@@ -52,9 +60,11 @@ public class ChiTietDichVu  implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return String.format("ChiTietDichVu [hoaDon=%s, sanPham=%s, soLuong=%s, gia=%s]", hoaDon, sanPham, soLuong,
-				gia);
+		return "ChiTietDichVu [hoaDon=" + hoaDon + ", phong=" + phong + ", sanPham=" + sanPham + ", soLuong=" + soLuong
+				+ ", gia=" + gia + "]";
 	}
+	
+	
 	
 
 	
