@@ -102,6 +102,28 @@ public class KhachHang_dao {
 		return kh;
 	}
 	
+	public KhachHang getKhachHangTheoTen(String ten) {
+	    KhachHang kh = null;
+	    try {
+	        ConnectDB.getInstance();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    Connection con = ConnectDB.getConnection();
+	    try {
+	        String sql = "select * from KhachHang where hoTen = N'" + ten + "'";
+	        Statement stm = con.createStatement();
+	        ResultSet rs = stm.executeQuery(sql);
+	        while(rs.next()) {
+	            kh = new KhachHang(rs.getString(1), rs.getString(2),rs.getString(3), rs.getBoolean(4));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return kh;
+	}
+
+	
 	public boolean addKhachHang(KhachHang kh) {
 		try {
 			ConnectDB.getInstance();

@@ -38,12 +38,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 import entity.Enum_TrangThai;
+import entity.HoaDonDatPhong;
 import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
@@ -61,12 +63,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	private JPanel panel;
 	private JLabel lblTieuDe,lblTrangThai,lblMaPDP,lblSDTKhach;
 	private Phong_dao p_dao = new Phong_dao();
-	private JComboBox<String> comboBox_TrangThai;
+	private JComboBox<String> comboBox_TrangThai,comboBox_TrangThai_1;
 	private JButton btnTimKiem,btnLamMoi,btn_XuatPhong,btn_XemPhong,btn_HuyPhong,btn_NhanPhong;
 	
 	private JTable tblPhieuDatPhong;
 	private DefaultTableModel model;
-	private String col[] = { "Mã PDP", "Phòng", "Mã NV", "Mã KH", "   Ngày Giờ Đặt   ","   Ngày Giờ Nhận   ","Số Người","Hình Thức"};
+	private String col[] = { "Mã PDP", "Phòng", "Mã NV", "Mã KH","Tên KH", "   Ngày Giờ Đặt   ","   Ngày Giờ Nhận   ","Số Người","Hình Thức","Trạng Thái"};
 	private JButton btn_QuayLai;
 
 
@@ -74,12 +76,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField txtMaPDP;
-	private JTextField txtSDTKH;
+	private JTextField txtLoaiTimKiem;
 	private PhieuDatPhong_dao pdp_dao= new PhieuDatPhong_dao();;
 	private KhachHang_dao kh_dao= new KhachHang_dao();
 	private KhachHang kh= new KhachHang();
 	private PhieuDatPhong pdp= new PhieuDatPhong();
+	private HoaDonDatPhong hd= new HoaDonDatPhong();
+	private HoaDonDatPhong_dao hd_dao= new HoaDonDatPhong_dao();
 	private Phong p = new Phong();
 	private Dialog_PhongCho dialog_PhongCho;
 	private XSSFWorkbook wordbook;
@@ -92,7 +95,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	public Dialog_TimPhieuDatPhong() {
 		//kích thước
 		getContentPane().setBackground(Color.WHITE);
-		setSize(820, 450);
+		setSize(900, 450);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
@@ -100,7 +103,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		
 		//panel chứa tiêu đề-------------------------------------------------------------------------
 		panel = new JPanel();
-		panel.setBounds(0, 0, 804, 35);
+		panel.setBounds(0, 0, 884, 35);
 		panel.setBackground(new Color(181,230,251,255));
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -110,56 +113,58 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTieuDe.setForeground(Color.BLACK);
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 18));
-		lblTieuDe.setBounds(0, 0, 803, 35);
+		lblTieuDe.setBounds(0, 0, 884, 35);
 		panel.add(lblTieuDe);
 		
 		// panel 1 chứa thông tin kh, nhân viên và bảng table-------------------------------------------
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 34, 804, 380);
+		panel_1.setBounds(0, 34, 884, 377);
 		panel_1.setBackground(SystemColor.menu);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
-		lblMaPDP = new JLabel("Mã phiếu đặt:");
-		lblMaPDP.setFont(new Font("Arial", Font.BOLD, 15));
-		lblMaPDP.setBounds(5, 5, 100, 30);
+		lblMaPDP = new JLabel("Tìm phiếu theo:");
+		lblMaPDP.setFont(new Font("Arial", Font.BOLD, 14));
+		lblMaPDP.setBounds(5, 5, 110, 30);
 		panel_1.add(lblMaPDP);
 		
-		lblSDTKhach = new JLabel("SDT khách:");
-		lblSDTKhach.setFont(new Font("Arial", Font.BOLD, 15));
-		lblSDTKhach.setBounds(5, 45, 100, 30);
+		lblSDTKhach = new JLabel("Nhập thông tin:");
+		lblSDTKhach.setFont(new Font("Arial", Font.BOLD, 14));
+		lblSDTKhach.setBounds(5, 45, 110, 30);
 		panel_1.add(lblSDTKhach);
 		
-		txtMaPDP = new JTextField();
-		txtMaPDP.setFont(new Font("Arial", Font.BOLD, 14));
-		txtMaPDP.setBounds(110, 5, 220, 30);
-		panel_1.add(txtMaPDP);
-		txtMaPDP.setColumns(10);
-		
-		txtSDTKH = new JTextField();
-		txtSDTKH.setFont(new Font("Arial", Font.BOLD, 14));
-		txtSDTKH.setColumns(10);
-		txtSDTKH.setBounds(110, 45, 220, 30);
-		panel_1.add(txtSDTKH);
+		txtLoaiTimKiem = new JTextField();
+		txtLoaiTimKiem.setFont(new Font("Arial", Font.BOLD, 14));
+		txtLoaiTimKiem.setColumns(10);
+		txtLoaiTimKiem.setBounds(120, 45, 250, 30);
+		panel_1.add(txtLoaiTimKiem);
 		
 		//--- lbl và combox trạng thái
 		lblTrangThai = new JLabel("Trạng Thái:");
 		lblTrangThai.setFont(new Font("Arial", Font.BOLD, 15));
-		lblTrangThai.setBounds(345, 5, 85, 30);
+		lblTrangThai.setBounds(400, 5, 85, 30);
 		panel_1.add(lblTrangThai);
 		comboBox_TrangThai = new JComboBox<String>();
 		comboBox_TrangThai.setBackground(Color.WHITE);
 		comboBox_TrangThai.setFont(new Font("Arial", Font.BOLD, 15));
-		comboBox_TrangThai.setModel(new DefaultComboBoxModel<String>(new String[] {"Chưa Thanh Toán", "Đã Thanh Toán"}));
-		comboBox_TrangThai.setBounds(440, 5, 200, 30);
+		comboBox_TrangThai.setModel(new DefaultComboBoxModel<String>(new String[] {"Tất Cả","Chưa Thanh Toán", "Đã Thanh Toán"}));
+		comboBox_TrangThai.setSelectedIndex(0);
+		comboBox_TrangThai.setBounds(490, 5, 200, 30);
 		panel_1.add(comboBox_TrangThai);
+		// cbo tìm theo loại
+		comboBox_TrangThai_1 = new JComboBox<String>();
+		comboBox_TrangThai_1.setFont(new Font("Arial", Font.BOLD, 15));
+		comboBox_TrangThai_1.setBackground(Color.WHITE);
+		comboBox_TrangThai_1.setModel(new DefaultComboBoxModel<String>(new String[] {"Mã phiếu đặt", "Số điện thoại KH","Họ tên KH"}));
+		comboBox_TrangThai_1.setBounds(120, 5, 250, 30);
+		panel_1.add(comboBox_TrangThai_1);
 		
 		//--- cuối góc phải là 3 nút jbutton
 		btnTimKiem = new JButton("Tìm Kiếm");
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setFont(new Font("Arial", Font.BOLD, 15));
 		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
-		btnTimKiem.setBounds(350, 45, 290, 30);
+		btnTimKiem.setBounds(400, 45, 290, 30);
 		btnTimKiem.setBackground(new Color(13,153,255,255));
 		btnTimKiem.setBorder(new RoundedBorder(20));
 		panel_1.add(btnTimKiem);
@@ -168,7 +173,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btnLamMoi.setForeground(Color.WHITE);
 		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 15));
-		btnLamMoi.setBounds(660, 5, 125, 30);
+		btnLamMoi.setBounds(720, 5, 125, 30);
 		btnLamMoi.setBackground(new Color(112,210,103,255));
 		btnLamMoi.setBorder(new RoundedBorder(10));
 		panel_1.add(btnLamMoi);
@@ -180,13 +185,16 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		tblPhieuDatPhong.setFont(new Font("Arial", Font.PLAIN, 12));
 		tblPhieuDatPhong.setBackground(Color.WHITE);
 		tblPhieuDatPhong.getColumnModel().getColumn(4).setMinWidth(100);
-		tblPhieuDatPhong.getColumnModel().getColumn(5).setMinWidth(100);
-		tblPhieuDatPhong.getColumnModel().getColumn(6).setMaxWidth(70);
-		tblPhieuDatPhong.getColumnModel().getColumn(1).setMaxWidth(70);
+		tblPhieuDatPhong.getColumnModel().getColumn(5).setMinWidth(110);
+		tblPhieuDatPhong.getColumnModel().getColumn(6).setMinWidth(115);
+		tblPhieuDatPhong.getColumnModel().getColumn(7).setMinWidth(30);
+		tblPhieuDatPhong.getColumnModel().getColumn(1).setMaxWidth(50);
+		tblPhieuDatPhong.getColumnModel().getColumn(2).setMaxWidth(80);
+		tblPhieuDatPhong.getColumnModel().getColumn(3).setMinWidth(90);
 		tblPhieuDatPhong.getColumnModel().getColumn(0).setMinWidth(100);
 		
 		JScrollPane sp = new JScrollPane(tblPhieuDatPhong);
-		sp.setBounds(0, 90, 804, 210);
+		sp.setBounds(0, 90, 884, 210);
 		panel_1.add(sp);
 		panel_1.setPreferredSize(new Dimension(800, 300));
 		
@@ -221,7 +229,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btn_XuatPhong.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_XuatPhong.setBackground(new Color(13,153,255,255));
 		btn_XuatPhong.setBorder(new RoundedBorder(5));
-		btn_XuatPhong.setBounds(590, 330, 200, 40);
+		btn_XuatPhong.setBounds(660, 330, 200, 40);
 		panel_1.add(btn_XuatPhong);
 		
 		btn_QuayLai = new JButton("Quay Lại");
@@ -229,7 +237,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btn_QuayLai.setFont(new Font("Arial", Font.BOLD, 15));
 		btn_QuayLai.setBackground(new Color(236,52,52,255));
 		btn_QuayLai.setBorder(new RoundedBorder(5));
-		btn_QuayLai.setBounds(660, 45, 125, 30);
+		btn_QuayLai.setBounds(720, 45, 125, 30);
 		panel_1.add(btn_QuayLai);
 		
 		//add sự kiện
@@ -240,9 +248,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btn_XuatPhong.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
+		comboBox_TrangThai.addActionListener(this);
 				
 			loadData();
 			MyTable(model, tblPhieuDatPhong);
+			
+
 	}
 
 	// hàm căn giữa nội dung trong bảng
@@ -273,6 +284,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
     public void loadData() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
         String hinhthuc="";
+        String trangthai="";
         // Lấy tất cả phiếu đặt phòng
         ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong();
         
@@ -287,14 +299,23 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
             }
             else hinhthuc="Đặt trực tiếp";
             String mp=x.getMaPhieu();
+            String maHoaDon = "HD" + mp.substring(3);
+            String mkh=x.getKhachHang().getMaKhachHang();
             pdp=pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
             p=pdp.getPhong();
-            Object[] row = {x.getMaPhieu(),p.getMaPhong(),x.getNhanVien().getMaNhanVien(),x.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc};
+            kh=kh_dao.getKhachHangTheoMaKH(mkh);
+            hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+            if(hd!=null) {
+            	trangthai="Đã TT";
+            }else {
+            	trangthai="Chưa TT";
+            }
+            Object[] row = {x.getMaPhieu(),p.getMaPhong(),x.getNhanVien().getMaNhanVien(),x.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc,trangthai};
             model.addRow(row);
         }
         Canh_Deu_Bang();
     }
-
+    
 
 //clear bảng
 	public void clearTable() {
@@ -307,49 +328,65 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	public void tim() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
         String hinhthuc="";
-
-	    String maPhieu = txtMaPDP.getText();
-	    String sdt = txtSDTKH.getText();
-	    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(maPhieu);
-	    
+        String trangthai="";
 	    String ngayGioDat = pdp.getNgayGioDatPhong().format(formatter);
         String ngayGioNhan = pdp.getNgayGioNhanPhong().format(formatter);
-        
+        String thongtinTimKiem=txtLoaiTimKiem.getText();
         if(!pdp.getNgayGioDatPhong().isEqual(pdp.getNgayGioNhanPhong())) {
             hinhthuc="Đặt trước";
         }
         else hinhthuc="Đặt trực tiếp";
         
-	    if (btnTimKiem.getText().equals("Tìm kiếm")) {
-	    if (!maPhieu.isEmpty() && !sdt.isEmpty()) {
-	        JOptionPane.showMessageDialog(null, "Chỉ nhập vào 1 ô tìm kiếm!");
-	        return;
-	    }
-	    if (maPhieu.isEmpty() && sdt.isEmpty()) {
-	        JOptionPane.showMessageDialog(null, "Chỉ nhập vào 1 ô tìm kiếm!");
-	        return;
-	    }
-	    if (!maPhieu.isEmpty()) {
-	        // Tìm kiếm theo mã phiếu
-	    	
+  
+        // {"Mã phiếu đặt", "Số điện thoại KH","Họ tên KH"}
+        if (btnTimKiem.getText().equals("Tìm kiếm")) {
+            if(comboBox_TrangThai_1.getSelectedItem().equals("")){
+            	 JOptionPane.showMessageDialog(null, "Vui lòng chọn loại tìm kiếm!");
+            }else {    	
+        if(comboBox_TrangThai_1.getSelectedItem().equals("Mã phiếu đặt")) {
+     	    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(thongtinTimKiem);
+            kh=kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
+            String mp=pdp.getMaPhieu();
+            String maHoaDon = "HD" + mp.substring(3);
+            hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+            if(hd!=null) {
+            	trangthai="Đã TT";
+            }else {
+            	trangthai="Chưa TT";
+            }
+	  if(!thongtinTimKiem.equals("")) {
 	        if (pdp != null) {
 	            btnTimKiem.setText("Hủy tìm");
 	            clearTable();
-	            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc};
+	            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
 	            model.addRow(row);
 	            Canh_Deu_Bang();
 	        } else {
 	            JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 	        }
-	    } else if (!sdt.isEmpty()) {
+	        }else {
+	        	JOptionPane.showMessageDialog(null, "Vui lòng điền thông tin cần tìm kiếm!");
+	        }
+        }
+        else if(comboBox_TrangThai_1.getSelectedItem().equals("Số điện thoại KH")) {
+
 	        // Tìm kiếm theo số điện thoại
-	        kh = kh_dao.getKhachHangTheoSDT(sdt);
+	        kh = kh_dao.getKhachHangTheoSDT(thongtinTimKiem);
+	        if(!thongtinTimKiem.equals("")) {
 	        if (kh != null) {
 	            pdp = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
+	            String mp=pdp.getMaPhieu();
+	            String maHoaDon = "HD" + mp.substring(3);
+	            hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+	            if(hd!=null) {
+	            	trangthai="Đã TT";
+	            }else {
+	            	trangthai="Chưa TT";
+	            }
 	            if (pdp != null) {
 	                btnTimKiem.setText("Hủy tìm");
 	                clearTable();
-		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc};
+		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
 		            model.addRow(row);
 	                Canh_Deu_Bang();
 	            } else {
@@ -358,14 +395,54 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	        } else {
 	            JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 	        }
-	    }
-	    }
-	    else {
+	        }else {
+	        	JOptionPane.showMessageDialog(null, "Vui lòng điền thông tin cần tìm kiếm!");
+	        }
+        	
+        }
+        else if(comboBox_TrangThai_1.getSelectedItem().equals("Họ tên KH")) {
+
+	        // Tìm kiếm theo số điện thoại
+	        kh = kh_dao.getKhachHangTheoTen(thongtinTimKiem);
+	        if(!thongtinTimKiem.equals("")) {
+	        if (kh != null) {
+	            pdp = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
+	            String mp=pdp.getMaPhieu();
+	            String maHoaDon = "HD" + mp.substring(3);
+	            hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+	            if(hd!=null) {
+	            	trangthai="Đã TT";
+	            }else {
+	            	trangthai="Chưa TT";
+	            }
+	            if (pdp != null) {
+	                btnTimKiem.setText("Hủy tìm");
+	                clearTable();
+		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
+		            model.addRow(row);
+	                Canh_Deu_Bang();
+	            } else {
+	                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+	            }
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+	        }
+	        }
+	        else {
+	        	JOptionPane.showMessageDialog(null, "Vui lòng điền thông tin cần tìm kiếm!");
+	        }
+        	
+        }
+        } }
+        else {
 	        clearTable();
 	        loadData();
 	        btnTimKiem.setText("Tìm kiếm");
 	        Canh_Deu_Bang();
 	    }
+        
+
+ 
 	}
 
 	@Override
@@ -389,9 +466,9 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			loadData();
 		}
 		if(o.equals(btnLamMoi)){
-			txtMaPDP.setText("");
-			txtSDTKH.setText("");
-			txtMaPDP.requestFocus();
+			comboBox_TrangThai_1.setSelectedIndex(0);
+			txtLoaiTimKiem.setText("");
+			comboBox_TrangThai.setSelectedIndex(0);
 			clearTable();
 			loadData();
 		}
