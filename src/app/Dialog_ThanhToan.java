@@ -138,7 +138,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	public Dialog_ThanhToan(String maPhong) {
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		setSize(800, 550);
+		setSize(800, 810);
 		setLocationRelativeTo(null);
 		nv_dao = new NhanVien_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
@@ -178,7 +178,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		// table-------------------------------------------
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(0, 34, 784, 256);
+		panel_1.setBounds(0, 34, 784, 516);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -261,9 +261,9 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		tblThanhToan.setFont(new Font("Arial", Font.PLAIN, 12));
 		tblThanhToan.setBackground(Color.WHITE);
 		JScrollPane sp = new JScrollPane(tblThanhToan);
-		sp.setBounds(5, 90, 772, 160);
+		sp.setBounds(5, 90, 772, 420);
 		panel_1.add(sp);
-		panel_1.setPreferredSize(new Dimension(772, 160));
+		panel_1.setPreferredSize(new Dimension(772, 420));
 		getContentPane().add(panel_1);
 
 		int i = 1;
@@ -325,87 +325,87 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 		lblTienDV = new JLabel("Tiền DV:");
 		lblTienDV.setFont(new Font("Arial", Font.BOLD, 15));
-		lblTienDV.setBounds(5, 300, 90, 20);
+		lblTienDV.setBounds(5, 560, 90, 20);
 		getContentPane().add(lblTienDV);
 
 		lblTienPhong = new JLabel("Tiền phòng:");
 		lblTienPhong.setFont(new Font("Arial", Font.BOLD, 15));
-		lblTienPhong.setBounds(5, 325, 90, 20);
+		lblTienPhong.setBounds(5, 585, 90, 20);
 		getContentPane().add(lblTienPhong);
 
 		lblTongCong = new JLabel("Tổng cộng:");
 		lblTongCong.setFont(new Font("Arial", Font.BOLD, 15));
-		lblTongCong.setBounds(5, 350, 90, 20);
+		lblTongCong.setBounds(5, 610, 90, 20);
 		getContentPane().add(lblTongCong);
 
 		lblThu = new JLabel("Thuế VAT:");
 		lblThu.setFont(new Font("Arial", Font.BOLD, 15));
-		lblThu.setBounds(5, 375, 90, 20);
+		lblThu.setBounds(5, 635, 90, 20);
 		getContentPane().add(lblThu);
 
 		lbl_TongThanhTien = new JLabel("Tổng thành tiền: ");
 		lbl_TongThanhTien.setForeground(Color.RED);
 		lbl_TongThanhTien.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TongThanhTien.setBounds(5, 420, 135, 20);
+		lbl_TongThanhTien.setBounds(5, 660, 135, 20);
 		getContentPane().add(lbl_TongThanhTien);
 
 		f = new DecimalFormat("###,###");
 		lblVn_2 = new JLabel(f.format(tongTienDichVu) + " VNĐ");
 		lblVn_2.setFont(new Font("Arial", Font.BOLD, 15));
-		lblVn_2.setBounds(150, 300, 150, 20);
+		lblVn_2.setBounds(150, 560, 150, 20);
 		getContentPane().add(lblVn_2);
 
 		lblVn_1 = new JLabel(f.format(tongTienPhong) + " VNĐ");
 		lblVn_1.setFont(new Font("Arial", Font.BOLD, 15));
-		lblVn_1.setBounds(150, 325, 150, 20);
+		lblVn_1.setBounds(150, 585, 150, 20);
 		getContentPane().add(lblVn_1);
 
 		lblVn = new JLabel(f.format(tongTienDichVu + tongTienPhong) + " VNĐ");
 		lblVn.setFont(new Font("Arial", Font.BOLD, 15));
-		lblVn.setBounds(150, 350, 150, 20);
+		lblVn.setBounds(150, 610, 150, 20);
 		getContentPane().add(lblVn);
 
 		lblThu_1 = new JLabel("10%");
 		lblThu_1.setFont(new Font("Arial", Font.BOLD, 15));
-		lblThu_1.setBounds(150, 375, 110, 20);
+		lblThu_1.setBounds(150, 635, 110, 20);
 		getContentPane().add(lblThu_1);
 
 		lbl_TongThanhTien_1 = new JLabel(
 				f.format((tongTienDichVu + tongTienPhong) + 0.1 * (tongTienDichVu + tongTienPhong)) + " VNĐ");
 		lbl_TongThanhTien_1.setForeground(Color.RED);
 		lbl_TongThanhTien_1.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TongThanhTien_1.setBounds(150, 420, 150, 20);
+		lbl_TongThanhTien_1.setBounds(150, 660, 150, 20);
 		getContentPane().add(lbl_TongThanhTien_1);
 
 		chckbx_XuatHoaDon = new JCheckBox("Xuất Hóa Đơn");
 		chckbx_XuatHoaDon.setFont(new Font("Arial", Font.BOLD, 12));
-		chckbx_XuatHoaDon.setBounds(10, 445, 110, 20);
+		chckbx_XuatHoaDon.setBounds(10, 705, 110, 20);
 		getContentPane().add(chckbx_XuatHoaDon);
 
 		JLabel lbl_MaGiamGia = new JLabel("Mã giảm giá:");
 		lbl_MaGiamGia.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_MaGiamGia.setBounds(355, 300, 100, 25);
+		lbl_MaGiamGia.setBounds(355, 560, 100, 25);
 		getContentPane().add(lbl_MaGiamGia);
 
 		JLabel lbl_PhanTtramKM = new JLabel("Phần trăm KM:");
 		lbl_PhanTtramKM.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_PhanTtramKM.setBounds(355, 330, 110, 25);
+		lbl_PhanTtramKM.setBounds(355, 590, 110, 25);
 		getContentPane().add(lbl_PhanTtramKM);
 
 		JLabel lbl_TienNhan = new JLabel("Tiền nhận:");
 		lbl_TienNhan.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TienNhan.setBounds(355, 360, 90, 25);
+		lbl_TienNhan.setBounds(355, 620, 90, 25);
 		getContentPane().add(lbl_TienNhan);
 
 		JLabel lbl_TienThua = new JLabel("Tiền thừa:");
 		lbl_TienThua.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TienThua.setBounds(355, 390, 90, 25);
+		lbl_TienThua.setBounds(355, 650, 90, 25);
 		getContentPane().add(lbl_TienThua);
 
 		txtMaGiamGia = new JTextField();
 //		txtMaGiamGia.setText("");
 		txtMaGiamGia.setFont(new Font("Arial", Font.BOLD, 15));
-		txtMaGiamGia.setBounds(470, 300, 200, 25);
+		txtMaGiamGia.setBounds(470, 560, 200, 25);
 		getContentPane().add(txtMaGiamGia);
 		txtMaGiamGia.setColumns(10);
 
@@ -413,20 +413,20 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		txtPhanTramKM.setFont(new Font("Arial", Font.BOLD, 15));
 		txtPhanTramKM.setEditable(false);
 		txtPhanTramKM.setColumns(10);
-		txtPhanTramKM.setBounds(470, 330, 100, 25);
+		txtPhanTramKM.setBounds(470, 590, 100, 25);
 		getContentPane().add(txtPhanTramKM);
 
 		txtTienNhan = new JTextField();
 		txtTienNhan.setFont(new Font("Arial", Font.BOLD, 15));
 		txtTienNhan.setColumns(10);
-		txtTienNhan.setBounds(470, 360, 200, 25);
+		txtTienNhan.setBounds(470, 620, 200, 25);
 		getContentPane().add(txtTienNhan);
 
 		txtTienThua = new JTextField();
 		txtTienThua.setFont(new Font("Arial", Font.BOLD, 15));
 		txtTienThua.setEditable(false);
 		txtTienThua.setColumns(10);
-		txtTienThua.setBounds(470, 390, 200, 25);
+		txtTienThua.setBounds(470, 650, 200, 25);
 		getContentPane().add(txtTienThua);
 
 		DocumentListener documentListener = new DocumentListener() {
@@ -462,13 +462,13 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 		btnKiemTra = new JButton("Kiểm tra");
 		btnKiemTra.setFont(new Font("Arial", Font.BOLD, 15));
-		btnKiemTra.setBounds(675, 300, 100, 30);
+		btnKiemTra.setBounds(675, 560, 100, 30);
 		getContentPane().add(btnKiemTra);
 
 		// 2 nút jbutton cuối
 		// --------------------------------------------------------------------------------
 		btnThanhToan = new JButton("Thanh Toán");
-		btnThanhToan.setBounds(20, 470, 250, 35);
+		btnThanhToan.setBounds(20, 730, 250, 35);
 		btnThanhToan.setForeground(Color.WHITE);
 		btnThanhToan.setFont(new Font("Arial", Font.BOLD, 18));
 		btnThanhToan.setBorder(new RoundedBorder(60));
@@ -481,7 +481,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		btnQuayLai.setFont(new Font("Arial", Font.BOLD, 18));
 		btnQuayLai.setBorder(new RoundedBorder(60));
 		btnQuayLai.setBackground(new Color(13, 153, 255, 255));
-		btnQuayLai.setBounds(450, 470, 250, 35);
+		btnQuayLai.setBounds(515, 730, 250, 35);
 		getContentPane().add(btnQuayLai);
 
 		// thêm sk
