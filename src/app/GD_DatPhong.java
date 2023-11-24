@@ -319,55 +319,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 //		Bắt đầu Timer
 		timer.start();
-
-		Timer timerThongBao = new Timer(60000, new ActionListener() {
-
-			private Date gioHienTai;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				for (ChiTietHoaDon cthd : cthd_dao.getCTHDPhongDangSD()) {
-					DateFormat dateFormatGio = new SimpleDateFormat("HH");
-					gioHienTai = new Date();
-					double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
-					DateFormat dateFormatPhut = new SimpleDateFormat("mm");
-					double phutHT = Double.parseDouble(dateFormatPhut.format(gioHienTai));
-					double gioTraPhong = Double.parseDouble(dateFormatGio.format(cthd.getGioTraPhong()));
-					double phutTraPhong = Double.parseDouble(dateFormatPhut.format(cthd.getGioTraPhong()));
-					if (gioHT == gioTraPhong && phutHT < phutTraPhong && (phutTraPhong - phutHT == 5)) {
-						JOptionPane.showMessageDialog(null,
-								"Phòng " + cthd.getPhong().getMaPhong() + " còn khoảng 5 phút nữa hết thời gian!");
-					}
-					if (gioHT < gioTraPhong && phutHT > phutTraPhong && (phutTraPhong - phutHT + 60) == 5) {
-						JOptionPane.showMessageDialog(null,
-								"Phòng " + cthd.getPhong().getMaPhong() + " còn khoảng 5 phút nữa hết thời gian!");
-					}
-					if (gioHT == gioTraPhong && phutHT == phutTraPhong) {
-						JOptionPane.showMessageDialog(null,
-								"Phòng " + cthd.getPhong().getMaPhong() + " đã hết thời gian vui lòng thanh toán");
-					}
-				}
-			}
-		});
-
-		Timer timerChayThongBao = new Timer(1000, new ActionListener() {
-
-			private Date timeHienTai;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				timeHienTai = new Date();
-				DateFormat dateFormatGiay = new SimpleDateFormat("ss");
-				String giayHT = dateFormatGiay.format(timeHienTai);
-				if (giayHT.equals("00")) {
-					timerThongBao.start();
-				}
-			}
-
-		});
-		timerChayThongBao.start();
+		
 		// ---gốc
 		// 4----------------------------------****************************************************************
 		// set size icon cho gốc 4
