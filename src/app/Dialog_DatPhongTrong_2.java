@@ -229,7 +229,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 
 		lbl_TenKH_1 = new JLabel();
 		lbl_TenKH_1.setFont(new Font("Arial", Font.ITALIC, 17));
-		lbl_TenKH_1.setBounds(165, 200, 180, 30);
+		lbl_TenKH_1.setBounds(165, 145, 180, 30);
 		panel_1.add(lbl_TenKH_1);
 
 		// các nút
