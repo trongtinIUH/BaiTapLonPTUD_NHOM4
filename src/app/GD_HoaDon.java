@@ -52,8 +52,6 @@ import entity.ChiTietDichVu;
 import entity.ChiTietHoaDon;
 import entity.HoaDonDatPhong;
 
-
-
 public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	/**
 	 * 
@@ -62,12 +60,12 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private DefaultTableModel modelOrderList, modelOrderDetail, modelServiceDetail;
 	private JTable tableOrderList, tableOrderDetail, tableServiceDetail;
 	private JScrollPane scrollOrderList, scrollOrderDetail, scrollServiceDetail;
-	private String colOrderList[] = {"STT", "Mã hóa đơn", "Tên khách hàng","Mã nhân viên", 
-	"Ngày lập hóa đơn", "Trạng thái", "Mã khuyến mãi", "Tổng tiền"};
-	private String colOrderDetail[] = {"Mã hóa đơn", "Mã phòng", "Số giờ hát"};
-	private String colServiceDetail[] = {"Mã hóa đơn", "Tên dịch vụ", "Đơn giá", "Số lượng"};
-	private JLabel lblTitle, lblMaHD, lblTenKH, lblMaNV, lblNgayLapHD, lblTrangThai,
-	lblKhuyenMai, lblTongTien, lblTimKiem, lblKeyword;
+	private String colOrderList[] = { "STT", "Mã hóa đơn", "Tên khách hàng", "Mã nhân viên", "Ngày lập hóa đơn",
+			"Trạng thái", "Mã khuyến mãi", "Tổng tiền" };
+	private String colOrderDetail[] = { "Mã hóa đơn", "Mã phòng", "Số giờ hát" };
+	private String colServiceDetail[] = { "Mã hóa đơn", "Tên dịch vụ", "Đơn giá", "Số lượng" };
+	private JLabel lblTitle, lblMaHD, lblTenKH, lblMaNV, lblNgayLapHD, lblTrangThai, lblKhuyenMai, lblTongTien,
+			lblTimKiem, lblKeyword;
 	private JButton btnXoa, btnSua, btnTimKiem, btnXuatDSHD, btnProfile;
 	private JComboBox<String> cbTrangThai, cbTimKiem;
 	private JTextField txtMaHD, txtTenKH, txtMaNV, txtKhuyenMai, txtTongTien, txtTimKiem;
@@ -85,6 +83,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private DateTimePicker dateTimePicker;
 	private TimePickerSettings timeSettings;
 	private DatePickerSettings dateSettings;
+
 	public GD_HoaDon() {
 		df = new DecimalFormat("#,###,### VNĐ");
 		hoadon_dao = new HoaDonDatPhong_dao();
@@ -115,7 +114,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnProfile.setIcon(iconProfile);
 		pnNorth.add(btnProfile);
 		add(pnNorth);
-		
+
 //		Styling Content
 //		Styling Info
 		JPanel pnContent = new JPanel();
@@ -124,14 +123,9 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		pnContent.setLayout(null);
 		JPanel pnOrderInfo = new JPanel();
 		pnOrderInfo.setLayout(null);
-		pnOrderInfo.setBorder(BorderFactory.createTitledBorder(
-			    BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2), 
-			    "Thông tin hóa đơn",
-			    TitledBorder.LEFT,
-			    TitledBorder.DEFAULT_POSITION, 
-			    new Font("Arial", Font.BOLD, 16), 
-			    Color.blue)
-			);
+		pnOrderInfo.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2),
+				"Thông tin hóa đơn", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 16),
+				Color.blue));
 		pnOrderInfo.setBackground(Color.white);
 		pnOrderInfo.setBounds(10, 20, 720, 297);
 		pnOrderInfo.add(lblMaHD = new JLabel("Mã hóa đơn"));
@@ -157,43 +151,43 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		pnOrderInfo.add(lblNgayLapHD = new JLabel("Ngày lập hóa đơn"));
 		lblNgayLapHD.setFont(new Font("Arial", Font.BOLD, 18));
 		lblNgayLapHD.setBounds(10, 181, 170, 34);
-		
+
 		now = LocalDateTime.now();
 
-	        dateSettings = new DatePickerSettings();
-        dateSettings.setLocale(new Locale("vi","VN")); // Set the locale to Vietnam
-        dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
+		dateSettings = new DatePickerSettings();
+		dateSettings.setLocale(new Locale("vi", "VN")); // Set the locale to Vietnam
+		dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd"); // Set the date format
 
-        timeSettings = new TimePickerSettings();
-        timeSettings.setDisplaySpinnerButtons(true);
+		timeSettings = new TimePickerSettings();
+		timeSettings.setDisplaySpinnerButtons(true);
 
-        dateTimePicker = new DateTimePicker(dateSettings, timeSettings);
-        dateTimePicker.getTimePicker().setVisible(false);
-        dateTimePicker.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
-        dateTimePicker.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
-        dateTimePicker.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
-        dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
-        dateTimePicker.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
-        dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
-        dateTimePicker.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
-        dateTimePicker.timePicker.setBounds(141, 0, 80, 25);
-        dateTimePicker.datePicker.setBounds(0, 0, 136, 25);
-        dateTimePicker.getTimePicker().setBounds(150, 0, 110, 25);
-        dateTimePicker.getTimePicker().setLayout(null);
-        dateTimePicker.getTimePicker().setBackground(Color.white);
-        dateTimePicker.getDatePicker().setBounds(0, 0, 136, 25);
-        dateTimePicker.setDateTimePermissive(now);
-        dateTimePicker.setBackground(Color.white);
-        dateTimePicker.setBackground(Color.white);
+		dateTimePicker = new DateTimePicker(dateSettings, timeSettings);
+		dateTimePicker.getTimePicker().setVisible(false);
+		dateTimePicker.getDatePicker().getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+		dateTimePicker.getTimePicker().getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 12));
+		dateTimePicker.getTimePicker().getComponentSpinnerPanel().setBounds(80, 0, 0, 25);
+		dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setBounds(75, 0, 26, 25);
+		dateTimePicker.getTimePicker().getComponentTimeTextField().setBounds(0, 0, 70, 25);
+		dateTimePicker.getTimePicker().getComponentToggleTimeMenuButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+		dateTimePicker.getDatePicker().getComponentToggleCalendarButton().setFont(new Font("Tahoma", Font.BOLD, 12));
+		dateTimePicker.timePicker.setBounds(141, 0, 80, 25);
+		dateTimePicker.datePicker.setBounds(0, 0, 136, 25);
+		dateTimePicker.getTimePicker().setBounds(150, 0, 110, 25);
+		dateTimePicker.getTimePicker().setLayout(null);
+		dateTimePicker.getTimePicker().setBackground(Color.white);
+		dateTimePicker.getDatePicker().setBounds(0, 0, 136, 25);
+		dateTimePicker.setDateTimePermissive(now);
+		dateTimePicker.setBackground(Color.white);
+		dateTimePicker.setBackground(Color.white);
 
-        // Add the DateTimePicker to your user interface, e.g. to a JPanel
-        // panel.add(dateTimePicker);
-        dateTimePicker.setBounds(187, 185, 164, 34);
-        pnOrderInfo.add(dateTimePicker);
-        
+		// Add the DateTimePicker to your user interface, e.g. to a JPanel
+		// panel.add(dateTimePicker);
+		dateTimePicker.setBounds(187, 185, 164, 34);
+		pnOrderInfo.add(dateTimePicker);
+
 		pnContent.add(pnOrderInfo);
 		add(pnContent);
-		
+
 		pnOrderInfo.add(lblTrangThai = new JLabel("Trạng thái"));
 		lblTrangThai.setFont(new Font("Arial", Font.BOLD, 18));
 		lblTrangThai.setBounds(371, 25, 160, 34);
@@ -217,38 +211,33 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		txtTongTien.setEditable(false);
 		txtTongTien.setFont(new Font("Arial", Font.PLAIN, 18));
 		txtTongTien.setHorizontalAlignment(JTextField.RIGHT);
-		
+
 		pnOrderInfo.add(btnXoa = new JButton("Xóa"));
 		btnXoa.setBounds(190, 237, 140, 40);
 		btnXoa.setBackground(Color.decode("#EE1919"));
 		btnXoa.setForeground(Color.white);
 		btnXoa.setFont(new Font("Arial", Font.BOLD, 18));
 		btnXoa.setIcon(new ImageIcon("icon\\Delete_icon.png"));
-		btnXoa.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnXoa.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnXoa.setBorder(new RoundedBorder(5));
 		btnXoa.setIconTextGap(18);
-		
+
 		pnOrderInfo.add(btnSua = new JButton("Sửa"));
 		btnSua.setBounds(350, 237, 140, 40);
 		btnSua.setBackground(Color.decode("#4A83D7"));
 		btnSua.setForeground(Color.white);
 		btnSua.setFont(new Font("Arial", Font.BOLD, 18));
 		btnSua.setIcon(new ImageIcon("icon\\Edit_icon.png"));
-		btnSua.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnSua.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnSua.setBorder(new RoundedBorder(5));
 		btnSua.setIconTextGap(18);
-		
+
 		JPanel pnSearch = new JPanel();
 		pnSearch.setBounds(740, 20, 330, 297);
 		pnSearch.setLayout(null);
-		pnSearch.setBorder(BorderFactory.createTitledBorder(
-			    BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2), 
-			    "Tìm kiếm",
-			    TitledBorder.LEFT,
-			    TitledBorder.DEFAULT_POSITION, 
-			    new Font("Arial", Font.BOLD, 16), 
-			    Color.blue)
-			);
+		pnSearch.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2),
+				"Tìm kiếm", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 16),
+				Color.blue));
 		pnSearch.setBackground(Color.white);
 		pnSearch.add(lblTimKiem = new JLabel("Tìm kiếm theo"));
 		lblTimKiem.setFont(new Font("Arial", Font.BOLD, 18));
@@ -273,7 +262,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnTimKiem.setFont(new Font("Arial", Font.BOLD, 18));
 		btnTimKiem.setIcon(new ImageIcon("icon\\Research_icon.png"));
 		btnTimKiem.setBorder(new RoundedBorder(5));
-		btnTimKiem.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnTimKiem.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnTimKiem.setIconTextGap(18);
 		pnContent.add(pnSearch);
 
@@ -283,11 +272,11 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXuatDSHD.setForeground(Color.white);
 		btnXuatDSHD.setFont(new Font("Arial", Font.BOLD, 16));
 		btnXuatDSHD.setIcon(new ImageIcon("icon\\Excel_icon.png"));
-		btnXuatDSHD.setHorizontalTextPosition(SwingConstants.RIGHT); 
+		btnXuatDSHD.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnXuatDSHD.setIconTextGap(10);
-		
+
 //		Styling List
-		
+
 //		OrderList
 		JLabel lblListOrder = new JLabel("DANH SÁCH HÓA ĐƠN");
 		lblListOrder.setForeground(Color.blue);
@@ -297,7 +286,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		JPanel pnTableOrderList = new JPanel();
 		pnTableOrderList.setLayout(null);
 		pnTableOrderList.setBounds(10, 396, 720, 270);
-		modelOrderList = new DefaultTableModel(colOrderList,0);
+		modelOrderList = new DefaultTableModel(colOrderList, 0);
 		tableOrderList = new JTable(modelOrderList);
 		tableOrderList.setSelectionBackground(Color.pink);
 		tableOrderList.getTableHeader().setBackground(new Color(238, 233, 233));
@@ -310,10 +299,10 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		tableOrderList.getColumnModel().getColumn(6).setMaxWidth(89);
 		tableOrderList.getColumnModel().getColumn(7).setMaxWidth(100);
 		scrollOrderList = new JScrollPane(tableOrderList);
-		scrollOrderList.setBounds(0,0,720,270);
+		scrollOrderList.setBounds(0, 0, 720, 270);
 		pnTableOrderList.add(scrollOrderList);
 		pnContent.add(pnTableOrderList);
-		
+
 //		OrderDetail
 		JLabel lblOrderDetail = new JLabel("CHI TIẾT HÓA ĐƠN");
 		lblOrderDetail.setForeground(Color.blue);
@@ -323,7 +312,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		JPanel pnTableOrderDetail = new JPanel();
 		pnTableOrderDetail.setLayout(null);
 		pnTableOrderDetail.setBounds(740, 396, 325, 120);
-		modelOrderDetail = new DefaultTableModel(colOrderDetail,0);
+		modelOrderDetail = new DefaultTableModel(colOrderDetail, 0);
 		tableOrderDetail = new JTable(modelOrderDetail);
 		tableOrderDetail.setSelectionBackground(Color.pink);
 		tableOrderDetail.getTableHeader().setBackground(new Color(238, 233, 233));
@@ -331,10 +320,10 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		tableOrderDetail.getColumnModel().getColumn(1).setMaxWidth(100);
 		tableOrderDetail.getColumnModel().getColumn(2).setMaxWidth(100);
 		scrollOrderDetail = new JScrollPane(tableOrderDetail);
-		scrollOrderDetail.setBounds(0,0,325,120);
+		scrollOrderDetail.setBounds(0, 0, 325, 120);
 		pnTableOrderDetail.add(scrollOrderDetail);
 		pnContent.add(pnTableOrderDetail);
-		
+
 //		ServiceDetail
 		JLabel lblServiceDetail = new JLabel("CHI TIẾT DỊCH VỤ");
 		lblServiceDetail.setForeground(Color.blue);
@@ -344,7 +333,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		JPanel pnTableServiceDetail = new JPanel();
 		pnTableServiceDetail.setLayout(null);
 		pnTableServiceDetail.setBounds(740, 546, 325, 120);
-		modelServiceDetail = new DefaultTableModel(colServiceDetail,0);
+		modelServiceDetail = new DefaultTableModel(colServiceDetail, 0);
 		tableServiceDetail = new JTable(modelServiceDetail);
 		tableServiceDetail.setSelectionBackground(Color.pink);
 		tableServiceDetail.getTableHeader().setBackground(new Color(238, 233, 233));
@@ -353,7 +342,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		tableServiceDetail.getColumnModel().getColumn(2).setMaxWidth(100);
 		tableServiceDetail.getColumnModel().getColumn(3).setMaxWidth(50);
 		scrollServiceDetail = new JScrollPane(tableServiceDetail);
-		scrollServiceDetail.setBounds(0,0,325,120);
+		scrollServiceDetail.setBounds(0, 0, 325, 120);
 		pnTableServiceDetail.add(scrollServiceDetail);
 		pnContent.add(pnTableServiceDetail);
 		btnSua.addActionListener(this);
@@ -362,91 +351,94 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXuatDSHD.addActionListener(this);
 		loadOrderListData();
 		tableOrderList.addMouseListener(this);
-		tableOrderDetail.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-		    public void valueChanged(ListSelectionEvent event) {
-		        int orderDetailRow = tableOrderDetail.getSelectedRow();
-		        if(orderDetailRow >= 0) {
-		            clearTableServiceDetail();
-		            loadServiceDetailData(modelOrderList.getValueAt(tableOrderList.getSelectedRow(), 1).toString(), modelOrderDetail.getValueAt(orderDetailRow, 1).toString());
-		        }
-		    }
+		tableOrderDetail.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				int orderDetailRow = tableOrderDetail.getSelectedRow();
+				if (orderDetailRow >= 0) {
+					clearTableServiceDetail();
+					loadServiceDetailData(modelOrderList.getValueAt(tableOrderList.getSelectedRow(), 1).toString(),
+							modelOrderDetail.getValueAt(orderDetailRow, 1).toString());
+				}
+			}
 		});
 		btnProfile.addActionListener(this);
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object obj = e.getSource();
 		if (obj.equals(btnTimKiem)) {
 			tim();
-		} else if(obj.equals(btnXuatDSHD)) {
+		} else if (obj.equals(btnXuatDSHD)) {
 			xuatExcel();
-		} else if(obj.equals(btnSua)) {
+		} else if (obj.equals(btnSua)) {
 			sua();
-		} else if(obj.equals(btnXoa)) {
+		} else if (obj.equals(btnXoa)) {
 			xoa();
-		} else if(obj.equals(btnProfile)) {
+		} else if (obj.equals(btnProfile)) {
 			dialog_user.setVisible(true);
 		}
 	}
-	
+
 	public void clearTableOrderList() {
 		while (tableOrderList.getRowCount() > 0) {
 			modelOrderList.removeRow(0);
 		}
 	}
+
 	public void clearTableOrderDetail() {
 		modelOrderDetail.setRowCount(0);
 	}
+
 	public void clearTableServiceDetail() {
 		modelServiceDetail.setRowCount(0);
 	}
-	
+
 	public void loadOrderDetailData(String maHD) {
 		for (ChiTietHoaDon cthd : chitiethoadon_dao.getChiTietHoaDonTheoMaHD(maHD)) {
-			Object[] row = {cthd.getHoaDon().getMaHoaDon(), cthd.getPhong().getMaPhong(),
-			cthd.getSoGioHat()};
+			Object[] row = { cthd.getHoaDon().getMaHoaDon(), cthd.getPhong().getMaPhong(), cthd.getSoGioHat() };
 			modelOrderDetail.addRow(row);
 		}
 	}
-	
+
 	public void loadServiceDetailData(String maHD, String maPhong) {
 		for (ChiTietDichVu ctdv : chitietdichvu_dao.getChiTietDichVuTheoMaHD(maHD)) {
-			if(ctdv.getPhong().getMaPhong().equals(maPhong)) {
-				Object[] row = { ctdv.getHoaDon().getMaHoaDon(), 
-						sanpham_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham()).getTenSanPham(),
-						ctdv.getGia(), ctdv.getSoLuong()};
-						modelServiceDetail.addRow(row);
+			if (ctdv.getPhong().getMaPhong().equals(maPhong)) {
+				Object[] row = { ctdv.getHoaDon().getMaHoaDon(),
+						sanpham_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham()).getTenSanPham(), ctdv.getGia(),
+						ctdv.getSoLuong() };
+				modelServiceDetail.addRow(row);
 			}
 		}
 	}
-	
+
 	public void sua() {
-	    if (tableOrderList.getSelectedRow() == -1) {
-	        JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để sửa!");
-	    } else if (tableOrderList.getSelectedRowCount() > 1) {
-	        JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để sửa!");
-	    } else {
-	        String maHD = txtMaHD.getText().trim();
-	        LocalDateTime ngayLapHD = dateTimePicker.getDateTimeStrict();
-	        java.sql.Date sqlDate = java.sql.Date.valueOf(ngayLapHD.toLocalDate());
-	        String trangThai = (String) cbTrangThai.getSelectedItem();
-	        Boolean status = false;
-	        if(trangThai.equals("Đã thanh toán")) {
-	            status = true;
-	        }
-	        if(trangThai.equals("Chưa thanh toán")) {
-	            status = false;
-	        }
-	        String maNV = txtMaNV.getText().trim();
-	        if (hoadon_dao.updateHoaDon(maHD, sqlDate, status, maNV)) {
-	            clearTableOrderList();
-	            loadOrderListData();
-	            JOptionPane.showMessageDialog(null, "Sửa thành công!");
-	        }
-	    }
+		if (tableOrderList.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để sửa!");
+		} else if (tableOrderList.getSelectedRowCount() > 1) {
+			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để sửa!");
+		} else {
+			String maHD = txtMaHD.getText().trim();
+			LocalDateTime ngayLapHD = dateTimePicker.getDateTimeStrict();
+			java.sql.Date sqlDate = java.sql.Date.valueOf(ngayLapHD.toLocalDate());
+			String trangThai = (String) cbTrangThai.getSelectedItem();
+			Boolean status = false;
+			if (trangThai.equals("Đã thanh toán")) {
+				status = true;
+			}
+			if (trangThai.equals("Chưa thanh toán")) {
+				status = false;
+			}
+			String maNV = txtMaNV.getText().trim();
+			if (hoadon_dao.updateHoaDon(maHD, sqlDate, status, maNV)) {
+				clearTableOrderList();
+				loadOrderListData();
+				JOptionPane.showMessageDialog(null, "Sửa thành công!");
+			}
+		}
 	}
-	
+
 	public void xoa() {
 		if (tableOrderList.getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
@@ -462,99 +454,95 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 			}
 		}
 	}
-	
+
 	public void tim() {
 		String searchTitle = txtTimKiem.getText();
-		if(searchTitle.equals("")) {
+		if (searchTitle.equals("")) {
 			JOptionPane.showMessageDialog(null, "Vui lòng nhập vào từ khóa tìm kiếm!");
 		} else {
 			if (btnTimKiem.getText().equals("Tìm kiếm")) {
 				if (cbTimKiem.getSelectedItem().equals("Mã hóa đơn")) {
-					ArrayList<HoaDonDatPhong> dsHoaDonMaHD = hoadon_dao.getHoaDonDatPhongTheoMaHD(searchTitle);
-					if(!dsHoaDonMaHD.isEmpty()) {
+					HoaDonDatPhong hd = hoadon_dao.getHoaDonDatPhongTheoMaHD(searchTitle);
+					if (hd != null) {
 						btnTimKiem.setText("Hủy tìm");
-						int i = 0;
+						int i = 1;
 						clearTableOrderList();
-						for(HoaDonDatPhong hd : dsHoaDonMaHD) {
-							i++;
-							Object[] row = { i, hd.getMaHoaDon(), 
-							khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
-							hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(), 
-							hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", 
-							hd.getKhuyenMai().getMaKhuyenMai(),
-							hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-							chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
-							khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-							)
-							};
-							modelOrderList.addRow(row);
-						}
-					}else {
+						Object[] row = { i, hd.getMaHoaDon(),
+								khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(),
+								hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+								hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán",
+								hd.getKhuyenMai().getMaKhuyenMai(),
+								hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()),
+										chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), khuyenmai_dao
+												.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())) };
+						modelOrderList.addRow(row);
+
+					} else {
 						JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn!");
 					}
 				} else if (cbTimKiem.getSelectedItem().equals("Tên khách hàng")) {
 					ArrayList<HoaDonDatPhong> dsHoaDonTenKH = hoadon_dao.getHoaDonDatPhongTheoTenKH(searchTitle);
-					if(!dsHoaDonTenKH.isEmpty()) {
+					if (!dsHoaDonTenKH.isEmpty()) {
 						btnTimKiem.setText("Hủy tìm");
 						int i = 0;
 						clearTableOrderList();
-						for(HoaDonDatPhong hd : dsHoaDonTenKH) {
+						for (HoaDonDatPhong hd : dsHoaDonTenKH) {
 							i++;
-							Object[] row = { i, hd.getMaHoaDon(), 
-							khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
-							hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(), 
-							hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", 
-							hd.getKhuyenMai().getMaKhuyenMai(),
-							hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-							chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
-							khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-							)
-							};
+							Object[] row = { i, hd.getMaHoaDon(),
+									khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(),
+									hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+									hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán",
+									hd.getKhuyenMai().getMaKhuyenMai(),
+									hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()),
+											chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()),
+											khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(
+													hd.getKhuyenMai().getMaKhuyenMai())) };
 							modelOrderList.addRow(row);
 						}
-					} else JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn!");
-				} else if (cbTimKiem.getSelectedItem().equals("Mã nhân viên")) { 
+					} else
+						JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn!");
+				} else if (cbTimKiem.getSelectedItem().equals("Mã nhân viên")) {
 					ArrayList<HoaDonDatPhong> dsHoaDonMaNV = hoadon_dao.getHoaDonDatPhongTheoMaNV(searchTitle);
-					if(!dsHoaDonMaNV.isEmpty()) {
+					if (!dsHoaDonMaNV.isEmpty()) {
 						btnTimKiem.setText("Hủy tìm");
 						int i = 0;
 						clearTableOrderList();
-						for(HoaDonDatPhong hd : dsHoaDonMaNV) {
+						for (HoaDonDatPhong hd : dsHoaDonMaNV) {
 							i++;
-							Object[] row = { i, hd.getMaHoaDon(), 
-							khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
-							hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(), 
-							hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", 
-							hd.getKhuyenMai().getMaKhuyenMai(),
-							hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-							chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
-							khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-							)
-							};
+							Object[] row = { i, hd.getMaHoaDon(),
+									khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(),
+									hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+									hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán",
+									hd.getKhuyenMai().getMaKhuyenMai(),
+									hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()),
+											chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()),
+											khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(
+													hd.getKhuyenMai().getMaKhuyenMai())) };
 							modelOrderList.addRow(row);
 						}
-					} else JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn!");
+					} else
+						JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn!");
 				} else if (cbTimKiem.getSelectedItem().equals("Ngày lập")) {
 					ArrayList<HoaDonDatPhong> dsHoaDonNgayLap = hoadon_dao.getHoaDonTheoNgayLapHD(searchTitle);
-					if(!dsHoaDonNgayLap.isEmpty()) {
+					if (!dsHoaDonNgayLap.isEmpty()) {
 						btnTimKiem.setText("Hủy tìm");
 						int i = 0;
 						clearTableOrderList();
-						for(HoaDonDatPhong hd : dsHoaDonNgayLap) {
+						for (HoaDonDatPhong hd : dsHoaDonNgayLap) {
 							i++;
-							Object[] row = { i, hd.getMaHoaDon(), 
-							khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
-							hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(), 
-							hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", 
-							hd.getKhuyenMai().getMaKhuyenMai(),
-							hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-							chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
-							khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-							)
-							};
+							Object[] row = { i, hd.getMaHoaDon(),
+									khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(),
+									hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+									hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán",
+									hd.getKhuyenMai().getMaKhuyenMai(),
+									hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()),
+											chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()),
+											khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(
+													hd.getKhuyenMai().getMaKhuyenMai())) };
 							modelOrderList.addRow(row);
 						}
-					} else JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn!");
+					} else
+						JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn!");
 				}
 			} else {
 				clearTableOrderList();
@@ -563,7 +551,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 			}
 		}
 	}
-	
+
 	public void xuatExcel() {
 		try {
 			wordbook = new XSSFWorkbook();
@@ -597,24 +585,29 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 				cell = row.createCell(1, CellType.STRING);
 				cell.setCellValue(hoadon_dao.getAllHoaDonDatPhong().get(i).getMaHoaDon());
 				cell = row.createCell(2, CellType.STRING);
-				cell.setCellValue(khachhang_dao.getKhachHangTheoMaKH(hoadon_dao.getAllHoaDonDatPhong().get(i).getKhachHang().getMaKhachHang()).getHoTen());
+				cell.setCellValue(khachhang_dao
+						.getKhachHangTheoMaKH(hoadon_dao.getAllHoaDonDatPhong().get(i).getKhachHang().getMaKhachHang())
+						.getHoTen());
 				cell = row.createCell(3, CellType.STRING);
 				cell.setCellValue(hoadon_dao.getAllHoaDonDatPhong().get(i).getNhanVien().getMaNhanVien());
-				
+
 				cell = row.createCell(4, CellType.STRING);
 				DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 				String ngay = df.format(hoadon_dao.getAllHoaDonDatPhong().get(i).getNgayLapHoaDon());
 				cell.setCellValue(ngay);
-				
+
 				cell = row.createCell(5, CellType.STRING);
-				cell.setCellValue(hoadon_dao.getAllHoaDonDatPhong().get(i).isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán");
+				cell.setCellValue(
+						hoadon_dao.getAllHoaDonDatPhong().get(i).isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán");
 				cell = row.createCell(6, CellType.STRING);
 				cell.setCellValue(hoadon_dao.getAllHoaDonDatPhong().get(i).getKhuyenMai().getMaKhuyenMai());
 				cell = row.createCell(7, CellType.NUMERIC);
-				cell.setCellValue(hoadon_dao.getAllHoaDonDatPhong().get(i).tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hoadon_dao.getAllHoaDonDatPhong().get(i).getMaHoaDon()), 
-						chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hoadon_dao.getAllHoaDonDatPhong().get(i).getMaHoaDon()), 
-						khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hoadon_dao.getAllHoaDonDatPhong().get(i).getKhuyenMai().getMaKhuyenMai())
-						));
+				cell.setCellValue(hoadon_dao.getAllHoaDonDatPhong().get(i).tinhTongTienThanhToan(
+						phong_dao.tinhTongTienPhongTheoMaHoaDon(hoadon_dao.getAllHoaDonDatPhong().get(i).getMaHoaDon()),
+						chitietdichvu_dao
+								.tinhTongTienDVTheoMaHoaDon(hoadon_dao.getAllHoaDonDatPhong().get(i).getMaHoaDon()),
+						khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(
+								hoadon_dao.getAllHoaDonDatPhong().get(i).getKhuyenMai().getMaKhuyenMai())));
 
 			}
 
@@ -635,72 +628,74 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Không in được");
 		}
 	}
-	
+
 	public void loadOrderListData() {
 		int i = 0;
 		for (HoaDonDatPhong hd : hoadon_dao.getAllHoaDonDatPhong()) {
 			i++;
-			Object[] row = { i, hd.getMaHoaDon(), 
-			khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(), 
-			hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(), 
-			hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", 
-			hd.getKhuyenMai().getMaKhuyenMai(),
-			df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-			chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
-			khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
-			))
-			};
+			Object[] row = { i, hd.getMaHoaDon(),
+					khachhang_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang()).getHoTen(),
+					hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+					hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán", hd.getKhuyenMai().getMaKhuyenMai(),
+					df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()),
+							chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()),
+							khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()))) };
 			modelOrderList.addRow(row);
 		}
 	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int row = tableOrderList.getSelectedRow();
-		if(row >= 0) {
+		if (row >= 0) {
 			txtMaHD.setText(modelOrderList.getValueAt(row, 1).toString());
 			txtTenKH.setText(modelOrderList.getValueAt(row, 2).toString());
 			txtMaNV.setText(modelOrderList.getValueAt(row, 3).toString());
 			try {
-			    Object dateValue = modelOrderList.getValueAt(row, 4);
-			    LocalDateTime dateTime;
-			    if (dateValue instanceof java.sql.Timestamp) {
-			        dateTime = ((java.sql.Timestamp) dateValue).toLocalDateTime();
-			    } else if (dateValue instanceof java.sql.Date) {
-			        dateTime = ((java.sql.Date) dateValue).toLocalDate().atStartOfDay();
-			    } else {
-			        throw new IllegalArgumentException("Unsupported date type");
-			    }
-			    dateTimePicker.setDateTimeStrict(dateTime);
+				Object dateValue = modelOrderList.getValueAt(row, 4);
+				LocalDateTime dateTime;
+				if (dateValue instanceof java.sql.Timestamp) {
+					dateTime = ((java.sql.Timestamp) dateValue).toLocalDateTime();
+				} else if (dateValue instanceof java.sql.Date) {
+					dateTime = ((java.sql.Date) dateValue).toLocalDate().atStartOfDay();
+				} else {
+					throw new IllegalArgumentException("Unsupported date type");
+				}
+				dateTimePicker.setDateTimeStrict(dateTime);
 			} catch (Exception e2) {
-			    // TODO: handle exception
+				// TODO: handle exception
 			}
 			cbTrangThai.setSelectedItem(modelOrderList.getValueAt(row, 5));
 			txtKhuyenMai.setText(modelOrderList.getValueAt(row, 6).toString());
 			txtTongTien.setText(modelOrderList.getValueAt(row, 7).toString());
 		}
-		clearTableOrderDetail(); 
+		clearTableOrderDetail();
 		clearTableServiceDetail();
 		loadOrderDetailData(modelOrderList.getValueAt(row, 1).toString());
 	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

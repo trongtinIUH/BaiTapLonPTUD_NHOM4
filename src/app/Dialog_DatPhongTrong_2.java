@@ -127,7 +127,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		setSize(800, 629);
 		setLocationRelativeTo(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
-	    this.setIconImage(icon.getImage());
+		this.setIconImage(icon.getImage());
 
 		// panel chứa tiêu đề--------------------------------------
 		JPanel panel = new JPanel();
@@ -538,7 +538,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		} else if (tblThemPhongMoi.getSelectedRowCount() > 1) {
 			JOptionPane.showMessageDialog(null, "Chỉ thêm dịch vụ được 1 phòng!");
 		} else {
-			if(!lbl_TenKH_1.getText().equals("")) {				
+			if (!lbl_TenKH_1.getText().equals("")) {
 				String customer = lbl_TenKH_1.getText();
 				String employee = DataManager.getUserName();
 				nv = nv_dao.TimkiemMaNhanVien(employee);
@@ -563,13 +563,24 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		}
 		if (o.equals(btn_DatPhong)) {
 			int check = 0;
+			int checkPSD = 0;
 			String maHoaDon = TaoMaHDDP();
-			if(!lbl_TenKH_1.getText().equals("")) {
+			HoaDonDatPhong hddp = null;
+			if (!lbl_TenKH_1.getText().equals("")) {
 				for (TempDatPhong tmpDatPhong : tmpDatPhong_dao.getAllTemp()) {
 					// Sửa trống -> Đang sử dụng
-					if (!tmpDatPhong.getMaPhong().equals("000")) {
-						Phong p = p_dao.getPhongTheoMaPhong(tmpDatPhong.getMaPhong());
-						
+					Phong p = p_dao.getPhongTheoMaPhong(tmpDatPhong.getMaPhong());
+					if (p != null && p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
+						checkPSD = 1;
+						ArrayList<ChiTietHoaDon> dsChiTietHoaDon = cthd_dao
+								.getChiTietHoaDonTheoMaPhong(tmpDatPhong.getMaPhong());
+						for (ChiTietHoaDon cthd : dsChiTietHoaDon) {
+							maHoaDon = cthd.getHoaDon().getMaHoaDon();
+						}
+					}
+
+					if (!tmpDatPhong.getMaPhong().equals("000") && !(p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)) {
+
 						// Thêm phiếu đặt phòng
 						NhanVien nv = new NhanVien(DataManager.getUserName());
 						KhachHang kh = new KhachHang();
@@ -578,26 +589,31 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 						else
 							kh = kh_dao.getKhachHangTheoSDT(txtSDT.getText());
 						LocalDateTime NgayDatPhong = LocalDateTime.now();
-						
+
 						PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, NgayDatPhong, LocalDateTime.now(),
 								tmpDatPhong.getSoNguoiHat());
 						if (p.getTrangThai() != Enum_TrangThai.Chờ) {
 							pdp_dao.addPhieuDatPhong(pdb);
 							// Nếu là chờ thì sửa lại.
 						}
-						
+
 						p.setTrangThai(Enum_TrangThai.Đang_sử_dụng);
 						p_dao.updatePhong(p, p.getMaPhong());
-						
+
 						// Thêm vào HoaDonDatPhong
 						KhuyenMai km = new KhuyenMai(null);
 						java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-						HoaDonDatPhong hddp = new HoaDonDatPhong(maHoaDon, kh, nv, sqlDate, false, km, 0.0);
-						if(check == 0) {						
+						if (checkPSD == 1) {
+							hddp = hddp_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+							check = 1;
+							checkPSD = 0;
+						}
+						if (check == 0) {
+							hddp = new HoaDonDatPhong(maHoaDon, kh, nv, sqlDate, false, km, 0.0);
 							hddp_dao.addHoaDonDatPhong(hddp);
 							check = 1;
 						}
-						
+
 						// Thêm chi tiết hóa đơn
 						ChiTietHoaDon cthd;
 						if (radGioTuDo.isSelected()) {
@@ -608,7 +624,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 									Timestamp.valueOf(dateTimePicker.getDateTimeStrict()), 0);
 						}
 						cthd_dao.addChiTietHD(cthd);
-						
+
 						// Thêm chi tiết dịch vụ
 						if (DataManager.getCtdvTempList() != null) {
 							for (TempThemDV tmp : DataManager.getCtdvTempList()) {
@@ -692,8 +708,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				int row = tblDV.getSelectedRow();
 				ArrayList<TempThemDV> ds = DataManager.getCtdvTempList();
-				for(TempThemDV temp : ds) {
-					if(temp.getMaPhong().equals(model.getValueAt(tblThemPhongMoi.getSelectedRow(), 1).toString()) 
+				for (TempThemDV temp : ds) {
+					if (temp.getMaPhong().equals(model.getValueAt(tblThemPhongMoi.getSelectedRow(), 1).toString())
 							&& temp.getMaSP().equals(modelDV.getValueAt(row, 1).toString())) {
 						ds.remove(temp);
 						JOptionPane.showMessageDialog(this, "Xóa thành công!");

@@ -531,7 +531,8 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 			boolean kiemTra = true;
 			String soPhong = btn.getText().replace("Phòng ", "");
 			for (TempDatPhong tmp : tmp_dao.getAllTemp()) {
-				if (soPhong.equals(tmp.getMaPhong()))
+				Phong tmpP = p_dao.getPhongTheoMaPhong(tmp.getMaPhong());
+				if (soPhong.equals(tmp.getMaPhong()) && tmpP.getTrangThai() == Enum_TrangThai.Trống)
 					kiemTra = false;
 			}
 			if (kiemTra)

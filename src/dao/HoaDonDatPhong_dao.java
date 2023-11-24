@@ -27,16 +27,17 @@ public class HoaDonDatPhong_dao {
 			String sql = "select * from HoaDonDatPhong";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
-				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			while (rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)),
+						new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5),
+						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsHoaDonDatPhong;
 	}
-	
+
 	public HoaDonDatPhong getHoaDonTheoMaHoaDon(String maHD) {
 		HoaDonDatPhong hd = null;
 		try {
@@ -50,18 +51,19 @@ public class HoaDonDatPhong_dao {
 			String sql = "select * from HoaDonDatPhong where maHoaDon = '" + maHD + "'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				hd = new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
-				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7));
+			while (rs.next()) {
+				hd = new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), new NhanVien(rs.getString(3)),
+						rs.getDate(4), rs.getBoolean(5),
+						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return hd;
 	}
-	
-	public ArrayList<HoaDonDatPhong> getHoaDonDatPhongTheoMaHD(String maHD) {
-		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
+
+	public HoaDonDatPhong getHoaDonDatPhongTheoMaHD(String maHD) {
+		HoaDonDatPhong HoaDonDatPhong = null;
 		try {
 			ConnectDB.getInstance();
 		} catch (Exception e) {
@@ -70,18 +72,20 @@ public class HoaDonDatPhong_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from HoaDonDatPhong where maHoaDon like '%"+maHD+"%'";
+			String sql = "select * from HoaDonDatPhong where maHoaDon like '%" + maHD + "%'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
-				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			while (rs.next()) {
+				HoaDonDatPhong = new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), new NhanVien(rs.getString(3)),
+						rs.getDate(4), rs.getBoolean(5),
+						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return dsHoaDonDatPhong;
+		return HoaDonDatPhong;
 	}
+
 	public ArrayList<HoaDonDatPhong> getHoaDonDatPhongTheoTenKH(String tenKH) {
 		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
 		try {
@@ -94,18 +98,20 @@ public class HoaDonDatPhong_dao {
 		try {
 			String sql = "select maHoaDon, hd.maKhachHang, maNhanVien, ngayLapHoaDon, trangThai, maKhuyenMai, tienKhachDua "
 					+ "from HoaDonDatPhong hd join KhachHang kh on kh.maKhachHang = hd.maKhachHang "
-					+ "where kh.hoTen like N'%"+ tenKH + "%'";
+					+ "where kh.hoTen like N'%" + tenKH + "%'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
-				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			while (rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)),
+						new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5),
+						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsHoaDonDatPhong;
 	}
+
 	public ArrayList<HoaDonDatPhong> getHoaDonDatPhongTheoMaNV(String maNV) {
 		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
 		try {
@@ -116,18 +122,20 @@ public class HoaDonDatPhong_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from HoaDonDatPhong where maNhanVien = '"+maNV+"'";
+			String sql = "select * from HoaDonDatPhong where maNhanVien = '" + maNV + "'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
-				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			while (rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)),
+						new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5),
+						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsHoaDonDatPhong;
 	}
+
 	public ArrayList<HoaDonDatPhong> getHoaDonTheoNgayLapHD(String ngayLapHD) {
 		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
 		try {
@@ -138,19 +146,20 @@ public class HoaDonDatPhong_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from HoaDonDatPhong where ngayLapHoaDon = '"+ngayLapHD+"'";
+			String sql = "select * from HoaDonDatPhong where ngayLapHoaDon = '" + ngayLapHD + "'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
-				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			while (rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)),
+						new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5),
+						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsHoaDonDatPhong;
 	}
-	
+
 	public ArrayList<HoaDonDatPhong> getHoaDonTheoThang(String thang, int nam) {
 		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
 		try {
@@ -161,20 +170,21 @@ public class HoaDonDatPhong_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from HoaDonDatPhong "
-					+ "where MONTH(ngayLapHoaDon) = '"+thang+"' AND YEAR(ngayLapHoaDon) = '"+nam+"'";
+			String sql = "select * from HoaDonDatPhong " + "where MONTH(ngayLapHoaDon) = '" + thang
+					+ "' AND YEAR(ngayLapHoaDon) = '" + nam + "'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			while(rs.next()) {
-				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
-				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			while (rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)),
+						new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5),
+						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dsHoaDonDatPhong;
 	}
-	
+
 	public boolean updateHoaDon(String maHD, Date ngayLap, Boolean status, String maNV) {
 		try {
 			ConnectDB.getInstance();
@@ -186,7 +196,8 @@ public class HoaDonDatPhong_dao {
 		PreparedStatement psmt = null;
 		int n = 0;
 		try {
-			psmt = con.prepareStatement("update HoaDonDatPhong set maNhanVien=?, ngayLapHoaDon=?, trangThai=? where maHoaDon=?");
+			psmt = con.prepareStatement(
+					"update HoaDonDatPhong set maNhanVien=?, ngayLapHoaDon=?, trangThai=? where maHoaDon=?");
 			psmt.setString(1, maNV);
 			psmt.setDate(2, (java.sql.Date) ngayLap);
 			psmt.setBoolean(3, status);
@@ -195,7 +206,7 @@ public class HoaDonDatPhong_dao {
 		} catch (Exception e) {
 			// TODO: handle exception
 //			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				psmt.close();
 			} catch (Exception e2) {
@@ -204,7 +215,7 @@ public class HoaDonDatPhong_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean updateHoaDon2(HoaDonDatPhong hd) {
 		try {
 			ConnectDB.getInstance();
@@ -216,7 +227,8 @@ public class HoaDonDatPhong_dao {
 		PreparedStatement psmt = null;
 		int n = 0;
 		try {
-			psmt = con.prepareStatement("update HoaDonDatPhong set maKhachHang=?, maNhanVien=?, ngayLapHoaDon=?, trangThai=?, tienKhachDua=? where maHoaDon=?");
+			psmt = con.prepareStatement(
+					"update HoaDonDatPhong set maKhachHang=?, maNhanVien=?, ngayLapHoaDon=?, trangThai=?, tienKhachDua=? where maHoaDon=?");
 			psmt.setString(1, hd.getKhachHang().getMaKhachHang());
 			psmt.setString(2, hd.getNhanVien().getMaNhanVien());
 			psmt.setDate(3, (java.sql.Date) hd.getNgayLapHoaDon());
@@ -227,7 +239,7 @@ public class HoaDonDatPhong_dao {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				psmt.close();
 			} catch (Exception e2) {
@@ -237,7 +249,7 @@ public class HoaDonDatPhong_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean updateHoaDon3(HoaDonDatPhong hd) {
 		try {
 			ConnectDB.getInstance();
@@ -249,7 +261,8 @@ public class HoaDonDatPhong_dao {
 		PreparedStatement psmt = null;
 		int n = 0;
 		try {
-			psmt = con.prepareStatement("update HoaDonDatPhong set maKhachHang=?, maNhanVien=?, ngayLapHoaDon=?, trangThai=?, maKhuyenMai=?, tienKhachDua=? where maHoaDon=?");
+			psmt = con.prepareStatement(
+					"update HoaDonDatPhong set maKhachHang=?, maNhanVien=?, ngayLapHoaDon=?, trangThai=?, maKhuyenMai=?, tienKhachDua=? where maHoaDon=?");
 			psmt.setString(1, hd.getKhachHang().getMaKhachHang());
 			psmt.setString(2, hd.getNhanVien().getMaNhanVien());
 			psmt.setDate(3, (java.sql.Date) hd.getNgayLapHoaDon());
@@ -261,7 +274,7 @@ public class HoaDonDatPhong_dao {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				psmt.close();
 			} catch (Exception e2) {
@@ -271,7 +284,7 @@ public class HoaDonDatPhong_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean addHoaDonDatPhong(HoaDonDatPhong hddp) {
 		try {
 			ConnectDB.getInstance();
@@ -303,7 +316,7 @@ public class HoaDonDatPhong_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean deleteHoaDon(String maHD) {
 		try {
 			ConnectDB.getInstance();
@@ -321,7 +334,7 @@ public class HoaDonDatPhong_dao {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				psmt.close();
 			} catch (Exception e2) {
