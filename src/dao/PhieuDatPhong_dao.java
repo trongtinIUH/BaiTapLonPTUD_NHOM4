@@ -295,4 +295,73 @@ public class PhieuDatPhong_dao {
 		}
 		return result;
 	}
+	//tìm pdp chưa thanh toán bên hóa đơn
+	public ArrayList<PhieuDatPhong> getAllsPhieuDatPhong_ChuaThanhToan() {
+	    ArrayList<PhieuDatPhong> dspdp = new ArrayList<PhieuDatPhong>();
+	    try {
+	        ConnectDB.getInstance();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    Connection con = ConnectDB.getConnection();
+	    try {
+	        String sql = "select * from PhieuDatPhong";
+	        Statement stm = con.createStatement();
+	        ResultSet rs = stm.executeQuery(sql);
+	        while (rs.next()) {
+	            String maPhieu = rs.getString(1);
+	            String maHoaDon = "HD" + maPhieu.substring(3);
+	            String sqlCheck = "select * from HoaDonDatPhong where maHoaDon = ?";
+	            PreparedStatement stmCheck = con.prepareStatement(sqlCheck);
+	            stmCheck.setString(1, maHoaDon);
+	            ResultSet rsCheck = stmCheck.executeQuery();
+	            if (!rsCheck.next()) {
+	                Phong p = new Phong(rs.getString(3));
+	                NhanVien nv = new NhanVien(rs.getString(3));
+	                KhachHang kh = new KhachHang(rs.getString(4));
+	                LocalDateTime ngayGioDatPhong = rs.getTimestamp("ngayGioDatPhong").toLocalDateTime();
+	                LocalDateTime ngayGioNhanPhong = rs.getTimestamp("ngayGioNhanPhong").toLocalDateTime();
+	                dspdp.add(new PhieuDatPhong(maPhieu, p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7)));
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return dspdp;
+	}
+	
+	//tìm pdp đã thanh toán bên hóa đơn
+	public ArrayList<PhieuDatPhong> getAllsPhieuDatPhong_DaThanhToan() {
+	    ArrayList<PhieuDatPhong> dspdp = new ArrayList<PhieuDatPhong>();
+	    try {
+	        ConnectDB.getInstance();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    Connection con = ConnectDB.getConnection();
+	    try {
+	        String sql = "select * from PhieuDatPhong";
+	        Statement stm = con.createStatement();
+	        ResultSet rs = stm.executeQuery(sql);
+	        while (rs.next()) {
+	            String maPhieu = rs.getString(1);
+	            String maHoaDon = "HD" + maPhieu.substring(3);
+	            String sqlCheck = "select * from HoaDonDatPhong where maHoaDon = ?";
+	            PreparedStatement stmCheck = con.prepareStatement(sqlCheck);
+	            stmCheck.setString(1, maHoaDon);
+	            ResultSet rsCheck = stmCheck.executeQuery();
+	            if (rsCheck.next()) {
+	                Phong p = new Phong(rs.getString(3));
+	                NhanVien nv = new NhanVien(rs.getString(3));
+	                KhachHang kh = new KhachHang(rs.getString(4));
+	                LocalDateTime ngayGioDatPhong = rs.getTimestamp("ngayGioDatPhong").toLocalDateTime();
+	                LocalDateTime ngayGioNhanPhong = rs.getTimestamp("ngayGioNhanPhong").toLocalDateTime();
+	                dspdp.add(new PhieuDatPhong(maPhieu, p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7)));
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return dspdp;
+	}
 }

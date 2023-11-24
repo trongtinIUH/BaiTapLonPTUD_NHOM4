@@ -42,6 +42,13 @@ public class NhanVien implements Serializable {
 		this.anhDaiDien = anhDaiDien;
 	}
 
+
+
+	public NhanVien() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getMaNhanVien() {
 		return maNhanVien;
 	}

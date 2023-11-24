@@ -35,7 +35,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel lblPhong,lblGia,lblTrangThai, lblThoiGianHat, lblSoNguoi, lblLoai,lblLoai_1,lblPhong_1,lblgia_1,lbltrangthai_1,lblSoNguoi_1, lblTenKH, lblTenKH_1;
-	private JButton btnThemDV,btnChuyenPhong,btnThanhToan;
+	private JButton btnThemDV,btnChuyenPhong,btnThanhToan,btnThemPhong;
 
 	private Dialog_ChuyenPhong dialog_ChuyenPhong;
 	private Dialog_ThemDichVu dialog_ThemDichVu;
@@ -57,7 +57,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	public Dialog_PhongDangSD(String maPhong) {
 		//kích thước giao diện
 		getContentPane().setBackground(Color.WHITE);
-		setSize(335, 450);
+		setSize(335, 500);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
@@ -201,7 +201,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		getContentPane().add(btnThemDV);
 		
 		btnChuyenPhong = new JButton("Chuyển Phòng");
-		btnChuyenPhong.setBounds(35, 330, 250, 35);
+		btnChuyenPhong.setBounds(35, 370, 250, 35);
 		btnChuyenPhong.setForeground(Color.WHITE);
 		btnChuyenPhong.setFont(new Font("Arial", Font.BOLD, 17));
 		btnChuyenPhong.setBackground(new Color(26,147,216,255));
@@ -210,7 +210,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		getContentPane().add(btnChuyenPhong);
 		
 		btnThanhToan = new JButton("Thanh Toán");
-		btnThanhToan.setBounds(35, 370, 250, 35);
+		btnThanhToan.setBounds(35, 410, 250, 35);
 		btnThanhToan.setForeground(Color.WHITE);
 		btnThanhToan.setFont(new Font("Arial", Font.BOLD, 17));
 		btnThanhToan.setBorder(new RoundedBorder(60));
@@ -218,10 +218,19 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	//	btnThanhToan.setBorderPainted(false);
 		getContentPane().add(btnThanhToan);
 		
+		btnThemPhong = new JButton("Đặt Thêm Phòng");
+		btnThemPhong.setForeground(Color.WHITE);
+		btnThemPhong.setFont(new Font("Arial", Font.BOLD, 16));
+		btnThemPhong.setBorder(new RoundedBorder(60));
+		btnThemPhong.setBackground(new Color(33, 167, 38));
+		btnThemPhong.setBounds(35, 330, 250, 35);
+		getContentPane().add(btnThemPhong);
+		
 		// thêm sự kiện  button
 		btnChuyenPhong.addActionListener(this);
 		btnThanhToan.addActionListener(this);
 		btnThemDV.addActionListener(this);
+		btnThemPhong.addActionListener(this);
 	}
 
 
@@ -251,5 +260,4 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 			dispose();
 		}
 	}
-
 }

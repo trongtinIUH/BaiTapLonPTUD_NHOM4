@@ -41,6 +41,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
+import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
@@ -48,6 +49,7 @@ import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
 import entity.KhachHang;
 import entity.LoaiPhong;
+import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TempDatPhong;
@@ -68,7 +70,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	
 	private JTable tblPhieuDatPhong;
 	private DefaultTableModel model;
-	private String col[] = { "Mã PDP", "Phòng", "Mã NV", "Mã KH","Tên KH", "   Ngày Giờ Đặt   ","   Ngày Giờ Nhận   ","Số Người","Hình Thức","Trạng Thái"};
+	private String col[] = { "Mã PDP", "Phòng", "Tên NV","Tên KH", "   Ngày Giờ Đặt   ","   Ngày Giờ Nhận   ","Số Người","Hình Thức","Trạng Thái"};
 	private JButton btn_QuayLai;
 
 
@@ -80,6 +82,9 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	private PhieuDatPhong_dao pdp_dao= new PhieuDatPhong_dao();;
 	private KhachHang_dao kh_dao= new KhachHang_dao();
 	private KhachHang kh= new KhachHang();
+	private NhanVien nv= new NhanVien();
+	private NhanVien_dao nv_dao= new NhanVien_dao();
+	
 	private PhieuDatPhong pdp= new PhieuDatPhong();
 	private HoaDonDatPhong hd= new HoaDonDatPhong();
 	private HoaDonDatPhong_dao hd_dao= new HoaDonDatPhong_dao();
@@ -186,10 +191,10 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		tblPhieuDatPhong.setBackground(Color.WHITE);
 		tblPhieuDatPhong.getColumnModel().getColumn(4).setMinWidth(100);
 		tblPhieuDatPhong.getColumnModel().getColumn(5).setMinWidth(110);
-		tblPhieuDatPhong.getColumnModel().getColumn(6).setMinWidth(115);
+		tblPhieuDatPhong.getColumnModel().getColumn(6).setMaxWidth(60);
 		tblPhieuDatPhong.getColumnModel().getColumn(7).setMinWidth(30);
 		tblPhieuDatPhong.getColumnModel().getColumn(1).setMaxWidth(50);
-		tblPhieuDatPhong.getColumnModel().getColumn(2).setMaxWidth(80);
+		tblPhieuDatPhong.getColumnModel().getColumn(2).setMinWidth(100);
 		tblPhieuDatPhong.getColumnModel().getColumn(3).setMinWidth(90);
 		tblPhieuDatPhong.getColumnModel().getColumn(0).setMinWidth(100);
 		
@@ -249,6 +254,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
 		comboBox_TrangThai.addActionListener(this);
+		tblPhieuDatPhong.addMouseListener(this);
 				
 			loadData();
 			MyTable(model, tblPhieuDatPhong);
@@ -305,12 +311,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
             p=pdp.getPhong();
             kh=kh_dao.getKhachHangTheoMaKH(mkh);
             hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+            nv=nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
             if(hd!=null) {
             	trangthai="Đã TT";
             }else {
             	trangthai="Chưa TT";
             }
-            Object[] row = {x.getMaPhieu(),p.getMaPhong(),x.getNhanVien().getMaNhanVien(),x.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc,trangthai};
+            Object[] row = {x.getMaPhieu(),p.getMaPhong(),nv.getHoTen(),kh.getHoTen(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc,trangthai};
             model.addRow(row);
         }
         Canh_Deu_Bang();
@@ -349,6 +356,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
             String mp=pdp.getMaPhieu();
             String maHoaDon = "HD" + mp.substring(3);
             hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+            nv=nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
             if(hd!=null) {
             	trangthai="Đã TT";
             }else {
@@ -358,7 +366,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	        if (pdp != null) {
 	            btnTimKiem.setText("Hủy tìm");
 	            clearTable();
-	            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
+	            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),nv.getHoTen(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
 	            model.addRow(row);
 	            Canh_Deu_Bang();
 	        } else {
@@ -378,6 +386,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	            String mp=pdp.getMaPhieu();
 	            String maHoaDon = "HD" + mp.substring(3);
 	            hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+	            nv=nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
 	            if(hd!=null) {
 	            	trangthai="Đã TT";
 	            }else {
@@ -386,7 +395,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	            if (pdp != null) {
 	                btnTimKiem.setText("Hủy tìm");
 	                clearTable();
-		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
+		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),nv.getHoTen(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
 		            model.addRow(row);
 	                Canh_Deu_Bang();
 	            } else {
@@ -410,6 +419,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	            String mp=pdp.getMaPhieu();
 	            String maHoaDon = "HD" + mp.substring(3);
 	            hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+	            nv=nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
 	            if(hd!=null) {
 	            	trangthai="Đã TT";
 	            }else {
@@ -418,7 +428,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	            if (pdp != null) {
 	                btnTimKiem.setText("Hủy tìm");
 	                clearTable();
-		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),pdp.getNhanVien().getMaNhanVien(),pdp.getKhachHang().getMaKhachHang(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
+		            Object[] row = {pdp.getMaPhieu(),pdp.getPhong().getMaPhong(),nv.getHoTen(),kh.getHoTen(),ngayGioDat,ngayGioNhan,pdp.getSoNguoiHat(),hinhthuc,trangthai};
 		            model.addRow(row);
 	                Canh_Deu_Bang();
 	            } else {
@@ -452,7 +462,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		setVisible(false);	
 		}
 		if(o.equals(btnTimKiem)) {
-			tim();
+			if(!txtLoaiTimKiem.getText().equals("")) {
+				tim();
+			}else {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin cần tìm !");
+			}
+			
 		}
 		if(o.equals(btn_XemPhong)) {
 			xemPhong();
@@ -480,14 +495,108 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				e1.printStackTrace();
 			}
 		}
+		if(o.equals(comboBox_TrangThai)) {
+			if(comboBox_TrangThai.getSelectedItem().equals("Tất Cả")) {
+				clearTable();
+				loadData();
+			}
+			if(comboBox_TrangThai.getSelectedItem().equals("Chưa Thanh Toán")) {
+				clearTable();
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+		        String hinhthuc="";
+		        String trangthai="";
+		        // Lấy tất cả phiếu đặt phòng
+		        ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_ChuaThanhToan();
+		        
+		        // Sắp xếp danh sách theo ngày giờ đặt phòng
+		        Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
+		        
+		        for (PhieuDatPhong x : allPhieuDatPhong) {
+		            String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
+		            String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+		            if(!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
+		                hinhthuc="Đặt trước";
+		            }
+		            else hinhthuc="Đặt trực tiếp";
+		            String mp=x.getMaPhieu();
+		            //String maHoaDon = "HD" + mp.substring(3);
+		            String mkh=x.getKhachHang().getMaKhachHang();
+		            pdp=pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+		            p=pdp.getPhong();
+		            kh=kh_dao.getKhachHangTheoMaKH(mkh);
+		            nv=nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+		            //hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+		            trangthai="Chưa TT";
+		            Object[] row = {x.getMaPhieu(),p.getMaPhong(),nv.getHoTen(),kh.getHoTen(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc,trangthai};
+		            model.addRow(row);
+		            
+		            
+		        }
+		        Canh_Deu_Bang();
+		    
+			}
+			if(comboBox_TrangThai.getSelectedItem().equals("Đã Thanh Toán")) {
+				clearTable();
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+		        String hinhthuc="";
+		        String trangthai="";
+		        // Lấy tất cả phiếu đặt phòng
+		        ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_DaThanhToan();
+		        
+		        // Sắp xếp danh sách theo ngày giờ đặt phòng
+		        Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
+		        
+		        for (PhieuDatPhong x : allPhieuDatPhong) {
+		            String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
+		            String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+		            if(!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
+		                hinhthuc="Đặt trước";
+		            }
+		            else hinhthuc="Đặt trực tiếp";
+		            String mp=x.getMaPhieu();
+		            String mkh=x.getKhachHang().getMaKhachHang();
+		            pdp=pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+		            p=pdp.getPhong();
+		            kh=kh_dao.getKhachHangTheoMaKH(mkh);
+		            nv=nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+		            	trangthai="Đã TT";
+			            Object[] row = {x.getMaPhieu(),p.getMaPhong(),nv.getHoTen(),kh.getHoTen(),ngayGioDat,ngayGioNhan,x.getSoNguoiHat(),hinhthuc,trangthai};
+			            model.addRow(row);
+		        }
+		        Canh_Deu_Bang();
+		    
+			}
+		}
 		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	    int row = tblPhieuDatPhong.getSelectedRow();
+	    String trangthai = model.getValueAt(row, 8).toString();
+	    String ma = model.getValueAt(row, 0).toString();
+	    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(ma);
+	    p = pdp.getPhong();
+	   
+	  
+
+	    int selectedIndex = comboBox_TrangThai_1.getSelectedIndex();
+
+	    if (trangthai.equalsIgnoreCase("Đã TT")) {
+	        comboBox_TrangThai.setSelectedIndex(2);
+	    } else {
+	        comboBox_TrangThai.setSelectedIndex(1);
+	    }
+
+	    if (selectedIndex == 0) {
+	        txtLoaiTimKiem.setText(model.getValueAt(row, 0).toString());
+	    } else if (selectedIndex == 1) {
+	    	 kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
+	        txtLoaiTimKiem.setText(kh.getSoDienThoai().toString());
+	    } else if (selectedIndex == 2) {
+	        txtLoaiTimKiem.setText(kh.getHoTen());
+	    }
+	    }
 
 	@Override
 	public void mousePressed(MouseEvent e) {
