@@ -406,6 +406,8 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 												trangthai };
 										model.addRow(row);
 										Canh_Deu_Bang();
+									}else {
+										JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 									}
 								} else {
 									JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
