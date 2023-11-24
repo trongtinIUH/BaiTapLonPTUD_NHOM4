@@ -98,6 +98,8 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	private LoaiPhong lp;
 	private Dialog_PhongDangSD dialog_PhongDangSD;
 
+	private Dialog_TimPDP_DaThanhToan dialog_TimPDP_DaThanhToan;
+
 	public Dialog_TimPhieuDatPhong() {
 		// kích thước
 		getContentPane().setBackground(Color.WHITE);
@@ -260,10 +262,8 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btnTimKiem.addActionListener(this);
 		comboBox_TrangThai.addActionListener(this);
 		tblPhieuDatPhong.addMouseListener(this);
-
 		loadData();
 		MyTable(model, tblPhieuDatPhong);
-
 	}
 
 	// hàm căn giữa nội dung trong bảng
@@ -383,31 +383,34 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 					// Tìm kiếm theo số điện thoại
 					kh = kh_dao.getKhachHangTheoSDT(thongtinTimKiem);
-					if (!thongtinTimKiem.equals("")) {
-						if (kh != null) {
-							pdp = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
-							String mp = pdp.getMaPhieu();
-							String maHoaDon = "HD" + mp.substring(3);
-							hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
-							nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-							if (hd != null) {
-								trangthai = "Đã TT";
-							} else {
-								trangthai = "Chưa TT";
+					if (kh != null) {
+						ArrayList<PhieuDatPhong> pdps = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
+						for (PhieuDatPhong pdp : pdps) {
+							// your existing code to handle each pdp
+							if (!thongtinTimKiem.equals("")) {
+								if (kh != null) {
+									String mp = pdp.getMaPhieu();
+									String maHoaDon = "HD" + mp.substring(3);
+									hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+									nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+									if (hd != null) {
+										trangthai = "Đã TT";
+									} else {
+										trangthai = "Chưa TT";
+									}
+									if (pdp != null) {
+										btnTimKiem.setText("Hủy tìm");
+										clearTable();
+										Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
+												kh.getHoTen(), ngayGioDat, ngayGioNhan, pdp.getSoNguoiHat(), hinhthuc,
+												trangthai };
+										model.addRow(row);
+										Canh_Deu_Bang();
+									}
+								} else {
+									JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+								}
 							}
-							if (pdp != null) {
-								btnTimKiem.setText("Hủy tìm");
-								clearTable();
-								Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
-										kh.getHoTen(), ngayGioDat, ngayGioNhan, pdp.getSoNguoiHat(), hinhthuc,
-										trangthai };
-								model.addRow(row);
-								Canh_Deu_Bang();
-							} else {
-								JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
-							}
-						} else {
-							JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 						}
 					} else {
 						JOptionPane.showMessageDialog(null, "Vui lòng điền thông tin cần tìm kiếm!");
@@ -417,46 +420,48 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 					// Tìm kiếm theo số điện thoại
 					kh = kh_dao.getKhachHangTheoTen(thongtinTimKiem);
-					if (!thongtinTimKiem.equals("")) {
-						if (kh != null) {
-							pdp = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
-							String mp = pdp.getMaPhieu();
-							String maHoaDon = "HD" + mp.substring(3);
-							hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
-							nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-							if (hd != null) {
-								trangthai = "Đã TT";
+					if (kh != null) {
+						ArrayList<PhieuDatPhong> pdps = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
+						for (PhieuDatPhong pdp : pdps) {
+							if (!thongtinTimKiem.equals("")) {
+								if (kh != null) {
+									String mp = pdp.getMaPhieu();
+									String maHoaDon = "HD" + mp.substring(3);
+									hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+									nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+									if (hd != null) {
+										trangthai = "Đã TT";
+									} else {
+										trangthai = "Chưa TT";
+									}
+									if (pdp != null) {
+										btnTimKiem.setText("Hủy tìm");
+										clearTable();
+										Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
+												kh.getHoTen(), ngayGioDat, ngayGioNhan, pdp.getSoNguoiHat(), hinhthuc,
+												trangthai };
+										model.addRow(row);
+										Canh_Deu_Bang();
+									}
+								} else {
+									JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+								}
 							} else {
-								trangthai = "Chưa TT";
+								JOptionPane.showMessageDialog(null, "Vui lòng điền thông tin cần tìm kiếm!");
 							}
-							if (pdp != null) {
-								btnTimKiem.setText("Hủy tìm");
-								clearTable();
-								Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
-										kh.getHoTen(), ngayGioDat, ngayGioNhan, pdp.getSoNguoiHat(), hinhthuc,
-										trangthai };
-								model.addRow(row);
-								Canh_Deu_Bang();
-							} else {
-								JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
-							}
-						} else {
-							JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 						}
-					} else {
-						JOptionPane.showMessageDialog(null, "Vui lòng điền thông tin cần tìm kiếm!");
 					}
 
 				}
-			}
-		} else {
-			clearTable();
-			loadData();
-			btnTimKiem.setText("Tìm kiếm");
-			Canh_Deu_Bang();
-		}
 
+			}}else{
+		clearTable();
+		loadData();
+		btnTimKiem.setText("Tìm kiếm");
+		Canh_Deu_Bang();
 	}
+
+}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -576,28 +581,31 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int row = tblPhieuDatPhong.getSelectedRow();
-		String trangthai = model.getValueAt(row, 8).toString();
-		String ma = model.getValueAt(row, 0).toString();
-		pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(ma);
-		p = pdp.getPhong();
 
-		int selectedIndex = comboBox_TrangThai_1.getSelectedIndex();
-
-		if (trangthai.equalsIgnoreCase("Đã TT")) {
-			comboBox_TrangThai.setSelectedIndex(2);
-		} else {
-			comboBox_TrangThai.setSelectedIndex(1);
-		}
-
-		if (selectedIndex == 0) {
-			txtLoaiTimKiem.setText(model.getValueAt(row, 0).toString());
-		} else if (selectedIndex == 1) {
-			kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
-			txtLoaiTimKiem.setText(kh.getSoDienThoai().toString());
-		} else if (selectedIndex == 2) {
-			txtLoaiTimKiem.setText(kh.getHoTen());
-		}
+//	    int row = tblPhieuDatPhong.getSelectedRow();
+//	    String trangthai = model.getValueAt(row, 8).toString();
+//	    String ma = model.getValueAt(row, 0).toString();
+//	    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(ma);
+//	    p = pdp.getPhong();
+//	   
+//	  
+//
+//	    int selectedIndex = comboBox_TrangThai_1.getSelectedIndex();
+//
+//	    if (trangthai.equalsIgnoreCase("Đã TT")) {
+//	        comboBox_TrangThai.setSelectedIndex(2);
+//	    } else {
+//	        comboBox_TrangThai.setSelectedIndex(1);
+//	    }
+//
+//	    if (selectedIndex == 0) {
+//	        txtLoaiTimKiem.setText(model.getValueAt(row, 0).toString());
+//	    } else if (selectedIndex == 1) {
+//	    	 kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
+//	        txtLoaiTimKiem.setText(kh.getSoDienThoai().toString());
+//	    } else if (selectedIndex == 2) {
+//	        txtLoaiTimKiem.setText(kh.getHoTen());
+//	    }
 	}
 
 	@Override
@@ -654,15 +662,22 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		int row = tblPhieuDatPhong.getSelectedRow();
 		String maphong = (String) tblPhieuDatPhong.getValueAt(row, 1);
 		String hinhthuc = (String) tblPhieuDatPhong.getValueAt(row, 7);
+		String maPDP = (String) tblPhieuDatPhong.getValueAt(row, 0);
+
 		if (row != -1) {
 			if (hinhthuc.equals("Đặt trước")) {
 				dialog_PhongCho = new Dialog_PhongCho(maphong);
 				DataManager.setDatPhongCho(true);
 				dialog_PhongCho.setVisible(true);
-			} else {
+
+			} else if (hinhthuc.equals("Đặt trực tiếp")) {
 				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong);
+
+			} else {
+				dialog_TimPDP_DaThanhToan = new Dialog_TimPDP_DaThanhToan(maphong, maPDP);
+
 				DataManager.setDatPhong(true);
-				dialog_PhongDangSD.setVisible(true);
+				dialog_TimPDP_DaThanhToan.setVisible(true);
 			}
 
 		} else
