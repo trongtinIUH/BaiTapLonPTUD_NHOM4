@@ -61,6 +61,29 @@ public class SanPham_dao {
 		return dt;
 	}
 	
+	public SanPham getSanPhamTheoTen(String tenSP) {
+		SanPham dt = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from SanPham where tenSanPham = N'" + tenSP + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				dt = new SanPham(rs.getString(1), rs.getString(2),rs.getDate(3), rs.getString(4), rs.getDouble(5), rs.getString(6), rs.getInt(7), rs.getString(8));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return dt;
+	}
+	
 
 	public ArrayList<SanPham> getSanPhamTheoTenSanPham(String tenSP) {
 		ArrayList<SanPham> dsSanPham = new ArrayList<SanPham>();
