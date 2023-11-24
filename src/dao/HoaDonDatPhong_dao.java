@@ -175,6 +175,54 @@ public class HoaDonDatPhong_dao {
 		return dsHoaDonDatPhong;
 	}
 	
+	public ArrayList<HoaDonDatPhong> getHoaDonTheoNam(int nam) {
+		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from HoaDonDatPhong "
+					+ "where YEAR(ngayLapHoaDon) = '"+nam+"'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
+				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsHoaDonDatPhong;
+	}
+	
+	public ArrayList<HoaDonDatPhong> getHoaDonTheoNhieuNam(int nambt, int namkt) {
+		ArrayList<HoaDonDatPhong> dsHoaDonDatPhong = new ArrayList<HoaDonDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from HoaDonDatPhong "
+					+ "where YEAR(ngayLapHoaDon) >= '"+nambt+"'  and YEAR(ngayLapHoaDon) >= '"+namkt+"'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while(rs.next()) {
+				dsHoaDonDatPhong.add(new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)), 
+				new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5), new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsHoaDonDatPhong;
+	}
+	
 	public boolean updateHoaDon(String maHD, Date ngayLap, Boolean status, String maNV) {
 		try {
 			ConnectDB.getInstance();
