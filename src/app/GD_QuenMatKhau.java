@@ -15,6 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+
 import dao.DangNhap_dao;
 
 public class GD_QuenMatKhau extends JFrame implements ActionListener {
@@ -29,6 +33,30 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	private JLabel lblTitle;
 	private JButton btnHuy,btnXacNhan,btnOTP;
 	private DangNhap_dao dangNhap_dao = new DangNhap_dao();
+	
+	// Thay thế bằng Account SID và Auth Token của bạn
+    public static final String ACCOUNT_SID = "your_account_sid";
+    public static final String AUTH_TOKEN = "your_auth_token";
+
+    public static void sendOtp(String phoneNumber, String otp) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+        // Đảm bảo số điện thoại có tiền tố quốc tế cho Việt Nam
+        if (!phoneNumber.startsWith("+84")) {
+            phoneNumber = "+84" + phoneNumber.substring(1);
+        }
+
+        // Thay thế bằng số điện thoại Twilio đã xác nhận
+        String twilioPhoneNumber = "your_twilio_phone_number";
+
+        Message message = Message.creator(
+            new PhoneNumber(phoneNumber),
+            new PhoneNumber(twilioPhoneNumber),
+            "Your OTP is: " + otp
+        ).create();
+
+        System.out.println("Message SID: " + message.getSid());
+    }
 
 
 	public  GD_QuenMatKhau() {
