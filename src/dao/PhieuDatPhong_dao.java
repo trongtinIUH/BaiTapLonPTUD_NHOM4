@@ -396,4 +396,32 @@ public class PhieuDatPhong_dao {
 		}
 		return dspdp;
 	}
+	public ArrayList<PhieuDatPhong> getDanhsachPhieuDatPhongTheoMaPhong(String maPhong) {
+		ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from PhieuDatPhong where maPhong = '" + maPhong + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				Phong p = new Phong(rs.getString(2));
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngayGioNhanPhong = rs.getTimestamp(6).toLocalDateTime();
+				dsPDP.add(
+						new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7)));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return dsPDP;
+	}
 }

@@ -62,33 +62,7 @@ public class HoaDonDatPhong_dao {
 		return hd;
 	}
 
-	public HoaDonDatPhong getHoaDonDatPhongTheoMaPDP(String maPDP) {
-		HoaDonDatPhong HoaDonDatPhong = null;
-		try {
-			ConnectDB.getInstance();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		Connection con = ConnectDB.getConnection();
-		try {
-			String sql = "select o.maHoaDon, p.maKhachHang, p.maNhanVien, hd.ngayLapHoaDon, hd.trangThai, "
-					+ "maKhuyenMai, tienKhachDua  from PhieuDatPhong p join ChiTietHoaDon o on p.maPhong = o.maPhong "
-					+ "join HoaDonDatPhong hd on hd.maKhachHang = p.maKhachHang where maPhieu = '" + maPDP +"'"
-							+ " AND FORMAT(p.ngayGioNhanPhong, 'yyyy-MM-dd HH:mm') = FORMAT(o.gioNhanPhong, 'yyyy-MM-dd HH:mm')";
 
-			Statement sta = con.createStatement();
-			ResultSet rs = sta.executeQuery(sql);
-			while (rs.next()) {
-				HoaDonDatPhong = new HoaDonDatPhong(rs.getString(1), new KhachHang(rs.getString(2)),
-						new NhanVien(rs.getString(3)), rs.getDate(4), rs.getBoolean(5),
-						new KhuyenMai(rs.getString(6) != null ? rs.getString(6) : "NULL"), rs.getDouble(7));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return HoaDonDatPhong;
-	}
 	public HoaDonDatPhong getHoaDonDatPhongTheoMaHD(String maHD) {
 		HoaDonDatPhong HoaDonDatPhong = null;
 		try {
