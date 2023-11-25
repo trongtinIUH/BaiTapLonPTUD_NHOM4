@@ -306,23 +306,27 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		for (PhieuDatPhong x : allPhieuDatPhong) {
 			String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
 			String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+			//so sánh mã hóa đơn tồn tại
 			if (!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
 				hinhthuc = "Đặt trước";
 			} else
 				hinhthuc = "Đặt trực tiếp";
 			String mp = x.getMaPhieu();
-			String maHoaDon = "HD" + mp.substring(3);
 			String mkh = x.getKhachHang().getMaKhachHang();
 			pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
 			p = pdp.getPhong();
 			kh = kh_dao.getKhachHangTheoMaKH(mkh);
-			hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+			//System.out.println(mp);
+			hd = hd_dao.getHoaDonDatPhongTheoMaPDP(mp);
+			//System.out.println(mp+"\n"+hd.getMaHoaDon());
+			//System.out.println(mp +"\n"+ maHoaDon);
 			nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-			if (hd != null) {
-				trangthai = "Đã TT";
-			} else {
+			if (hd.getTienKhachDua()==0) {
 				trangthai = "Chưa TT";
+			} else {
+				trangthai = "Đã TT";
 			}
+		
 			Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat, ngayGioNhan,
 					x.getSoNguoiHat(), hinhthuc, trangthai };
 			model.addRow(row);
@@ -368,10 +372,10 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				String maHoaDon = "HD" + mp.substring(3);
 				hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
 				nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-				if (hd != null) {
-					trangthai = "Đã TT";
-				} else {
+				if (hd.getTienKhachDua()==0) {
 					trangthai = "Chưa TT";
+				} else {
+					trangthai = "Đã TT";
 				}
 				if (pdp != null) {
 					btnTimKiem.setText("Hủy tìm");
@@ -396,13 +400,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 							String maHoaDon = "HD" + mp.substring(3);
 							hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
 							nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-							if (hd != null) {
-								trangthai = "Đã TT";
-							} else {
+							if (hd.getTienKhachDua()==0) {
 								trangthai = "Chưa TT";
+							} else {
+								trangthai = "Đã TT";
 							}
 							if (pdp != null) {
-								System.out.println("1");
+							
 								btnTimKiem.setText("Hủy tìm");
 								Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
 										kh.getHoTen(), ngayGioDat, ngayGioNhan, pdp.getSoNguoiHat(), hinhthuc,
@@ -429,10 +433,10 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 								String maHoaDon = "HD" + mp.substring(3);
 								hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
 								nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-								if (hd != null) {
-									trangthai = "Đã TT";
-								} else {
+								if (hd.getTienKhachDua()==0) {
 									trangthai = "Chưa TT";
+								} else {
+									trangthai = "Đã TT";
 								}
 								if (pdp != null) {
 									btnTimKiem.setText("Hủy tìm");
@@ -476,6 +480,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			xuatExcel();
 		}
 		if (o.equals(btn_NhanPhong)) {
+			
 			nhanPhong();
 			clearTable();
 			loadData();
@@ -628,8 +633,16 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		int row = tblPhieuDatPhong.getSelectedRow();
 		String maphong = (String) tblPhieuDatPhong.getValueAt(row, 1);
 		String hinhthuc = (String) tblPhieuDatPhong.getValueAt(row, 7);
+		String mp = (String) tblPhieuDatPhong.getValueAt(row, 0);
+		String trangthai="";
+		hd = hd_dao.getHoaDonTheoMaHoaDon("HD"+mp.substring(3));
+		if (hd.getTienKhachDua()<=0) {
+			trangthai = "Chưa TT";
+		} else {
+			trangthai = "Đã TT";
+		}
 		if (row != 1) {
-			if (hinhthuc.equals("Đặt trước")) {
+			if (hinhthuc.equals("Đặt trước") && trangthai.equals("Chưa TT")) {
 				int tb = JOptionPane.showConfirmDialog(null, "Bạn có hủy phòng?", "Hủy phòng chờ",
 						JOptionPane.YES_NO_OPTION);
 				if (tb == JOptionPane.YES_OPTION) {
@@ -641,8 +654,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 					p_dao.updatePhong(phong, maphong);
 					model.removeRow(row);
 				}
-			} else {
+			} else if (hinhthuc.equals("Đặt trước") && trangthai.equals("Đã TT")) {
+				JOptionPane.showMessageDialog(null, "Phòng đặt trước đã thanh toán nên thể không thể hủy!");
+			}
+			
+			else {
 				JOptionPane.showMessageDialog(null, "Phòng đặt trực tiếp không thể hủy!");
+				//(hinhthuc.equals("Đặt trực tiếp") && trangthai.equals("Đã TT") || hinhthuc.equals("Đặt trực tiếp") && trangthai.equals("Chưa TT")) {
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "chưa chọn phòng hủy!");
@@ -687,7 +705,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		String hinhthuc = (String) tblPhieuDatPhong.getValueAt(row, 7);
 
 		if (row != 1) {
-			if (hinhthuc.equals("Đặt trước")) {
+			if (hinhthuc.equals("Đặt trước") && p.getTrangThai()==Enum_TrangThai.Chờ) {
 
 				// giờ phút hiện tại
 				int gio_ht = LocalDateTime.now().getHour();
@@ -748,8 +766,9 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 					p_dao.updatePhong(phong, maphong);
 				}
 
+			//DataManager.setSoDienThoaiKHDat(kh.getSoDienThoai());
 			} else {
-				JOptionPane.showMessageDialog(null, "Phòng bạn chọn là phòng đặt trực tiếp nên không thể nhận !");
+				JOptionPane.showMessageDialog(null, "Phòng bạn chọn là phòng đang sử dụng nên không thể nhận !");
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Chưa chọn phòng chờ để nhận!");
