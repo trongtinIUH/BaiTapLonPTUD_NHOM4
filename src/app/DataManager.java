@@ -16,7 +16,7 @@ public class DataManager {
     private static double tongTienDV;
 	private static boolean loadDV = false;
 	private static boolean loadSDT = false;
-
+	
 	public static boolean isLoadSDT() {
 		return loadSDT;
 	}
@@ -106,5 +106,4 @@ public class DataManager {
 	public static void setThanhToan(boolean thanhToan) {
 		DataManager.thanhToan = thanhToan;
 	}
-
 }

@@ -24,6 +24,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
@@ -116,13 +118,13 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private ChiTietDichVu_dao ctdv_dao;
 	private SanPham_dao sp_dao;
 	private int tongTienDichVu;
-	private int tongTienPhong;
+	private double tongTienPhong;
 	private JCheckBox chckbx_XuatHoaDon;
 	private Date tgHT;
 	private Date gioHienTai;
 	private Date phutHienTai;
-	private int gioThua;
-	private double phutChinhXac;
+	private int gioThua = 0;
+	private double phutChinhXac = 0;
 	private double tongSoGioHat;
 	private double tongSoPhutHat;
 	private double soGioHat_Item;
@@ -134,11 +136,14 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private JTextField txtPhanTramKM;
 	private Date date_HT;
 	private DecimalFormat f;
+	private JButton btnTraLaiSP;
+	private int TienDichVu_item;
+	private double tienDichVu_update;
 
 	public Dialog_ThanhToan(String maPhong) {
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		setSize(800, 550);
+		setSize(800, 810);
 		setLocationRelativeTo(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
 	    this.setIconImage(icon.getImage());
@@ -181,7 +186,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		// table-------------------------------------------
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(0, 34, 784, 256);
+		panel_1.setBounds(0, 34, 784, 516);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -263,15 +268,230 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		tblThanhToan = new JTable(model);
 		tblThanhToan.setFont(new Font("Arial", Font.PLAIN, 12));
 		tblThanhToan.setBackground(Color.WHITE);
+		tblThanhToan.getTableHeader().setBackground(new Color(226, 228, 234));
+		tblThanhToan.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
+		tblThanhToan.setFont(new Font("Arial", Font.BOLD, 12));
+		tblThanhToan.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblThanhToan.getColumnModel().getColumn(1).setMinWidth(180);
+		tblThanhToan.setRowHeight(28);
 		JScrollPane sp = new JScrollPane(tblThanhToan);
-		sp.setBounds(5, 90, 772, 160);
+		sp.setBounds(5, 90, 772, 420);
 		panel_1.add(sp);
-		panel_1.setPreferredSize(new Dimension(772, 160));
+		panel_1.setPreferredSize(new Dimension(772, 420));
 		getContentPane().add(panel_1);
+		
+		loadData();
 
+		lblTienDV = new JLabel("Tiền DV:");
+		lblTienDV.setFont(new Font("Arial", Font.BOLD, 15));
+		lblTienDV.setBounds(5, 560, 90, 20);
+		getContentPane().add(lblTienDV);
+
+		lblTienPhong = new JLabel("Tiền phòng:");
+		lblTienPhong.setFont(new Font("Arial", Font.BOLD, 15));
+		lblTienPhong.setBounds(5, 585, 90, 20);
+		getContentPane().add(lblTienPhong);
+
+		lblTongCong = new JLabel("Tổng cộng:");
+		lblTongCong.setFont(new Font("Arial", Font.BOLD, 15));
+		lblTongCong.setBounds(5, 610, 90, 20);
+		getContentPane().add(lblTongCong);
+
+		lblThu = new JLabel("Thuế VAT:");
+		lblThu.setFont(new Font("Arial", Font.BOLD, 15));
+		lblThu.setBounds(5, 635, 90, 20);
+		getContentPane().add(lblThu);
+
+		lbl_TongThanhTien = new JLabel("Tổng thành tiền: ");
+		lbl_TongThanhTien.setForeground(Color.RED);
+		lbl_TongThanhTien.setFont(new Font("Arial", Font.BOLD, 15));
+		lbl_TongThanhTien.setBounds(5, 670, 135, 20);
+		getContentPane().add(lbl_TongThanhTien);
+		
+		f = new DecimalFormat("###,###");
+		lblVn_2 = new JLabel(f.format(tongTienDichVu) + " VNĐ");
+		lblVn_2.setFont(new Font("Arial", Font.BOLD, 15));
+		lblVn_2.setBounds(150, 560, 150, 20);
+		getContentPane().add(lblVn_2);
+
+		lblVn_1 = new JLabel(f.format(tongTienPhong) + " VNĐ");
+		lblVn_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblVn_1.setBounds(150, 585, 150, 20);
+		getContentPane().add(lblVn_1);
+
+		lblVn = new JLabel(f.format(tongTienDichVu + tongTienPhong) + " VNĐ");
+		lblVn.setFont(new Font("Arial", Font.BOLD, 15));
+		lblVn.setBounds(150, 610, 150, 20);
+		getContentPane().add(lblVn);
+
+		lblThu_1 = new JLabel("10%");
+		lblThu_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblThu_1.setBounds(150, 635, 110, 20);
+		getContentPane().add(lblThu_1);
+
+		lbl_TongThanhTien_1 = new JLabel(
+				f.format((tongTienDichVu + tongTienPhong) + 0.1 * (tongTienDichVu + tongTienPhong)) + " VNĐ");
+		lbl_TongThanhTien_1.setForeground(Color.RED);
+		lbl_TongThanhTien_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lbl_TongThanhTien_1.setBounds(150, 670, 150, 20);
+		getContentPane().add(lbl_TongThanhTien_1);
+
+		chckbx_XuatHoaDon = new JCheckBox("Xuất Hóa Đơn");
+		chckbx_XuatHoaDon.setFont(new Font("Arial", Font.BOLD, 12));
+		chckbx_XuatHoaDon.setBounds(10, 705, 110, 20);
+		getContentPane().add(chckbx_XuatHoaDon);
+
+		JLabel lbl_MaGiamGia = new JLabel("Mã giảm giá:");
+		lbl_MaGiamGia.setFont(new Font("Arial", Font.BOLD, 15));
+		lbl_MaGiamGia.setBounds(355, 560, 100, 25);
+		getContentPane().add(lbl_MaGiamGia);
+
+		JLabel lbl_PhanTtramKM = new JLabel("Phần trăm KM:");
+		lbl_PhanTtramKM.setFont(new Font("Arial", Font.BOLD, 15));
+		lbl_PhanTtramKM.setBounds(355, 590, 110, 25);
+		getContentPane().add(lbl_PhanTtramKM);
+
+		JLabel lbl_TienNhan = new JLabel("Tiền nhận:");
+		lbl_TienNhan.setFont(new Font("Arial", Font.BOLD, 15));
+		lbl_TienNhan.setBounds(355, 620, 90, 25);
+		getContentPane().add(lbl_TienNhan);
+
+		JLabel lbl_TienThua = new JLabel("Tiền thừa:");
+		lbl_TienThua.setFont(new Font("Arial", Font.BOLD, 15));
+		lbl_TienThua.setBounds(355, 650, 90, 25);
+		getContentPane().add(lbl_TienThua);
+
+		txtMaGiamGia = new JTextField();
+//		txtMaGiamGia.setText("");
+		txtMaGiamGia.setFont(new Font("Arial", Font.BOLD, 15));
+		txtMaGiamGia.setBounds(470, 560, 200, 25);
+		getContentPane().add(txtMaGiamGia);
+		txtMaGiamGia.setColumns(10);
+
+		txtPhanTramKM = new JTextField("0");
+		txtPhanTramKM.setFont(new Font("Arial", Font.BOLD, 15));
+		txtPhanTramKM.setEditable(false);
+		txtPhanTramKM.setColumns(10);
+		txtPhanTramKM.setBounds(470, 590, 100, 25);
+		getContentPane().add(txtPhanTramKM);
+
+		txtTienNhan = new JTextField();
+		txtTienNhan.setFont(new Font("Arial", Font.BOLD, 15));
+		txtTienNhan.setColumns(10);
+		txtTienNhan.setBounds(470, 620, 200, 25);
+		getContentPane().add(txtTienNhan);
+
+		txtTienThua = new JTextField();
+		txtTienThua.setFont(new Font("Arial", Font.BOLD, 15));
+		txtTienThua.setEditable(false);
+		txtTienThua.setColumns(10);
+		txtTienThua.setBounds(470, 650, 200, 25);
+		getContentPane().add(txtTienThua);
+
+		DocumentListener documentListener = new DocumentListener() {
+			public void insertUpdate(DocumentEvent e) {
+				updateTxtTienThua();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				updateTxtTienThua();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				updateTxtTienThua();
+			}
+
+			public void updateTxtTienThua() {
+				try {
+					// Lấy giá trị từ txtTienNhan
+					String tienNhan = txtTienNhan.getText();
+
+					// Thực hiện công thức
+					String tongTien = lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", "").replaceAll(",", "");
+					double tienThua = Double.parseDouble(tienNhan) - Double.parseDouble(tongTien);
+
+					// Đặt giá trị vào txtTienThua
+					txtTienThua.setText(f.format((tienThua)) + " VNĐ");
+				} catch (NumberFormatException ex) {
+					// Xử lý ngoại lệ khi nhập không phải là số
+					txtTienThua.setText(""); // Hoặc xử lý khác tùy thuộc vào yêu cầu của bạn
+				}
+			}
+		};
+
+		btnKiemTra = new JButton("Kiểm tra");
+		btnKiemTra.setFont(new Font("Arial", Font.BOLD, 15));
+		btnKiemTra.setBounds(675, 560, 100, 30);
+		getContentPane().add(btnKiemTra);
+
+		// 2 nút jbutton cuối
+		// --------------------------------------------------------------------------------
+		btnThanhToan = new JButton("Thanh Toán");
+		btnThanhToan.setBounds(20, 730, 250, 35);
+		btnThanhToan.setForeground(Color.WHITE);
+		btnThanhToan.setFont(new Font("Arial", Font.BOLD, 18));
+		btnThanhToan.setBorder(new RoundedBorder(60));
+		btnThanhToan.setBackground(new Color(252, 155, 78, 255));
+		// btnThanhToan.setBorderPainted(false);
+		getContentPane().add(btnThanhToan);
+		
+		getContentPane().add(btnTraLaiSP = new JButton("Trả dịch vụ"));
+		btnTraLaiSP.setBounds(295,730,230,35);
+		btnTraLaiSP.setBorder(new RoundedBorder(60));
+		btnTraLaiSP.setFont(new Font("Arial", Font.BOLD, 18));
+		btnTraLaiSP.setBackground(new Color(45, 110, 65));
+		btnTraLaiSP.setForeground(Color.white);
+
+		btnQuayLai = new JButton("Quay Lại");
+		btnQuayLai.setForeground(Color.WHITE);
+		btnQuayLai.setFont(new Font("Arial", Font.BOLD, 18));
+		btnQuayLai.setBorder(new RoundedBorder(60));
+		btnQuayLai.setBackground(new Color(13, 153, 255, 255));
+		btnQuayLai.setBounds(545, 730, 220, 35);
+		getContentPane().add(btnQuayLai);
+	
+
+		// thêm sk
+		btnKiemTra.addActionListener(this);
+		btnThanhToan.addActionListener(this);
+		btnQuayLai.addActionListener(this);
+		btnTraLaiSP.addActionListener(this);
+		txtTienNhan.getDocument().addDocumentListener(documentListener);
+	}
+	
+	public void clear_Tien() {
+		lblVn_2.setText("");
+		lblVn.setText("");
+		lbl_TongThanhTien_1.setText("");
+	}
+	
+	public void load_Tien() {
+		tienDichVu_update = 0;
+		for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
+			tienDichVu_update += ctdv.getSoLuong() * ctdv.getGia();
+		}
+		
+		lblVn_2.setText(f.format(tienDichVu_update) + " VNĐ");
+		lblVn.setText(f.format(tienDichVu_update + tongTienPhong) + " VNĐ");
+		lbl_TongThanhTien_1.setText(f.format((tienDichVu_update + tongTienPhong) + 0.1 * (tienDichVu_update + tongTienPhong)) + " VNĐ");
+	}
+	
+	public void clearTable() {
+		while(model.getRowCount()>0) {
+			model.removeRow(0);
+		}
+	}
+	
+	public void loadData() {
+		lbl_TongThoiLuong_1.setText("");
 		int i = 1;
 		tongTienPhong = 0;
+		tongTienDichVu = 0;
+		tongSoGioHat = 0;
+		tongSoPhutHat = 0;
 		for (ChiTietHoaDon cthd : cthd_dao.getChiTietHoaDonTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
+			soGioHat_Item = 0;
+			soPhutHat_Item = 0;
 			DateFormat dateFormatGio = new SimpleDateFormat("HH");
 			gioHienTai = new Date();
 			double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
@@ -311,187 +531,34 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 			tongSoGioHat += soGioHat_Item;
 			tongSoPhutHat += soPhutHat_Item;
+			
+			TienDichVu_item = 0;
+			for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHDVaMaPhong(lbl_MaHoaDon_1.getText().trim(), cthd.getPhong().getMaPhong())) {
+				SanPham spdv = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
+				Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), ctdv.getGia(), spdv.getDonViTinh(),
+						ctdv.getSoLuong() * ctdv.getGia() };
+				model.addRow(rowSanPham);
+				TienDichVu_item += ctdv.getSoLuong() * ctdv.getGia();
+			}
+			String col_temp[] = {"","","","","",""};
+			model.addRow(col_temp);
+			tongTienDichVu += TienDichVu_item;
 		}
 		gioThua = (int) (tongSoPhutHat / 60);
 		phutChinhXac = tongSoPhutHat % 60;
 		DecimalFormat df2 = new DecimalFormat("#.##");
 		lbl_TongThoiLuong_1.setText(df2.format(tongSoGioHat + gioThua) + " giờ " + df2.format(phutChinhXac) + " phút");
-
-		tongTienDichVu = 0;
-		for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
-			SanPham spdv = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
-			Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), ctdv.getGia(), spdv.getDonViTinh(),
-					ctdv.getSoLuong() * ctdv.getGia() };
-			model.addRow(rowSanPham);
-			tongTienDichVu += ctdv.getSoLuong() * ctdv.getGia();
+	}
+	
+	private String maPhongUngVoiSP() {
+		String maPhong = "";
+		for (int row = tblThanhToan.getSelectedRow(); row >= 0; row--) {
+			if(model.getValueAt(row, 4).toString() == "") {
+				maPhong = model.getValueAt(row,1).toString();
+				break;
+			}	
 		}
-
-		lblTienDV = new JLabel("Tiền DV:");
-		lblTienDV.setFont(new Font("Arial", Font.BOLD, 15));
-		lblTienDV.setBounds(5, 300, 90, 20);
-		getContentPane().add(lblTienDV);
-
-		lblTienPhong = new JLabel("Tiền phòng:");
-		lblTienPhong.setFont(new Font("Arial", Font.BOLD, 15));
-		lblTienPhong.setBounds(5, 325, 90, 20);
-		getContentPane().add(lblTienPhong);
-
-		lblTongCong = new JLabel("Tổng cộng:");
-		lblTongCong.setFont(new Font("Arial", Font.BOLD, 15));
-		lblTongCong.setBounds(5, 350, 90, 20);
-		getContentPane().add(lblTongCong);
-
-		lblThu = new JLabel("Thuế VAT:");
-		lblThu.setFont(new Font("Arial", Font.BOLD, 15));
-		lblThu.setBounds(5, 375, 90, 20);
-		getContentPane().add(lblThu);
-
-		lbl_TongThanhTien = new JLabel("Tổng thành tiền: ");
-		lbl_TongThanhTien.setForeground(Color.RED);
-		lbl_TongThanhTien.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TongThanhTien.setBounds(5, 420, 135, 20);
-		getContentPane().add(lbl_TongThanhTien);
-
-		f = new DecimalFormat("###,###");
-		lblVn_2 = new JLabel(f.format(tongTienDichVu) + " VNĐ");
-		lblVn_2.setFont(new Font("Arial", Font.BOLD, 15));
-		lblVn_2.setBounds(150, 300, 150, 20);
-		getContentPane().add(lblVn_2);
-
-		lblVn_1 = new JLabel(f.format(tongTienPhong) + " VNĐ");
-		lblVn_1.setFont(new Font("Arial", Font.BOLD, 15));
-		lblVn_1.setBounds(150, 325, 150, 20);
-		getContentPane().add(lblVn_1);
-
-		lblVn = new JLabel(f.format(tongTienDichVu + tongTienPhong) + " VNĐ");
-		lblVn.setFont(new Font("Arial", Font.BOLD, 15));
-		lblVn.setBounds(150, 350, 150, 20);
-		getContentPane().add(lblVn);
-
-		lblThu_1 = new JLabel("10%");
-		lblThu_1.setFont(new Font("Arial", Font.BOLD, 15));
-		lblThu_1.setBounds(150, 375, 110, 20);
-		getContentPane().add(lblThu_1);
-
-		lbl_TongThanhTien_1 = new JLabel(
-				f.format((tongTienDichVu + tongTienPhong) + 0.1 * (tongTienDichVu + tongTienPhong)) + " VNĐ");
-		lbl_TongThanhTien_1.setForeground(Color.RED);
-		lbl_TongThanhTien_1.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TongThanhTien_1.setBounds(150, 420, 150, 20);
-		getContentPane().add(lbl_TongThanhTien_1);
-
-		chckbx_XuatHoaDon = new JCheckBox("Xuất Hóa Đơn");
-		chckbx_XuatHoaDon.setFont(new Font("Arial", Font.BOLD, 12));
-		chckbx_XuatHoaDon.setBounds(10, 445, 110, 20);
-		getContentPane().add(chckbx_XuatHoaDon);
-
-		JLabel lbl_MaGiamGia = new JLabel("Mã giảm giá:");
-		lbl_MaGiamGia.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_MaGiamGia.setBounds(355, 300, 100, 25);
-		getContentPane().add(lbl_MaGiamGia);
-
-		JLabel lbl_PhanTtramKM = new JLabel("Phần trăm KM:");
-		lbl_PhanTtramKM.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_PhanTtramKM.setBounds(355, 330, 110, 25);
-		getContentPane().add(lbl_PhanTtramKM);
-
-		JLabel lbl_TienNhan = new JLabel("Tiền nhận:");
-		lbl_TienNhan.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TienNhan.setBounds(355, 360, 90, 25);
-		getContentPane().add(lbl_TienNhan);
-
-		JLabel lbl_TienThua = new JLabel("Tiền thừa:");
-		lbl_TienThua.setFont(new Font("Arial", Font.BOLD, 15));
-		lbl_TienThua.setBounds(355, 390, 90, 25);
-		getContentPane().add(lbl_TienThua);
-
-		txtMaGiamGia = new JTextField();
-//		txtMaGiamGia.setText("");
-		txtMaGiamGia.setFont(new Font("Arial", Font.BOLD, 15));
-		txtMaGiamGia.setBounds(470, 300, 200, 25);
-		getContentPane().add(txtMaGiamGia);
-		txtMaGiamGia.setColumns(10);
-
-		txtPhanTramKM = new JTextField();
-		txtPhanTramKM.setFont(new Font("Arial", Font.BOLD, 15));
-		txtPhanTramKM.setEditable(false);
-		txtPhanTramKM.setColumns(10);
-		txtPhanTramKM.setBounds(470, 330, 100, 25);
-		getContentPane().add(txtPhanTramKM);
-
-		txtTienNhan = new JTextField();
-		txtTienNhan.setFont(new Font("Arial", Font.BOLD, 15));
-		txtTienNhan.setColumns(10);
-		txtTienNhan.setBounds(470, 360, 200, 25);
-		getContentPane().add(txtTienNhan);
-
-		txtTienThua = new JTextField();
-		txtTienThua.setFont(new Font("Arial", Font.BOLD, 15));
-		txtTienThua.setEditable(false);
-		txtTienThua.setColumns(10);
-		txtTienThua.setBounds(470, 390, 200, 25);
-		getContentPane().add(txtTienThua);
-
-		DocumentListener documentListener = new DocumentListener() {
-			public void insertUpdate(DocumentEvent e) {
-				updateTxtTienThua();
-			}
-
-			public void removeUpdate(DocumentEvent e) {
-				updateTxtTienThua();
-			}
-
-			public void changedUpdate(DocumentEvent e) {
-				updateTxtTienThua();
-			}
-
-			public void updateTxtTienThua() {
-				try {
-					// Lấy giá trị từ txtTienNhan
-					String tienNhan = txtTienNhan.getText();
-
-					// Thực hiện công thức
-					String tongTien = lbl_TongThanhTien_1.getText().replaceAll(" VNĐ", "").replaceAll(",", "");
-					double tienThua = Double.parseDouble(tienNhan) - Double.parseDouble(tongTien);
-
-					// Đặt giá trị vào txtTienThua
-					txtTienThua.setText(f.format((tienThua)) + " VNĐ");
-				} catch (NumberFormatException ex) {
-					// Xử lý ngoại lệ khi nhập không phải là số
-					txtTienThua.setText(""); // Hoặc xử lý khác tùy thuộc vào yêu cầu của bạn
-				}
-			}
-		};
-
-		btnKiemTra = new JButton("Kiểm tra");
-		btnKiemTra.setFont(new Font("Arial", Font.BOLD, 15));
-		btnKiemTra.setBounds(675, 300, 100, 30);
-		getContentPane().add(btnKiemTra);
-
-		// 2 nút jbutton cuối
-		// --------------------------------------------------------------------------------
-		btnThanhToan = new JButton("Thanh Toán");
-		btnThanhToan.setBounds(20, 470, 250, 35);
-		btnThanhToan.setForeground(Color.WHITE);
-		btnThanhToan.setFont(new Font("Arial", Font.BOLD, 18));
-		btnThanhToan.setBorder(new RoundedBorder(60));
-		btnThanhToan.setBackground(new Color(252, 155, 78, 255));
-		// btnThanhToan.setBorderPainted(false);
-		getContentPane().add(btnThanhToan);
-
-		btnQuayLai = new JButton("Quay Lại");
-		btnQuayLai.setForeground(Color.WHITE);
-		btnQuayLai.setFont(new Font("Arial", Font.BOLD, 18));
-		btnQuayLai.setBorder(new RoundedBorder(60));
-		btnQuayLai.setBackground(new Color(13, 153, 255, 255));
-		btnQuayLai.setBounds(450, 470, 250, 35);
-		getContentPane().add(btnQuayLai);
-
-		// thêm sk
-		btnKiemTra.addActionListener(this);
-		btnThanhToan.addActionListener(this);
-		btnQuayLai.addActionListener(this);
-		txtTienNhan.getDocument().addDocumentListener(documentListener);
+		return maPhong;
 	}
 
 	private void inHoaDon(String path) {
@@ -512,7 +579,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			d.open();
 
 			PdfContentByte contentByte = writer.getDirectContent();
-			Image image = Image.getInstance(contentByte, scaleImage(520, height, img), 1);
+			Image image = Image.getInstance(contentByte, scaleImage(600, height, img), 1);
 
 			PdfTemplate template = contentByte.createTemplate(width, height);
 			image.setAbsolutePosition(0, 0);
@@ -537,7 +604,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		BufferedImage bi = null;
 		try {
 			ImageIcon ii = new ImageIcon(img);
-			bi = new BufferedImage(WIDTH + 210, HEIGHT - 73, BufferedImage.TYPE_INT_RGB);
+			bi = new BufferedImage(WIDTH, HEIGHT - 73, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g2d = (Graphics2D) bi.createGraphics();
 			g2d.addRenderingHints(
 					new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
@@ -672,6 +739,19 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			return false;
 		}
 	}
+	
+	public void traSP() {
+		if(tblThanhToan.getSelectedRow()== -1 || model.getValueAt(tblThanhToan.getSelectedRow(), 4).toString() == "") {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn 1 dịch vụ để trả!!!");
+		}else if(tblThanhToan.getSelectedRowCount() > 1) {
+			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 dịch vụ!!");
+		}
+		else {
+			Dialog_TraSanPham dialog_TraSP = new Dialog_TraSanPham(Integer.parseInt(model.getValueAt(tblThanhToan.getSelectedRow(), 2).toString()), 
+					model.getValueAt(tblThanhToan.getSelectedRow(), 1).toString(), lbl_MaHoaDon_1.getText(), maPhongUngVoiSP(), this);
+			dialog_TraSP.setVisible(true);
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -683,6 +763,8 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			setVisible(false);
 		} else if (o.equals(btnKiemTra)) {
 			kiemTra();
+		}else if(o.equals(btnTraLaiSP)) {
+			traSP();
 		}
 	}
 }
