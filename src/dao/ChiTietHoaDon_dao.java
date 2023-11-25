@@ -137,6 +137,60 @@ public class ChiTietHoaDon_dao {
 		}
 		return soGioHat;
 	}
+	
+	public double tinhSoGioHatTheoNam(int nam) {
+		double soGioHat = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT FORMAT(ngayLapHoaDon, 'yyyy') AS Nam, "
+					+ "    SUM(CTHD.soGioHat) AS TongSoGioHat  "
+					+ "FROM HoaDonDatPhong HDP  "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDP.maHoaDon = CTHD.maHoaDon "
+					+ "WHERE FORMAT(ngayLapHoaDon, 'yyyy') = '"+nam+"' "
+					+ "GROUP BY FORMAT(ngayLapHoaDon, 'yyyy')";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				soGioHat = rs.getDouble(2);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return soGioHat;
+	}
+	
+	public double tinhSoGioHatTheoNhieuNam(int nambt, int namkt) {
+		double soGioHat = 0;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "SELECT SUM(CTHD.soGioHat) AS TongSoGioHat "
+					+ "FROM HoaDonDatPhong HDP "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDP.maHoaDon = CTHD.maHoaDon "
+					+ "WHERE YEAR(ngayLapHoaDon) BETWEEN "+nambt+" AND "+namkt+"";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				soGioHat = rs.getDouble(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return soGioHat;
+	}
 
 	public boolean addChiTietHD(ChiTietHoaDon cthd) {
 		try {
