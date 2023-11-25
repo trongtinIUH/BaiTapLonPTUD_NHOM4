@@ -672,24 +672,28 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 					// Update giờ trả, số giờ hát của chi tiết hóa đơn
 					for (int row = 0; row < tblThanhToan.getRowCount(); row++) {
-						tgHT = new Date();
-						Timestamp ngayGioTraPhong = new Timestamp(tgHT.getTime());
-						double thoiGianHat = Double.parseDouble(model.getValueAt(row, 2).toString());
+						if(model.getValueAt(row, 4).toString()!="") {
+							tgHT = new Date();
+							Timestamp ngayGioTraPhong = new Timestamp(tgHT.getTime());
+							double thoiGianHat = Double.parseDouble(model.getValueAt(row, 2).toString());
 
-						String maCT = lbl_MaHoaDon_1.getText().trim();
-						String maPhong = model.getValueAt(row, 1).toString();
+							String maCT = lbl_MaHoaDon_1.getText().trim();
+							String maPhong = model.getValueAt(row, 1).toString();
 
-						Timestamp ngayGioNhanPhong = new Timestamp(tgHT.getTime()); // Giờ ảo
+							Timestamp ngayGioNhanPhong = new Timestamp(tgHT.getTime()); // Giờ ảo
 
-						HoaDonDatPhong hd = new HoaDonDatPhong(maCT);
-						Phong ph = new Phong(maPhong);
-						ChiTietHoaDon cthd_Item = new ChiTietHoaDon(hd, ph, ngayGioNhanPhong, ngayGioTraPhong,
-								thoiGianHat);
-						cthd_dao.UpdateChiTietHD_ChuyenPhong(cthd_Item);
+							HoaDonDatPhong hd = new HoaDonDatPhong(maCT);
+							Phong ph = new Phong(maPhong);
+							ChiTietHoaDon cthd_Item = new ChiTietHoaDon(hd, ph, ngayGioNhanPhong, ngayGioTraPhong,
+									thoiGianHat);
+							cthd_dao.UpdateChiTietHD_ChuyenPhong(cthd_Item);
+						}
+
 					}
 
 					JOptionPane.showMessageDialog(this, "Thanh Toán thành công");
 					DataManager.setThanhToan(true);
+					DataManager.setSoDienThoaiKHDat("");
 
 					if (chckbx_XuatHoaDon.isSelected()) {
 						inHoaDon(lbl_MaHoaDon_1.getText());
