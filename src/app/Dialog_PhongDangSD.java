@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -11,11 +12,17 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.crypto.spec.PBEParameterSpec;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import dao.ChiTietHoaDon_dao;
 import dao.KhachHang_dao;
@@ -243,6 +250,61 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		btnThanhToan.addActionListener(this);
 		btnThemDV.addActionListener(this);
 		btnThemPhong.addActionListener(this);
+		
+		
+		
+		Action chuyenPhongAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btnChuyenPhong.doClick();
+		    }
+		};
+
+		
+		Action themDVAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btnThemDV.doClick();
+		    }
+		};
+
+		
+		Action thanhToanAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btnThanhToan.doClick();
+		    }
+		};
+		// Lấy InputMap và ActionMap của JPanel
+		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
+
+		
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), "themDv");
+		actionMap.put("themDv", themDVAction);
+
+		
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK), "chuyenPhong");
+		actionMap.put("chuyenPhong", chuyenPhongAction);
+		
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "thanhToan");
+		actionMap.put("thanhToan", thanhToanAction);
+
 	}
 
 	// hàm cập nhật các Jlabel góc phải

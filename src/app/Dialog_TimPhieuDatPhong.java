@@ -9,7 +9,9 @@ import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -169,7 +171,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		comboBox_TrangThai_1.setFont(new Font("Arial", Font.BOLD, 15));
 		comboBox_TrangThai_1.setBackground(Color.WHITE);
 		comboBox_TrangThai_1.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Mã phiếu đặt", "Số điện thoại KH", "Họ tên KH" }));
+				new DefaultComboBoxModel<String>(new String[] { "Mã phiếu đặt", "Số điện thoại KH", "Họ tên KH", "Ngày nhận phòng" }));
 		comboBox_TrangThai_1.setBounds(120, 5, 250, 30);
 		panel_1.add(comboBox_TrangThai_1);
 
@@ -297,42 +299,44 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
 		String hinhthuc = "";
 		String trangthai = "";
-		// Lấy tất cả phiếu đặt phòng
 		ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong();
-
-		// Sắp xếp danh sách theo ngày giờ đặt phòng
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm"); 
 		Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
-
 		for (PhieuDatPhong x : allPhieuDatPhong) {
 			String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
 			String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
-			//so sánh mã hóa đơn tồn tại
-			if (!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
-				hinhthuc = "Đặt trước";
-			} else
-				hinhthuc = "Đặt trực tiếp";
+			if (formatter1.format(x.getNgayGioDatPhong()).equals(formatter1.format(x.getNgayGioNhanPhong()))) {
+			    hinhthuc = "Đặt trực tiếp";
+			} else {
+			    hinhthuc = "Đặt trước";
+			}
 			String mp = x.getMaPhieu();
 			String mkh = x.getKhachHang().getMaKhachHang();
 			pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
 			p = pdp.getPhong();
 			kh = kh_dao.getKhachHangTheoMaKH(mkh);
-			//System.out.println(mp);
 			hd = hd_dao.getHoaDonDatPhongTheoMaPDP(mp);
-			//System.out.println(mp+"\n"+hd.getMaHoaDon());
-			//System.out.println(mp +"\n"+ maHoaDon);
 			nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-			if (hd.getTienKhachDua()==0) {
-				trangthai = "Chưa TT";
-			} else {
-				trangthai = "Đã TT";
+			
+			if (hd != null && hd.getTienKhachDua() > 0) {
+				if(hinhthuc.equals("Đặt trực tiếp"))
+			    trangthai = "Đã TT";
+				else  trangthai = "Đã TT";
 			}
-		
+			else if (hd != null && hd.getTienKhachDua() == 0) {
+			    trangthai = "Chưa TT";
+			} 
+			else {
+				 trangthai = "Chưa TT";
+			}
+
 			Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat, ngayGioNhan,
 					x.getSoNguoiHat(), hinhthuc, trangthai };
 			model.addRow(row);
 		}
 		Canh_Deu_Bang();
 	}
+
 
 //clear bảng
 	public void clearTable() {
@@ -349,10 +353,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		String ngayGioDat = pdp.getNgayGioDatPhong().format(formatter);
 		String ngayGioNhan = pdp.getNgayGioNhanPhong().format(formatter);
 		String thongtinTimKiem = txtLoaiTimKiem.getText();
-		if (!pdp.getNgayGioDatPhong().isEqual(pdp.getNgayGioNhanPhong())) {
-			hinhthuc = "Đặt trước";
-		} else
-			hinhthuc = "Đặt trực tiếp";
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm"); 
+		if (formatter1.format(pdp.getNgayGioDatPhong()).equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+		    hinhthuc = "Đặt trực tiếp";
+		} else {
+		    hinhthuc = "Đặt trước";
+		}
 
 		// {"Mã phiếu đặt", "Số điện thoại KH","Họ tên KH"}
 		thoatTim: if (btnTimKiem.getText().equals("Tìm kiếm")) {
@@ -372,10 +378,14 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				String maHoaDon = "HD" + mp.substring(3);
 				hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
 				nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-				if (hd.getTienKhachDua()==0) {
-					trangthai = "Chưa TT";
+				if (hd != null && hd.getTienKhachDua() == 0) {
+				    trangthai = "Chưa TT";
+				} else if (hd != null && hd.getTienKhachDua() > 0) {
+				//	if(hinhthuc=="Đặt trực tiếp")
+				    trangthai = "Đã TT";
+				//	else  trangthai = "Đã TT";
 				} else {
-					trangthai = "Đã TT";
+					 trangthai = "Chưa TT";
 				}
 				if (pdp != null) {
 					btnTimKiem.setText("Hủy tìm");
@@ -396,14 +406,23 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 					ArrayList<PhieuDatPhong> pdps = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
 					for (PhieuDatPhong pdp : pdps) {
 						if (kh != null) {
+							if (formatter1.format(pdp.getNgayGioDatPhong()).equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+							    hinhthuc = "Đặt trực tiếp";
+							} else {
+							    hinhthuc = "Đặt trước";
+							}
 							String mp = pdp.getMaPhieu();
 							String maHoaDon = "HD" + mp.substring(3);
 							hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
 							nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-							if (hd.getTienKhachDua()==0) {
-								trangthai = "Chưa TT";
+							if (hd != null && hd.getTienKhachDua() == 0) {
+							    trangthai = "Chưa TT";
+							} else if (hd != null && hd.getTienKhachDua() > 0) {
+								if(hinhthuc=="Đặt trực tiếp")
+							    trangthai = "Đã TT";
+								else  trangthai = "Đã TT";
 							} else {
-								trangthai = "Đã TT";
+								 trangthai = "Chưa TT";
 							}
 							if (pdp != null) {
 							
@@ -433,10 +452,14 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 								String maHoaDon = "HD" + mp.substring(3);
 								hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
 								nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-								if (hd.getTienKhachDua()==0) {
-									trangthai = "Chưa TT";
+								if (hd != null && hd.getTienKhachDua() == 0) {
+								    trangthai = "Chưa TT";
+								} else if (hd != null && hd.getTienKhachDua() > 0) {
+									if(hinhthuc=="Đặt trực tiếp")
+								    trangthai = "Đã TT";
+									else  trangthai = "Đã TT";
 								} else {
-									trangthai = "Đã TT";
+									 trangthai = "Chưa TT";
 								}
 								if (pdp != null) {
 									btnTimKiem.setText("Hủy tìm");
@@ -455,6 +478,48 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 					JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
 				}
 			}
+			else if (comboBox_TrangThai_1.getSelectedItem().equals("Ngày nhận phòng")) {
+				DateTimeFormatter formatter_ngaynhan = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				String ngaynhanStr = txtLoaiTimKiem.getText();
+				LocalDate ngaynhan = LocalDate.parse(ngaynhanStr, formatter_ngaynhan);
+				ArrayList<PhieuDatPhong> dsPDPtheoNgay = pdp_dao.getPDPTheoNgayNhan(ngaynhan);
+				clearTable();	
+				for (PhieuDatPhong pdp : dsPDPtheoNgay) {
+					//so sánh mã hóa đơn tồn tại
+					if (formatter1.format(pdp.getNgayGioDatPhong()).equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+					    hinhthuc = "Đặt trực tiếp";
+					} else {
+					    hinhthuc = "Đặt trước";
+					}
+					if (dsPDPtheoNgay != null) {
+						String mp = pdp.getMaPhieu();
+						String maHoaDon = "HD" + mp.substring(3);
+						hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+						nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+						if (hd != null && hd.getTienKhachDua() == 0) {
+						    trangthai = "Chưa TT";
+						} else if (hd != null && hd.getTienKhachDua() > 0) {
+							if(hinhthuc=="Đặt trực tiếp")
+						    trangthai = "Đã TT";
+							else  trangthai = "Đã TT";
+						} else {
+							 trangthai = "Chưa TT";
+						}
+						if (pdp != null) {
+						
+							btnTimKiem.setText("Hủy tìm");
+							Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
+									kh.getHoTen(), pdp.getNgayGioDatPhong().format(formatter), pdp.getNgayGioNhanPhong().format(formatter), pdp.getSoNguoiHat(), hinhthuc,
+									trangthai };
+							model.addRow(row);
+							Canh_Deu_Bang();
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+					}
+				}
+			}
+
 		} else {
 			clearTable();
 			loadData();
@@ -519,10 +584,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				for (PhieuDatPhong x : allPhieuDatPhong) {
 					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
 					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
-					if (!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
-						hinhthuc = "Đặt trước";
-					} else
-						hinhthuc = "Đặt trực tiếp";
+					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm"); 
+					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
+					    hinhthuc = "Đặt trực tiếp";
+					} else {
+					    hinhthuc = "Đặt trước";
+					}
 					String mp = x.getMaPhieu();
 					// String maHoaDon = "HD" + mp.substring(3);
 					String mkh = x.getKhachHang().getMaKhachHang();
@@ -554,10 +621,12 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				for (PhieuDatPhong x : allPhieuDatPhong) {
 					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
 					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
-					if (!x.getNgayGioDatPhong().isEqual(x.getNgayGioNhanPhong())) {
-						hinhthuc = "Đặt trước";
-					} else
-						hinhthuc = "Đặt trực tiếp";
+					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm"); 
+					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
+					    hinhthuc = "Đặt trực tiếp";
+					} else {
+					    hinhthuc = "Đặt trước";
+					}
 					String mp = x.getMaPhieu();
 					String mkh = x.getKhachHang().getMaKhachHang();
 					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);

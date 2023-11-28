@@ -2,18 +2,26 @@ package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.xml.crypto.Data;
 
 import java.awt.Font;
 import java.awt.Color;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 import entity.LoaiPhong;
@@ -138,12 +146,51 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		btn_DatPhongCho.setForeground(Color.WHITE);
 		btn_DatPhongCho.setFont(new Font("Arial", Font.BOLD, 18));
 		btn_DatPhongCho.setBorderPainted(false);
-		btn_DatPhongCho.setBackground(new Color(222, 222, 36,255));
+		btn_DatPhongCho.setBackground(new Color(255, 216, 0));
 		btn_DatPhongCho.setBounds(40, 301, 200, 40);
 		getContentPane().add(btn_DatPhongCho);
 		// add sự kiện
 		btnDatPhong.addActionListener(this);
 		btn_DatPhongCho.addActionListener(this);
+		
+		
+		Action datPhongAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        btnDatPhong.doClick();
+		    }
+		};
+
+		
+		Action datPhongChoAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        btn_DatPhongCho.doClick();
+		    }
+		};
+
+		// Lấy InputMap và ActionMap của JPanel
+		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
+
+		// Thêm phím nóng cho btn
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), "datPhong");
+		actionMap.put("datPhong", datPhongAction);
+
+		// Thêm phím nóng cho btn
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "datPhongCho");
+		actionMap.put("datPhongCho", datPhongChoAction);
+
 	}
 
 	@Override

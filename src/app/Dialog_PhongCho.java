@@ -5,16 +5,23 @@ import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
@@ -244,6 +251,45 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		// thêm sự kiện button
 		btn_HuyPhong.addActionListener(this);
 		btnNhanPhong.addActionListener(this);
+		
+		// Tạo một Action cho btnDatPhong
+		
+		Action huyPhongAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btn_HuyPhong.doClick();
+		    }
+		};
+
+		// Tạo một Action cho btn_DatPhongCho
+		Action nhanPhongAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btnNhanPhong.doClick();
+		    }
+		};
+
+		// Lấy InputMap và ActionMap của JPanel
+		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
+
+		// Thêm phím nóng cho btnDatPhong
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK), "huyPhong");
+		actionMap.put("huyPhong", huyPhongAction);
+
+		// Thêm phím nóng cho btn_DatPhongCho
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "nhanPhong");
+		actionMap.put("nhanPhong", nhanPhongAction);
 
 	}
 

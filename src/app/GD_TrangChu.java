@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -12,6 +13,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
@@ -19,13 +21,18 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Panel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.border.CompoundBorder;
 
 import dao.TempDatPhong_dao;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -48,7 +55,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	private JButton btnKhachHang;
 	private JButton btnSanPham;
 	private JButton btnHoaDon;
-	private JButton btnThongKe;
+	private JButton btnThongKe, btnKhuyenMai;
 	private JButton btnTroGiup;
 	private JLabel lblKaraoke;
 	private JLabel lblCurrentTime;
@@ -62,6 +69,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	private GD_TroGiup troGiup = new GD_TroGiup();
 	private JPanel panel_chuaTime;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private Dialog_User dialog_User= new Dialog_User();
 
 	public GD_TrangChu() {
 		super("Karaoke 4T");
@@ -94,7 +102,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		panel_2.setBackground(new Color(217, 226, 231));
 		panel_1.add(panel_2);
 
-		btnDatPhong = new JButton("ĐẶT PHÒNG");
+		btnDatPhong = new JButton("ĐẶT PHÒNG             (F1)");
 		btnDatPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnDatPhong.setForeground(Color.BLACK);
 		btnDatPhong.setBackground(Color.white);
@@ -108,7 +116,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnDatPhong.setBorderPainted(false);
 		btnDatPhong.setBackground(new Color(217, 226, 231));
 
-		btnDanhSachPhong = new JButton("DANH SÁCH PHÒNG");
+		btnDanhSachPhong = new JButton("DANH SÁCH PHÒNG  (F2)");
 		btnDanhSachPhong.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnDanhSachPhong.setIconTextGap(10); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnDanhSachPhong.setIcon(new ImageIcon("icon\\icon_DSPhong.png"));
@@ -121,7 +129,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnDanhSachPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnDanhSachPhong.setBackground(new Color(217, 226, 231));
 
-		btnNhanVien = new JButton("NHÂN VIÊN");
+		btnNhanVien = new JButton("NHÂN VIÊN             (F3)");
 		btnNhanVien.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnNhanVien.setIconTextGap(35); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnNhanVien.setIcon(new ImageIcon("icon\\icon_NhanVien.png"));
@@ -134,7 +142,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnNhanVien.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnNhanVien.setBackground(new Color(217, 226, 231));
 
-		btnKhachHang = new JButton("KHÁCH HÀNG");
+		btnKhachHang = new JButton("KHÁCH HÀNG           (F4)");
 		btnKhachHang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -147,7 +155,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnKhachHang.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnKhachHang.setBackground(new Color(217, 226, 231));
 
-		btnSanPham = new JButton("SẢN PHẨM");
+		btnSanPham = new JButton("SẢN PHẨM               (F5)");
 		btnSanPham.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnSanPham.setIconTextGap(27); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnSanPham.setIcon(new ImageIcon("icon\\icon_SanPham.png"));
@@ -161,7 +169,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnSanPham.setBackground(new Color(217, 226, 231));
 
 		/// Hóa đơn
-		btnHoaDon = new JButton("HÓA ĐƠN");
+		btnHoaDon = new JButton("HÓA ĐƠN                (F6)");
 		btnHoaDon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -175,7 +183,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnHoaDon.setBackground(new Color(217, 226, 231));
 
 		// thống kê
-		btnThongKe = new JButton("THỐNG KÊ");
+		btnThongKe = new JButton("THỐNG KÊ                (F7)");
 		btnThongKe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -201,6 +209,20 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnTroGiup.setForeground(Color.BLACK);
 		btnTroGiup.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnTroGiup.setBackground(new Color(217, 226, 231));
+		
+		// khuyen mai
+		btnKhuyenMai = new JButton("KHUYẾN Mãi ");
+		btnKhuyenMai.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnKhuyenMai.setBorderPainted(false);
+		btnKhuyenMai.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
+		btnKhuyenMai.setIconTextGap(35); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnKhuyenMai.setIcon(new ImageIcon("icon\\icon_TroGiup.png"));
+		btnKhuyenMai.setForeground(Color.BLACK);
+		btnKhuyenMai.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnKhuyenMai.setBackground(new Color(217, 226, 231));
 
 		// user
 //		 btnUser.setIcon(new ImageIcon("icon\\icon_User.png"));
@@ -246,7 +268,8 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 										.addComponent(btnSanPham, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
 										.addComponent(btnHoaDon, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
 										.addComponent(btnThongKe, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnTroGiup, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))))
+										.addComponent(btnTroGiup, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+										.addComponent(btnKhuyenMai, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))))
 				.addGroup(Alignment.LEADING,
 						gl_panel_2
 								.createSequentialGroup().addContainerGap().addComponent(panel_chuaTime,
@@ -262,7 +285,8 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 				.addComponent(btnSanPham, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
 				.addComponent(btnHoaDon, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
 				.addComponent(btnThongKe, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnTroGiup, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(27)
+				.addComponent(btnTroGiup, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
+				.addComponent(btnKhuyenMai, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(17)
 				.addComponent(panel_chuaTime, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE).addGap(50)));
 
 		// CurrentTime
@@ -312,6 +336,8 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		cardPanel.add(sanPham, "SanPham");
 		cardPanel.add(thongKe, "ThongKe");
 		cardPanel.add(troGiup, "TroGiup");
+		// sửa lại thành khuyến mãi
+		cardPanel.add(troGiup, "TroGiup");
 		getContentPane().add(cardPanel, BorderLayout.CENTER);
 
 		btnDatPhong.addActionListener(this);
@@ -322,8 +348,141 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnHoaDon.addActionListener(this);
 		btnThongKe.addActionListener(this);
 		btnTroGiup.addActionListener(this);
-//		btnUser.addActionListener(this);
+		btnKhuyenMai.addActionListener(this);
 		this.addWindowListener(this);
+		
+
+
+		Action actionF1 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
+		        btnDatPhong.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "DatPhong");
+		    }
+		};
+		Action actionF2 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
+		        btnDanhSachPhong.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "DanhSachPhong");
+		    }
+		};
+		Action actionF3 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
+		        btnNhanVien.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "NhanVien");
+		    }
+		};
+		Action actionF4 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
+		        btnKhachHang.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "KhachHang");
+		    }
+		};
+		Action actionF5 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
+		        btnSanPham.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "SanPham");
+		    }
+		};
+		Action actionF6 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
+		        btnHoaDon.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "HoaDon");
+		    }
+		};
+		Action actionF7 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
+		        btnThongKe.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "ThongKe");
+		    }
+		};
+		Action actionF8 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+					resetActiveTab();
+					dialog_User.setBackground(Color.decode("#F2F0FF"));
+			        cardLayout.show(cardPanel, "User");
+		   
+		    }
+		};
+		// Liên kết phím F1 với hành động
+		datPhong.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "doF1");
+		datPhong.getRootPane().getActionMap().put("doF1", actionF1);
+		// Liên kết phím F2 với hành động
+		danhSachPhong.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F2"), "doF2");
+		danhSachPhong.getRootPane().getActionMap().put("doF2", actionF2);
+		// Liên kết phím F3 với hành động
+		nhanVien.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F3"), "doF3");
+		nhanVien.getRootPane().getActionMap().put("doF3", actionF3);
+		// Liên kết phím F4 với hành động
+		khachHang.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F4"), "doF4");
+		khachHang.getRootPane().getActionMap().put("doF4", actionF4);
+		// Liên kết phím F5 với hành động
+		sanPham.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F5"), "doF5");
+		sanPham.getRootPane().getActionMap().put("doF5", actionF5);
+		// Liên kết phím F6 với hành động
+		hoaDon.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F6"), "doF6");
+		hoaDon.getRootPane().getActionMap().put("doF6", actionF6);
+		// Liên kết phím F7 với hành động
+		thongKe.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F7"), "doF7");
+		thongKe.getRootPane().getActionMap().put("doF7", actionF7);
+		// Liên kết phím F8 với hành động
+		dialog_User.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F8"), "doF8");
+		dialog_User.getRootPane().getActionMap().put("doF8", actionF8);
+
 	}
 
 	public void showKhachHangCard() {
@@ -341,6 +500,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnSanPham.setBackground(new Color(217, 226, 231));
 		btnThongKe.setBackground(new Color(217, 226, 231));
 		btnTroGiup.setBackground(new Color(217, 226, 231));
+		btnKhuyenMai.setBackground(new Color(217, 226, 231));
 	}
 
 	@Override
@@ -378,6 +538,12 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		} else if (o.equals(btnTroGiup)) {
 			resetActiveTab();
 			btnTroGiup.setBackground(Color.decode("#F2F0FF"));
+			cardLayout.show(cardPanel, "TroGiup");
+		}
+		//sửa lại code 
+		else if (o.equals(btnKhuyenMai)) {
+			resetActiveTab();
+			btnKhuyenMai.setBackground(Color.decode("#F2F0FF"));
 			cardLayout.show(cardPanel, "TroGiup");
 		}
 	}
@@ -421,4 +587,6 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		// TODO Auto-generated method stub
 
 	}
+
+
 }

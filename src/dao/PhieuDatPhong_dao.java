@@ -1,15 +1,20 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entity.HoaDonDatPhong;
 import entity.KhachHang;
+import entity.KhuyenMai;
 import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
@@ -424,4 +429,33 @@ public class PhieuDatPhong_dao {
 		}
 		return dsPDP;
 	}
+	public ArrayList<PhieuDatPhong> getPDPTheoNgayNhan(LocalDate ngayGioNhanPhong) {
+		ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from PhieuDatPhong where CAST(ngayGioNhanPhong AS DATE) = ?";
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setDate(1, Date.valueOf(ngayGioNhanPhong));
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				Phong p = new Phong(rs.getString(2));
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngaynhan = rs.getTimestamp(6).toLocalDateTime();
+				dsPDP.add(new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngaynhan, rs.getInt(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsPDP;
+	}
+
+
+
 }
