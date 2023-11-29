@@ -5,6 +5,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+
+import connectDB.ConnectDB;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -20,6 +23,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -61,7 +65,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private Dialog_HienThiPhong dialog_htPhong;
 	private Dialog_PhongDangSD dialog_PhongDangSD;
 	private Dialog_PhongCho dialog_PhongCho;
-	Phong_dao p_dao = new Phong_dao();
+	Phong_dao p_dao;
 	LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private JButton btnPhong;
 	ArrayList<JButton> btnPhongList = new ArrayList<>();
@@ -70,10 +74,10 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private Dialog_HienThiPhongSuaChua dialog_htPhongSuaChua;
 	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong;
 	private JButton btnBackToBook;
-	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private TempDatPhong_dao tmp_dao;
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private int sizeDSTmp;
-	private ChiTietHoaDon_dao cthd_dao = new ChiTietHoaDon_dao();
+	private ChiTietHoaDon_dao cthd_dao;
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
 	private ImageIcon resizedIcon_phongtrong;
@@ -90,6 +94,9 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	 */
 
 	public GD_DatPhong(GD_TrangChu trangChu) {
+		p_dao = new Phong_dao();
+		tmp_dao = new TempDatPhong_dao();
+		cthd_dao = new ChiTietHoaDon_dao();
 		this.setSize(1080, 730);
 		this.trangChu = trangChu;
 		setLayout(null);
@@ -288,6 +295,12 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try {
+		  			ConnectDB.getInstance().connect(DataManager.getRole(), DataManager.getRolePassword());
+		  		} catch (SQLException e1) {
+		  			// TODO Auto-generated catch block
+		  			e1.printStackTrace();
+		  		}
 				if (sizeDSTmp != tmp_dao.getAllTemp().size()) {
 					sizeDSTmp = tmp_dao.getAllTemp().size();
 					setEnabledBtnDatPhong();

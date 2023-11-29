@@ -226,6 +226,8 @@ public class ThongKe_dao {
 			String sql = "SELECT TOP 10 "
 					+ "kh.maKhachHang, "
 					+ "kh.hoTen, "
+					+ "kh.soDienThoai, "
+					+ "kh.gioiTinh, "
 					+ "SUM(cthd.soGioHat) AS TongSoGioHat "
 					+ "FROM "
 					+ "KhachHang kh "
@@ -235,13 +237,15 @@ public class ThongKe_dao {
 					+ "ChiTietHoaDon cthd ON hddp.maHoaDon = cthd.maHoaDon "
 					+ "GROUP BY "
 					+ "kh.maKhachHang, "
-					+ "kh.hoTen "
+					+ "kh.hoTen, "
+					+ "kh.soDienThoai, "
+					+ "kh.gioiTinh "
 					+ "ORDER BY "
 					+ "TongSoGioHat DESC";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while(rs.next()) {
-				ModelThongKeKH modelTK = new ModelThongKeKH(rs.getString(1), rs.getString(2), rs.getDouble(3));
+				ModelThongKeKH modelTK = new ModelThongKeKH(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4), rs.getDouble(5));
 				lists.add(modelTK);
 			}
 		} catch (Exception e) {
@@ -264,6 +268,8 @@ public class ThongKe_dao {
 			String sql = "SELECT TOP 10 "
 					+ "kh.maKhachHang, "
 					+ "kh.hoTen, "
+					+ "kh.soDienThoai, "
+					+ "kh.gioiTinh, "
 					+ "SUM(cthd.soGioHat) as TongSoGioHat "
 					+ "FROM "
 					+ "KhachHang kh "
@@ -275,13 +281,15 @@ public class ThongKe_dao {
 					+ "GROUP BY  "
 					+ "YEAR(hddp.ngayLapHoaDon), "
 					+ "kh.maKhachHang, "
-					+ "kh.hoTen "
+					+ "kh.hoTen, "
+					+ "kh.soDienThoai, "
+					+ "kh.gioiTinh "
 					+ "ORDER BY "
 					+ "TongSoGioHat DESC";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while(rs.next()) {
-				ModelThongKeKH modelTK = new ModelThongKeKH(rs.getString(1), rs.getString(2), rs.getDouble(3));
+				ModelThongKeKH modelTK = new ModelThongKeKH(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4), rs.getDouble(5));
 				lists.add(modelTK);
 			}
 		} catch (Exception e) {
@@ -304,6 +312,8 @@ public class ThongKe_dao {
 			String sql = "SELECT TOP 10 "
 					+ "kh.maKhachHang, "
 					+ "kh.hoTen, "
+					+ "kh.soDienThoai, "
+					+ "kh.gioiTinh, "
 					+ "SUM(cthd.soGioHat) as TongSoGioHat "
 					+ "FROM "
 					+ "KhachHang kh "
@@ -316,13 +326,15 @@ public class ThongKe_dao {
 					+ "YEAR(hddp.ngayLapHoaDon), "
 					+ "MONTH(hddp.ngayLapHoaDon), "
 					+ "kh.maKhachHang, "
-					+ "kh.hoTen "
+					+ "kh.hoTen, "
+					+ "kh.soDienThoai, "
+					+ "kh.gioiTinh "
 					+ "ORDER BY "
 					+ "TongSoGioHat DESC";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while(rs.next()) {
-				ModelThongKeKH modelTK = new ModelThongKeKH(rs.getString(1), rs.getString(2), rs.getDouble(3));
+				ModelThongKeKH modelTK = new ModelThongKeKH(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4), rs.getDouble(5));
 				lists.add(modelTK);
 			}
 		} catch (Exception e) {

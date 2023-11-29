@@ -440,17 +440,21 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	}
 
 	public void xoa() {
-		if (tableOrderList.getSelectedRow() == -1) {
-			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
-		} else if (tableOrderList.getSelectedRowCount() > 1) {
-			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để xóa!");
-		} else {
-			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
-					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				int row = tableOrderList.getSelectedRow();
-				hoadon_dao.deleteHoaDon(modelOrderList.getValueAt(row, 1).toString());
-				modelOrderList.removeRow(row);
-				JOptionPane.showMessageDialog(this, "Xóa thành công!");
+		if(DataManager.getRole().equals("NV")) {
+			JOptionPane.showMessageDialog(btnXoa, "Nhân viên không thể xóa hóa đơn");
+		} else if (DataManager.getRole().equals("QL")) {
+			if (tableOrderList.getSelectedRow() == -1) {
+				JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
+			} else if (tableOrderList.getSelectedRowCount() > 1) {
+				JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để xóa!");
+			} else {
+				if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					int row = tableOrderList.getSelectedRow();
+					hoadon_dao.deleteHoaDon(modelOrderList.getValueAt(row, 1).toString());
+					modelOrderList.removeRow(row);
+					JOptionPane.showMessageDialog(this, "Xóa thành công!");
+				}
 			}
 		}
 	}
