@@ -67,6 +67,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	private GD_SanPham sanPham = new GD_SanPham();
 	private GD_ThongKe thongKe = new GD_ThongKe();
 	private GD_TroGiup troGiup = new GD_TroGiup();
+	private GD_KhuyenMai khuyenMai = new GD_KhuyenMai();
 	private JPanel panel_chuaTime;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Dialog_User dialog_User= new Dialog_User();
@@ -211,7 +212,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnTroGiup.setBackground(new Color(217, 226, 231));
 		
 		// khuyen mai
-		btnKhuyenMai = new JButton("KHUYẾN Mãi ");
+		btnKhuyenMai = new JButton("KHUYẾN MÃI");
 		btnKhuyenMai.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -219,7 +220,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnKhuyenMai.setBorderPainted(false);
 		btnKhuyenMai.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnKhuyenMai.setIconTextGap(35); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnKhuyenMai.setIcon(new ImageIcon("icon\\icon_TroGiup.png"));
+		btnKhuyenMai.setIcon(new ImageIcon("icon\\icon_KhuyenMai.png"));
 		btnKhuyenMai.setForeground(Color.BLACK);
 		btnKhuyenMai.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnKhuyenMai.setBackground(new Color(217, 226, 231));
@@ -337,7 +338,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		cardPanel.add(thongKe, "ThongKe");
 		cardPanel.add(troGiup, "TroGiup");
 		// sửa lại thành khuyến mãi
-		cardPanel.add(troGiup, "TroGiup");
+		cardPanel.add(khuyenMai, "KhuyenMai");
 		getContentPane().add(cardPanel, BorderLayout.CENTER);
 
 		btnDatPhong.addActionListener(this);
@@ -544,7 +545,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		else if (o.equals(btnKhuyenMai)) {
 			resetActiveTab();
 			btnKhuyenMai.setBackground(Color.decode("#F2F0FF"));
-			cardLayout.show(cardPanel, "TroGiup");
+			cardLayout.show(cardPanel, "KhuyenMai");
 		}
 	}
 
