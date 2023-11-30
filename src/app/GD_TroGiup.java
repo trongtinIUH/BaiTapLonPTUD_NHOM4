@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -127,7 +128,7 @@ public class GD_TroGiup extends JPanel implements MouseListener{
 		pnContent.add(lblLink = new JLabel("Link web hướng dẫn: "));
 		lblLink.setFont(font_Content2);
 		lblLink.setBounds( 32, 240, 170, 30);
-		pnContent.add(lblLink2 = new JLabel("https://maichiennoiuh.github.io/HuongDan_PTUD/"));
+		pnContent.add(lblLink2 = new JLabel("D:\\BaiTapLonPTUD_NHOM4\\HuongDanPhanMem\\index.html"));
 		lblLink2.setFont(font_Content2);
 		lblLink2.setForeground(Color.blue);
 		lblLink2.setBounds( 202, 240, 470, 30);
@@ -282,6 +283,20 @@ public class GD_TroGiup extends JPanel implements MouseListener{
 		}
 	}
 	
+	private static void openLocalHtmlFile(String filePath) {
+	    try {
+	        File htmlFile = new File(filePath);
+
+	        if (htmlFile.exists()) {
+	            Desktop.getDesktop().browse(htmlFile.toURI());
+	        } else {
+	            System.out.println("File không tồn tại.");
+	        }
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+	}
+	
 	private static Node createInterfaceTree() {
         Node root = new Node("Root");
 
@@ -357,7 +372,7 @@ public class GD_TroGiup extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == lblLink2) {
-			openWebpage("https://maichiennoiuh.github.io/HuongDan_PTUD/");
+			openLocalHtmlFile("D:\\BaiTapLonPTUD_NHOM4\\HuongDanPhanMem\\index.html");
 		}else if(e.getSource() == lblVideo2) {
 			openWebpage("https://www.youtube.com/watch?v=6yFKPBBZtTs");
 		}else if (e.getSource() == interfaceTree) {
