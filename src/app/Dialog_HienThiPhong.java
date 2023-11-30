@@ -188,7 +188,7 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 		actionMap.put("datPhong", datPhongAction);
 
 		// Thêm phím nóng cho btn
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "datPhongCho");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK), "datPhongCho");
 		actionMap.put("datPhongCho", datPhongChoAction);
 
 	}

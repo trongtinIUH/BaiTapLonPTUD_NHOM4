@@ -295,14 +295,14 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
 
 		
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), "themDv");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK), "themDv");
 		actionMap.put("themDv", themDVAction);
 
 		
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK), "chuyenPhong");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), "chuyenPhong");
 		actionMap.put("chuyenPhong", chuyenPhongAction);
 		
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "thanhToan");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), "thanhToan");
 		actionMap.put("thanhToan", thanhToanAction);
 
 	}

@@ -141,7 +141,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 			GD_TrangDangNhap dangNhap = new GD_TrangDangNhap();
 			dangNhap.setVisible(true);
 		}else if(o.equals(btnChiTietNV)) {
-	
+
 		}
 	}
 }

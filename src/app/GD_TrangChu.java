@@ -31,6 +31,7 @@ import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -103,12 +104,12 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		panel_2.setBackground(new Color(217, 226, 231));
 		panel_1.add(panel_2);
 
-		btnDatPhong = new JButton("ĐẶT PHÒNG             (F1)");
+		btnDatPhong = new JButton("ĐẶT PHÒNG                  (F1)");
 		btnDatPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnDatPhong.setForeground(Color.BLACK);
 		btnDatPhong.setBackground(Color.white);
 		btnDatPhong.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnDatPhong.setIconTextGap(25); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnDatPhong.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnDatPhong.setIcon(new ImageIcon("icon\\icon_DatPhong.png"));
 		btnDatPhong.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,9 +118,9 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnDatPhong.setBorderPainted(false);
 		btnDatPhong.setBackground(new Color(217, 226, 231));
 
-		btnDanhSachPhong = new JButton("DANH SÁCH PHÒNG  (F2)");
+		btnDanhSachPhong = new JButton("DANH SÁCH PHÒNG   (F2)");
 		btnDanhSachPhong.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnDanhSachPhong.setIconTextGap(10); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnDanhSachPhong.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnDanhSachPhong.setIcon(new ImageIcon("icon\\icon_DSPhong.png"));
 		btnDanhSachPhong.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -130,9 +131,9 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnDanhSachPhong.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnDanhSachPhong.setBackground(new Color(217, 226, 231));
 
-		btnNhanVien = new JButton("NHÂN VIÊN             (F3)");
+		btnNhanVien = new JButton("NHÂN VIÊN                    (F3)");
 		btnNhanVien.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnNhanVien.setIconTextGap(35); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnNhanVien.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnNhanVien.setIcon(new ImageIcon("icon\\icon_NhanVien.png"));
 		btnNhanVien.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -143,22 +144,22 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnNhanVien.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnNhanVien.setBackground(new Color(217, 226, 231));
 
-		btnKhachHang = new JButton("KHÁCH HÀNG           (F4)");
+		btnKhachHang = new JButton("KHÁCH HÀNG              (F4)");
 		btnKhachHang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnKhachHang.setBorderPainted(false);
 		btnKhachHang.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnKhachHang.setIconTextGap(20); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnKhachHang.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnKhachHang.setIcon(new ImageIcon("icon\\icon_KhachHang.png"));
 		btnKhachHang.setForeground(Color.BLACK);
 		btnKhachHang.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnKhachHang.setBackground(new Color(217, 226, 231));
 
-		btnSanPham = new JButton("SẢN PHẨM               (F5)");
+		btnSanPham = new JButton("SẢN PHẨM                    (F5)");
 		btnSanPham.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnSanPham.setIconTextGap(27); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnSanPham.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnSanPham.setIcon(new ImageIcon("icon\\icon_SanPham.png"));
 		btnSanPham.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -169,8 +170,22 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnSanPham.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnSanPham.setBackground(new Color(217, 226, 231));
 
+		// khuyen mai
+		btnKhuyenMai = new JButton("KHUYẾN MÃI               (F6)");
+		btnKhuyenMai.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnKhuyenMai.setBorderPainted(false);
+		btnKhuyenMai.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
+		btnKhuyenMai.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnKhuyenMai.setIcon(new ImageIcon("icon\\icon_KhuyenMai.png"));
+		btnKhuyenMai.setForeground(Color.BLACK);
+		btnKhuyenMai.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnKhuyenMai.setBackground(new Color(217, 226, 231));
+		
 		/// Hóa đơn
-		btnHoaDon = new JButton("HÓA ĐƠN                (F6)");
+		btnHoaDon = new JButton("HÓA ĐƠN                      (F7)");
 		btnHoaDon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -184,14 +199,14 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnHoaDon.setBackground(new Color(217, 226, 231));
 
 		// thống kê
-		btnThongKe = new JButton("THỐNG KÊ                (F7)");
+		btnThongKe = new JButton("THỐNG KÊ                   (F8)");
 		btnThongKe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnThongKe.setBorderPainted(false);
 		btnThongKe.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnThongKe.setIconTextGap(20); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnThongKe.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnThongKe.setIcon(new ImageIcon("icon\\icon_ThongKe.png"));
 		btnThongKe.setForeground(Color.BLACK);
 		btnThongKe.setFont(new Font("Times New Roman", Font.BOLD, 16));
@@ -205,25 +220,13 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		});
 		btnTroGiup.setBorderPainted(false);
 		btnTroGiup.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnTroGiup.setIconTextGap(35); // Tạo Khoảng cách giữa icon và Nội dung(text)
+		btnTroGiup.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
 		btnTroGiup.setIcon(new ImageIcon("icon\\icon_TroGiup.png"));
 		btnTroGiup.setForeground(Color.BLACK);
 		btnTroGiup.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnTroGiup.setBackground(new Color(217, 226, 231));
 		
-		// khuyen mai
-		btnKhuyenMai = new JButton("KHUYẾN MÃI");
-		btnKhuyenMai.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnKhuyenMai.setBorderPainted(false);
-		btnKhuyenMai.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
-		btnKhuyenMai.setIconTextGap(35); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnKhuyenMai.setIcon(new ImageIcon("icon\\icon_KhuyenMai.png"));
-		btnKhuyenMai.setForeground(Color.BLACK);
-		btnKhuyenMai.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnKhuyenMai.setBackground(new Color(217, 226, 231));
+
 
 		// user
 //		 btnUser.setIcon(new ImageIcon("icon\\icon_User.png"));
@@ -232,7 +235,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		panel_3.setBackground(new Color(217, 226, 231));
 
 		JPanel pnMargin = new JPanel();
-		pnMargin.setPreferredSize(new Dimension(300, 20));
+		pnMargin.setPreferredSize(new Dimension(270, 20));
 		pnMargin.setBackground(new Color(217, 226, 231));
 		panel_3.add(pnMargin);
 		JLabel lblNewLabel_1 = new JLabel("");
@@ -257,38 +260,53 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		panel_chuaTime.setBackground(Color.WHITE);
 
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panel_2.createSequentialGroup().addGap(0)
-								.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(btnDatPhong, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnDanhSachPhong, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnNhanVien, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnKhachHang, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnSanPham, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnHoaDon, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnThongKe, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnTroGiup, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-										.addComponent(btnKhuyenMai, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))))
-				.addGroup(Alignment.LEADING,
-						gl_panel_2
-								.createSequentialGroup().addContainerGap().addComponent(panel_chuaTime,
-										GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(21, Short.MAX_VALUE)));
-		gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_2
-				.createSequentialGroup()
-				.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnDatPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnDanhSachPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnNhanVien, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnKhachHang, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnSanPham, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnHoaDon, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnThongKe, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnTroGiup, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(15)
-				.addComponent(btnKhuyenMai, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(17)
-				.addComponent(panel_chuaTime, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE).addGap(50)));
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addGap(0)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnDatPhong, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnDanhSachPhong, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnNhanVien, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnKhachHang, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnSanPham, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnKhuyenMai, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnHoaDon, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnThongKe, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+						.addComponent(btnTroGiup, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)))
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_chuaTime, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnDatPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnDanhSachPhong, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnNhanVien, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnKhachHang, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnSanPham, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnKhuyenMai, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnHoaDon, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnThongKe, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(btnTroGiup, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addGap(15)
+					.addComponent(panel_chuaTime, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+					.addGap(50))
+		);
 
 		// CurrentTime
 		lblCurrentTime = new JLabel();
@@ -335,10 +353,9 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		cardPanel.add(khachHang, "KhachHang");
 		cardPanel.add(hoaDon, "HoaDon");
 		cardPanel.add(sanPham, "SanPham");
+		cardPanel.add(khuyenMai, "KhuyenMai");
 		cardPanel.add(thongKe, "ThongKe");
 		cardPanel.add(troGiup, "TroGiup");
-		// sửa lại thành khuyến mãi
-		cardPanel.add(khuyenMai, "KhuyenMai");
 		getContentPane().add(cardPanel, BorderLayout.CENTER);
 
 		btnDatPhong.addActionListener(this);
@@ -428,11 +445,24 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 			@Override
 		    public void actionPerformed(ActionEvent e) {
 		        resetActiveTab();
+		        btnKhuyenMai.setBackground(Color.decode("#F2F0FF"));
+		        cardLayout.show(cardPanel, "KhuyenMai");
+		    }
+		};
+		Action actionF7 = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        resetActiveTab();
 		        btnHoaDon.setBackground(Color.decode("#F2F0FF"));
 		        cardLayout.show(cardPanel, "HoaDon");
 		    }
 		};
-		Action actionF7 = new AbstractAction() {
+		Action actionF8 = new AbstractAction() {
 		    /**
 			 * 
 			 */
@@ -445,20 +475,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		        cardLayout.show(cardPanel, "ThongKe");
 		    }
 		};
-		Action actionF8 = new AbstractAction() {
-		    /**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
 
-			@Override
-		    public void actionPerformed(ActionEvent e) {
-					resetActiveTab();
-					dialog_User.setBackground(Color.decode("#F2F0FF"));
-			        cardLayout.show(cardPanel, "User");
-		   
-		    }
-		};
 		// Liên kết phím F1 với hành động
 		datPhong.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F1"), "doF1");
 		datPhong.getRootPane().getActionMap().put("doF1", actionF1);
@@ -475,14 +492,31 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		sanPham.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F5"), "doF5");
 		sanPham.getRootPane().getActionMap().put("doF5", actionF5);
 		// Liên kết phím F6 với hành động
-		hoaDon.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F6"), "doF6");
-		hoaDon.getRootPane().getActionMap().put("doF6", actionF6);
+		khuyenMai.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F6"), "doF6");
+		khuyenMai.getRootPane().getActionMap().put("doF6", actionF6);
 		// Liên kết phím F7 với hành động
-		thongKe.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F7"), "doF7");
-		thongKe.getRootPane().getActionMap().put("doF7", actionF7);
+		hoaDon.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F7"), "doF7");
+		hoaDon.getRootPane().getActionMap().put("doF7", actionF7);
 		// Liên kết phím F8 với hành động
-		dialog_User.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F8"), "doF8");
-		dialog_User.getRootPane().getActionMap().put("doF8", actionF8);
+		thongKe.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F8"), "doF8");
+		thongKe.getRootPane().getActionMap().put("doF8", actionF8);
+		
+		// nhấn F9 hiển thị giao diện user
+        addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_F9) {
+                	dialog_User= new Dialog_User();
+                	dialog_User.setVisible(true);
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_F10) {
+                    // Open new window here
+                	resetActiveTab();
+                	cardLayout.show(cardPanel, "TrangChu");
+                }
+            }
+        });
+        setFocusable(true);
+	      
 
 	}
 
@@ -588,6 +622,4 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		// TODO Auto-generated method stub
 
 	}
-
-
 }

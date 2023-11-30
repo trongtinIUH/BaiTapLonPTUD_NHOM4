@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Timestamp;
@@ -27,6 +28,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+
 import java.awt.SystemColor;
 import javax.swing.UIManager;
 
@@ -62,8 +65,13 @@ import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.Component;
@@ -336,6 +344,27 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				}
 			}
 		});
+		
+		Action themDVAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btn_ThemDV.doClick();
+		    }
+		};
+		
+		// Lấy InputMap và ActionMap của JPanel
+		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
+
+		
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK), "themDv");
+		actionMap.put("themDv", themDVAction);
+
 
 		// thêm sự kiện button
 		btn_DatPhong.addActionListener(this);

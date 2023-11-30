@@ -284,11 +284,11 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
 
 		// Thêm phím nóng cho btnDatPhong
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK), "huyPhong");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "huyPhong");
 		actionMap.put("huyPhong", huyPhongAction);
 
 		// Thêm phím nóng cho btn_DatPhongCho
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "nhanPhong");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK), "nhanPhong");
 		actionMap.put("nhanPhong", nhanPhongAction);
 
 	}
