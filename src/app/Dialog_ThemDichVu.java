@@ -28,6 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import connectDB.ConnectDB;
 import dao.ChiTietDichVu_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
@@ -66,14 +67,14 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	private JButton btn_LamMoi;
 	private JLabel lblTongTien;
 	private JTextField txtTongTien;
-	private SanPham_dao sp_dao = new SanPham_dao();
+	private SanPham_dao sp_dao;
 	private JButton btn_XoaDV;
 	private JButton btn_Them;
 	private DecimalFormat df;
 	private String ma;
 	private double tongTien;
-	private Phong_dao p_dao = new Phong_dao();
-	private ChiTietDichVu_dao ctdv_dao = new ChiTietDichVu_dao();
+	private Phong_dao p_dao;
+	private ChiTietDichVu_dao ctdv_dao;
 	private String maHoaDon = "";
 
 	public Dialog_ThemDichVu(String customer, String employee, String maPhong) {
@@ -85,6 +86,9 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		getContentPane().setLayout(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
 	    this.setIconImage(icon.getImage());
+	    p_dao = new Phong_dao();
+	    ctdv_dao = new ChiTietDichVu_dao();
+	    sp_dao = new SanPham_dao();
 
 		// panel chứa tiêu đề--------------------------------------
 		panel = new JPanel();

@@ -60,9 +60,11 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private String col[] = {"STT", "Mã hóa đơn","Ngày lập hóa đơn", "Tên khách hàng", 
 			"Số điện thoại", "Khuyến mãi", "Tổng tiền", "Tên nhân viên"};
-	private DefaultTableModel model;
-	private JTable table;
-	private JScrollPane scroll;
+	private String colKH[] = {"STT", "Mã khách hàng","Họ tên", "Số điện thoại", "Giới tính",
+			"Số giờ hát"};
+	private DefaultTableModel model, modelKH;
+	private JTable table, tblKH;
+	private JScrollPane scroll, scrollKH;
 	JLabel lblTitle, lblThongKe, lblLoaihinhTK, lblDate, lblTongDoanhThu, lblChartTitle,
 	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu, lblYearStart, lblYearEnd;
 	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd, cbYear, cbMonth, cbMonthKH, cbYearKH;
@@ -73,7 +75,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	private ChiTietDichVu_dao chitietdichvu_dao;
 	private ChiTietHoaDon_dao chitiethoadon_dao;
 	private KhuyenMai_dao khuyenmai_dao;
-	private JPanel pnTable, pnContent, pnPieChart, pnCurveLineChart;
+	private JPanel pnTable, pnContent, pnPieChart, pnCurveLineChart, pnTableKH;
 	private DecimalFormat df;
 	private PieChart pieChart;
 	private CurveLineChart lineChart;
@@ -338,11 +340,31 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		pnCurveLineChart.setVisible(false);
 		add(pnCurveLineChart);
 		
+		
+//		Table Thống kê khách hàng
+		pnTableKH = new JPanel();
+		pnTableKH.setLayout(null);
+		pnTableKH.setBounds(0, 182, 480, 548);
+		modelKH = new DefaultTableModel(colKH,0);
+		tblKH = new JTable(modelKH);
+		tblKH.setSelectionBackground(Color.pink);
+		tblKH.getTableHeader().setBackground(new Color(238, 233, 233));
+		tblKH.getColumnModel().getColumn(0).setMaxWidth(40);
+		tblKH.getColumnModel().getColumn(1).setMaxWidth(80);
+		tblKH.getColumnModel().getColumn(2).setMaxWidth(120);
+		tblKH.getColumnModel().getColumn(3).setMaxWidth(80);
+		tblKH.getColumnModel().getColumn(4).setMaxWidth(70);
+		tblKH.getColumnModel().getColumn(5).setMaxWidth(90);
+		scrollKH = new JScrollPane(tblKH);
+		scrollKH.setBounds(0,0,480,548);
+		pnTableKH.add(scrollKH);
+		pnTableKH.setVisible(false);
+		add(pnTableKH);
 //		Bar chart
 		dataset = createDataset();
 		barChart = createChart(dataset);
 		pnBarChart = new ChartPanel(barChart);
-		pnBarChart.setBounds(0, 182, 1080, 548);
+		pnBarChart.setBounds(480, 182, 600, 548);
 		pnBarChart.setVisible(false);
 		add(pnBarChart);
 		
@@ -510,6 +532,47 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 			}
 	}
 	
+	private void loadDataTKKHALL() {
+		int i = 0;
+		for(ModelThongKeKH customer: thongke_dao.getTop10KhachHangHatNhieuNhat()) {
+			i++;
+			Object[] row = { i, customer.getMaKH(), customer.getTenKH(), 
+					customer.getSoDienThoai(), customer.isGioiTinh() ? "Nam" : "Nữ", 
+							customer.getTongSoGioHat()
+			};
+			modelKH.addRow(row);
+		}
+			
+	}
+	
+	private void loadDataTKKHMonth(String year, String month) {
+		int i = 0;
+		for(ModelThongKeKH customer: thongke_dao.getTop10KhachHangHatNhieuNhatTheoThang(year, month)) {
+			i++;
+			Object[] row = { i, customer.getMaKH(), customer.getTenKH(), 
+					customer.getSoDienThoai(), customer.isGioiTinh() ? "Nam" : "Nữ", 
+							customer.getTongSoGioHat()
+					};
+					modelKH.addRow(row);
+		}
+	}
+	
+	private void loadDataTKKHYear(String year) {
+		int i = 0;
+		for(ModelThongKeKH customer: thongke_dao.getTop10KhachHangHatNhieuNhatTheoNam(year)) {
+			i++;
+			Object[] row = { i, customer.getMaKH(), customer.getTenKH(), 
+					customer.getSoDienThoai(), customer.isGioiTinh() ? "Nam" : "Nữ", 
+							customer.getTongSoGioHat()
+					};
+					modelKH.addRow(row);
+		}
+	}
+	
+	private void clearTableKH() { 
+		modelKH.setRowCount(0);
+	}
+	
 	private void ThongKeManyYear(int yearStart, int yearEnd) {
 		int tongHoaDon = 0;
 		double tongDoanhThu = 0;
@@ -565,7 +628,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		lblDoanhThuPhongThuong.setText("0 VNĐ");
 		lblDoanhThuPhongVIP.setText("0 VNĐ");
 		lblDoanhThuDichVu.setText("0 VNĐ");
-		lblTongSoGioHat.setText("0 VNĐ");
+		lblTongSoGioHat.setText("0");
 	}
 	
 	private CategoryDataset createDataset() {
@@ -578,7 +641,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	    // Iterate over the list of customers and add each customer's TongSoGioHat to the dataset
 	    // with the customer's tenKH as the category key
 	    for (ModelThongKeKH customer : top10Customers) {
-	        dataset.addValue(customer.getTongSoGioHat(), "Team ", customer.getTenKH());
+	        dataset.addValue(customer.getTongSoGioHat(), "Khách hàng ", customer.getTenKH());
 	    }
 
 	    return dataset;
@@ -594,7 +657,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	    // Iterate over the list of customers and add each customer's TongSoGioHat to the dataset
 	    // with the customer's tenKH as the category key
 	    for (ModelThongKeKH customer : top10Customers) {
-	        dataset.addValue(customer.getTongSoGioHat(), "Team ", customer.getTenKH());
+	        dataset.addValue(customer.getTongSoGioHat(), "Khách hàng ", customer.getTenKH());
 	    }
 
 	    return dataset;
@@ -610,7 +673,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	    // Iterate over the list of customers and add each customer's TongSoGioHat to the dataset
 	    // with the customer's tenKH as the category key
 	    for (ModelThongKeKH customer : top10Customers) {
-	        dataset.addValue(customer.getTongSoGioHat(), "Team ", customer.getTenKH());
+	        dataset.addValue(customer.getTongSoGioHat(), "Khách hàng ", customer.getTenKH());
 	    }
 
 	    return dataset;
@@ -643,6 +706,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		Object o = e.getSource();
 		if(o.equals(btnThongKe)) {
 			if(cbThongKe.getSelectedItem().toString().equals("Doanh thu")) {
+				pnTableKH.setVisible(false);
 				cbDate.removeItem("Toàn");
 				if(cbDate.getItemCount() < 3) {
 					cbDate.addItem("Ngày");
@@ -692,58 +756,62 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 						);
 					}
 				} else if(cbDate.getSelectedItem().toString().equals("Năm")) {
-					cbMonth.setVisible(false);
-					cbYear.setVisible(false);
-					pnPieChart.setVisible(false);;
-					cbYearStart.setEnabled(true);
-					cbYearEnd.setEnabled(true);
-					pnContent.setVisible(false);
-					pnTable.setVisible(false);
-					int nambd = Integer.valueOf(cbYearStart.getSelectedItem().toString());
-					int namkt = Integer.valueOf(cbYearEnd.getSelectedItem().toString());
-					if(nambd == namkt) {
-						pnContent.setVisible(true);
-						pnCurveLineChart.setVisible(false);
-						pnPieChart.setVisible(true);
-						lblDate.setText("Tổng quan doanh thu năm "+namkt);
-						lblDate.setSize(400, 50);
-						pnPieChart.setVisible(true);
-						dateTimePicker.setVisible(false);
-						pnTable.setVisible(false);
-						resetField();
-						ThongKeYear();
-						lblChartTitle.setText("BIỂU ĐỒ THỐNG KÊ DOANH THU THEO NĂM");
-						if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
-							JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
-							+nambd
-							);
-						}
-					}
-					if(namkt > nambd) {
-						String yearStart = cbYearStart.getSelectedItem().toString();
-						String yearEnd = cbYearEnd.getSelectedItem().toString();
-						lineChart.clear();
-						setCurveLineChartData();
-						pnContent.setVisible(true);
-						pnContent.setBounds(0, 192, 400, 535);
-						dateTimePicker.setVisible(false);
-						lblDate.setText("Tổng quan doanh thu từ năm "+yearStart+" đến "+yearEnd);
-						lblDate.setFont(new Font("Arial", Font.BOLD, 17));
-						lblDate.setSize(400, 50);
-						resetField();
-						ThongKeManyYear(nambd, namkt);
-						if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
-							JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
-							+nambd
-							);
-						}
-						pnCurveLineChart.setVisible(true);
-					}
-					if(nambd > namkt) {
-						JOptionPane.showMessageDialog(null, "Năm bắt đầu phải nhỏ hơn năm kết thúc!");
+					if(DataManager.getRole().equals("QL")) {
+						cbMonth.setVisible(false);
+						cbYear.setVisible(false);
 						pnPieChart.setVisible(false);
+						cbYearStart.setEnabled(true);
+						cbYearEnd.setEnabled(true);
 						pnContent.setVisible(false);
-						pnCurveLineChart.setVisible(false);
+						pnTable.setVisible(false);
+						int nambd = Integer.valueOf(cbYearStart.getSelectedItem().toString());
+						int namkt = Integer.valueOf(cbYearEnd.getSelectedItem().toString());
+						if(nambd == namkt) {
+							pnContent.setVisible(true);
+							pnCurveLineChart.setVisible(false);
+							pnPieChart.setVisible(true);
+							lblDate.setText("Tổng quan doanh thu năm "+namkt);
+							lblDate.setSize(400, 50);
+							pnPieChart.setVisible(true);
+							dateTimePicker.setVisible(false);
+							pnTable.setVisible(false);
+							resetField();
+							ThongKeYear();
+							lblChartTitle.setText("BIỂU ĐỒ THỐNG KÊ DOANH THU THEO NĂM");
+							if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
+								JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
+								+nambd
+								);
+							}
+						}
+						if(namkt > nambd) {
+							String yearStart = cbYearStart.getSelectedItem().toString();
+							String yearEnd = cbYearEnd.getSelectedItem().toString();
+							lineChart.clear();
+							setCurveLineChartData();
+							pnContent.setVisible(true);
+							pnContent.setBounds(0, 192, 400, 535);
+							dateTimePicker.setVisible(false);
+							lblDate.setText("Tổng quan doanh thu từ năm "+yearStart+" đến "+yearEnd);
+							lblDate.setFont(new Font("Arial", Font.BOLD, 17));
+							lblDate.setSize(400, 50);
+							resetField();
+							ThongKeManyYear(nambd, namkt);
+							if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
+								JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
+								+nambd
+								);
+							}
+							pnCurveLineChart.setVisible(true);
+						}
+						if(nambd > namkt) {
+							JOptionPane.showMessageDialog(null, "Năm bắt đầu phải nhỏ hơn năm kết thúc!");
+							pnPieChart.setVisible(false);
+							pnContent.setVisible(false);
+							pnCurveLineChart.setVisible(false);
+						}
+					} else if(DataManager.getRole().equals("NV")) {
+						JOptionPane.showMessageDialog(null, "Nhân viên không có quyền thống kê doanh thu theo năm!");
 					}
 				}
 			} else if(cbThongKe.getSelectedItem().toString().equals("Khách hàng")) {
@@ -759,6 +827,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 				lblYearEnd.setText("Năm");
 				cbMonthKH.setVisible(true);
 				cbYearKH.setVisible(true);
+				pnTableKH.setVisible(true);
 				if(cbMonthKH.getItemCount() == 0) {
 					updateMonthYearKHCbo();
 				}
@@ -773,6 +842,8 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 					cbYearKH.setEnabled(true);
 					String selectedYear = cbYearKH.getSelectedItem().toString();
 					String selectedMonth = cbMonthKH.getSelectedItem().toString();
+					clearTableKH();
+					loadDataTKKHMonth(selectedYear, selectedMonth);
 				    dataset = createDatasetByMonthYear(selectedYear, selectedMonth);
 				    if (dataset.getRowCount() == 0) {
 				    	pnBarChart.setVisible(false);
@@ -786,6 +857,8 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 					cbMonthKH.setEnabled(false);
 				    cbYearKH.setEnabled(true);
 				    String selectedYear = cbYearKH.getSelectedItem().toString();
+				    clearTableKH();
+				    loadDataTKKHYear(selectedYear);
 				    dataset = createDatasetByYear(selectedYear);
 				    if (dataset.getRowCount() == 0) {
 				    	pnBarChart.setVisible(false);
@@ -796,6 +869,8 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 				        pnBarChart.setVisible(true);
 				    }
 				} else if(cbDate.getSelectedItem().toString().equals("Toàn")) {
+					clearTableKH();
+					loadDataTKKHALL();
 					cbMonthKH.setEnabled(false);
 					cbYearKH.setEnabled(false);
 					pnBarChart.setVisible(true);

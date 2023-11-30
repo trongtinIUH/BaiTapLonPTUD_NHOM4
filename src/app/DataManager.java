@@ -8,6 +8,8 @@ import entity.TempThemDV;
 public class DataManager {
 
 	private static String userName;
+	private static String role = "QL";
+	private static String rolePassword = "QLpassword";
 	private static boolean thanhToan;
 	private static boolean datPhong;
 	private static String soDienThoaiKHDat = "";
@@ -17,6 +19,23 @@ public class DataManager {
 	private static boolean loadDV = false;
 	private static boolean loadSDT = false;
 	
+	
+	public static String getRole() {
+		return role;
+	}
+
+	public static void setRole(String role) {
+		DataManager.role = role;
+	}
+
+	public static String getRolePassword() {
+		return rolePassword;
+	}
+
+	public static void setRolePassword(String rolePassword) {
+		DataManager.rolePassword = rolePassword;
+	}
+
 	public static boolean isLoadSDT() {
 		return loadSDT;
 	}

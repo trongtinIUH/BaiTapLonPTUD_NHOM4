@@ -549,11 +549,19 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		} else if (o.equals(btnDanhSachPhong)) {
 			resetActiveTab();
 			btnDanhSachPhong.setBackground(Color.decode("#F2F0FF"));
-			cardLayout.show(cardPanel, "DanhSachPhong");
+			if(DataManager.getRole().equals("QL")) {
+				cardLayout.show(cardPanel, "DanhSachPhong");
+			}else if(DataManager.getRole().equals("NV")) {
+				JOptionPane.showMessageDialog(btnDanhSachPhong, "Bạn không có quyền sử dụng chức năng này!");
+			}
 		} else if (o.equals(btnNhanVien)) {
 			resetActiveTab();
 			btnNhanVien.setBackground(Color.decode("#F2F0FF"));
-			cardLayout.show(cardPanel, "NhanVien");
+			if(DataManager.getRole().equals("QL")) {
+				cardLayout.show(cardPanel, "NhanVien");
+			}else if(DataManager.getRole().equals("NV")) {
+				JOptionPane.showMessageDialog(btnNhanVien, "Bạn không có quyền sử dụng chức năng này!");
+			}
 		} else if (o.equals(btnKhachHang)) {
 			resetActiveTab();
 			btnKhachHang.setBackground(Color.decode("#F2F0FF"));

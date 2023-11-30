@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -24,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
+import connectDB.ConnectDB;
 import dao.DangNhap_dao;
 
 public class GD_TrangDangNhap extends JFrame  implements ActionListener{
@@ -32,8 +34,8 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
     private JTextField txtUsername, txtPassword;
     private JButton btnLogin, btnQuenMatKhau;
 	private JLabel lblKaeaoke;
-	private DangNhap_dao dangNhap_dao= new DangNhap_dao();
-	private GD_TrangChu gd_TrangChu = new GD_TrangChu();
+	private DangNhap_dao dangNhap_dao;
+	private GD_TrangChu gd_TrangChu;
 	private String username;
 
 	public GD_TrangDangNhap() {
@@ -41,6 +43,13 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		setSize(720, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		try {
+  			ConnectDB.getInstance().connect("sa", "sapassword");
+  		} catch (SQLException e1) {
+  			// TODO Auto-generated catch block
+  			e1.printStackTrace();
+  		}
+		gd_TrangChu = new GD_TrangChu();
 		
 		ImageIcon icon = new ImageIcon("image\\\\hinh_trangdangnhap.jpg");
 	    this.setIconImage(icon.getImage());
@@ -177,30 +186,41 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	            }
 	        });}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		DataManager.setUserName(txtUsername.getText());
-		Object o = e.getSource();
-		if (o.equals(btnLogin)) {
-			username = txtUsername.getText();
-			char[] mk = ((JPasswordField) txtPassword).getPassword();
-			String mkstr=new String(mk);
-			if(dangNhap_dao.Timkiem(username, mkstr)==true){
-				gd_TrangChu.setVisible(true);	
-				dispose();
-			}
-			else {
-				JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!");
-			}
-
-		}
-		else if (o.equals(btnQuenMatKhau)) {
-			GD_QuenMatKhau quenmk= new GD_QuenMatKhau();
-			quenmk.setVisible(true);	
-			dispose();
-		}
-		
-	}	
+	  @Override
+	  public void actionPerformed(ActionEvent e) {
+	      DataManager.setUserName(txtUsername.getText());
+	      Object o = e.getSource();
+	      if (o.equals(btnLogin)) {
+	          username = txtUsername.getText();
+	          char[] mk = ((JPasswordField) txtPassword).getPassword();
+	          String mkstr = new String(mk);
+	          dangNhap_dao = new DangNhap_dao();
+	          if (dangNhap_dao.Timkiem(username, mkstr) == true) {
+	        	  String roleName = dangNhap_dao.getRole(username, mkstr);
+	        	    try {
+	        	        if (roleName.equals("Quản lý")) {
+	        	        	DataManager.setRole("QL");
+	        	        	DataManager.setRolePassword("QLpassword");
+	        	            ConnectDB.getInstance().connect("QL", "QLpassword");
+	        	        } else if (roleName.equals("Nhân viên")) {
+	        	        	DataManager.setRole("NV");
+	        	        	DataManager.setRolePassword("NVpassword");
+	        	            ConnectDB.getInstance().connect("NV", "NVpassword");
+	        	        }
+	        	    } catch (SQLException ex) {
+	        	    	ex.printStackTrace();
+	        	    }
+	              gd_TrangChu.setVisible(true);
+	              dispose();
+	          } else {
+	              JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!");
+	          }
+	      } else if (o.equals(btnQuenMatKhau)) {
+	          GD_QuenMatKhau quenmk = new GD_QuenMatKhau();
+	          quenmk.setVisible(true);
+	          dispose();
+	      }
+	  }
 }
 
 

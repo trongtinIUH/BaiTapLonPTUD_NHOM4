@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,22 +39,22 @@ public class DangNhap_dao {
 	}
 	
 	//hàm tìm mã nv và mk để tiến hành đăng nhập
-	public boolean Timkiem(String maNV,String mk){
-		boolean found = false;
-		try {
-			ConnectDB.getInstance();
-			Connection con = ConnectDB.getConnection();
-			String sql = "select * from TaiKhoan where maTaiKhoan = N'"+maNV+"' and matKhau = N'"+mk+"'";
-			Statement sta = con.createStatement();
-			ResultSet rs = sta.executeQuery(sql);
-			if(rs.next()) {
-				found = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return found;
-	}
+	public boolean Timkiem(String maNV, String mk) {
+        boolean found = false;
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String sql = "select * from TaiKhoan where maTaiKhoan = N'" + maNV + "' and matKhau = N'" + mk + "'";
+            Statement sta = con.createStatement();
+            ResultSet rs = sta.executeQuery(sql);
+            if (rs.next()) {
+                found = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return found;
+    }
 	
 	// hàm quên mk sau đó cập nhật lại mk mới 
 	public boolean doiMatKhau(String soDienThoai, String matKhauMoi) {
@@ -96,6 +97,25 @@ public class DangNhap_dao {
 			e.printStackTrace();
 		}
 		return found;
+	}
+	
+	public String getRole(String maTaiKhoan, String matkhau) {
+	    String role = null;
+	    try {
+	        ConnectDB.getInstance();
+	        Connection con = ConnectDB.getConnection();
+	        String sql = "select roleName from TaiKhoan where maTaiKhoan = ? and matkhau = ?";
+	        PreparedStatement stmt = con.prepareStatement(sql);
+	        stmt.setString(1, maTaiKhoan);
+	        stmt.setString(2, matkhau);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            role = rs.getString("roleName");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return role;
 	}
 
 	

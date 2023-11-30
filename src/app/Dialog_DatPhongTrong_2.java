@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -54,6 +55,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
+import connectDB.ConnectDB;
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
@@ -90,11 +92,11 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1;
 	private JTextField txtSoNguoi;
 	private JButton btn_DatThemPhong;
-	private NhanVien_dao nv_dao = new NhanVien_dao();
+	private NhanVien_dao nv_dao;
 	private NhanVien nv;
-	private HoaDonDatPhong_dao hddp_dao = new HoaDonDatPhong_dao();
-	private ChiTietHoaDon_dao cthd_dao = new ChiTietHoaDon_dao();
-	private ChiTietDichVu_dao ctdv_dao = new ChiTietDichVu_dao();
+	private HoaDonDatPhong_dao hddp_dao;
+	private ChiTietHoaDon_dao cthd_dao;
+	private ChiTietDichVu_dao ctdv_dao;
 
 	private JTable tblThemPhongMoi, tblDV;
 	private DefaultTableModel model, modelDV;
@@ -112,15 +114,15 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 
 	private KhachHang_dao khachHang_dao;
 	private JLabel lblTieuDe;
-	private TempDatPhong_dao tmpDatPhong_dao = new TempDatPhong_dao();
-	private Phong_dao p_dao = new Phong_dao();
-	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private TempDatPhong_dao tmpDatPhong_dao;
+	private Phong_dao p_dao;
+	private LoaiPhong_dao lp_dao;
 	private JLabel lbl_Loai;
 	private JLabel lblMaPhong;
-	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private PhieuDatPhong_dao pdp_dao;
 	private Date ngayHienTai;
 	private Date date;
-	private KhachHang_dao kh_dao = new KhachHang_dao();
+	private KhachHang_dao kh_dao;
 	private DecimalFormat df;
 
 	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp, int soNguoi, GD_TrangChu trangChu) {
@@ -134,6 +136,15 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		setLocationRelativeTo(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
 		this.setIconImage(icon.getImage());
+		nv_dao = new NhanVien_dao();
+		hddp_dao = new HoaDonDatPhong_dao();
+		cthd_dao = new ChiTietHoaDon_dao();
+		ctdv_dao = new ChiTietDichVu_dao();
+		tmpDatPhong_dao = new TempDatPhong_dao();
+		p_dao = new Phong_dao();
+		lp_dao = new LoaiPhong_dao();
+		pdp_dao = new PhieuDatPhong_dao();
+		kh_dao = new KhachHang_dao();
 
 		// panel chứa tiêu đề--------------------------------------
 		JPanel panel = new JPanel();
