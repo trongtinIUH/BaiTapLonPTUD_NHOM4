@@ -55,7 +55,7 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	private GD_HoaDon hoaDon = new GD_HoaDon();
 	private GD_SanPham sanPham = new GD_SanPham();
 	private GD_ThongKe thongKe = new GD_ThongKe();
-	private GD_TroGiup troGiup = new GD_TroGiup();
+	private GD_TroGiup troGiup = new GD_TroGiup(this);
 	private JPanel panel_chuaTime;
 	public GD_TrangChu() {
 		super("Karaoke 4T");
@@ -336,13 +336,55 @@ public class GD_TrangChu extends JFrame implements ActionListener{
 	}
 	
 	
+	public void showDatPhongCard() {
+	    resetActiveTab();
+	    btnDatPhong.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "DatPhong");
+	}
+	
+	public void showDSPhongCard() {
+	    resetActiveTab();
+	    btnDanhSachPhong.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "DanhSachPhong");
+	}
+	
+	public void showNhanVienCard() {
+	    resetActiveTab();
+	    btnNhanVien.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "NhanVien");
+	}
+	
 	public void showKhachHangCard() {
 	    resetActiveTab();
 	    btnKhachHang.setBackground(Color.decode("#F2F0FF"));
 	    cardLayout.show(cardPanel, "KhachHang");
 	}
 	
-	private void resetActiveTab() {
+	public void showSanPhamgCard() {
+	    resetActiveTab();
+	    btnSanPham.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "SanPham");
+	}
+	
+	public void showHoaDonCard() {
+	    resetActiveTab();
+	    btnHoaDon.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "HoaDon");
+	}
+	
+	public void showThongKeCard() {
+	    resetActiveTab();
+	    btnThongKe.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "ThongKe");
+	}
+	
+	public void showTroGiupCard() {
+	    resetActiveTab();
+	    btnTroGiup.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "TroGiup");
+	}
+	
+	public void resetActiveTab() {
 		btnDatPhong.setBackground(new Color(217, 226, 231));
 		btnDanhSachPhong.setBackground(new Color(217, 226, 231));
 		btnNhanVien.setBackground(new Color(217, 226, 231));

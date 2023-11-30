@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import org.w3c.dom.Node;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -35,10 +38,10 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	private DangNhap_dao dangNhap_dao = new DangNhap_dao();
 	
 	// Thay thế bằng Account SID và Auth Token của bạn
-    public static final String ACCOUNT_SID = "your_account_sid";
-    public static final String AUTH_TOKEN = "your_auth_token";
+    public static final String ACCOUNT_SID = "AC7f55b2559cf6d868c6c92f6733eafb65";
+    public static final String AUTH_TOKEN = "3bd02fc4ea78fcac93be82230c0f6ae5";
 
-    public static void sendOtp(String phoneNumber, String otp) {
+    public static void sendOtp(String phoneNumber, int otp) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
         // Đảm bảo số điện thoại có tiền tố quốc tế cho Việt Nam
@@ -47,7 +50,7 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
         }
 
         // Thay thế bằng số điện thoại Twilio đã xác nhận
-        String twilioPhoneNumber = "your_twilio_phone_number";
+        String twilioPhoneNumber = "0344387030";
 
         Message message = Message.creator(
             new PhoneNumber(phoneNumber),
@@ -204,11 +207,12 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 			dispose();
 		}
 		else if (o.equals(btnOTP)) {
-			  // Tạo mã OTP ngẫu nhiên gồm 6 chữ số
-		    int otp = (int)(Math.random() * ((999999 - 100000) + 1)) + 100000;
-		    
-		    // Hiển thị mã OTP trong ô txtOTP
-		    txtOTP.setText(String.valueOf(otp));
+//			  // Tạo mã OTP ngẫu nhiên gồm 6 chữ số
+//		    int otp = (int)(Math.random() * ((999999 - 100000) + 1)) + 100000;
+//		    
+//		    // Hiển thị mã OTP trong ô txtOTP
+//		    txtOTP.setText(String.valueOf(otp));
+			sendOtp(txtSDT.getText(), (int)(Math.random() * ((999999 - 100000) + 1)) + 100000);
 		}
 //		
 	}
