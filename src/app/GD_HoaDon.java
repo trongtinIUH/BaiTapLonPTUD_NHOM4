@@ -221,6 +221,9 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXoa.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnXoa.setBorder(new RoundedBorder(5));
 		btnXoa.setIconTextGap(18);
+		if(DataManager.getRole().equals("NV")) {
+			btnXoa.setEnabled(false);
+		}
 
 		pnOrderInfo.add(btnSua = new JButton("Sửa"));
 		btnSua.setBounds(350, 237, 140, 40);

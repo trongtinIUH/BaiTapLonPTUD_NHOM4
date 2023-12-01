@@ -67,8 +67,8 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	private GD_HoaDon hoaDon = new GD_HoaDon();
 	private GD_SanPham sanPham = new GD_SanPham();
 	private GD_ThongKe thongKe = new GD_ThongKe();
-	private GD_TroGiup troGiup = new GD_TroGiup();
 	private GD_KhuyenMai khuyenMai = new GD_KhuyenMai();
+	private GD_TroGiup troGiup = new GD_TroGiup(this);
 	private JPanel panel_chuaTime;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Dialog_User dialog_User= new Dialog_User();
@@ -89,7 +89,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	private void initialize() {
 
 		// hiển thị full màn hình
-		setBounds(0, 0, 1366, 768);
+		setBounds(0, 0, 1388, 768);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -519,14 +519,56 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	      
 
 	}
-
+	
+	public void showDatPhongCard() {
+	    resetActiveTab();
+	    btnDatPhong.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "DatPhong");
+	}
+	
+	public void showDSPhongCard() {
+	    resetActiveTab();
+	    btnDanhSachPhong.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "DanhSachPhong");
+	}
+	
+	public void showNhanVienCard() {
+	    resetActiveTab();
+	    btnNhanVien.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "NhanVien");
+	}
+	
 	public void showKhachHangCard() {
 		resetActiveTab();
 		btnKhachHang.setBackground(Color.decode("#F2F0FF"));
 		cardLayout.show(cardPanel, "KhachHang");
 	}
-
-	private void resetActiveTab() {
+	
+	public void showSanPhamgCard() {
+	    resetActiveTab();
+	    btnSanPham.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "SanPham");
+	}
+	
+	public void showHoaDonCard() {
+	    resetActiveTab();
+	    btnHoaDon.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "HoaDon");
+	}
+	
+	public void showThongKeCard() {
+	    resetActiveTab();
+	    btnThongKe.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "ThongKe");
+	}
+	
+	public void showTroGiupCard() {
+	    resetActiveTab();
+	    btnTroGiup.setBackground(Color.decode("#F2F0FF"));
+	    cardLayout.show(cardPanel, "TroGiup");
+	}
+	
+	public void resetActiveTab() {
 		btnDatPhong.setBackground(new Color(217, 226, 231));
 		btnDanhSachPhong.setBackground(new Color(217, 226, 231));
 		btnNhanVien.setBackground(new Color(217, 226, 231));

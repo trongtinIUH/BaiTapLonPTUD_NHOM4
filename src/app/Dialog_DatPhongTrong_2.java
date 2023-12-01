@@ -355,27 +355,25 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				}
 			}
 		});
-		
+
 		Action themDVAction = new AbstractAction() {
-		    /**
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				btn_ThemDV.doClick();
-		    }
+			}
 		};
-		
+
 		// Lấy InputMap và ActionMap của JPanel
 		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
 
-		
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK), "themDv");
 		actionMap.put("themDv", themDVAction);
-
 
 		// thêm sự kiện button
 		btn_DatPhong.addActionListener(this);
@@ -604,8 +602,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 						// Thêm chi tiết hóa đơn
 						ChiTietHoaDon cthd;
 
-							cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
-									Timestamp.valueOf(LocalDateTime.now()), 0);
+						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
+								Timestamp.valueOf(LocalDateTime.now()), 0);
 						cthd_dao.addChiTietHD(cthd);
 
 						// Thêm chi tiết dịch vụ
@@ -686,13 +684,18 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				int row = tblDV.getSelectedRow();
 				ArrayList<TempThemDV> ds = DataManager.getCtdvTempList();
-				for (TempThemDV temp : ds) {
+				int chk = 0;
+				flag: for (TempThemDV temp : ds) {
 					if (temp.getMaPhong().equals(model.getValueAt(tblThemPhongMoi.getSelectedRow(), 1).toString())
 							&& temp.getMaSP().equals(modelDV.getValueAt(row, 1).toString())) {
 						ds.remove(temp);
 						JOptionPane.showMessageDialog(this, "Xóa thành công!");
-						modelDV.removeRow(row);
+						chk = 1;
+						break flag;
 					}
+				}
+				if(chk == 1) {
+					modelDV.removeRow(row);
 				}
 				DataManager.setCtdvTempList(ds);
 			}
