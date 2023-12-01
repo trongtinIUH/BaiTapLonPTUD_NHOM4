@@ -508,13 +508,14 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
                 	dialog_User= new Dialog_User();
                 	dialog_User.setVisible(true);
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_F10) {
+                if (e.getKeyCode() == KeyEvent.VK_F10) {
                     // Open new window here
                 	resetActiveTab();
                 	cardLayout.show(cardPanel, "TrangChu");
                 }
             }
         });
+        requestFocusInWindow();
         setFocusable(true);
 	      
 
