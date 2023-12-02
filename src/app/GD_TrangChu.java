@@ -51,10 +51,10 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	private CardLayout cardLayout;
 	private final JPanel panel_1 = new JPanel();
 	private JButton btnDatPhong;
-	private JButton btnDanhSachPhong;
-	private JButton btnNhanVien;
+	public JButton btnDanhSachPhong;
+	public JButton btnNhanVien;
 	private JButton btnKhachHang;
-	private JButton btnSanPham;
+	public JButton btnSanPham;
 	private JButton btnHoaDon;
 	private JButton btnThongKe, btnKhuyenMai;
 	private JButton btnTroGiup;
@@ -357,7 +357,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		cardPanel.add(thongKe, "ThongKe");
 		cardPanel.add(troGiup, "TroGiup");
 		getContentPane().add(cardPanel, BorderLayout.CENTER);
-
+		
 		btnDatPhong.addActionListener(this);
 		btnDanhSachPhong.addActionListener(this);
 		btnNhanVien.addActionListener(this);
@@ -592,19 +592,11 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		} else if (o.equals(btnDanhSachPhong)) {
 			resetActiveTab();
 			btnDanhSachPhong.setBackground(Color.decode("#F2F0FF"));
-			if(DataManager.getRole().equals("QL")) {
-				cardLayout.show(cardPanel, "DanhSachPhong");
-			}else if(DataManager.getRole().equals("NV")) {
-				JOptionPane.showMessageDialog(btnDanhSachPhong, "Bạn không có quyền sử dụng chức năng này!");
-			}
+			cardLayout.show(cardPanel, "DanhSachPhong");
 		} else if (o.equals(btnNhanVien)) {
 			resetActiveTab();
 			btnNhanVien.setBackground(Color.decode("#F2F0FF"));
-			if(DataManager.getRole().equals("QL")) {
-				cardLayout.show(cardPanel, "NhanVien");
-			}else if(DataManager.getRole().equals("NV")) {
-				JOptionPane.showMessageDialog(btnNhanVien, "Bạn không có quyền sử dụng chức năng này!");
-			}
+			cardLayout.show(cardPanel, "NhanVien");
 		} else if (o.equals(btnKhachHang)) {
 			resetActiveTab();
 			btnKhachHang.setBackground(Color.decode("#F2F0FF"));
@@ -612,6 +604,10 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		} else if (o.equals(btnHoaDon)) {
 			resetActiveTab();
 			btnHoaDon.setBackground(Color.decode("#F2F0FF"));
+			if(DataManager.getRole().equals("NV")) {
+				hoaDon.btnXoa.setEnabled(false);
+				hoaDon.btnXoa.setBackground(Color.decode("#CCCCCC"));
+			}
 			cardLayout.show(cardPanel, "HoaDon");
 		} else if (o.equals(btnSanPham)) {
 			resetActiveTab();
