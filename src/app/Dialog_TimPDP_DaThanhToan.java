@@ -9,24 +9,16 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
-
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-
-import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.components.DateTimePicker;
-import com.github.lgooddatepicker.components.TimePickerSettings;
-
+import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
+import dao.KhuyenMai_dao;
 import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
@@ -60,20 +52,16 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 	private KhachHang_dao kh_dao;
 	private JLabel lbl_ngayThanhToan;
 	private JLabel lbl_TongTien;
-	
-	private TimePickerSettings timeSettings_1;
-	private DateTimePicker dateTimePicker;
-	private TimePickerSettings timeSettings;
-	private DatePickerSettings dateSettings;
-	private DatePickerSettings dateSettings_1;
-	private java.sql.Date ngayGioThanhToan;
-	
+		
 	private HoaDonDatPhong hd= new HoaDonDatPhong();
 	private HoaDonDatPhong_dao hd_dao= new HoaDonDatPhong_dao();
 	private JLabel lblngaytt;
 	private JLabel lbl_Tongtien_1;
+	private KhuyenMai_dao khuyenmai_dao= new KhuyenMai_dao();
+
+	private ChiTietDichVu_dao chitietdichvu_dao= new ChiTietDichVu_dao();
 	
-	
+	private DecimalFormat df;
 
 	public Dialog_TimPDP_DaThanhToan(String maPhong, String maPDP) {
 		//kích thước giao diện
@@ -216,10 +204,8 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 		lbl_ngayThanhToan.setFont(new Font("Arial", Font.BOLD, 18));
 		lbl_ngayThanhToan.setBounds(10, 290, 150, 30);
 		getContentPane().add(lbl_ngayThanhToan);
-
-        String maHoaDon = "HD" + maPDP.substring(3);
- 
-        hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+		String maHD="HD"+maPDP.substring(3);
+        hd=hd_dao.getHoaDonTheoMaHoaDon(maHD);
         String ngayGioNhan = hd.getNgayLapHoaDon().toString();
 		
 		lblngaytt = new JLabel();
@@ -235,8 +221,10 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 		getContentPane().add(lbl_TongTien);
 		
 		lbl_Tongtien_1 = new JLabel();
-//		hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()), 
-		lbl_Tongtien_1.setText("" +"VNĐ");
+		df= new DecimalFormat("#,###,### VNĐ");
+		lbl_Tongtien_1.setText(df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()),
+				chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()),
+				khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai()))));
 		lbl_Tongtien_1.setFont(new Font("Arial", Font.BOLD, 18));
 		lbl_Tongtien_1.setBounds(115, 370, 190, 30);
 		getContentPane().add(lbl_Tongtien_1);
