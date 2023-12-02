@@ -30,7 +30,6 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DatasetUtils;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
@@ -41,6 +40,7 @@ import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
+import dao.NhanVien_dao;
 import dao.Phong_dao;
 import dao.ThongKe_dao;
 import entity.CurveLineChart;
@@ -68,7 +68,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	JLabel lblTitle, lblThongKe, lblLoaihinhTK, lblDate, lblTongDoanhThu, lblChartTitle,
 	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu, lblYearStart, lblYearEnd;
 	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd, cbYear, cbMonth, cbMonthKH, cbYearKH;
-	JButton btnThongKe, btnLamMoi, btnInTK, btnProfile;
+	JButton btnThongKe, btnLamMoi, btnProfile;
 	private HoaDonDatPhong_dao hoadon_dao;
 	private KhachHang_dao khachhang_dao;
 	private Phong_dao phong_dao;
@@ -80,6 +80,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	private PieChart pieChart;
 	private CurveLineChart lineChart;
 	private ThongKe_dao thongke_dao;
+	private NhanVien_dao nhanvien_dao;
 	private Dialog_User dialog_user;
 
 	private LocalDateTime now;
@@ -101,6 +102,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		khuyenmai_dao = new KhuyenMai_dao();
 		chitiethoadon_dao = new ChiTietHoaDon_dao();
 		thongke_dao = new ThongKe_dao();
+		nhanvien_dao = new NhanVien_dao();
 		JPanel pnNorth = new JPanel();
 		pnNorth.setBackground(Color.decode("#B5E6FB"));
 		pnNorth.setBounds(0, 0, 1080, 60);
@@ -140,37 +142,37 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		
 		pnMenu.add(lblYearStart = new JLabel("Năm bắt đầu"));
 		lblYearStart.setFont(new Font("Arial", Font.BOLD, 18));
-		lblYearStart.setBounds(430, 25, 120, 24);
+		lblYearStart.setBounds(500, 25, 120, 24);
 		pnMenu.add(cbYearStart = new JComboBox<String>());
 		cbYearStart.setFont(new Font("Arial", Font.PLAIN, 18));
 		cbYearStart.setEnabled(false);
-		cbYearStart.setBounds(560, 25, 80, 24);
+		cbYearStart.setBounds(630, 25, 80, 24);
 		cbYearStart.setVisible(true);
 		
 		cbMonthKH = new JComboBox<String>();
 		cbMonthKH.setFont(new Font("Arial", Font.PLAIN, 18));
 		cbMonthKH.setVisible(false);
 		cbMonthKH.setEnabled(false);
-	    cbMonthKH.setBounds(560, 25, 80, 24);
+	    cbMonthKH.setBounds(630, 25, 80, 24);
 	    pnMenu.add(cbMonthKH);
 		
 		pnMenu.add(lblYearEnd = new JLabel("Năm kết thúc"));
 		lblYearEnd.setFont(new Font("Arial", Font.BOLD, 18));
-		lblYearEnd.setBounds(430, 85, 120, 24);
+		lblYearEnd.setBounds(500, 85, 120, 24);
 		pnMenu.add(cbYearEnd = new JComboBox<String>());
 		cbYearEnd.setFont(new Font("Arial", Font.PLAIN, 18));
-		cbYearEnd.setBounds(560, 85, 80, 24);
+		cbYearEnd.setBounds(630, 85, 80, 24);
 		cbYearEnd.setEnabled(false);
 		
 		cbYearKH = new JComboBox<String>();
 		cbYearKH.setFont(new Font("Arial", Font.PLAIN, 18));
 		cbYearKH.setVisible(false);
 		cbYearKH.setEnabled(false);
-		cbYearKH.setBounds(560, 85, 80, 24);
+		cbYearKH.setBounds(630, 85, 80, 24);
 	    pnMenu.add(cbYearKH);
 		
 		pnMenu.add(btnThongKe = new JButton("Thống kê"));
-		btnThongKe.setBounds(680, 15, 184, 42);
+		btnThongKe.setBounds(800, 15, 184, 42);
 		btnThongKe.setBackground(Color.decode("#0D99FF"));
 		btnThongKe.setForeground(Color.white);
 		btnThongKe.setFont(new Font("Arial", Font.BOLD, 18));
@@ -179,7 +181,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		btnThongKe.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnThongKe.setIconTextGap(18);
 		pnMenu.add(btnLamMoi = new JButton("Làm mới"));
-		btnLamMoi.setBounds(880, 15, 184, 42);
+		btnLamMoi.setBounds(800, 70, 184, 42);
 		btnLamMoi.setBackground(Color.decode("#32BF26"));
 		btnLamMoi.setForeground(Color.white);
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 18));
@@ -187,15 +189,6 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		btnLamMoi.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnLamMoi.setBorder(new RoundedBorder(5));
 		btnLamMoi.setIconTextGap(18);
-		pnMenu.add(btnInTK = new JButton("In báo cáo thống kê"));
-		btnInTK.setBounds(680, 70, 383, 42);
-		btnInTK.setBackground(Color.decode("#FFB400"));
-		btnInTK.setForeground(Color.white);
-		btnInTK.setFont(new Font("Arial", Font.BOLD, 18));
-		btnInTK.setIcon(new ImageIcon("icon\\Print_icon.png"));
-		btnInTK.setHorizontalTextPosition(SwingConstants.RIGHT); 
-		btnInTK.setBorder(new RoundedBorder(5));
-		btnInTK.setIconTextGap(18);
 		add(pnMenu);
 		pnContent = new JPanel();
 		pnContent.setLayout(null);
@@ -371,6 +364,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		add(pnNorth);
 		
 		dateTimePicker.addDateTimeChangeListener(event -> {
+			resetField();
 		    clearDataDoanhThuTheoNgay();
 		    loadDataDoanhThuTheoNgay(); 
 		    try {
@@ -394,7 +388,6 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		});
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
-		btnInTK.addActionListener(this);
 		btnProfile.addActionListener(this);
 		updateYearCbo();
 		updateMonthYearCbo();
@@ -436,13 +429,15 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 			chitietdichvu_dao.tinhTongTienDVTheoMaHoaDon(hd.getMaHoaDon()), 
 			khuyenmai_dao.getPhanTramKhuyenMaiTheoMaKM(hd.getKhuyenMai().getMaKhuyenMai())
 			)),
-			hd.getNhanVien().getMaNhanVien(), hd.getNgayLapHoaDon(),
+			nhanvien_dao.getNhanVienTheoMa(hd.getNhanVien().getMaNhanVien()).getHoTen(), hd.getNgayLapHoaDon(),
 			};
 			model.addRow(row);
 		}
-		lblTongDoanhThu.setText(df.format(tongDoanhThu));
-		lblDoanhThuDichVu.setText(df.format(doanhThuDV));
-		lblTongHoaDon.setText(i+"");
+		if(i > 0) {
+			lblTongDoanhThu.setText(df.format(tongDoanhThu));
+			lblDoanhThuDichVu.setText(df.format(doanhThuDV));
+			lblTongHoaDon.setText(i+"");
+		}
 	}
 	
 	public void clearDataDoanhThuTheoNgay() {
@@ -718,8 +713,28 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 				cbMonthKH.setVisible(false);
 				cbYearKH.setVisible(false);
 				pnBarChart.setVisible(false);
-				clearDataDoanhThuTheoNgay();
 				if(cbDate.getSelectedItem().toString().equals("Ngày")) {
+					clearDataDoanhThuTheoNgay();
+					resetField();
+					loadDataDoanhThuTheoNgay();
+					try {
+				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // adjust this pattern to match your SQL Server date/time format
+				        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+
+				        DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(formattedDateTime);
+				        if(dtlp != null) {
+				            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
+				            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
+				        }
+				        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
+				    } catch (Exception e2) {
+				        e2.printStackTrace();
+				    }
+				    if(model.getRowCount() <= 0) {
+				    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+				        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+				    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
+				    }
 					cbYearStart.setEnabled(false);
 					cbYearEnd.setEnabled(false);
 					pnCurveLineChart.setVisible(false);
@@ -730,30 +745,33 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 					cbYear.setVisible(false);
 					pnContent.setVisible(true);
 					pnTable.setVisible(true);
-					resetField();
 					if(model.getRowCount() <= 0) {
 				    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
 				        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
 				    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
 				    }
 				} else if (cbDate.getSelectedItem().toString().equals("Tháng")) {
-					pnContent.setVisible(true);
-					cbYearStart.setEnabled(false);
-					cbYearEnd.setEnabled(false);
-					pnCurveLineChart.setVisible(false);
-					pnPieChart.setVisible(true);
-					lblDate.setText("Chọn tháng");
-					cbMonth.setVisible(true);
-					cbYear.setVisible(true);
-					pnPieChart.setVisible(true);
-					dateTimePicker.setVisible(false);
-					pnTable.setVisible(false);
-					resetField();
-					ThongKeMonth();
-					if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
-						JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của tháng: "
-						+ cbMonth.getSelectedItem() + " năm: " + cbYear.getSelectedItem()
-						);
+					if(DataManager.getRole().equals("QL")) {
+						pnContent.setVisible(true);
+						cbYearStart.setEnabled(false);
+						cbYearEnd.setEnabled(false);
+						pnCurveLineChart.setVisible(false);
+						pnPieChart.setVisible(true);
+						lblDate.setText("Chọn tháng");
+						cbMonth.setVisible(true);
+						cbYear.setVisible(true);
+						pnPieChart.setVisible(true);
+						dateTimePicker.setVisible(false);
+						pnTable.setVisible(false);
+						resetField();
+						ThongKeMonth();
+						if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
+							JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của tháng: "
+							+ cbMonth.getSelectedItem() + " năm: " + cbYear.getSelectedItem()
+							);
+						}
+					} else if(DataManager.getRole().equals("NV")) {
+						JOptionPane.showMessageDialog(null, "Nhân viên không có quyền thống kê doanh thu theo tháng!");
 					}
 				} else if(cbDate.getSelectedItem().toString().equals("Năm")) {
 					if(DataManager.getRole().equals("QL")) {

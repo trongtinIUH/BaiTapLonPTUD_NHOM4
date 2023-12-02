@@ -66,7 +66,8 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private String colServiceDetail[] = { "Mã hóa đơn", "Tên dịch vụ", "Đơn giá", "Số lượng" };
 	private JLabel lblTitle, lblMaHD, lblTenKH, lblMaNV, lblNgayLapHD, lblTrangThai, lblKhuyenMai, lblTongTien,
 			lblTimKiem, lblKeyword;
-	private JButton btnXoa, btnSua, btnTimKiem, btnXuatDSHD, btnProfile;
+	private JButton btnSua, btnTimKiem, btnXuatDSHD, btnProfile;
+	public JButton btnXoa;
 	private JComboBox<String> cbTrangThai, cbTimKiem;
 	private JTextField txtMaHD, txtTenKH, txtMaNV, txtKhuyenMai, txtTongTien, txtTimKiem;
 	private HoaDonDatPhong_dao hoadon_dao;
@@ -221,9 +222,6 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXoa.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnXoa.setBorder(new RoundedBorder(5));
 		btnXoa.setIconTextGap(18);
-		if(DataManager.getRole().equals("NV")) {
-			btnXoa.setEnabled(false);
-		}
 
 		pnOrderInfo.add(btnSua = new JButton("Sửa"));
 		btnSua.setBounds(350, 237, 140, 40);
@@ -443,21 +441,17 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	}
 
 	public void xoa() {
-		if(DataManager.getRole().equals("NV")) {
-			JOptionPane.showMessageDialog(btnXoa, "Nhân viên không thể xóa hóa đơn");
-		} else if (DataManager.getRole().equals("QL")) {
-			if (tableOrderList.getSelectedRow() == -1) {
-				JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
-			} else if (tableOrderList.getSelectedRowCount() > 1) {
-				JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để xóa!");
-			} else {
-				if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
-						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					int row = tableOrderList.getSelectedRow();
-					hoadon_dao.deleteHoaDon(modelOrderList.getValueAt(row, 1).toString());
-					modelOrderList.removeRow(row);
-					JOptionPane.showMessageDialog(this, "Xóa thành công!");
-				}
+		if (tableOrderList.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng để xóa!");
+		} else if (tableOrderList.getSelectedRowCount() > 1) {
+			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 Sản phẩm để xóa!");
+		} else {
+			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa Sản phẩm này không?", "Thông báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				int row = tableOrderList.getSelectedRow();
+				hoadon_dao.deleteHoaDon(modelOrderList.getValueAt(row, 1).toString());
+				modelOrderList.removeRow(row);
+				JOptionPane.showMessageDialog(this, "Xóa thành công!");
 			}
 		}
 	}

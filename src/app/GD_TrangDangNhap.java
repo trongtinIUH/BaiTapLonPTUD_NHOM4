@@ -206,6 +206,9 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	        	        	DataManager.setRole("NV");
 	        	        	DataManager.setRolePassword("NVpassword");
 	        	            ConnectDB.getInstance().connect("NV", "NVpassword");
+	        	            gd_TrangChu.btnDanhSachPhong.setEnabled(false);
+	        	            gd_TrangChu.btnNhanVien.setEnabled(false);
+	        	            gd_TrangChu.btnSanPham.setEnabled(false);
 	        	        }
 	        	    } catch (SQLException ex) {
 	        	    	ex.printStackTrace();
