@@ -64,6 +64,7 @@ import dao.LoaiPhong_dao;
 import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
+import dao.SanPham_dao;
 import dao.TempDatPhong_dao;
 
 import javax.swing.JTextField;
@@ -124,6 +125,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private Date date;
 	private KhachHang_dao kh_dao;
 	private DecimalFormat df;
+	private SanPham_dao sp_dao = new SanPham_dao();
 
 	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp, int soNguoi, GD_TrangChu trangChu) {
 		df = new DecimalFormat("#,###,### VNĐ");
@@ -606,13 +608,16 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 								Timestamp.valueOf(LocalDateTime.now()), 0);
 						cthd_dao.addChiTietHD(cthd);
 
-						// Thêm chi tiết dịch vụ
+						// Thêm chi tiết dịch vụ, cập nhật lại số lượng sản phẩm trong csdl
 						if (DataManager.getCtdvTempList() != null) {
 							for (TempThemDV tmp : DataManager.getCtdvTempList()) {
 								ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
 										new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
 								if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
+									SanPham sp = sp_dao.getSanPhamTheoMaSP(tmp.getMaSP());
+									sp.setSoLuongTon(sp.getSoLuongTon() - tmp.getSoLuong());
 									ctdv_dao.addChiTietDV(ctdv);
+									sp_dao.updateSanPham(sp);
 								}
 							}
 						}
@@ -620,6 +625,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				}
 				tmpDatPhong_dao.deleteALLTempDatPhong();
 				DataManager.setDatPhong(true);
+				DataManager.setCtdvTempList(null);
 				JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính!");
 				setVisible(false);
 			} else {
