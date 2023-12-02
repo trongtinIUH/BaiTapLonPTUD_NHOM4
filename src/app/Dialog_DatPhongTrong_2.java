@@ -654,8 +654,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				DataManager.setSoDienThoaiKHDat(txtSDT.getText());
 				DataManager.setLoadSDT(true);
 				if (checkCustomer == JOptionPane.YES_OPTION) {
-					trangChu.showKhachHangCard();
 					setVisible(false);
+					trangChu.showKhachHangCard();
 				}
 			}
 		}
@@ -694,9 +694,11 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 						break flag;
 					}
 				}
-				if(chk == 1) {
+				if (chk == 1) {
 					modelDV.removeRow(row);
 				}
+				clearTableDV();
+				loadDataDV(model.getValueAt(tblThemPhongMoi.getSelectedRow(), 1).toString());
 				DataManager.setCtdvTempList(ds);
 			}
 		}

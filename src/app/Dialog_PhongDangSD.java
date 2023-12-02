@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.crypto.spec.PBEParameterSpec;
 import javax.swing.AbstractAction;
@@ -25,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import dao.ChiTietHoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
@@ -32,6 +34,7 @@ import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
+import entity.HoaDonDatPhong;
 import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
@@ -65,6 +68,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private String maP;
 	private PhieuDatPhong pdp_of_room;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private GD_TrangChu trangChu;
 
@@ -250,58 +254,52 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		btnThanhToan.addActionListener(this);
 		btnThemDV.addActionListener(this);
 		btnThemPhong.addActionListener(this);
-		
-		
-		
+
 		Action chuyenPhongAction = new AbstractAction() {
-		    /**
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				btnChuyenPhong.doClick();
-		    }
+			}
 		};
 
-		
 		Action themDVAction = new AbstractAction() {
-		    /**
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				btnThemDV.doClick();
-		    }
+			}
 		};
 
-		
 		Action thanhToanAction = new AbstractAction() {
-		    /**
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				btnThanhToan.doClick();
-		    }
+			}
 		};
 		// Lấy InputMap và ActionMap của JPanel
 		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
 
-		
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK), "themDv");
 		actionMap.put("themDv", themDVAction);
 
-		
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), "chuyenPhong");
 		actionMap.put("chuyenPhong", chuyenPhongAction);
-		
+
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), "thanhToan");
 		actionMap.put("thanhToan", thanhToanAction);
 
@@ -336,7 +334,29 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 			tmp_dao.deleteALLTempDatPhong();
 			TempDatPhong tmp = null;
 			KhachHang kh = kh_dao.getKhachHangTheoMaKH(pdp_of_room.getKhachHang().getMaKhachHang());
-			ArrayList<PhieuDatPhong> DsPDP = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
+
+			ArrayList<PhieuDatPhong> DsPDP_Tmp = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
+
+			// lấy ra danh sách phiếu đặt phòng mới nhất của khách hàng nếu bị trùng phòng
+			ArrayList<PhieuDatPhong> DsPDP = new ArrayList<PhieuDatPhong>();
+			PhieuDatPhong pdp_tmp = new PhieuDatPhong();
+			for (PhieuDatPhong pdp1 : DsPDP_Tmp) {
+				int chk = 0;
+				if (DsPDP.size() != 0) {
+					for (PhieuDatPhong pdp2 : DsPDP) {
+						if (pdp2.getPhong().getMaPhong().equals(pdp1.getPhong().getMaPhong())) {
+							chk = 1;
+							pdp_tmp = pdp2;
+						}
+					}
+				}
+				if (chk == 1) {
+					DsPDP.remove(pdp_tmp);
+					chk = 0;
+				}
+				DsPDP.add(pdp1);
+			}
+
 			for (PhieuDatPhong pdp : DsPDP) {
 				Phong p = p_dao.getPhongTheoMaPhong(pdp.getPhong().getMaPhong());
 				if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
