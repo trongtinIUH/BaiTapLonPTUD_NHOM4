@@ -657,6 +657,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		}
 		if (o.equals(btnTimKiemPDP)) {
 			dialog_TimPhieuDatPhong = new Dialog_TimPhieuDatPhong();
+			dialog_TimPhieuDatPhong.setModal(true);
 			dialog_TimPhieuDatPhong.setVisible(true);
 
 		}
@@ -677,23 +678,27 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					Phong p = p_dao.getPhongTheoMaPhong(maPhong);
 					if (p.getTrangThai() == Enum_TrangThai.Trống) {
 						dialog_htPhong = new Dialog_HienThiPhong(maPhong, trangChu);
+						dialog_htPhong.setModal(true);
 						dialog_htPhong.setVisible(true);
 						return;
 					}
 
 					if (p.getTrangThai() == Enum_TrangThai.Chờ) {
 						dialog_PhongCho = new Dialog_PhongCho(maPhong);
+						dialog_PhongCho.setModal(true);
 						dialog_PhongCho.setVisible(true);
 						break;
 					}
 
 					if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
 						dialog_PhongDangSD = new Dialog_PhongDangSD(maPhong);
+						dialog_PhongDangSD.setModal(true);
 						dialog_PhongDangSD.setVisible(true);
 						return;
 					}
 					if (p.getTrangThai() == Enum_TrangThai.Đang_sửa_chữa) {
 						dialog_htPhongSuaChua = new Dialog_HienThiPhongSuaChua(maPhong);
+						dialog_htPhongSuaChua.setModal(true);
 						dialog_htPhongSuaChua.setVisible(true);
 						return;
 					}

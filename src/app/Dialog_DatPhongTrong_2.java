@@ -530,6 +530,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				String maPhong = lblMaPhong.getText();
 				String ma = maPhong.substring(maPhong.indexOf(":") + 1).trim();
 				dialog_ThemDichVu = new Dialog_ThemDichVu(customer, nv.getHoTen(), ma);
+				dialog_ThemDichVu.setModal(true);
 				dialog_ThemDichVu.setVisible(true);
 			} else {
 				JOptionPane.showMessageDialog(this, "Bạn chưa thêm khách hàng!");

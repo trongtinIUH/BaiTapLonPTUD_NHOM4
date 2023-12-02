@@ -98,7 +98,55 @@ public class DangNhap_dao {
 		}
 		return found;
 	}
-	
+//tìm mk theo manv
+	public TaiKhoan LayMatKhauTheoMaNhanVien(String maNhanVien) {
+	    TaiKhoan taiKhoan = null;
+	    try {
+	        ConnectDB.getInstance();
+	        Connection con = ConnectDB.getConnection();
+	        String sql = "select TaiKhoan.* from TaiKhoan inner join NhanVien on TaiKhoan.maTaiKhoan = NhanVien.maNhanVien where NhanVien.maNhanVien = '" + maNhanVien + "'";
+	        Statement stm = con.createStatement();
+	        ResultSet rs = stm.executeQuery(sql);
+	        if (rs.next()) {
+	            String maTaiKhoan = rs.getString("maTaiKhoan");
+	            String matKhau = rs.getString("matKhau");
+	            boolean trangThai = rs.getBoolean("trangThai");
+	            String roleName = rs.getString("roleName");
+	            NhanVien nhanVien = new NhanVien(maNhanVien);
+	            taiKhoan = new TaiKhoan(maTaiKhoan, matKhau, trangThai, nhanVien, roleName);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return taiKhoan;
+	}
+//đổi mk theo ma nv
+	public boolean doiMatKhauTheoMaNV(String maNhanVien, String matKhauMoi) {
+	    boolean updated = false;
+	    try {
+	        ConnectDB.getInstance();
+	        Connection con = ConnectDB.getConnection();
+	        // Kiểm tra xem mã nhân viên có tồn tại không
+	        String sqlCheck = "select maNhanVien from NhanVien where maNhanVien = N'"+maNhanVien+"'";
+	        Statement staCheck = con.createStatement();
+	        ResultSet rsCheck = staCheck.executeQuery(sqlCheck);
+	        if(rsCheck.next()) {
+	            // Nếu tồn tại, cập nhật mật khẩu mới
+	            String sqlUpdate = "update TaiKhoan set matKhau = N'"+matKhauMoi+"' where maTaiKhoan = N'"+maNhanVien+"'";
+	            Statement staUpdate = con.createStatement();
+	            int rowsUpdated = staUpdate.executeUpdate(sqlUpdate);
+	            if(rowsUpdated > 0) {
+	                updated = true;
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return updated;
+	}
+
+
+
 	public String getRole(String maTaiKhoan, String matkhau) {
 	    String role = null;
 	    try {

@@ -750,21 +750,25 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			if (hinhthuc.equals("Đặt trước")&& p.getTrangThai()==Enum_TrangThai.Chờ) {
 				dialog_PhongCho = new Dialog_PhongCho(maphong);
 				DataManager.setDatPhongCho(true);
+				dialog_PhongCho.setModal(true);
 				dialog_PhongCho.setVisible(true);
 			}else if (hinhthuc.equals("Đặt trước")&& p.getTrangThai()==Enum_TrangThai.Đang_sử_dụng) {
 				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong);
 				DataManager.setDatPhong(true);
+				dialog_PhongDangSD.setModal(true);
 				dialog_PhongDangSD.setVisible(true);
 			}
 			else if (hinhthuc.equals("Đặt trực tiếp")&& trangthai.equals("Chưa TT")&&p.getTrangThai()==Enum_TrangThai.Đang_sử_dụng) {
 				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong);
 				DataManager.setDatPhong(true);
+				dialog_PhongDangSD.setModal(true);
 				dialog_PhongDangSD.setVisible(true);
 
 			} else {
 				dialog_TimPDP_DaThanhToan = new Dialog_TimPDP_DaThanhToan(maphong, maPDP);
 
 				DataManager.setDatPhong(true);
+				dialog_TimPDP_DaThanhToan.setModal(true);
 				dialog_TimPDP_DaThanhToan.setVisible(true);
 			}
 
@@ -814,6 +818,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 						JOptionPane.showMessageDialog(this,
 								"Phòng " + p.getMaPhong() + " được thêm vào danh sách đặt phòng thành công.");
 						DataManager.setSoDienThoaiKHDat("");
+						dialog_DatPhongTrong_2.setModal(true);
 						dialog_DatPhongTrong_2.setVisible(true);
 					} else if (tongsophut_np - tongsophut_ht < -30) {
 						// Khách hàng đến trễ hơn giờ nhận phòng 30 phút

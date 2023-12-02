@@ -317,6 +317,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		Object o = e.getSource();
 		if (o.equals(btnChuyenPhong)) {
 			dialog_ChuyenPhong = new Dialog_ChuyenPhong(lblPhong_1.getText(), lblSoNguoi_1.getText());
+			dialog_ChuyenPhong.setModal(true);
 			dialog_ChuyenPhong.setVisible(true);
 			dispose();
 		}
@@ -324,11 +325,13 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		if (o.equals(btnThemDV)) {
 			dialog_ThemDichVu = new Dialog_ThemDichVu(lblTenKH_1.getText(), DataManager.getUserName(),
 					lblPhong_1.getText());
+			dialog_ThemDichVu.setModal(true);
 			dialog_ThemDichVu.setVisible(true);
 			dispose();
 		}
 		if (o.equals(btnThanhToan)) {
 			dialog_ThanhToan = new Dialog_ThanhToan(lblPhong_1.getText());
+			dialog_ThanhToan.setModal(true);
 			dialog_ThanhToan.setVisible(true);
 			dispose();
 		}

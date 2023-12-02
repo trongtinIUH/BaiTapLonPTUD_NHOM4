@@ -19,6 +19,11 @@ public class TaiKhoan implements Serializable {
 		
 	}
 	
+	public TaiKhoan() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public TaiKhoan(String maTaiKhoan, String matKhau, boolean trangThai, NhanVien nhanVien, String roleName) {
 		super();
 		this.maTaiKhoan = maTaiKhoan;
