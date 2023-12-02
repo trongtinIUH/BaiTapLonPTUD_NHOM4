@@ -628,6 +628,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				DataManager.setDatPhong(true);
 				DataManager.setCtdvTempList(null);
 				JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính!");
+				DataManager.setSoDienThoaiKHDat("");
 				setVisible(false);
 			} else {
 				JOptionPane.showMessageDialog(this, "Bạn chưa thêm khách hàng!");
