@@ -678,7 +678,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					Phong p = p_dao.getPhongTheoMaPhong(maPhong);
 					if (p.getTrangThai() == Enum_TrangThai.Trống) {
 						dialog_htPhong = new Dialog_HienThiPhong(maPhong, trangChu);
-						dialog_htPhong.setModal(true);
+						//dialog_htPhong.setModal(true);
 						dialog_htPhong.setVisible(true);
 						return;
 					}
