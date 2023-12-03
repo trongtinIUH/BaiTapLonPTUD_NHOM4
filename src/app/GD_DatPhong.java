@@ -685,7 +685,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 					if (p.getTrangThai() == Enum_TrangThai.Chờ) {
 						dialog_PhongCho = new Dialog_PhongCho(maPhong);
-						dialog_PhongCho.setModal(true);
+						//dialog_PhongCho.setModal(true);
 						dialog_PhongCho.setVisible(true);
 						break;
 					}
