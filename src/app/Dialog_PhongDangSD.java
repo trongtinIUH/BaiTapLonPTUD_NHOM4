@@ -360,9 +360,17 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 				DsPDP.add(pdp1);
 			}
 
+			PhieuDatPhong pdp_PhongHT = null;
+			for (PhieuDatPhong pdp : DsPDP) {
+				if (pdp.getPhong().getMaPhong().equals(maP))
+					pdp_PhongHT = pdp;
+			}
+
+			String maHD_PhongHT = hd_dao.getHoaDonDatPhongTheoMaPDP(pdp_PhongHT.getMaPhieu()).getMaHoaDon();
 			for (PhieuDatPhong pdp : DsPDP) {
 				Phong p = p_dao.getPhongTheoMaPhong(pdp.getPhong().getMaPhong());
-				if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
+				HoaDonDatPhong hd = hd_dao.getHoaDonDatPhongTheoMaPDP(pdp.getMaPhieu());
+				if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng && hd.getMaHoaDon().equals(maHD_PhongHT)) {
 					tmp = new TempDatPhong(pdp.getPhong().getMaPhong(), pdp.getSoNguoiHat());
 					tmp_dao.addTemp(tmp);
 				}
