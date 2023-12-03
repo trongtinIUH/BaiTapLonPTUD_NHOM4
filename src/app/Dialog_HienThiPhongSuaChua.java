@@ -1,5 +1,6 @@
 package app;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -31,6 +32,8 @@ public class Dialog_HienThiPhongSuaChua extends JDialog {
 		setSize(300, 260);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 
 		// các
 		// lbl-----------------------------------------------------------------------

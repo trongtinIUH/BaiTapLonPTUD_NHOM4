@@ -32,18 +32,22 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private JTextField txt_HoTen;
 	private JButton btnThot;
-	private JButton btnChiTietNV;
+	private JButton btnDoiMK;
 	private JLabel lbl_HoTen;
 	private JLabel lbl_ChucVu;
 	private JTextField txtQunL;
 	private JLabel hinhNV;
 	private JLabel lbl_nen;
 	private NhanVien_dao nv_dao;
+	private Dialog_DoiMatKhau Dialog_Doi_mk;
+	private String ma;
 //	private GD_TrangDangNhap gd_dangNhap = new GD_TrangDangNhap(); 
 	public Dialog_User() {
 		setTitle("User");
 		setSize(400, 300);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 		//setResizable(false);
 		nv_dao = new NhanVien_dao();
 		
@@ -53,6 +57,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 				nv = nv_dao.getNhanVienTheoMa(DataManager.getUserName());
 				txt_HoTen.setText(nv.getHoTen());
 				txtQunL.setText(nv.getChucVu());
+				ma=nv.getMaNhanVien();
 		    }
 		});
 		
@@ -72,16 +77,16 @@ public class Dialog_User extends JDialog implements ActionListener{
 		hinhNV.setIcon(resizedIcon_phongtrong);
 		getContentPane().add(hinhNV);
 		
-		 btnChiTietNV = new JButton("Xem Chi Tiết");
-		 btnChiTietNV.setBounds(10, 180, 130, 40);
-		 btnChiTietNV.setBackground(SystemColor.info);
-		btnChiTietNV.setFont(new Font("Arial", Font.BOLD, 16));
-		getContentPane().add(btnChiTietNV);
+		btnDoiMK = new JButton("Đổi Mật Khẩu");
+		btnDoiMK.setBounds(10, 180, 130, 40);
+		 btnDoiMK.setBackground(SystemColor.info);
+		 btnDoiMK.setFont(new Font("Arial", Font.BOLD, 14));
+		getContentPane().add(btnDoiMK);
 		
 		 btnThot = new JButton("Đăng Xuất");
 		 btnThot.setBounds(210, 180, 130, 40);
 		 btnThot.setBackground(UIManager.getColor("Button.background"));
-		 btnThot.setFont(new Font("Arial", Font.BOLD, 16));
+		 btnThot.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(btnThot);
 		
 		JLabel lblthongtinNV = new JLabel("Thông Tin Nhân Viên");
@@ -125,7 +130,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 		getContentPane().add(lbl_nen);
 		
 		btnThot.addActionListener(this);
-		btnChiTietNV.addActionListener(this);
+		btnDoiMK.addActionListener(this);
 	}
 
 	@Override
@@ -138,8 +143,11 @@ public class Dialog_User extends JDialog implements ActionListener{
 			}
 			GD_TrangDangNhap dangNhap = new GD_TrangDangNhap();
 			dangNhap.setVisible(true);
-		}else if(o.equals(btnChiTietNV)) {
-	
+		}else if(o.equals(btnDoiMK)) {		
+			Dialog_Doi_mk= new Dialog_DoiMatKhau(ma);
+			Dialog_Doi_mk.setModal(true);
+			Dialog_Doi_mk.setVisible(true);
+			
 		}
 	}
 }

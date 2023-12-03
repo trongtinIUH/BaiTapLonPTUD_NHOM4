@@ -270,8 +270,8 @@ public class Phong_dao {
 					+ "  FROM HoaDonDatPhong " + "  WHERE MONTH(ngayLapHoaDon) = @thang "
 					+ "    AND YEAR(ngayLapHoaDon) = @nam" + ")" + "UNION ALL " + "SELECT "
 					+ "  FORMAT(ngayLapHoaDon,'yyyy-MM') AS ThangNam, "
-					+ "  SUM(CASE WHEN LP.maLoaiPhong LIKE 'PT%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongThuong, "
-					+ "  SUM(CASE WHEN LP.maLoaiPhong LIKE 'PV%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongVIP "
+					+ "  SUM(CTHD.soGioHat * CASE WHEN LP.maLoaiPhong LIKE 'PT%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongThuong, "
+					+ "  SUM(CTHD.soGioHat * CASE WHEN LP.maLoaiPhong LIKE 'PV%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongVIP "
 					+ "FROM HoaDonDatPhong HDDP " + "INNER JOIN ChiTietHoaDon CTHD ON HDDP.maHoaDon = CTHD.maHoaDon "
 					+ "INNER JOIN Phong P ON CTHD.maPhong = P.maPhong "
 					+ "INNER JOIN LoaiPhong LP ON P.maLoaiPhong = LP.maLoaiPhong "
@@ -281,6 +281,80 @@ public class Phong_dao {
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
 				dtlp = new DoanhThuLoaiPhong(rs.getDouble(2), rs.getDouble(3));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return dtlp;
+	}
+	
+	public DoanhThuLoaiPhong tinhTongDoanhThuLoaiPhongTheoNam(int nam) {
+		DoanhThuLoaiPhong dtlp = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "DECLARE @nam INT = "+nam+" "
+					+ "SELECT "
+					+ "FORMAT(DATEFROMPARTS(@nam, 1, 1), 'yyyy') AS Nam,  "
+					+ "0 AS TongTienPhongThuong, "
+					+ "0 AS TongTienPhongVIP "
+					+ "WHERE NOT EXISTS ( "
+					+ "SELECT * "
+					+ "FROM HoaDonDatPhong "
+					+ "WHERE YEAR(ngayLapHoaDon) = @nam"
+					+ ")"
+					+ "UNION ALL "
+					+ "SELECT  "
+					+ "FORMAT(ngayLapHoaDon,'yyyy') AS Nam, "
+					+ "  SUM(CTHD.soGioHat * CASE WHEN LP.maLoaiPhong LIKE 'PT%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongThuong, "
+					+ "  SUM(CTHD.soGioHat * CASE WHEN LP.maLoaiPhong LIKE 'PV%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongVIP "
+					+ "FROM HoaDonDatPhong HDDP "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDDP.maHoaDon = CTHD.maHoaDon "
+					+ "INNER JOIN Phong P ON CTHD.maPhong = P.maPhong "
+					+ "INNER JOIN LoaiPhong LP ON P.maLoaiPhong = LP.maLoaiPhong "
+					+ "WHERE YEAR(ngayLapHoaDon) = @nam "
+					+ "GROUP BY FORMAT(ngayLapHoaDon,'yyyy')";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dtlp = new DoanhThuLoaiPhong(rs.getDouble(2), rs.getDouble(3));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return dtlp;
+	}
+	
+	public DoanhThuLoaiPhong tinhTongDoanhThuLoaiPhongTheoNhieuNam(int nambt, int namkt) {
+		DoanhThuLoaiPhong dtlp = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "DECLARE @startYear INT = "+nambt+", @endYear INT = "+namkt+" "
+					+ "SELECT  "
+					+ "SUM(CASE WHEN LP.maLoaiPhong LIKE 'PT%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongThuong, \r\n"
+					+ "SUM(CASE WHEN LP.maLoaiPhong LIKE 'PV%' THEN LP.donGiaTheoGio ELSE 0 END) AS TongTienPhongVIP \r\n"
+					+ "FROM HoaDonDatPhong HDDP "
+					+ "INNER JOIN ChiTietHoaDon CTHD ON HDDP.maHoaDon = CTHD.maHoaDon "
+					+ "INNER JOIN Phong P ON CTHD.maPhong = P.maPhong "
+					+ "INNER JOIN LoaiPhong LP ON P.maLoaiPhong = LP.maLoaiPhong "
+					+ "WHERE YEAR(ngayLapHoaDon) BETWEEN @startYear AND @endYear";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				dtlp = new DoanhThuLoaiPhong(rs.getDouble(1), rs.getDouble(2));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

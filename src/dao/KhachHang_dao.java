@@ -10,7 +10,7 @@ import connectDB.ConnectDB;
 import entity.KhachHang;
 
 public class KhachHang_dao {
-	public ArrayList<KhachHang> getallKhachHangs(){
+	public ArrayList<KhachHang> getallKhachHangs() {
 		ArrayList<KhachHang> dsKhachHang = new ArrayList<KhachHang>();
 		try {
 			ConnectDB.getInstance();
@@ -23,8 +23,8 @@ public class KhachHang_dao {
 			String sql = "select * from KhachHang";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
-			while(rs.next()) {
-				dsKhachHang.add(new KhachHang(rs.getString(1), rs.getString(2),rs.getString(3), rs.getBoolean(4)));
+			while (rs.next()) {
+				dsKhachHang.add(new KhachHang(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -32,7 +32,7 @@ public class KhachHang_dao {
 		}
 		return dsKhachHang;
 	}
-	
+
 	public KhachHang getKhachHangTheoMaKH(String maKhachHang) {
 		KhachHang kh = null;
 		try {
@@ -46,8 +46,8 @@ public class KhachHang_dao {
 			String sql = "select * from KhachHang where maKhachHang = '" + maKhachHang + "'";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
-			while(rs.next()) {
-				kh = new KhachHang(rs.getString(1), rs.getString(2),rs.getString(3), rs.getBoolean(4));
+			while (rs.next()) {
+				kh = new KhachHang(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -55,7 +55,7 @@ public class KhachHang_dao {
 		}
 		return kh;
 	}
-	
+
 	public ArrayList<KhachHang> getKhachHangTheoTenKH(String tenKhachHang) {
 		ArrayList<KhachHang> dskh = new ArrayList<KhachHang>();
 		try {
@@ -66,11 +66,11 @@ public class KhachHang_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from KhachHang where hoTen = N'" + tenKhachHang + "'";
+			String sql = "SELECT * FROM KhachHang WHERE hoTen LIKE N'%" + tenKhachHang+ "%'";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
-			while(rs.next()) {
-				dskh.add(new KhachHang(rs.getString(1), rs.getString(2),rs.getString(3), rs.getBoolean(4)));
+			while (rs.next()) {
+				dskh.add(new KhachHang(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -78,7 +78,7 @@ public class KhachHang_dao {
 		}
 		return dskh;
 	}
-	
+
 	public KhachHang getKhachHangTheoSDT(String sdt) {
 		KhachHang kh = null;
 		try {
@@ -92,8 +92,8 @@ public class KhachHang_dao {
 			String sql = "select * from KhachHang where soDienThoai = '" + sdt + "'";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
-			while(rs.next()) {
-				kh = new KhachHang(rs.getString(1), rs.getString(2),rs.getString(3), rs.getBoolean(4));
+			while (rs.next()) {
+				kh = new KhachHang(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBoolean(4));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -101,7 +101,7 @@ public class KhachHang_dao {
 		}
 		return kh;
 	}
-	
+
 	public boolean addKhachHang(KhachHang kh) {
 		try {
 			ConnectDB.getInstance();
@@ -121,7 +121,7 @@ public class KhachHang_dao {
 			n = psmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
-		}finally {
+		} finally {
 			try {
 				psmt.close();
 			} catch (Exception e2) {
@@ -130,7 +130,7 @@ public class KhachHang_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean updateKhachHang(KhachHang kh) {
 		try {
 			ConnectDB.getInstance();
@@ -150,7 +150,7 @@ public class KhachHang_dao {
 			n = psmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
-		}finally {
+		} finally {
 			try {
 				psmt.close();
 			} catch (Exception e2) {
@@ -159,7 +159,7 @@ public class KhachHang_dao {
 		}
 		return n > 0;
 	}
-	
+
 	public boolean deleteKhachHang(String maKH) {
 		try {
 			ConnectDB.getInstance();
@@ -176,7 +176,7 @@ public class KhachHang_dao {
 			n = psmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
-		}finally {
+		} finally {
 			try {
 				psmt.close();
 			} catch (Exception e2) {
@@ -186,17 +186,16 @@ public class KhachHang_dao {
 		return n > 0;
 	}
 
-
 	// hàm tìm khi tồn tại tín làm
-	public KhachHang TimkiemSDT_KHachHang(String SDT){
+	public KhachHang TimkiemSDT_KHachHang(String SDT) {
 		KhachHang khachHang = null;
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();
-			String sql = "select * from KhachHang where soDienThoai = N'"+SDT+"'";
+			String sql = "select * from KhachHang where soDienThoai = N'" + SDT + "'";
 			Statement sta = con.createStatement();
 			ResultSet rs = sta.executeQuery(sql);
-			if(rs.next()) {
+			if (rs.next()) {
 				String maKhachHang = rs.getString("maKhachHang");
 				String hoTen = rs.getString("hoTen");
 				boolean gioiTinh = rs.getBoolean("gioiTinh");

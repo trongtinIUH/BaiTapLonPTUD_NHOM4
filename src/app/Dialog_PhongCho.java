@@ -5,15 +5,24 @@ import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
@@ -75,13 +84,18 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	private String donGiaFormatted, hotenKH;
 
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
+	private Dialog_HienThiPhong dialog_HienThiPhong;
+	private JButton btnDatPhong;
 
 	public Dialog_PhongCho(String maPhong) {
 		// kích thước giao diện
 		getContentPane().setBackground(Color.WHITE);
 		setSize(400, 465);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
 		getContentPane().setLayout(null);
+		
 
 		laydulieu(maPhong);
 
@@ -153,6 +167,14 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		// btnChuyenPhong.setBorderPainted(false);
 		btn_HuyPhong.setBorder(new RoundedBorder(60));
 		getContentPane().add(btn_HuyPhong);
+		
+		btnDatPhong = new JButton("Đặt Phòng");
+		btnDatPhong.setForeground(Color.WHITE);
+		btnDatPhong.setFont(new Font("Arial", Font.BOLD, 18));
+		btnDatPhong.setBorder(new RoundedBorder(60));
+		btnDatPhong.setBackground(new Color(33, 167, 38));
+		btnDatPhong.setBounds(40, 290, 300, 40);
+		getContentPane().add(btnDatPhong);
 
 		lbl_SoNguoi_1 = new JLabel();
 		lbl_SoNguoi_1.setText(String.valueOf(songuoihat));
@@ -240,6 +262,46 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		// thêm sự kiện button
 		btn_HuyPhong.addActionListener(this);
 		btnNhanPhong.addActionListener(this);
+		btnDatPhong.addActionListener(this);
+		
+		// Tạo một Action cho btnDatPhong
+		
+		Action huyPhongAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btn_HuyPhong.doClick();
+		    }
+		};
+
+		// Tạo một Action cho btn_DatPhongCho
+		Action nhanPhongAction = new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+				btnNhanPhong.doClick();
+		    }
+		};
+
+		// Lấy InputMap và ActionMap của JPanel
+		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
+		
+		// Thêm phím nóng cho btnDatPhong
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "huyPhong");
+		actionMap.put("huyPhong", huyPhongAction);
+
+		// Thêm phím nóng cho btn_DatPhongCho
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK), "nhanPhong");
+		actionMap.put("nhanPhong", nhanPhongAction);
 
 	}
 
@@ -271,6 +333,16 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		if (o.equals(btnDatPhong)) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+			pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
+			String ngayGioNhan = pdp.getNgayGioNhanPhong().format(formatter);
+			if (JOptionPane.showConfirmDialog(null, "Nếu đặt phòng trực tiếp, chỉ được sử dụng trước "+ngayGioNhan+" Bạn có muốn tiếp tục đặt không?", "Thông báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				dialog_HienThiPhong = new Dialog_HienThiPhong(lblPhong_1.getText(), trangChu);
+				dialog_HienThiPhong.setVisible(true);
+			}
+		}
 		if (o.equals(btnNhanPhong)) {
 			// giờ phút hiện tại
 			int gio_ht = LocalDateTime.now().getHour();

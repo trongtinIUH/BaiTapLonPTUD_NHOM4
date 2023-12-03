@@ -145,6 +145,9 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		getContentPane().setLayout(null);
 		setSize(800, 810);
 		setLocationRelativeTo(null);
+		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+	    this.setIconImage(icon.getImage());
+	    
 		nv_dao = new NhanVien_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
 		ctdv_dao = new ChiTietDichVu_dao();
@@ -690,6 +693,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 					JOptionPane.showMessageDialog(this, "Thanh Toán thành công");
 					DataManager.setThanhToan(true);
+					DataManager.setSoDienThoaiKHDat("");
 
 					if (chckbx_XuatHoaDon.isSelected()) {
 						inHoaDon(lbl_MaHoaDon_1.getText());
