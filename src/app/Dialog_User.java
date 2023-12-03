@@ -22,6 +22,7 @@ import java.awt.Window;
 
 import javax.swing.UIManager;
 
+import dao.DangNhap_dao;
 import dao.NhanVien_dao;
 import entity.NhanVien;
 
@@ -33,7 +34,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private JTextField txt_HoTen;
 	private JButton btnThot;
 	private JButton btnDoiMK;
-	private JLabel lbl_HoTen;
+	private JLabel lbl_HoTen,lbl_TrangThai;
 	private JLabel lbl_ChucVu;
 	private JTextField txtQunL;
 	private JLabel hinhNV;
@@ -41,6 +42,9 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private NhanVien_dao nv_dao;
 	private Dialog_DoiMatKhau Dialog_Doi_mk;
 	private String ma;
+	private JLabel lbl_TrangThai_1;
+	private DangNhap_dao dangNhap_dao= new DangNhap_dao();
+	private String trangthaidangnhap;
 //	private GD_TrangDangNhap gd_dangNhap = new GD_TrangDangNhap(); 
 	public Dialog_User() {
 		setTitle("User");
@@ -63,7 +67,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 		
 	      ImageIcon phongtrong = new ImageIcon("image\\nv1.jpg");
 	      Image originalImage_phongtrong = phongtrong.getImage();
-	      Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(130, 150, java.awt.Image.SCALE_SMOOTH);
+	      Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(130, 110, java.awt.Image.SCALE_SMOOTH);
 	      ImageIcon resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
 	      
 		
@@ -73,7 +77,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 		getContentPane().setLayout(null);
 		
 		hinhNV = new JLabel("");
-		hinhNV.setBounds(0, 10, 120, 150);
+		hinhNV.setBounds(0, 10, 120, 120);
 		hinhNV.setIcon(resizedIcon_phongtrong);
 		getContentPane().add(hinhNV);
 		
@@ -111,13 +115,26 @@ public class Dialog_User extends JDialog implements ActionListener{
 		getContentPane().add(lbl_HoTen);
 		
 		lbl_ChucVu = new JLabel("Chức vụ:");
-		lbl_ChucVu.setBounds(130, 100, 70, 30);
+		lbl_ChucVu.setBounds(130, 90, 70, 30);
 		lbl_ChucVu.setFont(new Font("Arial", Font.BOLD, 15));
 		getContentPane().add(lbl_ChucVu);
 		
+		lbl_TrangThai = new JLabel("Trạng Thái:");
+		lbl_TrangThai.setFont(new Font("Arial", Font.BOLD, 14));
+		lbl_TrangThai.setBounds(130, 135, 90, 25);
+		getContentPane().add(lbl_TrangThai);
+		
+		
+
+		trangthaidangnhap="Đang hoạt động";
+		lbl_TrangThai_1 = new JLabel(trangthaidangnhap);
+		lbl_TrangThai_1.setFont(new Font("Arial", Font.ITALIC, 14));
+		lbl_TrangThai_1.setBounds(230, 135, 120, 25);
+		getContentPane().add(lbl_TrangThai_1);
+		
 		txtQunL = new JTextField();
 		txtQunL.setBackground(SystemColor.inactiveCaptionBorder);
-		txtQunL.setBounds(210, 100, 160, 30);
+		txtQunL.setBounds(210, 90, 160, 30);
 //		txtQunL.setText("Nhân viên quản lý");
 		txtQunL.setEditable(false);
 		txtQunL.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -129,6 +146,8 @@ public class Dialog_User extends JDialog implements ActionListener{
 		lbl_nen.setBounds(0, 0, 384, 261);
 		getContentPane().add(lbl_nen);
 		
+
+				
 		btnThot.addActionListener(this);
 		btnDoiMK.addActionListener(this);
 	}
