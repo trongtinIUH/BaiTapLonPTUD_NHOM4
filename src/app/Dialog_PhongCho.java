@@ -87,15 +87,15 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	private Dialog_HienThiPhong dialog_HienThiPhong;
 	private JButton btnDatPhong;
 
-	public Dialog_PhongCho(String maPhong) {
+	public Dialog_PhongCho(String maPhong, GD_TrangChu trangChu) {
+		this.trangChu = trangChu;
 		// kích thước giao diện
 		getContentPane().setBackground(Color.WHITE);
 		setSize(400, 465);
 		setLocationRelativeTo(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
-	    this.setIconImage(icon.getImage());
+		this.setIconImage(icon.getImage());
 		getContentPane().setLayout(null);
-		
 
 		laydulieu(maPhong);
 
@@ -167,7 +167,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		// btnChuyenPhong.setBorderPainted(false);
 		btn_HuyPhong.setBorder(new RoundedBorder(60));
 		getContentPane().add(btn_HuyPhong);
-		
+
 		btnDatPhong = new JButton("Đặt Phòng");
 		btnDatPhong.setForeground(Color.WHITE);
 		btnDatPhong.setFont(new Font("Arial", Font.BOLD, 18));
@@ -263,38 +263,38 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		btn_HuyPhong.addActionListener(this);
 		btnNhanPhong.addActionListener(this);
 		btnDatPhong.addActionListener(this);
-		
+
 		// Tạo một Action cho btnDatPhong
-		
+
 		Action huyPhongAction = new AbstractAction() {
-		    /**
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				btn_HuyPhong.doClick();
-		    }
+			}
 		};
 
 		// Tạo một Action cho btn_DatPhongCho
 		Action nhanPhongAction = new AbstractAction() {
-		    /**
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				btnNhanPhong.doClick();
-		    }
+			}
 		};
 
 		// Lấy InputMap và ActionMap của JPanel
 		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
-		
+
 		// Thêm phím nóng cho btnDatPhong
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK), "huyPhong");
 		actionMap.put("huyPhong", huyPhongAction);
@@ -337,9 +337,12 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
 			pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
 			String ngayGioNhan = pdp.getNgayGioNhanPhong().format(formatter);
-			if (JOptionPane.showConfirmDialog(null, "Nếu đặt phòng trực tiếp, chỉ được sử dụng trước "+ngayGioNhan+" Bạn có muốn tiếp tục đặt không?", "Thông báo",
-					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(null,
+					"Nếu đặt phòng trực tiếp, chỉ được sử dụng trước " + ngayGioNhan
+							+ " Bạn có muốn tiếp tục đặt không?",
+					"Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				dialog_HienThiPhong = new Dialog_HienThiPhong(lblPhong_1.getText(), trangChu);
+				setVisible(false);
 				dialog_HienThiPhong.setVisible(true);
 			}
 		}

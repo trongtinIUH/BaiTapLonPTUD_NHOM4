@@ -554,6 +554,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			int checkPSD = 0;
 			String maHoaDon = TaoMaHDDP();
 			HoaDonDatPhong hddp = null;
+			LocalDateTime ngayGioHT = LocalDateTime.now();
 			if (!lbl_TenKH_1.getText().equals("")) {
 				for (TempDatPhong tmpDatPhong : tmpDatPhong_dao.getAllTemp()) {
 					// Sửa trống -> Đang sử dụng
@@ -576,13 +577,15 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 							kh = kh_dao.getKhachHangTheoSDT("0000000000");
 						else
 							kh = kh_dao.getKhachHangTheoSDT(txtSDT.getText());
-						LocalDateTime NgayDatPhong = LocalDateTime.now();
-
-						PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, NgayDatPhong, LocalDateTime.now(),
+						
+						PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, ngayGioHT, ngayGioHT,
 								tmpDatPhong.getSoNguoiHat());
 						if (p.getTrangThai() != Enum_TrangThai.Chờ) {
 							pdp_dao.addPhieuDatPhong(pdb);
 							// Nếu là chờ thì sửa lại.
+						}
+						if (p.getTrangThai() == Enum_TrangThai.Chờ) {
+							pdp_dao.addPhieuDatPhong(pdb);
 						}
 
 						p.setTrangThai(Enum_TrangThai.Đang_sử_dụng);
@@ -605,8 +608,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 						// Thêm chi tiết hóa đơn
 						ChiTietHoaDon cthd;
 
-						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(LocalDateTime.now()),
-								Timestamp.valueOf(LocalDateTime.now()), 0);
+						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(ngayGioHT),
+								Timestamp.valueOf(ngayGioHT), 0);
 						cthd_dao.addChiTietHD(cthd);
 
 						// Thêm chi tiết dịch vụ, cập nhật lại số lượng sản phẩm trong csdl
