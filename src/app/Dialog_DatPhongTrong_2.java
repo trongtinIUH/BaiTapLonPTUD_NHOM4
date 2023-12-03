@@ -584,6 +584,9 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 							pdp_dao.addPhieuDatPhong(pdb);
 							// Nếu là chờ thì sửa lại.
 						}
+						if (p.getTrangThai() == Enum_TrangThai.Chờ) {
+							pdp_dao.addPhieuDatPhong(pdb);
+						}
 
 						p.setTrangThai(Enum_TrangThai.Đang_sử_dụng);
 						p_dao.updatePhong(p, p.getMaPhong());

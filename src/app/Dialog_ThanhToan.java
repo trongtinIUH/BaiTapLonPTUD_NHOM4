@@ -49,6 +49,7 @@ import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
 import dao.LoaiPhong_dao;
 import dao.NhanVien_dao;
+import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
 import entity.ChiTietDichVu;
@@ -59,6 +60,7 @@ import entity.KhachHang;
 import entity.KhuyenMai;
 import entity.LoaiPhong;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.SanPham;
 
@@ -139,6 +141,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private JButton btnTraLaiSP;
 	private int TienDichVu_item;
 	private double tienDichVu_update;
+	PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 
 	public Dialog_ThanhToan(String maPhong) {
 		getContentPane().setBackground(Color.WHITE);
@@ -146,8 +149,8 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		setSize(800, 810);
 		setLocationRelativeTo(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
-	    this.setIconImage(icon.getImage());
-	    
+		this.setIconImage(icon.getImage());
+
 		nv_dao = new NhanVien_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
 		ctdv_dao = new ChiTietDichVu_dao();
@@ -279,7 +282,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		panel_1.add(sp);
 		panel_1.setPreferredSize(new Dimension(772, 420));
 		getContentPane().add(panel_1);
-		
+
 		loadData();
 
 		lblTienDV = new JLabel("Tiền DV:");
@@ -307,7 +310,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		lbl_TongThanhTien.setFont(new Font("Arial", Font.BOLD, 15));
 		lbl_TongThanhTien.setBounds(5, 670, 135, 20);
 		getContentPane().add(lbl_TongThanhTien);
-		
+
 		f = new DecimalFormat("###,###");
 		lblVn_2 = new JLabel(f.format(tongTienDichVu) + " VNĐ");
 		lblVn_2.setFont(new Font("Arial", Font.BOLD, 15));
@@ -434,9 +437,9 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		btnThanhToan.setBackground(new Color(252, 155, 78, 255));
 		// btnThanhToan.setBorderPainted(false);
 		getContentPane().add(btnThanhToan);
-		
+
 		getContentPane().add(btnTraLaiSP = new JButton("Trả dịch vụ"));
-		btnTraLaiSP.setBounds(295,730,230,35);
+		btnTraLaiSP.setBounds(295, 730, 230, 35);
 		btnTraLaiSP.setBorder(new RoundedBorder(60));
 		btnTraLaiSP.setFont(new Font("Arial", Font.BOLD, 18));
 		btnTraLaiSP.setBackground(new Color(45, 110, 65));
@@ -449,7 +452,6 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		btnQuayLai.setBackground(new Color(13, 153, 255, 255));
 		btnQuayLai.setBounds(545, 730, 220, 35);
 		getContentPane().add(btnQuayLai);
-	
 
 		// thêm sk
 		btnKiemTra.addActionListener(this);
@@ -458,30 +460,31 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		btnTraLaiSP.addActionListener(this);
 		txtTienNhan.getDocument().addDocumentListener(documentListener);
 	}
-	
+
 	public void clear_Tien() {
 		lblVn_2.setText("");
 		lblVn.setText("");
 		lbl_TongThanhTien_1.setText("");
 	}
-	
+
 	public void load_Tien() {
 		tienDichVu_update = 0;
 		for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
 			tienDichVu_update += ctdv.getSoLuong() * ctdv.getGia();
 		}
-		
+
 		lblVn_2.setText(f.format(tienDichVu_update) + " VNĐ");
 		lblVn.setText(f.format(tienDichVu_update + tongTienPhong) + " VNĐ");
-		lbl_TongThanhTien_1.setText(f.format((tienDichVu_update + tongTienPhong) + 0.1 * (tienDichVu_update + tongTienPhong)) + " VNĐ");
+		lbl_TongThanhTien_1.setText(
+				f.format((tienDichVu_update + tongTienPhong) + 0.1 * (tienDichVu_update + tongTienPhong)) + " VNĐ");
 	}
-	
+
 	public void clearTable() {
-		while(model.getRowCount()>0) {
+		while (model.getRowCount() > 0) {
 			model.removeRow(0);
 		}
 	}
-	
+
 	public void loadData() {
 		lbl_TongThoiLuong_1.setText("");
 		int i = 1;
@@ -531,16 +534,17 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 			tongSoGioHat += soGioHat_Item;
 			tongSoPhutHat += soPhutHat_Item;
-			
+
 			TienDichVu_item = 0;
-			for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHDVaMaPhong(lbl_MaHoaDon_1.getText().trim(), cthd.getPhong().getMaPhong())) {
+			for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHDVaMaPhong(lbl_MaHoaDon_1.getText().trim(),
+					cthd.getPhong().getMaPhong())) {
 				SanPham spdv = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
-				Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), ctdv.getGia(), spdv.getDonViTinh(),
-						ctdv.getSoLuong() * ctdv.getGia() };
+				Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), ctdv.getGia(),
+						spdv.getDonViTinh(), ctdv.getSoLuong() * ctdv.getGia() };
 				model.addRow(rowSanPham);
 				TienDichVu_item += ctdv.getSoLuong() * ctdv.getGia();
 			}
-			String col_temp[] = {"","","","","",""};
+			String col_temp[] = { "", "", "", "", "", "" };
 			model.addRow(col_temp);
 			tongTienDichVu += TienDichVu_item;
 		}
@@ -549,14 +553,14 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		DecimalFormat df2 = new DecimalFormat("#.##");
 		lbl_TongThoiLuong_1.setText(df2.format(tongSoGioHat + gioThua) + " giờ " + df2.format(phutChinhXac) + " phút");
 	}
-	
+
 	private String maPhongUngVoiSP() {
 		String maPhong = "";
 		for (int row = tblThanhToan.getSelectedRow(); row >= 0; row--) {
-			if(model.getValueAt(row, 4).toString() == "") {
-				maPhong = model.getValueAt(row,1).toString();
+			if (model.getValueAt(row, 4).toString() == "") {
+				maPhong = model.getValueAt(row, 1).toString();
 				break;
-			}	
+			}
 		}
 		return maPhong;
 	}
@@ -623,7 +627,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+
 		if (txtTienNhan.getText().trim().equals("") || tienThua < 0) {
 			JOptionPane.showMessageDialog(null, "Bạn chưa nhập tiền nhận từ khách hàng hoặc tiền thừa đang âm!!");
 		} else {
@@ -635,6 +639,11 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 					for (int row = 0; row < tblThanhToan.getRowCount(); row++) {
 						String maPhong_Item = model.getValueAt(row, 1).toString();
 						Enum_TrangThai trangThaiPhong = Enum_TrangThai.Trống;
+
+						PhieuDatPhong pdp = pdp_dao.getPhieuDatPhongPhongCho(maPhong_Item);
+						if (pdp != null)
+							trangThaiPhong = Enum_TrangThai.Chờ;
+
 						Phong phong = new Phong(maPhong_Item, trangThaiPhong);
 						ph_dao.updatePhong(phong, maPhong_Item);
 					}
@@ -672,7 +681,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 					// Update giờ trả, số giờ hát của chi tiết hóa đơn
 					for (int row = 0; row < tblThanhToan.getRowCount(); row++) {
-						if(model.getValueAt(row, 4).toString()!="") {
+						if (model.getValueAt(row, 4).toString() != "") {
 							tgHT = new Date();
 							Timestamp ngayGioTraPhong = new Timestamp(tgHT.getTime());
 							double thoiGianHat = Double.parseDouble(model.getValueAt(row, 2).toString());
@@ -743,16 +752,18 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			return false;
 		}
 	}
-	
+
 	public void traSP() {
-		if(tblThanhToan.getSelectedRow()== -1 || model.getValueAt(tblThanhToan.getSelectedRow(), 4).toString() == "") {
+		if (tblThanhToan.getSelectedRow() == -1
+				|| model.getValueAt(tblThanhToan.getSelectedRow(), 4).toString() == "") {
 			JOptionPane.showMessageDialog(null, "Bạn chưa chọn 1 dịch vụ để trả!!!");
-		}else if(tblThanhToan.getSelectedRowCount() > 1) {
+		} else if (tblThanhToan.getSelectedRowCount() > 1) {
 			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 dịch vụ!!");
-		}
-		else {
-			Dialog_TraSanPham dialog_TraSP = new Dialog_TraSanPham(Integer.parseInt(model.getValueAt(tblThanhToan.getSelectedRow(), 2).toString()), 
-					model.getValueAt(tblThanhToan.getSelectedRow(), 1).toString(), lbl_MaHoaDon_1.getText(), maPhongUngVoiSP(), this);
+		} else {
+			Dialog_TraSanPham dialog_TraSP = new Dialog_TraSanPham(
+					Integer.parseInt(model.getValueAt(tblThanhToan.getSelectedRow(), 2).toString()),
+					model.getValueAt(tblThanhToan.getSelectedRow(), 1).toString(), lbl_MaHoaDon_1.getText(),
+					maPhongUngVoiSP(), this);
 			dialog_TraSP.setVisible(true);
 		}
 	}
@@ -767,7 +778,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 			setVisible(false);
 		} else if (o.equals(btnKiemTra)) {
 			kiemTra();
-		}else if(o.equals(btnTraLaiSP)) {
+		} else if (o.equals(btnTraLaiSP)) {
 			traSP();
 		}
 	}

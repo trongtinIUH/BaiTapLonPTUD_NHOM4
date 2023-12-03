@@ -1,4 +1,8 @@
 -- Switch to the master database to create the logins
+go 
+drop login NV
+drop login QL
+go
 USE master;
 
 -- Create logins
