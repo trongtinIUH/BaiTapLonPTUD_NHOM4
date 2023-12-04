@@ -539,23 +539,6 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	    cardLayout.show(cardPanel, "NhanVien");
 	}
 	
-	public void showDatPhongCard() {
-	    resetActiveTab();
-	    btnDatPhong.setBackground(Color.decode("#F2F0FF"));
-	    cardLayout.show(cardPanel, "DatPhong");
-	}
-	
-	public void showDSPhongCard() {
-	    resetActiveTab();
-	    btnDanhSachPhong.setBackground(Color.decode("#F2F0FF"));
-	    cardLayout.show(cardPanel, "DanhSachPhong");
-	}
-	
-	public void showNhanVienCard() {
-	    resetActiveTab();
-	    btnNhanVien.setBackground(Color.decode("#F2F0FF"));
-	    cardLayout.show(cardPanel, "NhanVien");
-	}
 	
 	public void showKhachHangCard() {
 		resetActiveTab();
