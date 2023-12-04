@@ -358,6 +358,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 					TempThanhToan tmp = new TempThanhToan(p.getMaPhong());
 					tempTT_dao.addTemp(tmp);
 					JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách thanh toán thành công.");
+					dispose();
 				}
 			}else {
 				ChiTietHoaDon cthd_hienTaiCuaPhong = null;
@@ -365,8 +366,6 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 				for (ChiTietHoaDon cthd : dsCTHD) {
 					cthd_hienTaiCuaPhong = cthd;
 				}
-				HoaDonDatPhong hd = null;
-				hd = hd_dao.getHoaDonTheoMaHoaDon(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon());
 				
 				int flag = 0;
 				ChiTietHoaDon cthd_hienTaiTemp = null;
@@ -385,6 +384,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 					TempThanhToan tmp = new TempThanhToan(p.getMaPhong());
 					tempTT_dao.addTemp(tmp);
 					JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách thanh toán thành công.");
+					dispose();
 				}else if(flag == 0){
 					JOptionPane.showMessageDialog(null, "Phòng này không nằm trong cùng 1 hóa đơn đặt phòng của khách hàng với phòng trước đó!!");
 				}
