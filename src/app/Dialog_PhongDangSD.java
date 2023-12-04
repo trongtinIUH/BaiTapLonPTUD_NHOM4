@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -58,6 +60,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private Phong p;
 	private LoaiPhong lp;
 	private PhieuDatPhong_dao phieuDatPhong_dao;
+	private PhieuDatPhong_dao phieuDatPhong_dao_1= new PhieuDatPhong_dao();
 	private ChiTietHoaDon_dao cthd_dao;
 	private Date gioHienTai;
 	private Date phutHienTai;
@@ -67,6 +70,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private String maP;
 	private PhieuDatPhong pdp_of_room;
+	private PhieuDatPhong pdp_of_room_1;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
@@ -125,7 +129,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		lblPhong_1.setFont(new Font("Arial", Font.BOLD, 15));
 		lblPhong_1.setBounds(150, 10, 140, 30);
 		getContentPane().add(lblPhong_1);
-
+		KiemTraPhongDangSuDung_DatPhongCho();
 		p = p_dao.getPhongTheoMaPhong(maPhong);
 		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
 
@@ -255,6 +259,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		btnThemDV.addActionListener(this);
 		btnThemPhong.addActionListener(this);
 
+		
 		Action chuyenPhongAction = new AbstractAction() {
 			/**
 			 * 
@@ -304,7 +309,24 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		actionMap.put("thanhToan", thanhToanAction);
 
 	}
+	public void KiemTraPhongDangSuDung_DatPhongCho() {
+		// lấy dữ liệu phòng đang sd
+		pdp_of_room = pdp_dao.getPhieuDatPhongTheoMaPDP_DangSuDung(lblPhong_1.getText());
+		LocalDateTime ngayGioNhan = pdp_of_room.getNgayGioNhanPhong();
+		LocalDateTime ngayGioHT = LocalDateTime.now();
 
+		// lấy dữ liệu phòng đặt trước
+		pdp_of_room_1 = pdp_dao.getPhieuDatPhongTheoMaPhong_TrangThaiCho(lblPhong_1.getText());
+		if (pdp_of_room_1 != null) {
+			LocalDateTime ngayGioNhan_dat_truoc = pdp_of_room_1.getNgayGioNhanPhong();
+			long thoiGianConLai = ChronoUnit.MINUTES.between(ngayGioHT, ngayGioNhan_dat_truoc);
+
+			// kiểm tra xem thời gian hiện tại có nằm trong khoảng 30 phút trước thời điểm nhận phòng của khách hàng tiếp theo hay không
+			if (thoiGianConLai <= 30 && thoiGianConLai >= -30) {
+				JOptionPane.showMessageDialog(null, "Vui lòng chuyển sang phòng khác để tiếp tục sử dụng ! Cảm Ơn.");
+				}}}
+
+	
 	// hàm cập nhật các Jlabel góc phải
 	public void updateLabel(String newText) {
 		lblPhong_1.setText(newText);

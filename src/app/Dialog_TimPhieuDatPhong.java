@@ -164,7 +164,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		comboBox_TrangThai.setBackground(Color.WHITE);
 		comboBox_TrangThai.setFont(new Font("Arial", Font.BOLD, 15));
 		comboBox_TrangThai.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Tất Cả", "Chưa Thanh Toán", "Đã Thanh Toán" }));
+				new DefaultComboBoxModel<String>(new String[] { "Tất Cả","Phòng đang sử dụng","Phòng chờ", "Chưa Thanh Toán", "Đã Thanh Toán" }));
 		comboBox_TrangThai.setSelectedIndex(0);
 		comboBox_TrangThai.setBounds(490, 5, 200, 30);
 		panel_1.add(comboBox_TrangThai);
@@ -373,16 +373,14 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			if (comboBox_TrangThai_1.getSelectedItem().equals("Mã phiếu đặt")) {
 				pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(thongtinTimKiem);
 				kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
-				String mp = pdp.getMaPhieu();
-				String maHoaDon = "HD" + mp.substring(3);
-				hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+				String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
 				nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-				if (hd != null && hd.getTienKhachDua() == 0) {
+
+				hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+				if (hd != null && hd.isTrangThai() == false) {
 					trangthai = "Chưa TT";
-				} else if (hd != null && hd.getTienKhachDua() > 0) {
-					// if(hinhthuc=="Đặt trực tiếp")
+				} else if (hd != null && hd.isTrangThai() == true) {
 					trangthai = "Đã TT";
-					// else trangthai = "Đã TT";
 				} else {
 					trangthai = "Chưa TT";
 				}
@@ -447,17 +445,14 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 						ArrayList<PhieuDatPhong> pdps = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
 						for (PhieuDatPhong pdp : pdps) {
 							if (kh != null) {
-								String mp = pdp.getMaPhieu();
-								String maHoaDon = "HD" + mp.substring(3);
-								hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+								String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
 								nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-								if (hd != null && hd.getTienKhachDua() == 0) {
+
+								hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+								if (hd != null && hd.isTrangThai() == false) {
 									trangthai = "Chưa TT";
-								} else if (hd != null && hd.getTienKhachDua() > 0) {
-									if (hinhthuc == "Đặt trực tiếp")
-										trangthai = "Đã TT";
-									else
-										trangthai = "Đã TT";
+								} else if (hd != null && hd.isTrangThai() == true) {
+									trangthai = "Đã TT";
 								} else {
 									trangthai = "Chưa TT";
 								}
@@ -492,17 +487,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 						hinhthuc = "Đặt trước";
 					}
 					if (dsPDPtheoNgay != null) {
-						String mp = pdp.getMaPhieu();
-						String maHoaDon = "HD" + mp.substring(3);
-						hd = hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
+						String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
 						nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-						if (hd != null && hd.getTienKhachDua() == 0) {
+						hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+						if (hd != null && hd.isTrangThai() == false) {
 							trangthai = "Chưa TT";
-						} else if (hd != null && hd.getTienKhachDua() > 0) {
-							if (hinhthuc == "Đặt trực tiếp")
-								trangthai = "Đã TT";
-							else
-								trangthai = "Đã TT";
+						} else if (hd != null && hd.isTrangThai() == true) {
+							trangthai = "Đã TT";
 						} else {
 							trangthai = "Chưa TT";
 						}
@@ -595,18 +586,17 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 						hinhthuc = "Đặt trước";
 					}
 					String mp = x.getMaPhieu();
-					// String maHoaDon = "HD" + mp.substring(3);
 					String mkh = x.getKhachHang().getMaKhachHang();
 					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
 					p = pdp.getPhong();
 					kh = kh_dao.getKhachHangTheoMaKH(mkh);
 					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-					// hd=hd_dao.getHoaDonTheoMaHoaDon(maHoaDon);
-					trangthai = "Chưa TT";
+					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+					trangthai="Chưa TT";
 					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
 							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
 					model.addRow(row);
-
 				}
 				Canh_Deu_Bang();
 
@@ -637,7 +627,85 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 					p = pdp.getPhong();
 					kh = kh_dao.getKhachHangTheoMaKH(mkh);
 					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-					trangthai = "Đã TT";
+					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+					trangthai="Đã TT";
+					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
+							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
+					model.addRow(row);
+				}
+				Canh_Deu_Bang();
+
+			}
+			if (comboBox_TrangThai.getSelectedItem().equals("Phòng đang sử dụng")) {
+				clearTable();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+				String hinhthuc = "";
+				String trangthai = "";
+				// Lấy tất cả phiếu đặt phòng
+				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_DangSuDung();
+				// Sắp xếp danh sách theo ngày giờ đặt phòng
+				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
+				if (allPhieuDatPhong.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy phòng nào đang được sử dụng");
+					return;
+				}
+				for (PhieuDatPhong x : allPhieuDatPhong) {
+					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
+					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
+						hinhthuc = "Đặt trực tiếp";
+					} else {
+						hinhthuc = "Đặt trước";
+					}
+					String mp = x.getMaPhieu();
+					String mkh = x.getKhachHang().getMaKhachHang();
+					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+					p = pdp.getPhong();
+					kh = kh_dao.getKhachHangTheoMaKH(mkh);
+					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+					trangthai="Đang sử dụng";
+					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
+							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
+					model.addRow(row);
+				}
+				Canh_Deu_Bang();
+
+			}
+			if (comboBox_TrangThai.getSelectedItem().equals("Phòng chờ")) {
+				clearTable();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+				String hinhthuc = "";
+				String trangthai = "";
+				// Lấy tất cả phiếu đặt phòng
+				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_PhongCho();
+				// Sắp xếp danh sách theo ngày giờ đặt phòng
+				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
+				if (allPhieuDatPhong.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy phòng chờ nào đã đặt trước");
+					return;
+				}
+				for (PhieuDatPhong x : allPhieuDatPhong) {
+					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
+					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
+						hinhthuc = "Đặt trực tiếp";
+					} else {
+						hinhthuc = "Đặt trước";
+					}
+					String mp = x.getMaPhieu();
+					String mkh = x.getKhachHang().getMaKhachHang();
+					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+					p = pdp.getPhong();
+					kh = kh_dao.getKhachHangTheoMaKH(mkh);
+					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+					trangthai="Chờ";
 					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
 							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
 					model.addRow(row);

@@ -47,7 +47,7 @@ public class App_Karaoke4T extends JFrame {
                         progressBar.setValue(progress);
                     }
                 });
-                Thread.sleep(50); // Đợi 70ms trước khi cập nhật tiếp
+                Thread.sleep(30); // Đợi 70ms trước khi cập nhật tiếp
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
 import entity.KhachHang;
 import entity.KhuyenMai;
@@ -377,42 +378,7 @@ public class PhieuDatPhong_dao {
 			while (rs.next()) {
 				String maPhieu = rs.getString(1);
 				String maHoaDon = "HD" + maPhieu.substring(3);
-				String sqlCheck = "select * from HoaDonDatPhong where maHoaDon = ?";
-				PreparedStatement stmCheck = con.prepareStatement(sqlCheck);
-				stmCheck.setString(1, maHoaDon);
-				ResultSet rsCheck = stmCheck.executeQuery();
-				if (!rsCheck.next()) {
-					Phong p = new Phong(rs.getString(3));
-					NhanVien nv = new NhanVien(rs.getString(3));
-					KhachHang kh = new KhachHang(rs.getString(4));
-					LocalDateTime ngayGioDatPhong = rs.getTimestamp("ngayGioDatPhong").toLocalDateTime();
-					LocalDateTime ngayGioNhanPhong = rs.getTimestamp("ngayGioNhanPhong").toLocalDateTime();
-					dspdp.add(new PhieuDatPhong(maPhieu, p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7)));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return dspdp;
-	}
-
-	// tìm pdp đã thanh toán bên hóa đơn
-	public ArrayList<PhieuDatPhong> getAllsPhieuDatPhong_DaThanhToan() {
-		ArrayList<PhieuDatPhong> dspdp = new ArrayList<PhieuDatPhong>();
-		try {
-			ConnectDB.getInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Connection con = ConnectDB.getConnection();
-		try {
-			String sql = "select * from PhieuDatPhong";
-			Statement stm = con.createStatement();
-			ResultSet rs = stm.executeQuery(sql);
-			while (rs.next()) {
-				String maPhieu = rs.getString(1);
-				String maHoaDon = "HD" + maPhieu.substring(3);
-				String sqlCheck = "select * from HoaDonDatPhong where maHoaDon = ?";
+				String sqlCheck = "select * from HoaDonDatPhong where maHoaDon = ? and trangThai = 0";
 				PreparedStatement stmCheck = con.prepareStatement(sqlCheck);
 				stmCheck.setString(1, maHoaDon);
 				ResultSet rsCheck = stmCheck.executeQuery();
@@ -430,6 +396,164 @@ public class PhieuDatPhong_dao {
 		}
 		return dspdp;
 	}
+	public ArrayList<PhieuDatPhong> getAllsPhieuDatPhong_DangSuDung() {
+		ArrayList<PhieuDatPhong> dspdp = new ArrayList<PhieuDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select pdp.* from PhieuDatPhong pdp " +
+						 "join Phong p on pdp.maPhong = p.maPhong " +
+						 "where p.trangThai = N'Đang_sử_dụng'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				String maPhieu = rs.getString(1);
+				String maPhong = rs.getString(3);
+				Phong p = new Phong(maPhong);
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp("ngayGioDatPhong").toLocalDateTime();
+				LocalDateTime ngayGioNhanPhong = rs.getTimestamp("ngayGioNhanPhong").toLocalDateTime();
+				dspdp.add(new PhieuDatPhong(maPhieu, p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dspdp;
+	}
+	//tìm 1 phòng dang su dung
+	public PhieuDatPhong getPhieuDatPhongTheoMaPDP_DangSuDung(String maPhieu) {
+		PhieuDatPhong pdp = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select pdp.* from PhieuDatPhong pdp " +
+						 "join Phong p on pdp.maPhong = p.maPhong " +
+						 "where pdp.maPhong = ? and p.trangThai = N'Đang_sử_dụng'";
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setString(1, maPhieu);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				Phong p = new Phong(rs.getString(2));
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngayGioNhanPhong = rs.getTimestamp(6).toLocalDateTime();
+				pdp = new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pdp;
+	}
+
+	//get phong trang thai chờ 
+	public PhieuDatPhong getPhieuDatPhongTheoMaPhong_TrangThaiCho(String maPhong) {
+		PhieuDatPhong pdp = null;
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select pdp.* from PhieuDatPhong pdp " +
+						 "join Phong p on pdp.maPhong = p.maPhong " +
+						 "where pdp.maPhong = ? and p.trangThai = N'Chờ' and pdp.ngayGioDatPhong <> pdp.ngayGioNhanPhong";
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setString(1, maPhong);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngayGioNhanPhong = rs.getTimestamp(6).toLocalDateTime();
+				pdp = new PhieuDatPhong(rs.getString(1), new Phong(maPhong), nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pdp;
+	}
+
+
+	
+	public ArrayList<PhieuDatPhong> getAllsPhieuDatPhong_PhongCho() {
+		ArrayList<PhieuDatPhong> dspdp = new ArrayList<PhieuDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select pdp.* from PhieuDatPhong pdp " +
+						 "join Phong p on pdp.maPhong = p.maPhong " +
+						 "where p.trangThai = N'Chờ'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				String maPhieu = rs.getString(1);
+				String maPhong = rs.getString(3);
+				Phong p = new Phong(maPhong);
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp("ngayGioDatPhong").toLocalDateTime();
+				LocalDateTime ngayGioNhanPhong = rs.getTimestamp("ngayGioNhanPhong").toLocalDateTime();
+				dspdp.add(new PhieuDatPhong(maPhieu, p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dspdp;
+	}
+
+
+
+	
+	// tìm pdp đã thanh toán bên hóa đơn
+	public ArrayList<PhieuDatPhong> getAllsPhieuDatPhong_DaThanhToan() {
+		ArrayList<PhieuDatPhong> dspdp = new ArrayList<PhieuDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from PhieuDatPhong";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				String maPhieu = rs.getString(1);
+				String maHoaDon = "HD" + maPhieu.substring(3);
+				String sqlCheck = "select * from HoaDonDatPhong where maHoaDon = ? and trangThai = 1";
+				PreparedStatement stmCheck = con.prepareStatement(sqlCheck);
+				stmCheck.setString(1, maHoaDon);
+				ResultSet rsCheck = stmCheck.executeQuery();
+				if (rsCheck.next()) {
+					Phong p = new Phong(rs.getString(3));
+					NhanVien nv = new NhanVien(rs.getString(3));
+					KhachHang kh = new KhachHang(rs.getString(4));
+					LocalDateTime ngayGioDatPhong = rs.getTimestamp("ngayGioDatPhong").toLocalDateTime();
+					LocalDateTime ngayGioNhanPhong = rs.getTimestamp("ngayGioNhanPhong").toLocalDateTime();
+					dspdp.add(new PhieuDatPhong(maPhieu, p, nv, kh, ngayGioDatPhong, ngayGioNhanPhong, rs.getInt(7)));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dspdp;
+	}
+
 
 	public ArrayList<PhieuDatPhong> getDanhsachPhieuDatPhongTheoMaPhong(String maPhong) {
 		ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();

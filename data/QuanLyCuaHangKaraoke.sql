@@ -476,8 +476,8 @@ END;
 --select * from TaiKhoan
 --select * from ChiTietLuong
 --select * from LoaiPhong
---select * from Phong
---select * from SanPham
+--select * from Phong 
+--select * from SanPham 
 --select * from KhuyenMai
 --select * from KhachHang
 --select * from PhieuDatPhong
@@ -485,6 +485,10 @@ END;
 --select * from ChiTietHoaDon
 --select * from  ChiTietDichVu
 
+
+select pdp.* from PhieuDatPhong pdp 
+					join Phong p on pdp.maPhong = p.maPhong 
+					where pdp.maPhong = ? and p.trangThai = N'Chờ'
 
 
 

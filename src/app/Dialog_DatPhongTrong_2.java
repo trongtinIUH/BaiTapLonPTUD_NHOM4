@@ -369,6 +369,17 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 				btn_ThemDV.doClick();
 			}
 		};
+		Action DatPhongAction = new AbstractAction() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btn_DatPhong.doClick();
+			}
+		};
 
 		// Lấy InputMap và ActionMap của JPanel
 		InputMap inputMap = ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -376,6 +387,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK), "themDv");
 		actionMap.put("themDv", themDVAction);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), "datPhong");
+		actionMap.put("datPhong", DatPhongAction);
 
 		// thêm sự kiện button
 		btn_DatPhong.addActionListener(this);
