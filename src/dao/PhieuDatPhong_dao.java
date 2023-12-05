@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import java.time.YearMonth;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
@@ -607,5 +607,60 @@ public class PhieuDatPhong_dao {
 		}
 		return dsPDP;
 	}
+
+//	public ArrayList<PhieuDatPhong> getPDPTheoThangNhan(LocalDate thangNhan) {
+//	    ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
+//	    try {
+//	        ConnectDB.getInstance();
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
+//	    Connection con = ConnectDB.getConnection();
+//	    try {
+//	        String sql = "select * from PhieuDatPhong where YEAR(ngayGioNhanPhong) = ? and MONTH(ngayGioNhanPhong) = ?";
+//	        PreparedStatement stm = con.prepareStatement(sql);
+//	        stm.setInt(1, thangNhan.getYear());
+//	        stm.setInt(2, thangNhan.getMonthValue());
+//	        ResultSet rs = stm.executeQuery();
+//	        while (rs.next()) {
+//	            Phong p = new Phong(rs.getString(2));
+//	            NhanVien nv = new NhanVien(rs.getString(3));
+//	            KhachHang kh = new KhachHang(rs.getString(4));
+//	            LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+//	            LocalDateTime ngaynhan = rs.getTimestamp(6).toLocalDateTime();
+//	            dsPDP.add(new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngaynhan, rs.getInt(7)));
+//	        }
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
+//	    return dsPDP;
+//	}
+//
+//	public ArrayList<PhieuDatPhong> getPDPTheoNamNhan(LocalDate namNhan) {
+//	    ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
+//	    try {
+//	        ConnectDB.getInstance();
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
+//	    Connection con = ConnectDB.getConnection();
+//	    try {
+//	        String sql = "select * from PhieuDatPhong where YEAR(ngayGioNhanPhong) = ?";
+//	        PreparedStatement stm = con.prepareStatement(sql);
+//	        stm.setInt(1, namNhan);
+//	        ResultSet rs = stm.executeQuery();
+//	        while (rs.next()) {
+//	            Phong p = new Phong(rs.getString(2));
+//	            NhanVien nv = new NhanVien(rs.getString(3));
+//	            KhachHang kh = new KhachHang(rs.getString(4));
+//	            LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+//	            LocalDateTime ngaynhan = rs.getTimestamp(6).toLocalDateTime();
+//	            dsPDP.add(new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngaynhan, rs.getInt(7)));
+//	        }
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
+//	    return dsPDP;
+//	}
 
 }

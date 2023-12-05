@@ -196,37 +196,54 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnDatPhong)) {
-			if (txtSoNguoi.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát!");
-			} else {
-				if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
-					TempDatPhong tmp = new TempDatPhong(p.getMaPhong(), Integer.parseInt(txtSoNguoi.getText()));
-					tmp_dao.addTemp(tmp);
-					dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp,
-							Integer.parseInt(txtSoNguoi.getText()), trangChu);
-					dispose();
-					if(tmp_dao.getAllTemp().size() == 2) {
-						DataManager.setSoDienThoaiKHDat("");
-						dialog_DatPhongTrong_2.setVisible(true);
-					} else {
-						JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách đặt phòng thành công.");
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
+			
+			try {
+				int songuoi=Integer.parseInt(txtSoNguoi.getText());
+				if(songuoi<=0) {
+					JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát lớn hơn 0!");
 				}
+				else {
+					if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
+						TempDatPhong tmp = new TempDatPhong(p.getMaPhong(), Integer.parseInt(txtSoNguoi.getText()));
+						tmp_dao.addTemp(tmp);
+						dialog_DatPhongTrong_2 = new Dialog_DatPhongTrong_2(lblPhong_1.getText(), p, lp,
+								Integer.parseInt(txtSoNguoi.getText()), trangChu);
+						dispose();
+						if(tmp_dao.getAllTemp().size() == 2) {
+							DataManager.setSoDienThoaiKHDat("");
+							dialog_DatPhongTrong_2.setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách đặt phòng thành công.");
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
+					}
+				}
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "vui lòng nhập số nguyên dương!");
 			}
+	
 		}
 		else if(o.equals(btn_DatPhongCho)) {
-			if (txtSoNguoi.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát!");
-			} else {
-				if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
-					dialog_DatPhongCho = new Dialog_DatPhongCho(lblPhong_1.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()), trangChu);
-					dialog_DatPhongCho.setVisible(true);
-					dispose();
-				} else {
-					JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
+
+			
+			try {
+				int songuoi=Integer.parseInt(txtSoNguoi.getText());
+				if(songuoi<=0) {
+					JOptionPane.showMessageDialog(null, "Vui lòng nhập số người hát lớn hơn 0!");
 				}
+				else {
+					if (Integer.parseInt(txtSoNguoi.getText()) <= lp.getSucChua()) {
+						dialog_DatPhongCho = new Dialog_DatPhongCho(lblPhong_1.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()), trangChu);
+						dialog_DatPhongCho.setVisible(true);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, "Số người hát không được vượt quá sức chứa!");
+					}
+				
+				}
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "vui lòng nhập số nguyên dương!");
 			}
 		
 		}

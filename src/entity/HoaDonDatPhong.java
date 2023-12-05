@@ -85,7 +85,7 @@ public class HoaDonDatPhong implements Serializable {
 	}
 	
 	public double tinhTongTienThanhToan(double tongTienPhong, double tongTienDV, float phanTramKhuyenMai) {
-		return (tongTienPhong + tongTienDV) *  (100 - phanTramKhuyenMai * 100)/ 100;
+		return (tongTienPhong + tongTienDV) *  (100 - phanTramKhuyenMai * 100)/ 100*1.1;
 	}
 	
 	public double tinhTienTraLai(double tongTienPhong, double tongTienDV, float phanTramKhuyenMai, double tienKhachDua) {
