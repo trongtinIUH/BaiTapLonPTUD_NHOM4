@@ -10,9 +10,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
-import javax.crypto.spec.PBEParameterSpec;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -67,17 +65,16 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private double soPhutHat;
 	private KhachHang_dao kh_dao;
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
-	private String maP;
 	private PhieuDatPhong pdp_of_room;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
 	private GD_TrangChu trangChu;
 	private TempThanhToan_dao tempTT_dao;
-	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private Phong_dao ph_dao;
+	@SuppressWarnings("unused")
+	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 
 	public Dialog_PhongDangSD(String maPhong) {
-		maP = maPhong;
 		// kích thước giao diện
 		getContentPane().setBackground(Color.WHITE);
 		setSize(335, 500);
@@ -158,9 +155,6 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		for (ChiTietHoaDon cthd : dsCTHD) {
 			cthd_hienTaiCuaPhong = cthd;
 		}
-
-		HoaDonDatPhong hd = null;
-		hd = hd_dao.getHoaDonTheoMaHoaDon(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon());
 
 		DateFormat dateFormatGio = new SimpleDateFormat("HH");
 		gioHienTai = new Date();

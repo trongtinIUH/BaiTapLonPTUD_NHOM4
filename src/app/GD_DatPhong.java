@@ -21,26 +21,18 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 import dao.TempThanhToan_dao;
-import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.Phong;
 import entity.TempDatPhong;
 import entity.TempThanhToan;
-import dao.ChiTietHoaDon_dao;
 import dao.LoaiPhong_dao;
 
 public class GD_DatPhong extends JPanel implements ActionListener {
@@ -79,7 +71,6 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private TempDatPhong_dao tmp_dao;
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private int sizeDSTmp;
-	private ChiTietHoaDon_dao cthd_dao;
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
 	private ImageIcon resizedIcon_phongtrong;
@@ -102,7 +93,6 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	public GD_DatPhong(GD_TrangChu trangChu) {
 		p_dao = new Phong_dao();
 		tmp_dao = new TempDatPhong_dao();
-		cthd_dao = new ChiTietHoaDon_dao();
 		tempTT_dao = new TempThanhToan_dao();
 		this.setSize(1080, 730);
 		this.trangChu = trangChu;

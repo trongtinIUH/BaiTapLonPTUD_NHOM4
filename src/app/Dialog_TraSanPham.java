@@ -12,9 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import dao.ChiTietDichVu_dao;
-import dao.ChiTietLuong_dao;
-import dao.HoaDonDatPhong_dao;
-import dao.Phong_dao;
 import dao.SanPham_dao;
 import entity.ChiTietDichVu;
 import entity.HoaDonDatPhong;

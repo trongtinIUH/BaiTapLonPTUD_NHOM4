@@ -19,7 +19,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -40,14 +39,14 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
 import dao.KhuyenMai_dao;
-import dao.Phong_dao;
 import entity.DateLabelFormatter;
 import entity.KhuyenMai;
-import entity.LoaiPhong;
-import entity.NhanVien;
-import entity.Phong;
 
 public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Font font = new Font("Arial", Font.BOLD, 16); // khung tittle
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
@@ -559,7 +558,7 @@ public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListene
 				cell.setCellValue(ngay);
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSachKhuyenMai.xlsx");
+			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);

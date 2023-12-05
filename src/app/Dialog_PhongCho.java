@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
 import javax.swing.AbstractAction;
@@ -66,8 +65,6 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	private DatePickerSettings dateSettings;
 	private DatePickerSettings dateSettings_1;
 
-	private LocalDateTime now1;
-	private LocalDateTime GioHienTai = LocalDateTime.now();
 
 	private TimePickerSettings timeSettings_1;
 	private DateTimePicker dateTimePicker_1;

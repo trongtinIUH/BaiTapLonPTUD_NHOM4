@@ -8,10 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.HoaDonDatPhong;
-import entity.KhachHang;
-import entity.KhuyenMai;
-import entity.NhanVien;
 import entity.SanPham;
 
 public class SanPham_dao {

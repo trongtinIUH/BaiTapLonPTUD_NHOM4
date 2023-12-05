@@ -26,8 +26,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
@@ -64,7 +62,6 @@ import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.Phong;
 import entity.SanPham;
-import entity.TempDatPhong;
 import entity.TempThanhToan;
 
 import java.awt.Dimension;
@@ -134,7 +131,6 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private double tongSoPhutHat;
 	private double soGioHat_Item;
 	private double soPhutHat_Item;
-	private double thoiGian_Item;
 	private KhuyenMai_dao km_dao;
 	private JButton btnKiemTra;
 	private int xacNhan;
@@ -153,6 +149,8 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private String phut;
 	private String gio;
 	private double thoiGianHat;
+	@SuppressWarnings("unused")
+	private double thoiGian_Item;
 
 	public Dialog_ThanhToan(String maPhong) {
 		getContentPane().setBackground(Color.WHITE);
@@ -923,7 +921,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 					DataManager.setSoDienThoaiKHDat("");
 
 					if (chckbx_XuatHoaDon.isSelected()) {
-						inHoaDon(lbl_MaHoaDon_1.getText());
+						inHoaDon("HoaDon");
 					}
 
 					Window[] windows = Window.getWindows();

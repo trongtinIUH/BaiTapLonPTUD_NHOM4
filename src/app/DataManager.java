@@ -2,7 +2,6 @@ package app;
 
 import java.util.ArrayList;
 
-import entity.ChiTietDichVu;
 import entity.TempThemDV;
 
 public class DataManager {

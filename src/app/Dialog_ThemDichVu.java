@@ -12,7 +12,6 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -28,12 +27,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import connectDB.ConnectDB;
 import dao.ChiTietDichVu_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
 import entity.ChiTietDichVu;
-import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
 import entity.Phong;
@@ -51,7 +48,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	private static final long serialVersionUID = 1L;
 
 	private JPanel panel, panel_Phai, panel_Trai, panel_1, pn_dssp, pn_dssp_Phai;
-	private JLabel lblSoLuong, lblTenKH, lblTenNV, lblPhong;
+	private JLabel lblSoLuong, lblTenNV, lblPhong;
 	private JComboBox<String> cbTimKiem;
 	private JTextField txtTenSP, txtSoLuong;
 	private JButton btnTimKiem, btn_DongY, btn_Huy;

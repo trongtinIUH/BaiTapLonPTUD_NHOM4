@@ -2,13 +2,10 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
@@ -21,7 +18,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -42,7 +38,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import dao.KhachHang_dao;
 import entity.KhachHang;
-import entity.NhanVien;
 
 public class GD_KhachHang extends JPanel implements ActionListener, MouseListener {
 	/**
@@ -533,7 +528,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 				cell.setCellValue(gioiTinhInExcel);
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSachKhachHang.xlsx");
+			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);

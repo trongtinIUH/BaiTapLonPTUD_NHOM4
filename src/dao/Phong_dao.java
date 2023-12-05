@@ -7,10 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.ChiTietHoaDon;
 import entity.DoanhThuLoaiPhong;
 import entity.Enum_TrangThai;
-import entity.HoaDonDatPhong;
 import entity.LoaiPhong;
 import entity.Phong;
 
