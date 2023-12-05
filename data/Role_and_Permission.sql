@@ -40,7 +40,7 @@ GRANT SELECT ON HoaDonDatPhong TO role_NV;
 GRANT SELECT ON ChiTietHoaDon TO role_NV;
 GRANT SELECT ON ChiTietDichVu TO role_NV;
 GRANT SELECT ON TempDatPhong TO role_NV;
-
+GRANT SELECT ON TempThanhToan TO role_NV;
 -- Grant INSERT permissions to user
 GRANT INSERT ON SanPham TO role_NV;
 GRANT INSERT ON KhuyenMai TO role_NV;
@@ -50,7 +50,7 @@ GRANT INSERT ON HoaDonDatPhong TO role_NV;
 GRANT INSERT ON ChiTietHoaDon TO role_NV;
 GRANT INSERT ON ChiTietDichVu TO role_NV;
 GRANT INSERT ON TempDatPhong TO role_NV;
-
+GRANT INSERT ON TempThanhToan TO role_NV;
 -- Grant UPDATE permissions to user
 GRANT UPDATE ON Phong TO role_NV;
 GRANT UPDATE ON SanPham TO role_NV;
@@ -61,6 +61,7 @@ GRANT UPDATE ON HoaDonDatPhong TO role_NV;
 GRANT UPDATE ON ChiTietHoaDon TO role_NV;
 GRANT UPDATE ON ChiTietDichVu TO role_NV;
 GRANT UPDATE ON TempDatPhong TO role_NV;
-
+GRANT UPDATE ON TempThanhToan TO role_NV;
 --Grant DELETE permissions to user
 GRANT DELETE ON TempDatPhong TO role_NV;
+GRANT DELETE ON TempThanhToan TO role_NV;

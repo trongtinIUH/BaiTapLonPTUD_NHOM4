@@ -36,6 +36,7 @@ import dao.LoaiPhong_dao;
 import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
+import dao.TempThanhToan_dao;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
@@ -43,6 +44,7 @@ import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
+import entity.TempThanhToan;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -88,7 +90,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
 	private String loaiPhong;
-
+	private TempThanhToan_dao tempTT_dao;
 	public Dialog_ChuyenPhong(String maPhong, String soNguoi) {
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 480);
@@ -104,7 +106,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		nv_dao = new NhanVien_dao();
 		hd_dao = new HoaDonDatPhong_dao();
 		kh_dao = new KhachHang_dao();
-
+		tempTT_dao = new TempThanhToan_dao();
 		this.addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent e) {
 				NhanVien nv = null;
@@ -456,6 +458,9 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 			JOptionPane.showMessageDialog(null,
 					"Chuyển sang phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0) + " thành công!!");
 			DataManager.setChuyenPhong(true);
+	
+			DataManager.setMaHD_trongDSThanhToan(maPhong);
+			
 			dispose();
 		}
 	}
