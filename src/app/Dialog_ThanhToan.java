@@ -905,6 +905,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 									phut = matcher.group(2);
 								} 
 								thoiGianHat = Double.parseDouble(gio) + Double.parseDouble(phut)/60;
+								
 							}else {
 								thoiGianHat = Double.parseDouble(model.getValueAt(row, 2).toString().replaceAll(" phút", ""))/60;
 							} 
