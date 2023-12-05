@@ -290,7 +290,7 @@ insert into PhieuDatPhong values('PDP2310110002', '203', '2111002', 'KH231011002
 insert into PhieuDatPhong values('PDP2310120001', '404', '2301002', 'KH231012001', '2023-10-12 20:00:00.000', '2023-10-12 20:00:00.000', 5)
 insert into PhieuDatPhong values('PDP2310130001', '306', '2010002', 'KH231013001', '2023-10-13 15:00:00.000', '2023-10-13 15:00:00.000', 18)
 insert into PhieuDatPhong values('PDP2310140001', '105', '2001001', 'KH231014001', '2023-10-14 12:00:00.000', '2023-10-14 12:00:00.000', 5)
-insert into PhieuDatPhong values('PDP2310200001', '206', '2110004', 'KH231020001', '2023-11-15 16:00:00.000', '2023-11-15 16:50:00.000', 4)
+insert into PhieuDatPhong values('PDP2310200001', '206', '2110004', 'KH231020001', '2023-10-20 21:00:00.000', '2023-10-20 21:00:00.000', 4)
 insert into PhieuDatPhong values('PDP2310150001', '403', '2311001', 'KH231015001', '2023-10-15 21:00:00.000', '2023-10-15 21:00:00.000', 10)
 insert into PhieuDatPhong values('PDP2209010001', '403', '2311001', 'KH00000000', '2022-09-01 22:00:00.000', '2022-09-01 22:00:00.000', 8)
 insert into PhieuDatPhong values('PDP2208010001', '404', '2311001', 'KH00000000', '2022-08-01 12:00:00.000', '2022-08-01 18:00:00.000', 7)
@@ -315,8 +315,8 @@ insert into HoaDonDatPhong values('HD2310110002', 'KH231011002', '2111002', '202
 insert into HoaDonDatPhong values('HD2310120001', 'KH231012001', '2301002', '2023-10-13 00:00:00.000', 1, null, 2000000)
 insert into HoaDonDatPhong values('HD2310130001', 'KH231013001', '2010002', '2023-10-13 20:00:00.000', 1, null, 1500000)
 insert into HoaDonDatPhong values('HD2310140001', 'KH231014001', '2001001', '2023-10-14 15:00:00.000', 1, null, 2000000)
-insert into HoaDonDatPhong values('HD2310200001', 'KH231020001', '2110004', '2023-10-21 00:00:00.000', 1, 'KM201023', 0)
-insert into HoaDonDatPhong values('HD2310150001', 'KH231015001', '2311001', '2024-10-15 23:00:00.000', 0, null, 0)
+insert into HoaDonDatPhong values('HD2310200001', 'KH231020001', '2110004', '2023-10-21 00:00:00.000', 1, 'KM201023', 500000)
+insert into HoaDonDatPhong values('HD2310150001', 'KH231015001', '2311001', '2024-10-15 23:00:00.000', 1, null, 5000000)
 insert into HoaDonDatPhong values('HD2209010001', 'KH00000000', '2311001', '2022-09-02 01:00:00.000', 1, null, 500000)
 insert into HoaDonDatPhong values('HD2208010001', 'KH00000000', '2001001', '2022-08-01 21:00:00.000', 1, null, 10000000)
 insert into HoaDonDatPhong values('HD2207150001', 'KH00000000', '2001001', '2022-07-15 19:00:00.000', 1, null, 12500000)
@@ -340,7 +340,7 @@ insert into ChiTietHoaDon values('HD2310120001', '404', '2023-10-12 20:00:00.000
 insert into ChiTietHoaDon values('HD2310130001', '306', '2023-10-13 15:00:00.000', '2023-10-13 20:00:00.000', 5)
 insert into ChiTietHoaDon values('HD2310140001', '105', '2023-10-14 12:00:00.000', '2023-10-14 15:00:00.000', 3)
 insert into ChiTietHoaDon values('HD2310200001', '206', '2023-10-20 21:00:00.000', '2023-10-21 00:00:00.000', 3)
-insert into ChiTietHoaDon values('HD2310150001', '403', '2022-10-15 21:00:00.000', '2022-10-15 23:00:00.000', 2)
+insert into ChiTietHoaDon values('HD2310150001', '403', '2023-10-15 21:00:00.000', '2023-10-15 23:00:00.000', 2)
 insert into ChiTietHoaDon values('HD2209010001', '403', '2022-09-01 22:00:00.000', '2022-09-02 01:00:00.000', 3)
 insert into ChiTietHoaDon values('HD2208010001', '404', '2022-08-01 18:00:00.000', '2022-08-01 21:00:00.000', 3)
 insert into ChiTietHoaDon values('HD2207150001', '306', '2022-07-15 17:00:00.000', '2022-07-15 19:00:00.000',2)
@@ -484,11 +484,6 @@ END;
 --select * from HoaDonDatPhong
 --select * from ChiTietHoaDon
 --select * from  ChiTietDichVu
-
-
-select pdp.* from PhieuDatPhong pdp 
-					join Phong p on pdp.maPhong = p.maPhong 
-					where pdp.maPhong = ? and p.trangThai = N'Chờ'
 
 
 

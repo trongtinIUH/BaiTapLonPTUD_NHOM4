@@ -164,7 +164,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		comboBox_TrangThai.setBackground(Color.WHITE);
 		comboBox_TrangThai.setFont(new Font("Arial", Font.BOLD, 15));
 		comboBox_TrangThai.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Tất Cả","Phòng đang sử dụng","Phòng chờ", "Chưa Thanh Toán", "Đã Thanh Toán" }));
+				new DefaultComboBoxModel<String>(new String[] { "Tất Cả", "Chưa Thanh Toán", "Đã Thanh Toán" }));
 		comboBox_TrangThai.setSelectedIndex(0);
 		comboBox_TrangThai.setBounds(490, 5, 200, 30);
 		panel_1.add(comboBox_TrangThai);
@@ -173,7 +173,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		comboBox_TrangThai_1.setFont(new Font("Arial", Font.BOLD, 15));
 		comboBox_TrangThai_1.setBackground(Color.WHITE);
 		comboBox_TrangThai_1.setModel(new DefaultComboBoxModel<String>(
-				new String[] { "Mã phiếu đặt", "Số điện thoại KH", "Họ tên KH", "Ngày nhận phòng" }));
+				new String[] { "", "Mã phiếu đặt", "Số điện thoại KH", "Họ tên KH", "Ngày nhận phòng" }));
 		comboBox_TrangThai_1.setBounds(120, 5, 250, 30);
 		panel_1.add(comboBox_TrangThai_1);
 
@@ -266,7 +266,6 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btn_XuatPhong.addActionListener(this);
 		btnLamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
-		comboBox_TrangThai.addActionListener(this);
 		tblPhieuDatPhong.addMouseListener(this);
 		loadData();
 		MyTable(model, tblPhieuDatPhong);
@@ -361,12 +360,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 		// {"Mã phiếu đặt", "Số điện thoại KH","Họ tên KH"}
 		thoatTim: if (btnTimKiem.getText().equals("Tìm kiếm")) {
-			if (thongtinTimKiem.equals("")) {
-				JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin tìm kiếm");
-				break thoatTim;
-			}
 			if (comboBox_TrangThai_1.getSelectedItem().equals("")) {
 				JOptionPane.showMessageDialog(null, "Vui lòng chọn loại tìm kiếm!");
+				break thoatTim;
+			}
+
+			if (thongtinTimKiem.equals("")) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập thông tin tìm kiếm");
 				break thoatTim;
 			}
 
@@ -395,52 +395,52 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 				}
 			} else if (comboBox_TrangThai_1.getSelectedItem().equals("Số điện thoại KH")) {
-
+				int check = 1;
 				// Tìm kiếm theo số điện thoại
 				kh = kh_dao.getKhachHangTheoSDT(thongtinTimKiem);
-				clearTable();
 				if (kh != null) {
 					ArrayList<PhieuDatPhong> pdps = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
 					for (PhieuDatPhong pdp : pdps) {
-						if (kh != null) {
-							if (formatter1.format(pdp.getNgayGioDatPhong())
-									.equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
-								hinhthuc = "Đặt trực tiếp";
-							} else {
-								hinhthuc = "Đặt trước";
-							}
-							String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-							nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-
-							hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-							if (hd != null && hd.isTrangThai() == false) {
-								trangthai = "Chưa TT";
-							} else if (hd != null && hd.isTrangThai() == true) {
-								trangthai = "Đã TT";
-							} else {
-								trangthai = "Chưa TT";
-							}
-
-							if (pdp != null) {
-
-								btnTimKiem.setText("Hủy tìm");
-								Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
-										kh.getHoTen(), ngayGioDat, ngayGioNhan, pdp.getSoNguoiHat(), hinhthuc,
-										trangthai };
-								model.addRow(row);
-								Canh_Deu_Bang();
-							}
+						if (formatter1.format(pdp.getNgayGioDatPhong())
+								.equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+							hinhthuc = "Đặt trực tiếp";
 						} else {
-							JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+							hinhthuc = "Đặt trước";
+						}
+						String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+						nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+
+						hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+						if (hd != null && hd.isTrangThai() == false) {
+							trangthai = "Chưa TT";
+						} else if (hd != null && hd.isTrangThai() == true) {
+							trangthai = "Đã TT";
+						} else {
+							trangthai = "Chưa TT";
+						}
+
+						if (pdp != null) {
+							if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
+									&& check == 1) {
+								btnTimKiem.setText("Hủy tìm");
+								clearTable();
+								XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
+								check = 0;
+							}
+							Canh_Deu_Bang();
 						}
 					}
+					if (check == 1) {
+						JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 				}
 			} else if (comboBox_TrangThai_1.getSelectedItem().equals("Họ tên KH")) {
-
-				// Tìm kiếm theo số điện thoại
+				// Tìm kiếm theo tên khách hàng
 				ArrayList<KhachHang> DSkh = kh_dao.getKhachHangTheoTenKH(thongtinTimKiem);
 				if (DSkh.size() != 0) {
-					clearTable();
+					int check = 1;
 					for (KhachHang kh : DSkh) {
 						ArrayList<PhieuDatPhong> pdps = pdp_dao.getPhieuDatPhongTheoMaKH(kh.getMaKhachHang());
 						for (PhieuDatPhong pdp : pdps) {
@@ -453,21 +453,25 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 									trangthai = "Chưa TT";
 								} else if (hd != null && hd.isTrangThai() == true) {
 									trangthai = "Đã TT";
-								} else {
-									trangthai = "Chưa TT";
 								}
+
 								if (pdp != null) {
-									btnTimKiem.setText("Hủy tìm");
-									Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
-											kh.getHoTen(), ngayGioDat, ngayGioNhan, pdp.getSoNguoiHat(), hinhthuc,
-											trangthai };
-									model.addRow(row);
+									if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
+											&& check == 1) {
+										btnTimKiem.setText("Hủy tìm");
+										clearTable();
+										XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
+										check = 0;
+									}
 									Canh_Deu_Bang();
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
 							}
 						}
+					}
+					if (check == 1) {
+						JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
 					}
 				} else {
 					JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
@@ -498,7 +502,6 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 							trangthai = "Chưa TT";
 						}
 						if (pdp != null) {
-
 							btnTimKiem.setText("Hủy tìm");
 							Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(),
 									kh.getHoTen(), pdp.getNgayGioDatPhong().format(formatter),
@@ -522,6 +525,27 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 	}
 
+	private boolean XuatDSTheoTrangThai(PhieuDatPhong pdp, KhachHang kh, String ngayGioDat, String ngayGioNhan,
+			String hinhThuc, String trangthai) {
+		if (comboBox_TrangThai.getSelectedItem().equals("Tất Cả")) {
+			Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
+					ngayGioNhan, pdp.getSoNguoiHat(), hinhThuc, trangthai };
+			model.addRow(row);
+			return true;
+		} else if (comboBox_TrangThai.getSelectedItem().equals("Chưa Thanh Toán") && trangthai.equals("Chưa TT")) {
+			Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
+					ngayGioNhan, pdp.getSoNguoiHat(), hinhThuc, trangthai };
+			model.addRow(row);
+			return true;
+		} else if (comboBox_TrangThai.getSelectedItem().equals("Đã Thanh Toán") && trangthai.equals("Đã TT")) {
+			Object[] row = { pdp.getMaPhieu(), pdp.getPhong().getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
+					ngayGioNhan, pdp.getSoNguoiHat(), hinhThuc, trangthai };
+			model.addRow(row);
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -529,9 +553,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			setVisible(false);
 		}
 		if (o.equals(btnTimKiem)) {
-			if (validData()) {
-				tim();
-			}
+			tim();
 		}
 		if (o.equals(btn_XemPhong)) {
 			xemPhong();
@@ -540,7 +562,6 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			xuatExcel();
 		}
 		if (o.equals(btn_NhanPhong)) {
-
 			nhanPhong();
 			clearTable();
 			loadData();
@@ -560,190 +581,90 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				e1.printStackTrace();
 			}
 		}
-		if (o.equals(comboBox_TrangThai)) {
-			if (comboBox_TrangThai.getSelectedItem().equals("Tất Cả")) {
-				clearTable();
-				loadData();
-			}
-			if (comboBox_TrangThai.getSelectedItem().equals("Chưa Thanh Toán")) {
-				clearTable();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
-				String hinhthuc = "";
-				String trangthai = "";
-				// Lấy tất cả phiếu đặt phòng
-				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_ChuaThanhToan();
-
-				// Sắp xếp danh sách theo ngày giờ đặt phòng
-				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
-
-				for (PhieuDatPhong x : allPhieuDatPhong) {
-					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
-					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
-					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
-						hinhthuc = "Đặt trực tiếp";
-					} else {
-						hinhthuc = "Đặt trước";
-					}
-					String mp = x.getMaPhieu();
-					String mkh = x.getKhachHang().getMaKhachHang();
-					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
-					p = pdp.getPhong();
-					kh = kh_dao.getKhachHangTheoMaKH(mkh);
-					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-					trangthai="Chưa TT";
-					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
-							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
-					model.addRow(row);
-				}
-				Canh_Deu_Bang();
-
-			}
-			if (comboBox_TrangThai.getSelectedItem().equals("Đã Thanh Toán")) {
-				clearTable();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
-				String hinhthuc = "";
-				String trangthai = "";
-				// Lấy tất cả phiếu đặt phòng
-				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_DaThanhToan();
-
-				// Sắp xếp danh sách theo ngày giờ đặt phòng
-				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
-
-				for (PhieuDatPhong x : allPhieuDatPhong) {
-					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
-					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
-					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
-						hinhthuc = "Đặt trực tiếp";
-					} else {
-						hinhthuc = "Đặt trước";
-					}
-					String mp = x.getMaPhieu();
-					String mkh = x.getKhachHang().getMaKhachHang();
-					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
-					p = pdp.getPhong();
-					kh = kh_dao.getKhachHangTheoMaKH(mkh);
-					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-					trangthai="Đã TT";
-					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
-							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
-					model.addRow(row);
-				}
-				Canh_Deu_Bang();
-
-			}
-			if (comboBox_TrangThai.getSelectedItem().equals("Phòng đang sử dụng")) {
-				clearTable();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
-				String hinhthuc = "";
-				String trangthai = "";
-				// Lấy tất cả phiếu đặt phòng
-				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_DangSuDung();
-				// Sắp xếp danh sách theo ngày giờ đặt phòng
-				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
-				if (allPhieuDatPhong.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Không tìm thấy phòng nào đang được sử dụng");
-					return;
-				}
-				for (PhieuDatPhong x : allPhieuDatPhong) {
-					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
-					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
-					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
-						hinhthuc = "Đặt trực tiếp";
-					} else {
-						hinhthuc = "Đặt trước";
-					}
-					String mp = x.getMaPhieu();
-					String mkh = x.getKhachHang().getMaKhachHang();
-					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
-					p = pdp.getPhong();
-					kh = kh_dao.getKhachHangTheoMaKH(mkh);
-					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-					trangthai="Đang sử dụng";
-					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
-							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
-					model.addRow(row);
-				}
-				Canh_Deu_Bang();
-
-			}
-			if (comboBox_TrangThai.getSelectedItem().equals("Phòng chờ")) {
-				clearTable();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
-				String hinhthuc = "";
-				String trangthai = "";
-				// Lấy tất cả phiếu đặt phòng
-				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_PhongCho();
-				// Sắp xếp danh sách theo ngày giờ đặt phòng
-				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
-				if (allPhieuDatPhong.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Không tìm thấy phòng chờ nào đã đặt trước");
-					return;
-				}
-				for (PhieuDatPhong x : allPhieuDatPhong) {
-					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
-					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
-					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
-						hinhthuc = "Đặt trực tiếp";
-					} else {
-						hinhthuc = "Đặt trước";
-					}
-					String mp = x.getMaPhieu();
-					String mkh = x.getKhachHang().getMaKhachHang();
-					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
-					p = pdp.getPhong();
-					kh = kh_dao.getKhachHangTheoMaKH(mkh);
-					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-					trangthai="Chờ";
-					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
-							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
-					model.addRow(row);
-				}
-				Canh_Deu_Bang();
-
-			}
-		}
+//		if (o.equals(comboBox_TrangThai)) {
+//			if (comboBox_TrangThai.getSelectedItem().equals("Tất Cả")) {
+//				clearTable();
+//				loadData();
+//			}
+//			if (comboBox_TrangThai.getSelectedItem().equals("Chưa Thanh Toán")) {
+//				clearTable();
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+//				String hinhthuc = "";
+//				String trangthai = "";
+//				// Lấy tất cả phiếu đặt phòng
+//				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_ChuaThanhToan();
+//
+//				// Sắp xếp danh sách theo ngày giờ đặt phòng
+//				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
+//
+//				for (PhieuDatPhong x : allPhieuDatPhong) {
+//					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
+//					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+//					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+//					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
+//						hinhthuc = "Đặt trực tiếp";
+//					} else {
+//						hinhthuc = "Đặt trước";
+//					}
+//					String mp = x.getMaPhieu();
+//					String mkh = x.getKhachHang().getMaKhachHang();
+//					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+//					p = pdp.getPhong();
+//					kh = kh_dao.getKhachHangTheoMaKH(mkh);
+//					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+//					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+//					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+//					trangthai = "Chưa TT";
+//					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
+//							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
+//					model.addRow(row);
+//				}
+//				Canh_Deu_Bang();
+//
+//			}
+//			if (comboBox_TrangThai.getSelectedItem().equals("Đã Thanh Toán")) {
+//				clearTable();
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+//				String hinhthuc = "";
+//				String trangthai = "";
+//				// Lấy tất cả phiếu đặt phòng
+//				ArrayList<PhieuDatPhong> allPhieuDatPhong = pdp_dao.getAllsPhieuDatPhong_DaThanhToan();
+//
+//				// Sắp xếp danh sách theo ngày giờ đặt phòng
+//				Collections.sort(allPhieuDatPhong, Comparator.comparing(PhieuDatPhong::getNgayGioDatPhong));
+//
+//				for (PhieuDatPhong x : allPhieuDatPhong) {
+//					String ngayGioDat = x.getNgayGioDatPhong().format(formatter);
+//					String ngayGioNhan = x.getNgayGioNhanPhong().format(formatter);
+//					DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+//					if (formatter1.format(x.getNgayGioNhanPhong()).equals(formatter1.format(x.getNgayGioDatPhong()))) {
+//						hinhthuc = "Đặt trực tiếp";
+//					} else {
+//						hinhthuc = "Đặt trước";
+//					}
+//					String mp = x.getMaPhieu();
+//					String mkh = x.getKhachHang().getMaKhachHang();
+//					pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(mp);
+//					p = pdp.getPhong();
+//					kh = kh_dao.getKhachHangTheoMaKH(mkh);
+//					nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+//					String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+//					hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+//					trangthai = "Đã TT";
+//					Object[] row = { x.getMaPhieu(), p.getMaPhong(), nv.getHoTen(), kh.getHoTen(), ngayGioDat,
+//							ngayGioNhan, x.getSoNguoiHat(), hinhthuc, trangthai };
+//					model.addRow(row);
+//				}
+//				Canh_Deu_Bang();
+//
+//			}
+//		}
 
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
-//	    int row = tblPhieuDatPhong.getSelectedRow();
-//	    String trangthai = model.getValueAt(row, 8).toString();
-//	    String ma = model.getValueAt(row, 0).toString();
-//	    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(ma);
-//	    p = pdp.getPhong();
-//	   
-//	  
-//
-//	    int selectedIndex = comboBox_TrangThai_1.getSelectedIndex();
-//
-//	    if (trangthai.equalsIgnoreCase("Đã TT")) {
-//	        comboBox_TrangThai.setSelectedIndex(2);
-//	    } else {
-//	        comboBox_TrangThai.setSelectedIndex(1);
-//	    }
-//
-//	    if (selectedIndex == 0) {
-//	        txtLoaiTimKiem.setText(model.getValueAt(row, 0).toString());
-//	    } else if (selectedIndex == 1) {
-//	    	 kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
-//	        txtLoaiTimKiem.setText(kh.getSoDienThoai().toString());
-//	    } else if (selectedIndex == 2) {
-//	        txtLoaiTimKiem.setText(kh.getHoTen());
-//	    }
 	}
 
 	@Override
@@ -1045,17 +966,5 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			e1.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Không in được");
 		}
-	}
-
-	// hàm kiểm tra nhập
-	private boolean validData() {
-		reg = new Regex();
-		if (!txtLoaiTimKiem.getText().equals("") && comboBox_TrangThai_1.getSelectedItem().equals("Số điện thoại KH")) {
-			String sdt = txtLoaiTimKiem.getText();
-			if (reg.kiemTraSDT(sdt) == false) {
-				return false;
-			}
-		}
-		return false;
 	}
 }
