@@ -14,6 +14,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -24,8 +26,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
@@ -52,6 +52,7 @@ import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
+import dao.TempThanhToan_dao;
 import entity.ChiTietDichVu;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
@@ -63,6 +64,7 @@ import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.SanPham;
+import entity.TempThanhToan;
 
 import java.awt.Dimension;
 import java.awt.Window;
@@ -92,7 +94,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 	private JTable tblThanhToan;
 	private DefaultTableModel model;
-	private String col[] = { "STT", "Phòng / Tên SP", "Thời gian / SL", "Đơn Giá", "Đơn Vị Tính", "Thành tiền" };
+	private String col[] = { "STT", "Phòng / Tên SP", "Thời gian / SL", "Giá bán", "Đơn Vị Tính", "Thành tiền" };
 	private JLabel lblTienDV;
 	private JLabel lblTienPhong;
 	private JLabel lblTongCong;
@@ -131,7 +133,6 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private double tongSoPhutHat;
 	private double soGioHat_Item;
 	private double soPhutHat_Item;
-	private double thoiGian_Item;
 	private KhuyenMai_dao km_dao;
 	private JButton btnKiemTra;
 	private int xacNhan;
@@ -142,6 +143,17 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private int TienDichVu_item;
 	private double tienDichVu_update;
 	PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private TempThanhToan_dao tempTT_dao;
+	private int gioThua_Item;
+	private double phutChinhXac_Item;
+	private Date date;
+	private Pattern pattern;
+	private Matcher matcher;
+	private String phut;
+	private String gio;
+	private double thoiGianHat;
+	@SuppressWarnings("unused")
+	private double thoiGian_Item;
 
 	public Dialog_ThanhToan(String maPhong) {
 		getContentPane().setBackground(Color.WHITE);
@@ -160,6 +172,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		loaiPhong_dao = new LoaiPhong_dao();
 		sp_dao = new SanPham_dao();
 		km_dao = new KhuyenMai_dao();
+		tempTT_dao = new TempThanhToan_dao();
 
 		this.addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent e) {
@@ -223,16 +236,24 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		lblTngThiLng.setBounds(480, 65, 140, 20);
 		panel_1.add(lblTngThiLng);
 
-		ChiTietHoaDon cthd_hienTaiCuaPhong = null;
-		ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(maPhong);
-		for (ChiTietHoaDon cthd : dsCTHD) {
-			cthd_hienTaiCuaPhong = cthd;
-		}
 
-		HoaDonDatPhong hd = null;
-		hd = hd_dao.getHoaDonTheoMaHoaDon(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon());
 		KhachHang kh = null;
-		kh = kh_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang());
+		HoaDonDatPhong hd = null;
+		if(tempTT_dao.getAllTemp().size() == 0) {
+			hd = hd_dao.getHoaDonDatPhongTheoMaHD(DataManager.getMaHD_trongDSThanhToan());
+			kh = kh_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang());
+
+		}else {
+			ChiTietHoaDon cthd_hienTaiTemp = null;
+			for(TempThanhToan tmp : tempTT_dao.getAllTemp()) {
+				ArrayList<ChiTietHoaDon> dsCTHDTemp = cthd_dao.getChiTietHoaDonTheoMaPhong(tmp.getMaPhong().trim());
+				for (ChiTietHoaDon cthd : dsCTHDTemp) {
+					cthd_hienTaiTemp = cthd;
+				}
+			}
+			hd = hd_dao.getHoaDonDatPhongTheoMaHD(cthd_hienTaiTemp.getHoaDon().getMaHoaDon());
+			kh = kh_dao.getKhachHangTheoMaKH(hd.getKhachHang().getMaKhachHang());
+		}	
 
 		lbl_sdtKH_1 = new JLabel(kh.getSoDienThoai());
 		lbl_sdtKH_1.setFont(new Font("Arial", Font.BOLD, 15));
@@ -370,6 +391,18 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		txtMaGiamGia.setBounds(470, 560, 200, 25);
 		getContentPane().add(txtMaGiamGia);
 		txtMaGiamGia.setColumns(10);
+		
+		DateFormat dateFormatNgayKM = new SimpleDateFormat("yyMMdd");
+		date = new Date();
+		int ngayKM = Integer.parseInt(dateFormatNgayKM.format(date));
+		ArrayList<KhuyenMai> dsKM = km_dao.getallKhuyenMais();
+		for(KhuyenMai km : dsKM) {
+			int ngayBatDauKM_Item = Integer.parseInt(dateFormatNgayKM.format(km.getNgayBatDau()));
+			int ngayKetThucKM_Item = Integer.parseInt(dateFormatNgayKM.format(km.getNgayKetThuc()));
+			if(ngayKM >= ngayBatDauKM_Item && ngayKM <= ngayKetThucKM_Item) {
+				txtMaGiamGia.setText(km.getMaKhuyenMai());
+			}
+		}
 
 		txtPhanTramKM = new JTextField("0");
 		txtPhanTramKM.setFont(new Font("Arial", Font.BOLD, 15));
@@ -492,66 +525,235 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 		tongTienDichVu = 0;
 		tongSoGioHat = 0;
 		tongSoPhutHat = 0;
-		for (ChiTietHoaDon cthd : cthd_dao.getChiTietHoaDonTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
-			soGioHat_Item = 0;
-			soPhutHat_Item = 0;
-			DateFormat dateFormatGio = new SimpleDateFormat("HH");
-			gioHienTai = new Date();
-			double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
-			DateFormat dateFormatPhut = new SimpleDateFormat("mm");
-			phutHienTai = new Date();
-			double phutHT = Double.parseDouble(dateFormatPhut.format(phutHienTai));
-
-			double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd.getGioNhanPhong()));
-			double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd.getGioNhanPhong()));
-
-			if (gioHT >= gioNhanPhong && phutHT >= phutNhanPhong) {
-				soGioHat_Item = gioHT - gioNhanPhong;
-				soPhutHat_Item = phutHT - phutNhanPhong;
-				thoiGian_Item = soGioHat_Item + soPhutHat_Item / 60;
-			} else if (gioHT <= gioNhanPhong && phutHT >= phutNhanPhong) {
-				soGioHat_Item = gioHT - gioNhanPhong + 24.0;
-				soPhutHat_Item = phutHT - phutNhanPhong;
-				thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
-			} else if (gioHT >= gioNhanPhong && phutHT <= phutNhanPhong) {
-				soGioHat_Item = gioHT - gioNhanPhong - 1;
-				soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
-				thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
-			} else if (gioHT <= gioNhanPhong && phutHT <= phutNhanPhong) {
-				soGioHat_Item = gioHT - gioNhanPhong + 24.0 - 1.0;
-				soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
-				thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
+		if(tempTT_dao.getAllTemp().size() == 0) {
+			for (ChiTietHoaDon cthd : cthd_dao.getChiTietHoaDonTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
+				soGioHat_Item = 0;
+				soPhutHat_Item = 0;
+				DateFormat dateFormatGio = new SimpleDateFormat("HH");
+				gioHienTai = new Date();
+				double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
+				DateFormat dateFormatPhut = new SimpleDateFormat("mm");
+				phutHienTai = new Date();
+				double phutHT = Double.parseDouble(dateFormatPhut.format(phutHienTai));
+	
+				double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd.getGioNhanPhong()));
+				double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd.getGioNhanPhong()));
+	
+				if (gioHT >= gioNhanPhong && phutHT >= phutNhanPhong) {
+					soGioHat_Item = gioHT - gioNhanPhong;
+					soPhutHat_Item = phutHT - phutNhanPhong;
+					thoiGian_Item = soGioHat_Item + soPhutHat_Item / 60;
+				} else if (gioHT <= gioNhanPhong && phutHT >= phutNhanPhong) {
+					soGioHat_Item = gioHT - gioNhanPhong + 24.0;
+					soPhutHat_Item = phutHT - phutNhanPhong;
+					thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
+				} else if (gioHT >= gioNhanPhong && phutHT <= phutNhanPhong) {
+					soGioHat_Item = gioHT - gioNhanPhong - 1;
+					soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
+					thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
+				} else if (gioHT <= gioNhanPhong && phutHT <= phutNhanPhong) {
+					soGioHat_Item = gioHT - gioNhanPhong + 24.0 - 1.0;
+					soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
+					thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
+				}
+				
+				gioThua_Item = (int) (soPhutHat_Item / 60);
+				phutChinhXac_Item = soPhutHat_Item % 60;
+				
+				DecimalFormat df3 = new DecimalFormat("#.##");
+				Phong ph = ph_dao.getPhongTheoMaPhong(cthd.getPhong().getMaPhong());
+				LoaiPhong loaiPhong = loaiPhong_dao.getLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong());
+				if (cthd.getSoGioHat() != 0)
+					thoiGian_Item = cthd.getSoGioHat();
+				if(soGioHat_Item + gioThua_Item == 0 && phutChinhXac_Item <= 35) {
+					Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(phutChinhXac_Item) + " phút",
+							loaiPhong.getDonGiaTheoGio(), "", df3.format(0.5 * loaiPhong.getDonGiaTheoGio()) };
+					model.addRow(rowPhong);
+					tongTienPhong += (0.5 * loaiPhong.getDonGiaTheoGio());
+				}else if(soGioHat_Item + gioThua_Item == 0 && phutChinhXac_Item > 35) {
+					Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(phutChinhXac_Item) + " phút",
+							loaiPhong.getDonGiaTheoGio(), "", df3.format(1 * loaiPhong.getDonGiaTheoGio()) };
+					model.addRow(rowPhong);
+					tongTienPhong += loaiPhong.getDonGiaTheoGio();
+				}else if(soGioHat_Item + gioThua_Item != 0 && phutChinhXac_Item > 35) {
+					Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+							loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item + 1) * loaiPhong.getDonGiaTheoGio()) };
+					model.addRow(rowPhong);
+					tongTienPhong += ((soGioHat_Item + gioThua_Item + 1) * loaiPhong.getDonGiaTheoGio());
+				}
+				else if(soGioHat_Item + gioThua_Item != 0 && (phutChinhXac_Item >= 30 && phutChinhXac_Item <= 35)) {
+					Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+							loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio()) };
+					model.addRow(rowPhong);
+					tongTienPhong += ((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio());
+				}
+				else if(soGioHat_Item + gioThua_Item != 0 && (phutChinhXac_Item >= 0 && phutChinhXac_Item <= 5)) {
+					Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+							loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item) * loaiPhong.getDonGiaTheoGio()) };
+					model.addRow(rowPhong);
+					tongTienPhong += ((soGioHat_Item + gioThua_Item) * loaiPhong.getDonGiaTheoGio());
+				}
+				else if(soGioHat_Item + gioThua_Item != 0 && (phutChinhXac_Item > 5 && phutChinhXac_Item < 30)) {
+					Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+							loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio()) };
+					model.addRow(rowPhong);
+					tongTienPhong += ((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio());
+				}
+	
+				tongSoGioHat += soGioHat_Item;
+				tongSoPhutHat += soPhutHat_Item;
+				
+				TienDichVu_item = 0;
+				for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHDVaMaPhong(lbl_MaHoaDon_1.getText().trim(), cthd.getPhong().getMaPhong())) {
+					SanPham spdv = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
+					if(spdv.getloaiSanPham().equals("Thức ăn")) {
+						double gia = ctdv.getGia() * (1+0.03);
+						Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), gia, spdv.getDonViTinh(),
+								ctdv.getSoLuong() *gia};
+						model.addRow(rowSanPham);
+						TienDichVu_item += ctdv.getSoLuong() * gia;
+					}else if(spdv.getloaiSanPham().equals("Đồ uống")) {
+						double gia = ctdv.getGia() * (1+0.02);
+						Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), gia, spdv.getDonViTinh(),
+								ctdv.getSoLuong() *gia};
+						model.addRow(rowSanPham);
+						TienDichVu_item += ctdv.getSoLuong() * gia;
+					}else {
+						double gia = ctdv.getGia() * (1+0.01);
+						Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), gia, spdv.getDonViTinh(),
+								ctdv.getSoLuong() *gia};
+						model.addRow(rowSanPham);
+						TienDichVu_item += ctdv.getSoLuong() * gia;
+					}
+				}
+				String col_temp[] = {"","","","","",""};
+				model.addRow(col_temp);
+				tongTienDichVu += TienDichVu_item;
 			}
-			DecimalFormat df3 = new DecimalFormat("#.##");
-			Phong ph = ph_dao.getPhongTheoMaPhong(cthd.getPhong().getMaPhong());
-			LoaiPhong loaiPhong = loaiPhong_dao.getLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong());
-			if (cthd.getSoGioHat() != 0)
-				thoiGian_Item = cthd.getSoGioHat();
-			Object[] rowPhong = { i++, cthd.getPhong().getMaPhong(), df3.format(thoiGian_Item),
-					loaiPhong.getDonGiaTheoGio(), "", df3.format(thoiGian_Item * loaiPhong.getDonGiaTheoGio()) };
-			model.addRow(rowPhong);
-			tongTienPhong += thoiGian_Item * loaiPhong.getDonGiaTheoGio();
+		
+			gioThua = (int) (tongSoPhutHat / 60);
+			phutChinhXac = tongSoPhutHat % 60;
+			DecimalFormat df2 = new DecimalFormat("#.##");
+			lbl_TongThoiLuong_1.setText(df2.format(tongSoGioHat + gioThua) + " giờ " + df2.format(phutChinhXac) + " phút");
+		}else {
+			for (TempThanhToan tmp : tempTT_dao.getAllTemp()) {
+				if (!tmp.getMaPhong().equals("000")) {;
+					ChiTietHoaDon cthd_hienTaiCuaPhong = null;
+					ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(tmp.getMaPhong());
+					for (ChiTietHoaDon cthd : dsCTHD) {
+						cthd_hienTaiCuaPhong = cthd;
+					}
 
-			tongSoGioHat += soGioHat_Item;
-			tongSoPhutHat += soPhutHat_Item;
+					soGioHat_Item = 0;
+					soPhutHat_Item = 0;
+					DateFormat dateFormatGio = new SimpleDateFormat("HH");
+					gioHienTai = new Date();
+					double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
+					DateFormat dateFormatPhut = new SimpleDateFormat("mm");
+					phutHienTai = new Date();
+					double phutHT = Double.parseDouble(dateFormatPhut.format(phutHienTai));
 
-			TienDichVu_item = 0;
-			for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHDVaMaPhong(lbl_MaHoaDon_1.getText().trim(),
-					cthd.getPhong().getMaPhong())) {
-				SanPham spdv = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
-				Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), ctdv.getGia(),
-						spdv.getDonViTinh(), ctdv.getSoLuong() * ctdv.getGia() };
-				model.addRow(rowSanPham);
-				TienDichVu_item += ctdv.getSoLuong() * ctdv.getGia();
+					double gioNhanPhong = Double.parseDouble(dateFormatGio.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));
+					double phutNhanPhong = Double.parseDouble(dateFormatPhut.format(cthd_hienTaiCuaPhong.getGioNhanPhong()));
+
+					if (gioHT >= gioNhanPhong && phutHT >= phutNhanPhong) {
+						soGioHat_Item = gioHT - gioNhanPhong;
+						soPhutHat_Item = phutHT - phutNhanPhong;
+						thoiGian_Item = soGioHat_Item + soPhutHat_Item / 60;
+					} else if (gioHT <= gioNhanPhong && phutHT >= phutNhanPhong) {
+						soGioHat_Item = gioHT - gioNhanPhong + 24.0;
+						soPhutHat_Item = phutHT - phutNhanPhong;
+						thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
+					} else if (gioHT >= gioNhanPhong && phutHT <= phutNhanPhong) {
+						soGioHat_Item = gioHT - gioNhanPhong - 1;
+						soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
+						thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
+					} else if (gioHT <= gioNhanPhong && phutHT <= phutNhanPhong) {
+						soGioHat_Item = gioHT - gioNhanPhong + 24.0 - 1.0;
+						soPhutHat_Item = phutHT - phutNhanPhong + 60.0;
+						thoiGian_Item = (soGioHat_Item + soPhutHat_Item / 60);
+					}
+					
+					gioThua_Item = (int) (soPhutHat_Item / 60);
+					phutChinhXac_Item = soPhutHat_Item % 60;
+					
+					DecimalFormat df3 = new DecimalFormat("#.##");
+					Phong ph = ph_dao.getPhongTheoMaPhong(cthd_hienTaiCuaPhong.getPhong().getMaPhong());
+					LoaiPhong loaiPhong = loaiPhong_dao.getLoaiPhongTheoMaLoaiPhong(ph.getLoaiPhong().getMaLoaiPhong());
+					if (cthd_hienTaiCuaPhong.getSoGioHat() != 0)
+						thoiGian_Item = cthd_hienTaiCuaPhong.getSoGioHat();
+					if(soGioHat_Item + gioThua_Item == 0 && phutChinhXac_Item <= 35) {
+						Object[] rowPhong = { i++, cthd_hienTaiCuaPhong.getPhong().getMaPhong(), df3.format(phutChinhXac_Item) + " phút",
+								loaiPhong.getDonGiaTheoGio(), "", df3.format(0.5 * loaiPhong.getDonGiaTheoGio()) };
+						model.addRow(rowPhong);
+						tongTienPhong += (0.5 * loaiPhong.getDonGiaTheoGio());
+					}else if(soGioHat_Item + gioThua_Item == 0 && phutChinhXac_Item > 35) {
+						Object[] rowPhong = { i++, cthd_hienTaiCuaPhong.getPhong().getMaPhong(), df3.format(phutChinhXac_Item) + " phút",
+								loaiPhong.getDonGiaTheoGio(), "", df3.format(1 * loaiPhong.getDonGiaTheoGio()) };
+						model.addRow(rowPhong);
+						tongTienPhong += loaiPhong.getDonGiaTheoGio();
+					}else if(soGioHat_Item + gioThua_Item != 0 && phutChinhXac_Item > 35) {
+						Object[] rowPhong = { i++, cthd_hienTaiCuaPhong.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+								loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item + 1) * loaiPhong.getDonGiaTheoGio()) };
+						model.addRow(rowPhong);
+						tongTienPhong += ((soGioHat_Item + gioThua_Item + 1) * loaiPhong.getDonGiaTheoGio());
+					}
+					else if(soGioHat_Item + gioThua_Item != 0 && (phutChinhXac_Item >= 30 && phutChinhXac_Item <= 35)) {
+						Object[] rowPhong = { i++, cthd_hienTaiCuaPhong.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+								loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio()) };
+						model.addRow(rowPhong);
+						tongTienPhong += ((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio());
+					}
+					else if(soGioHat_Item + gioThua_Item != 0 && (phutChinhXac_Item >= 0 && phutChinhXac_Item <= 5)) {
+						Object[] rowPhong = { i++, cthd_hienTaiCuaPhong.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+								loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item) * loaiPhong.getDonGiaTheoGio()) };
+						model.addRow(rowPhong);
+						tongTienPhong += ((soGioHat_Item + gioThua_Item) * loaiPhong.getDonGiaTheoGio());
+					}
+					else if(soGioHat_Item + gioThua_Item != 0 && (phutChinhXac_Item > 5 && phutChinhXac_Item < 30)) {
+						Object[] rowPhong = { i++, cthd_hienTaiCuaPhong.getPhong().getMaPhong(), df3.format(soGioHat_Item + gioThua_Item) + " giờ " + df3.format(phutChinhXac_Item) + " phút",
+								loaiPhong.getDonGiaTheoGio(), "", df3.format((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio()) };
+						model.addRow(rowPhong);
+						tongTienPhong += ((soGioHat_Item + gioThua_Item + 0.5) * loaiPhong.getDonGiaTheoGio());
+					}
+
+					tongSoGioHat += soGioHat_Item;
+					tongSoPhutHat += soPhutHat_Item;
+
+					TienDichVu_item = 0;
+					for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHDVaMaPhong(lbl_MaHoaDon_1.getText().trim(), cthd_hienTaiCuaPhong.getPhong().getMaPhong())) {
+						SanPham spdv = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
+						if(spdv.getloaiSanPham().equals("Thức ăn")) {
+							double gia = ctdv.getGia() * (1+0.03);
+							Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), gia, spdv.getDonViTinh(),
+									ctdv.getSoLuong() *gia};
+							model.addRow(rowSanPham);
+							TienDichVu_item += ctdv.getSoLuong() * gia;
+						}else if(spdv.getloaiSanPham().equals("Đồ uống")) {
+							double gia = ctdv.getGia() * (1+0.02);
+							Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), gia, spdv.getDonViTinh(),
+									ctdv.getSoLuong() *gia};
+							model.addRow(rowSanPham);
+							TienDichVu_item += ctdv.getSoLuong() * gia;
+						}else {
+							double gia = ctdv.getGia() * (1+0.01);
+							Object[] rowSanPham = { i++, spdv.getTenSanPham(), ctdv.getSoLuong(), gia, spdv.getDonViTinh(),
+									ctdv.getSoLuong() *gia};
+							model.addRow(rowSanPham);
+							TienDichVu_item += ctdv.getSoLuong() * gia;
+						}
+					}
+					String col_temp[] = {"","","","","",""};
+					model.addRow(col_temp);
+					tongTienDichVu += TienDichVu_item;
+
+					gioThua = (int) (tongSoPhutHat / 60);
+					phutChinhXac = tongSoPhutHat % 60;
+					DecimalFormat df2 = new DecimalFormat("#.##");
+					lbl_TongThoiLuong_1.setText(df2.format(tongSoGioHat + gioThua) + " giờ " + df2.format(phutChinhXac) + " phút");
+				}
 			}
-			String col_temp[] = { "", "", "", "", "", "" };
-			model.addRow(col_temp);
-			tongTienDichVu += TienDichVu_item;
 		}
-		gioThua = (int) (tongSoPhutHat / 60);
-		phutChinhXac = tongSoPhutHat % 60;
-		DecimalFormat df2 = new DecimalFormat("#.##");
-		lbl_TongThoiLuong_1.setText(df2.format(tongSoGioHat + gioThua) + " giờ " + df2.format(phutChinhXac) + " phút");
 	}
 
 	private String maPhongUngVoiSP() {
@@ -660,7 +862,11 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 					KhuyenMai km = null;
 					KhuyenMai km2 = null;
 					String maKhuyenMai = "";
-					double tienKhachDua = Double.parseDouble(txtTienNhan.getText().trim());
+					double tienKhachDua = 0.0;
+					if(hd_dao.getHoaDonDatPhongTheoMaHD(maHD).getTienKhachDua() == 0)
+						tienKhachDua = Double.parseDouble(txtTienNhan.getText().trim());
+					else
+						tienKhachDua = Double.parseDouble(txtTienNhan.getText().trim()) + hd_dao.getHoaDonDatPhongTheoMaHD(maHD).getTienKhachDua();
 
 					if (txtMaGiamGia.getText().trim().equals("")) {
 						@SuppressWarnings("deprecation")
@@ -681,10 +887,28 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 					// Update giờ trả, số giờ hát của chi tiết hóa đơn
 					for (int row = 0; row < tblThanhToan.getRowCount(); row++) {
-						if (model.getValueAt(row, 4).toString() != "") {
+						if(model.getValueAt(row, 1).toString() != "" && model.getValueAt(row, 4).toString() == "")
+						{
 							tgHT = new Date();
 							Timestamp ngayGioTraPhong = new Timestamp(tgHT.getTime());
-							double thoiGianHat = Double.parseDouble(model.getValueAt(row, 2).toString());
+							
+							if(model.getValueAt(row, 2).toString().contains("giờ")) {
+								pattern = Pattern.compile("(\\d+) giờ (\\d+) phút");
+								matcher = pattern.matcher(model.getValueAt(row, 2).toString());
+
+								gio = "";
+								phut = "";
+								// Kiểm tra xem có khớp không
+								if (matcher.matches()) {
+									// Lấy giờ và phút từ các nhóm con của biểu thức chính quy
+									gio = matcher.group(1);
+									phut = matcher.group(2);
+								} 
+								thoiGianHat = Double.parseDouble(gio) + Double.parseDouble(phut)/60;
+							}else {
+								thoiGianHat = Double.parseDouble(model.getValueAt(row, 2).toString().replaceAll(" phút", ""))/60;
+							} 
+							
 
 							String maCT = lbl_MaHoaDon_1.getText().trim();
 							String maPhong = model.getValueAt(row, 1).toString();
@@ -697,15 +921,15 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 									thoiGianHat);
 							cthd_dao.UpdateChiTietHD_ChuyenPhong(cthd_Item);
 						}
-
 					}
 
 					JOptionPane.showMessageDialog(this, "Thanh Toán thành công");
+					tempTT_dao.deleteALLTempThanhToan();
 					DataManager.setThanhToan(true);
 					DataManager.setSoDienThoaiKHDat("");
 
 					if (chckbx_XuatHoaDon.isSelected()) {
-						inHoaDon(lbl_MaHoaDon_1.getText());
+						inHoaDon("HoaDon");
 					}
 
 					Window[] windows = Window.getWindows();
@@ -734,6 +958,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 				txtMaGiamGia.setText("");
 				return false;
 			} else {
+				btnKiemTra.setEnabled(false);
 //				JOptionPane.showMessageDialog(this, "Thêm mã khuyến mãi thành công!!");
 				DecimalFormat ddd = new DecimalFormat("#.#");
 				lbl_TongThanhTien_1.setText(ddd.format((Double

@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -25,7 +24,6 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JCheckBox;
@@ -49,13 +47,10 @@ import entity.TempDatPhong;
 import entity.TempThemDV;
 
 import javax.swing.table.DefaultTableModel;
-import javax.xml.crypto.Data;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
-import connectDB.ConnectDB;
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
@@ -72,12 +67,9 @@ import javax.swing.KeyStroke;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
-import java.awt.Component;
 
 public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, MouseListener {
 
@@ -107,11 +99,9 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 	private Dialog_ThemDichVu dialog_ThemDichVu;
 	private JLabel lbl_TenKH;
 
-	private LocalDateTime now;
 	private TimePickerSettings timeSettings;
 	private DatePickerSettings dateSettings;
 	private JButton btn_XoaPhongDat, btnXoaDV;
-	private ButtonGroup grpGio = new ButtonGroup();
 
 	private KhachHang_dao khachHang_dao;
 	private JLabel lblTieuDe;
@@ -305,8 +295,6 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		sp.setBounds(10, 180, 765, 100);
 		panel_1.add(sp);
 		panel_1.setPreferredSize(new Dimension(800, 300));
-
-		now = LocalDateTime.now();
 
 		dateSettings = new DatePickerSettings();
 		dateSettings.setLocale(new Locale("vi", "VN")); // Set the locale to English

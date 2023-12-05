@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
-import javax.crypto.spec.PBEParameterSpec;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -34,6 +32,7 @@ import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
+import dao.TempThanhToan_dao;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
@@ -42,6 +41,7 @@ import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TempDatPhong;
+import entity.TempThanhToan;
 
 public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	/**
@@ -60,6 +60,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private Phong p;
 	private LoaiPhong lp;
 	private PhieuDatPhong_dao phieuDatPhong_dao;
+	@SuppressWarnings("unused")
 	private PhieuDatPhong_dao phieuDatPhong_dao_1= new PhieuDatPhong_dao();
 	private ChiTietHoaDon_dao cthd_dao;
 	private Date gioHienTai;
@@ -68,17 +69,20 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private double soPhutHat;
 	private KhachHang_dao kh_dao;
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
-	private String maP;
 	private PhieuDatPhong pdp_of_room;
 	private PhieuDatPhong pdp_of_room_1;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
-	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private GD_TrangChu trangChu;
+	private TempThanhToan_dao tempTT_dao;
+	private Phong_dao ph_dao;
+	@SuppressWarnings("unused")
+	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
+	private String maP;
 
 	public Dialog_PhongDangSD(String maPhong) {
-		maP = maPhong;
 		// kích thước giao diện
+		maP = maPhong;
 		getContentPane().setBackground(Color.WHITE);
 		setSize(335, 500);
 		setLocationRelativeTo(null);
@@ -89,6 +93,8 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		phieuDatPhong_dao = new PhieuDatPhong_dao();
 		cthd_dao = new ChiTietHoaDon_dao();
 		kh_dao = new KhachHang_dao();
+		tempTT_dao = new TempThanhToan_dao();
+		ph_dao = new Phong_dao();
 
 		// các lbl góc
 		// trái-----------------------------------------------------------------------
@@ -156,6 +162,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		for (ChiTietHoaDon cthd : dsCTHD) {
 			cthd_hienTaiCuaPhong = cthd;
 		}
+
 		DateFormat dateFormatGio = new SimpleDateFormat("HH");
 		gioHienTai = new Date();
 		double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
@@ -312,7 +319,6 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	public void KiemTraPhongDangSuDung_DatPhongCho() {
 		// lấy dữ liệu phòng đang sd
 		pdp_of_room = pdp_dao.getPhieuDatPhongTheoMaPDP_DangSuDung(lblPhong_1.getText());
-		LocalDateTime ngayGioNhan = pdp_of_room.getNgayGioNhanPhong();
 		LocalDateTime ngayGioHT = LocalDateTime.now();
 
 		// lấy dữ liệu phòng đặt trước
@@ -350,10 +356,57 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 			dispose();
 		}
 		if (o.equals(btnThanhToan)) {
-			dialog_ThanhToan = new Dialog_ThanhToan(lblPhong_1.getText());
-			dialog_ThanhToan.setModal(true);
-			dialog_ThanhToan.setVisible(true);
-			dispose();
+			if(tempTT_dao.getAllTemp().size() == 0) {
+				ChiTietHoaDon cthd_hienTaiCuaPhong = null;
+				ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhong_1.getText().trim());
+				for (ChiTietHoaDon cthd : dsCTHD) {
+					cthd_hienTaiCuaPhong = cthd;
+				}
+				HoaDonDatPhong hd = null;
+				hd = hd_dao.getHoaDonTheoMaHoaDon(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon());
+				
+				ArrayList<Phong> dsPhongTheoMaHoaDon = ph_dao.getPhongTheoMaCTHD(hd.getMaHoaDon());
+				if(dsPhongTheoMaHoaDon.size() == 1) {
+					DataManager.setMaHD_trongDSThanhToan(hd.getMaHoaDon());
+					dialog_ThanhToan = new Dialog_ThanhToan(lblPhong_1.getText());
+					dialog_ThanhToan.setModal(true);
+					dialog_ThanhToan.setVisible(true);
+					dispose();
+				}else {
+					TempThanhToan tmp = new TempThanhToan(p.getMaPhong());
+					tempTT_dao.addTemp(tmp);
+					JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách thanh toán thành công.");
+					dispose();
+				}
+			}else {
+				ChiTietHoaDon cthd_hienTaiCuaPhong = null;
+				ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhong_1.getText().trim());
+				for (ChiTietHoaDon cthd : dsCTHD) {
+					cthd_hienTaiCuaPhong = cthd;
+				}
+				
+				int flag = 0;
+				ChiTietHoaDon cthd_hienTaiTemp = null;
+				for(TempThanhToan tmp : tempTT_dao.getAllTemp()) {
+					ArrayList<ChiTietHoaDon> dsCTHDTemp = cthd_dao.getChiTietHoaDonTheoMaPhong(tmp.getMaPhong().trim());
+					for (ChiTietHoaDon cthd : dsCTHDTemp) {
+						cthd_hienTaiTemp = cthd;
+					}
+					if (cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon().equals(cthd_hienTaiTemp.getHoaDon().getMaHoaDon())) {
+						flag = 1;
+						break;
+					}
+				}
+				
+				if(flag == 1) {
+					TempThanhToan tmp = new TempThanhToan(p.getMaPhong());
+					tempTT_dao.addTemp(tmp);
+					JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách thanh toán thành công.");
+					dispose();
+				}else if(flag == 0){
+					JOptionPane.showMessageDialog(null, "Phòng này không nằm trong cùng 1 hóa đơn đặt phòng của khách hàng với phòng trước đó!!");
+				}
+			}
 		}
 		if (o.equals(btnThemPhong)) {
 			tmp_dao.deleteALLTempDatPhong();

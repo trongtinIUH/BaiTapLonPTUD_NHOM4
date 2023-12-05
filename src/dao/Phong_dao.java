@@ -220,7 +220,29 @@ public class Phong_dao {
 		return dsPhong;
 	}
 	
-	
+	public ArrayList<Phong> getPhongTheoMaCTHD(String maHoaDon) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from Phong INNER JOIN ChiTietHoaDon ON Phong.maPhong = ChiTietHoaDon.maPhong where maHoaDon='" + maHoaDon + "'";
+			Statement sta = con.createStatement();
+			ResultSet rs = sta.executeQuery(sql);
+			while (rs.next()) {
+				dsPhong.add(new Phong(rs.getString(1), new LoaiPhong(rs.getString(2)),
+						Enum_TrangThai.valueOf(rs.getString(3))));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsPhong;
+	}
 
 	public DoanhThuLoaiPhong tinhTongDoanhThuLoaiPhongTheoNgay(String ngay) {
 		DoanhThuLoaiPhong dtlp = null;

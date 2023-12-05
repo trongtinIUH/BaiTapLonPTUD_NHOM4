@@ -8,15 +8,12 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import dao.DangNhap_dao;
-import entity.TaiKhoan;
 
 import javax.swing.SwingConstants;
 
@@ -33,7 +30,6 @@ public class Dialog_DoiMatKhau extends JDialog implements ActionListener {
 	private JButton btnHuy,btnXacNhan;
 	private DangNhap_dao dangNhap_dao = new DangNhap_dao();
 	private String manv="";
-	private TaiKhoan tk = new TaiKhoan();
 	public  Dialog_DoiMatKhau(String ma) {
 		setTitle("Đổi Mật Khẩu");
 		setSize(400, 300);

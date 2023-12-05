@@ -7,11 +7,8 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +37,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.itextpdf.text.pdf.languages.ArabicLigaturizer;
 
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
@@ -778,7 +774,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
 		kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
 		String hinhthuc = (String) tblPhieuDatPhong.getValueAt(row, 7);
-		String trangthai = (String) tblPhieuDatPhong.getValueAt(row, 8);
+//		String trangthai = (String) tblPhieuDatPhong.getValueAt(row, 8);
 
 		if (row != 1) {
 			if (hinhthuc.equals("Đặt trước") && p.getTrangThai() == Enum_TrangThai.Chờ) {
@@ -950,7 +946,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				cell.setCellValue(trangthai);
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSachPhieuDatPhong.xlsx");
+			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);

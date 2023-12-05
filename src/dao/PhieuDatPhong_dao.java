@@ -5,17 +5,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.Enum_TrangThai;
-import entity.HoaDonDatPhong;
+
 import entity.KhachHang;
-import entity.KhuyenMai;
 import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;

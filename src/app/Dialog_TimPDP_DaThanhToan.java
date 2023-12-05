@@ -61,7 +61,6 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 
 	private ChiTietDichVu_dao chitietdichvu_dao= new ChiTietDichVu_dao();
 	
-	private DecimalFormat df;
 
 	public Dialog_TimPDP_DaThanhToan(String maPhong, String maPDP) {
 		//kích thước giao diện

@@ -144,6 +144,10 @@ CREATE TABLE TempDatPhong (
 )
 go
 
+CREATE TABLE TempThanhToan (
+    maPhong varchar(20) not null
+)
+go
 
 --Nhân viên
 insert into NhanVien values('2001001',N'Trần Văn Sơn', '0933900911', 1, '1995-2-5 08:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\son2001001.jpg')
@@ -406,7 +410,7 @@ insert into ChiTietDichVu values('HD2207150001', 'SP018', '306', 20, 180000)
 
 insert into ChiTietDichVu values('HD2109010001', 'SP001', '403', 27, 9500)
 insert into ChiTietDichVu values('HD2109010001', 'SP014', '403', 9, 80000)
-insert into ChiTietDichVu values('HD2109010001', 'SP001', '403', 25, 9500)
+insert into ChiTietDichVu values('HD2109010001', 'SP002', '403', 25, 9500)
 insert into ChiTietDichVu values('HD2109010001', 'SP018', '403', 20, 180000)
 insert into ChiTietDichVu values('HD2109010001', 'SP024', '403', 40, 30000)
 insert into ChiTietDichVu values('HD2109010001', 'SP025', '403', 25, 45000)
@@ -484,8 +488,7 @@ END;
 --select * from HoaDonDatPhong
 --select * from ChiTietHoaDon
 --select * from  ChiTietDichVu
-
-
+--select* from TempThanhToan
 
 
 

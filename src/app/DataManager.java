@@ -2,7 +2,6 @@ package app;
 
 import java.util.ArrayList;
 
-import entity.ChiTietDichVu;
 import entity.TempThemDV;
 
 public class DataManager {
@@ -18,6 +17,7 @@ public class DataManager {
     private static double tongTienDV;
 	private static boolean loadDV = false;
 	private static boolean loadSDT = false;
+	private static String maHD_trongDSThanhToan;
 	
 	
 	public static String getRole() {
@@ -124,5 +124,13 @@ public class DataManager {
 
 	public static void setThanhToan(boolean thanhToan) {
 		DataManager.thanhToan = thanhToan;
+	}
+
+	public static String getMaHD_trongDSThanhToan() {
+		return maHD_trongDSThanhToan;
+	}
+
+	public static void setMaHD_trongDSThanhToan(String maHD_trongDSThanhToan) {
+		DataManager.maHD_trongDSThanhToan = maHD_trongDSThanhToan;
 	}
 }

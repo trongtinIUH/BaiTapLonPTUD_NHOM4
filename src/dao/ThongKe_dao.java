@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.KhachHang;
 import entity.ModelThongKe;
 import entity.ModelThongKeDTNhieuNam;
 import entity.ModelThongKeKH;

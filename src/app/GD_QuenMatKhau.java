@@ -29,6 +29,10 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	private JLabel lblTitle;
 	private JButton btnHuy,btnXacNhan,btnOTP;
 	private DangNhap_dao dangNhap_dao = new DangNhap_dao();
+	
+	// Thay thế bằng Account SID và Auth Token của bạn
+    public static final String ACCOUNT_SID = "AC7f55b2559cf6d868c6c92f6733eafb65";
+    public static final String AUTH_TOKEN = "3bd02fc4ea78fcac93be82230c0f6ae5";
 
 
 	public  GD_QuenMatKhau() {

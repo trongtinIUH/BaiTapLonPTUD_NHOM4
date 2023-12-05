@@ -7,13 +7,10 @@ import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
@@ -33,8 +30,6 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.SimpleDateFormat;
@@ -538,6 +533,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	    btnNhanVien.setBackground(Color.decode("#F2F0FF"));
 	    cardLayout.show(cardPanel, "NhanVien");
 	}
+	
 	
 	public void showKhachHangCard() {
 		resetActiveTab();
