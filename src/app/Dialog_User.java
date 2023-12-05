@@ -43,6 +43,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private Dialog_DoiMatKhau Dialog_Doi_mk;
 	private String ma;
 	private JLabel lbl_TrangThai_1;
+	@SuppressWarnings("unused")
 	private DangNhap_dao dangNhap_dao= new DangNhap_dao();
 	private String trangthaidangnhap;
 //	private GD_TrangDangNhap gd_dangNhap = new GD_TrangDangNhap(); 

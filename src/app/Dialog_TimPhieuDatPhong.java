@@ -52,7 +52,6 @@ import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.Regex;
 import entity.TempDatPhong;
 
 import java.awt.Color;
@@ -100,7 +99,6 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	private Dialog_PhongDangSD dialog_PhongDangSD;
 
 	private Dialog_TimPDP_DaThanhToan dialog_TimPDP_DaThanhToan;
-	private Regex reg;
 
 	public Dialog_TimPhieuDatPhong() {
 		// kích thước

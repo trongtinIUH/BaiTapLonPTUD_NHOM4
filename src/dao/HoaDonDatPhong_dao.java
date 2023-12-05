@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
@@ -13,8 +12,6 @@ import entity.HoaDonDatPhong;
 import entity.KhachHang;
 import entity.KhuyenMai;
 import entity.NhanVien;
-import entity.PhieuDatPhong;
-import entity.Phong;
 
 public class HoaDonDatPhong_dao {
 	public ArrayList<HoaDonDatPhong> getAllHoaDonDatPhong() {
