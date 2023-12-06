@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -67,7 +66,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	private JLabel lblTongTien;
 	private JTextField txtTongTien;
 	private SanPham_dao sp_dao;
-	private JButton btn_XoaDV;
+//	private JButton btn_XoaDV;
 	private JButton btn_Them;
 	private DecimalFormat df;
 	private String ma;
@@ -193,12 +192,6 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		txtTongTien.setBounds(240, 335, 145, 30);
 		panel_Phai.add(txtTongTien);
 
-		btn_XoaDV = new JButton("Xóa");
-		btn_XoaDV.setFont(new Font("Arial", Font.BOLD, 18));
-		btn_XoaDV.setBackground(SystemColor.controlHighlight);
-		btn_XoaDV.setBounds(250, 50, 100, 30);
-		panel_Phai.add(btn_XoaDV);
-
 //------------------------------------------------------------------------------------------------------------------
 		// --- các thành phần panel trái
 		cbTimKiem = new JComboBox<>();
@@ -284,7 +277,6 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		btn_Huy.addActionListener(this);
 		btn_LamMoi.addActionListener(this);
 		btnTimKiem.addActionListener(this);
-		btn_XoaDV.addActionListener(this);
 
 		Object[] selectedRowData = new Object[model_Trai.getColumnCount() + 1];
 
@@ -425,21 +417,6 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			model_Trai.addRow(row);
 
 		}
-	}
-
-	private void xoa() throws SQLException {
-		// TODO Auto-generated method stub
-		int row = tblThemDv_Phai.getSelectedRow();
-		if (row != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?", "Delete", JOptionPane.YES_NO_OPTION);
-			if (tb == JOptionPane.YES_OPTION) {
-				model_Phai.removeRow(row);
-				JOptionPane.showMessageDialog(this, "Xoá thành công");
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "chưa chọn dòng xóa!");
-		}
-
 	}
 
 	// tổng tiền dịch vụ
@@ -588,15 +565,6 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			JOptionPane.showMessageDialog(this, "Thêm dịch vụ thành công!");
 			DataManager.setLoadDV(true);
 			setVisible(false);
-		}
-		if (o.equals(btn_XoaDV)) {
-			try {
-				xoa();
-				capNhatTongTien();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		}
 		if (o.equals(btnTimKiem)) {
 			tim();
