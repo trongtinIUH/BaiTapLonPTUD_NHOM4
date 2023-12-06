@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -904,13 +903,13 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				dialog_PhongCho.setModal(true);
 				dialog_PhongCho.setVisible(true);
 			} else if (hinhthuc.equals("Đặt trước") && p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
-				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong);
+				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong, null);
 				DataManager.setDatPhong(true);
 				dialog_PhongDangSD.setModal(true);
 				dialog_PhongDangSD.setVisible(true);
 			} else if (hinhthuc.equals("Đặt trực tiếp") && trangthai.equals("Chưa TT")
 					&& p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
-				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong);
+				dialog_PhongDangSD = new Dialog_PhongDangSD(maphong, null);
 				DataManager.setDatPhong(true);
 				dialog_PhongDangSD.setModal(true);
 				dialog_PhongDangSD.setVisible(true);

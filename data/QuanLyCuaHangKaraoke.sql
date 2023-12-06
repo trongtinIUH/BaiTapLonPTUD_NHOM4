@@ -58,7 +58,7 @@ CREATE TABLE SanPham
 	ngaySanXuat date not null,
 	loaiSanPham nvarchar(100),
 	donGiaNhap money not null,
-	donViTinh varchar(20) not null,
+	donViTinh nvarchar(20) not null,
 	soLuongTon int not null,
 	hinhAnh nvarchar(200) not null
 )
@@ -146,6 +146,12 @@ go
 
 CREATE TABLE TempThanhToan (
     maPhong varchar(20) not null
+)
+go
+
+CREATE TABLE TempPhongBiChuyen (
+    maPhongBiChuyen varchar(20) not null primary key,
+	maPhongMoi varchar(20)
 )
 go
 
@@ -487,9 +493,10 @@ END;
 --select * from PhieuDatPhong
 --select * from HoaDonDatPhong
 --select * from ChiTietHoaDon
---select * from  ChiTietDichVu
---select* from TempThanhToan
-
+--select * from ChiTietDichVu
+--select * from TempDatPhong
+--select * from TempThanhToan
+--select * from TempPhongBiChuyen
 
 
 

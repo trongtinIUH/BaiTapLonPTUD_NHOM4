@@ -36,7 +36,7 @@ import dao.LoaiPhong_dao;
 import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
-import dao.TempThanhToan_dao;
+import dao.TempPhongBiChuyen_dao;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
@@ -44,7 +44,7 @@ import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TempThanhToan;
+import entity.TempPhongBiChuyen;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -90,7 +90,8 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
 	private String loaiPhong;
-	private TempThanhToan_dao tempTT_dao;
+	private JLabel lblPhongHienTai_1;
+	private TempPhongBiChuyen_dao tempChuyen_dao;
 	public Dialog_ChuyenPhong(String maPhong, String soNguoi) {
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 480);
@@ -106,7 +107,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		nv_dao = new NhanVien_dao();
 		hd_dao = new HoaDonDatPhong_dao();
 		kh_dao = new KhachHang_dao();
-		tempTT_dao = new TempThanhToan_dao();
+		tempChuyen_dao = new TempPhongBiChuyen_dao();
 		this.addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent e) {
 				NhanVien nv = null;
@@ -294,7 +295,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		lblPhongHienTai.setBounds(5, 145, 105, 20);
 		panel_3.add(lblPhongHienTai);
 
-		JLabel lblPhongHienTai_1 = new JLabel(maPhong);
+		lblPhongHienTai_1 = new JLabel(maPhong);
 		lblPhongHienTai_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblPhongHienTai_1.setBounds(115, 145, 30, 20);
 		panel_3.add(lblPhongHienTai_1);
@@ -401,67 +402,113 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	}
 
 	private void chuyenPhong() {
-		if (JOptionPane.showConfirmDialog(null,
-				"Bạn có chắc chắn muốn chuyển sang Phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0),
-				"Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-			String maPhongCu1 = txtMa.getText().trim();
-			Enum_TrangThai trangThaiPhongCu = Enum_TrangThai.Trống;
-			Phong phongCu = new Phong(maPhongCu1, trangThaiPhongCu);
-
-			String maPhongMoi1 = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
-			Enum_TrangThai trangThaiPhongMoi = Enum_TrangThai.Đang_sử_dụng;
-			Phong phongMoi = new Phong(maPhongMoi1, trangThaiPhongMoi);
-
-			ph_dao.updatePhong(phongCu, maPhongCu1);
-			ph_dao.updatePhong(phongMoi, maPhongMoi1);
-			
-			// update lại giờ trả phòng của phòng cũ
-			tgHT = new Date();
-			Timestamp ngayGioTraPhong = new Timestamp(tgHT.getTime());
-			double thoiGianHat = soGioHat + soPhutHat / 60;
-
-			ChiTietHoaDon cthd_cu = null;
-			ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(txtMa.getText());
-			for (ChiTietHoaDon cthd : dsCTHD) {
-				cthd_cu = cthd;
+		int flag = 0;
+		ChiTietHoaDon cthd_hienTaiCuaPhong = null;
+		ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(txtMa.getText());
+		for (ChiTietHoaDon cthd : dsCTHD) {
+			cthd_hienTaiCuaPhong = cthd;
+		}
+		ChiTietHoaDon cthd_hienTai_Item = null;
+		ArrayList<ChiTietHoaDon> dsCTHD_Item = cthd_dao.getChiTietHoaDonTheoMaPhong(model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString());
+		if(dsCTHD_Item != null) {
+			for (ChiTietHoaDon cthd : dsCTHD_Item) {
+				cthd_hienTai_Item = cthd;
 			}
-
-			String maHD = cthd_cu.getHoaDon().getMaHoaDon();
-			String maPhongCu2 = cthd_cu.getPhong().getMaPhong();
-			Timestamp ngayGioNhanPhong = cthd_cu.getGioNhanPhong();
-			HoaDonDatPhong hd = new HoaDonDatPhong(maHD);
-			Phong ph = new Phong(maPhongCu2);
-			ChiTietHoaDon cthd_cu2 = new ChiTietHoaDon(hd, ph, ngayGioNhanPhong, ngayGioTraPhong, thoiGianHat);
-			cthd_dao.UpdateChiTietHD_ChuyenPhong(cthd_cu2);
-
-			// Tạo chi tiêt hóa đơn cho phòng mới
-			String maPhongMoi2 = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
-			Phong ph_Moi = new Phong(maPhongMoi2);
-			ChiTietHoaDon cthd_moi = new ChiTietHoaDon(hd, ph_Moi, ngayGioTraPhong, null, 0);
-			cthd_dao.addChiTietHD(cthd_moi);
-
-			// Tạo Phiếu đặt phòng mới
-			String maPhieu = generateRandomCode();
-			String maPhong = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
-			Phong ph1 = new Phong(maPhong);
-			String maNV = txtMaNV.getText();
-			NhanVien nv = new NhanVien(maNV);
-			String maKH = txtMaKH.getText();
-			KhachHang kh = new KhachHang(maKH);
-			ngayGioDatPhong = LocalDateTime.now();
-			ngay_GioNhanPhong = LocalDateTime.now();
-			int songuoiHat = Integer.parseInt(txtNguoi.getText());
-
-			PhieuDatPhong pdp = new PhieuDatPhong(maPhieu, ph1, nv, kh, ngayGioDatPhong, ngay_GioNhanPhong, songuoiHat);
-			pdp_dao.addPhieuDatPhong(pdp);
+			if(cthd_hienTai_Item != null) {
+				if(cthd_hienTai_Item.getHoaDon().getMaHoaDon().equals(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon())) {
+					flag = 1;
+				}
+			}
+		}
+		if(tblChuyenPhong.getSelectedRow() == -1)
+			JOptionPane.showMessageDialog(null, "Bạn chưa chọn phòng để chuyển!!");
+		else if(tblChuyenPhong.getSelectedRowCount() > 1)
+			JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 phòng để chuyển!!");
+		else if(txtMa.getText().equals("")) {
 			
-			JOptionPane.showMessageDialog(null,
-					"Chuyển sang phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0) + " thành công!!");
-			DataManager.setChuyenPhong(true);
-	
-			DataManager.setMaHD_trongDSThanhToan(maPhong);
+		}
+		else {
+			if(flag == 1) {
+				JOptionPane.showMessageDialog(null, "Phòng này đã nằm trong danh sách đặt trước đó, không thể chuyển!!");
+			}else {
+				if (JOptionPane.showConfirmDialog(null,
+						"Bạn có chắc chắn muốn chuyển sang Phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0),
+						"Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					String maPhongCu1 = txtMa.getText().trim();
+					Enum_TrangThai trangThaiPhongCu = Enum_TrangThai.Trống;
+					Phong phongCu = new Phong(maPhongCu1, trangThaiPhongCu);
+
+					String maPhongMoi1 = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
+					Enum_TrangThai trangThaiPhongMoi = Enum_TrangThai.Đang_sử_dụng;
+					Phong phongMoi = new Phong(maPhongMoi1, trangThaiPhongMoi);
+
+					ph_dao.updatePhong(phongCu, maPhongCu1);
+					ph_dao.updatePhong(phongMoi, maPhongMoi1);
+					
+					// update lại giờ trả phòng của phòng cũ
+					tgHT = new Date();
+					Timestamp ngayGioTraPhong = new Timestamp(tgHT.getTime());
+					double thoiGianHat = soGioHat + soPhutHat / 60;
+
+					ChiTietHoaDon cthd_cu = null;
+					ArrayList<ChiTietHoaDon> dsCTHD1 = cthd_dao.getChiTietHoaDonTheoMaPhong(txtMa.getText());
+					for (ChiTietHoaDon cthd : dsCTHD1) {
+						//if(cthd.getPhong().getMaPhong().equals(txtMa.getText())`) {
+							cthd_cu = cthd;
+						//}
+					}
+
+					String maHD = cthd_cu.getHoaDon().getMaHoaDon();
+					String maPhongCu2 = cthd_cu.getPhong().getMaPhong();
+					Timestamp ngayGioNhanPhong = cthd_cu.getGioNhanPhong();
+					HoaDonDatPhong hd = new HoaDonDatPhong(maHD);
+					Phong ph = new Phong(maPhongCu2);
+					ChiTietHoaDon cthd_cu2 = new ChiTietHoaDon(hd, ph, ngayGioNhanPhong, ngayGioTraPhong, thoiGianHat);
+					cthd_dao.UpdateChiTietHD_ChuyenPhong(cthd_cu2);
+
+					// Tạo chi tiêt hóa đơn cho phòng mới
+					String maPhongMoi2 = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
+					Phong ph_Moi = new Phong(maPhongMoi2);
+					ChiTietHoaDon cthd_moi = new ChiTietHoaDon(hd, ph_Moi, ngayGioTraPhong, null, 0);
+					cthd_dao.addChiTietHD(cthd_moi);
+
+					// Tạo Phiếu đặt phòng mới
+					String maPhieu = generateRandomCode();
+					String maPhong = model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString();
+					Phong ph1 = new Phong(maPhong);
+					String maNV = txtMaNV.getText();
+					NhanVien nv = new NhanVien(maNV);
+					String maKH = txtMaKH.getText();
+					KhachHang kh = new KhachHang(maKH);
+					ngayGioDatPhong = LocalDateTime.now();
+					ngay_GioNhanPhong = LocalDateTime.now();
+					int songuoiHat = Integer.parseInt(txtNguoi.getText());
+
+					PhieuDatPhong pdp = new PhieuDatPhong(maPhieu, ph1, nv, kh, ngayGioDatPhong, ngay_GioNhanPhong, songuoiHat);
+					pdp_dao.addPhieuDatPhong(pdp);
+					
+					JOptionPane.showMessageDialog(null,
+							"Chuyển sang phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0) + " thành công!!");
+					DataManager.setChuyenPhong(true);
 			
-			dispose();
+//					String ma = "";
+//					ArrayList<ChiTietHoaDon> dsCTHD_TheoPhongBiChuyen = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhongHienTai_1.getText());
+//					for(ChiTietHoaDon ct : dsCTHD_TheoPhongBiChuyen) {
+//						ma = ct.getHoaDon().getMaHoaDon();
+//					}
+//					HoaDonDatPhong hd_BiChuyen = hd_dao.getHoaDonDatPhongTheoMaHD(ma);	
+//					Phong ph_biChuyen = ph_dao.getPhongTheoMaPhong(lblPhongHienTai_1.getText());
+					
+					TempPhongBiChuyen tmp_Chuyen = new TempPhongBiChuyen(lblPhongHienTai_1.getText(), model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString());
+					for(TempPhongBiChuyen tmp_BiChuyen : tempChuyen_dao.getAllTemp()) {
+						if(tmp_BiChuyen.getMaPhongMoi().equals(lblPhongHienTai_1.getText())) {
+							tempChuyen_dao.updateTempPhongBiChuyen(tmp_BiChuyen.getMaPhong(), model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString());
+						}
+					}
+					tempChuyen_dao.addTemp(tmp_Chuyen);
+					dispose();
+				}
+			}
 		}
 	}
 

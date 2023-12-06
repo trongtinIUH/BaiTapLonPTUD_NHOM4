@@ -28,9 +28,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import dao.ChiTietDichVu_dao;
+import dao.ChiTietHoaDon_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
 import entity.ChiTietDichVu;
+import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
 import entity.Phong;
@@ -72,10 +74,15 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	private double tongTien;
 	private Phong_dao p_dao;
 	private ChiTietDichVu_dao ctdv_dao;
+	@SuppressWarnings("unused")
 	private String maHoaDon = "";
+	private ChiTietHoaDon_dao cthd_dao;
+
+	private JLabel lblPhong1;
 
 	public Dialog_ThemDichVu(String customer, String employee, String maPhong) {
 		this.ma = maPhong;
+		cthd_dao = new ChiTietHoaDon_dao();
 		df = new DecimalFormat("#,###,### VNĐ");
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 500);
@@ -145,10 +152,10 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		lblTenNV.setBounds(105, 50, 115, 25);
 		panel_Phai.add(lblTenNV);
 
-		lblPhong = new JLabel(maPhong);
-		lblPhong.setFont(new Font("Arial", Font.BOLD, 18));
-		lblPhong.setBounds(285, 10, 100, 25);
-		panel_Phai.add(lblPhong);
+		lblPhong1 = new JLabel(maPhong);
+		lblPhong1.setFont(new Font("Arial", Font.BOLD, 18));
+		lblPhong1.setBounds(285, 10, 100, 25);
+		panel_Phai.add(lblPhong1);
 
 		pn_dssp_Phai = new JPanel();
 		pn_dssp_Phai.setLayout(null);
@@ -355,21 +362,30 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	public void loadDataPDSD() {
 		Phong p = p_dao.getPhongTheoMaPhong(ma);
 		if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
+			ChiTietHoaDon cthd_hienTaiCuaPhong1 = null;
+			ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(ma);
+			for (ChiTietHoaDon cthd : dsCTHD) {
+				cthd_hienTaiCuaPhong1 = cthd;
+			}
+			
 			ChiTietDichVu ctdv_hienTaiCuaPhong2 = null;
 			ArrayList<ChiTietDichVu> dsCTDV = ctdv_dao.getChiTietDichVuTheoMaPhong(ma);
 			for (ChiTietDichVu ctdv : dsCTDV) {
 				ctdv_hienTaiCuaPhong2 = ctdv;
 			}
+			
 			if(ctdv_hienTaiCuaPhong2 != null) {
-				ArrayList<ChiTietDichVu> dsctdv = ctdv_dao
-						.getChiTietDichVuTheoMaHD(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon());
-				maHoaDon = ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon();
-				for (ChiTietDichVu ctdv : dsctdv) {
-					if (ctdv.getPhong().getMaPhong().equals(ma)) {
-						SanPham sp = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
-						Object[] row = { ctdv.getSanPham().getMaSanPham(), sp.getTenSanPham(), ctdv.getSoLuong(),
-								ctdv.getGia() };
-						model_Phai.addRow(row);
+				if(cthd_hienTaiCuaPhong1.getHoaDon().getMaHoaDon().equals(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon())) {
+					ArrayList<ChiTietDichVu> dsctdv = ctdv_dao
+							.getChiTietDichVuTheoMaHD(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon());
+					maHoaDon = ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon();
+					for (ChiTietDichVu ctdv : dsctdv) {
+						if (ctdv.getPhong().getMaPhong().equals(ma)) {
+							SanPham sp = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
+							Object[] row = { ctdv.getSanPham().getMaSanPham(), sp.getTenSanPham(), ctdv.getSoLuong(),
+									ctdv.getGia() };
+							model_Phai.addRow(row);
+						}
 					}
 				}
 			}
@@ -552,13 +568,21 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 
 					ctdvTempList.add(ctdv);
 				}
+				
+				
+				ChiTietHoaDon cthd_hienTaiCuaPhong = null;
+				ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhong1.getText().trim());
+				for (ChiTietHoaDon cthd : dsCTHD) {
+					cthd_hienTaiCuaPhong = cthd;
+				}
 
 				DataManager.setCtdvTempList(ctdvTempList);
 				for (TempThemDV tmp : DataManager.getCtdvTempList()) {
-					ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(maHoaDon), new Phong(tmp.getMaPhong()),
+					ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
 							new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
 					ctdv_dao.addChiTietDV(ctdv);
 				}
+//				System.out.println(maHoaDon);
 			}
 
 			JOptionPane.showMessageDialog(this, "Thêm dịch vụ thành công!");

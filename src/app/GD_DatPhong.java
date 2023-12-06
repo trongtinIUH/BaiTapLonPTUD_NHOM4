@@ -45,7 +45,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private JButton btnUser;
 	private JComboBox<String> comboBox_TrangThai, comboBox_LoaiPhong;
 	private JTextField txtSoNguoi;
-	private JTextField txtMaPhong;
+	public JTextField txtMaPhong;
 	private JButton btnTimKiemPDP;
 	private JButton btnLamMoi;
 	private JButton btnTimKiem;
@@ -85,6 +85,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private TempThanhToan_dao tempTT_dao;
 	private int sizeDSTemp_TT;
 	private Dialog_ThanhToan dialog_ThanhToan;
+	private JButton btnBackHuyThanhToan;
 
 	/**
 	 * Create the panel.
@@ -286,7 +287,6 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 		loadData();
 		setEnabledBtnDatPhong();
-		setEnabledBtnThanhToan();
 		// Tạo một Timer để gọi lại loadRoomList() mỗi 5000 milliseconds (5 giây)
 		sizeDSTmp = tmp_dao.getAllTemp().size();
 		sizeDSTemp_TT = tempTT_dao.getAllTemp().size();
@@ -306,8 +306,9 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 				}
 				if (sizeDSTemp_TT != tempTT_dao.getAllTemp().size()) {
 					sizeDSTemp_TT = tempTT_dao.getAllTemp().size();
-					setEnabledBtnThanhToan();
+					setEnabledBtnDatPhong();
 				}
+				
 				if (DataManager.isChuyenPhong()) {
 					loadData();
 					DataManager.setChuyenPhong(false);
@@ -335,6 +336,11 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					btnBackThanhToan.setEnabled(false);
 				else
 					btnBackThanhToan.setEnabled(true);
+				
+				if (tempTT_dao.getAllTemp().size() == 0)
+					btnBackHuyThanhToan.setEnabled(false);
+				else
+					btnBackHuyThanhToan.setEnabled(true);
 			}
 		});
 
@@ -412,9 +418,17 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 		
+		btnBackHuyThanhToan = new JButton("Hủy danh sách thanh toán");
+		btnBackHuyThanhToan.setBorderPainted(false);
+		btnBackHuyThanhToan.setForeground(Color.blue);
+		btnBackHuyThanhToan.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		btnBackHuyThanhToan.setBounds(360, 3, 250, 20);
+		btnBackHuyThanhToan.setBorder(new RoundedBorder(5));
+		panel_5.add(btnBackHuyThanhToan);
+		
 		btnBackThanhToan = new JButton("Quay về thanh toán");
 		btnBackThanhToan.setBorderPainted(false);
-		btnBackThanhToan.setForeground(Color.RED);
+		btnBackThanhToan.setForeground(Color.blue);
 		btnBackThanhToan.setFont(new Font("Tahoma", Font.ITALIC, 15));
 		btnBackThanhToan.setBounds(620, 3, 200, 20);
 		btnBackThanhToan.setBorder(new RoundedBorder(5));
@@ -422,7 +436,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 		btnBackToBook = new JButton("Quay về đặt phòng");
 		btnBackToBook.setBorderPainted(false);
-		btnBackToBook.setForeground(Color.RED);
+		btnBackToBook.setForeground(Color.red);
 		btnBackToBook.setFont(new Font("Tahoma", Font.ITALIC, 15));
 		btnBackToBook.setBounds(830, 3, 200, 20);
 		btnBackToBook.setBorder(new RoundedBorder(5));
@@ -437,6 +451,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		// add sự kiện cho nút
 		btnBackToBook.addActionListener(this);
 		btnBackThanhToan.addActionListener(this);
+		btnBackHuyThanhToan.addActionListener(this);
 	}
 
 	private void loadData() {
@@ -506,7 +521,6 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		scrollPane_Phong.setViewportView(outerPanel);
 
 		setEnabledBtnDatPhong();	
-		setEnabledBtnThanhToan();
 	}
 
 	private void setEnabledBtnDatPhong() {
@@ -518,6 +532,12 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 				if (soPhong.equals(tmp.getMaPhong()) && tmpP.getTrangThai() == Enum_TrangThai.Trống)
 					kiemTra = false;
 			}
+			for (TempThanhToan tmp : tempTT_dao.getAllTemp()) {
+			Phong tmpP = p_dao.getPhongTheoMaPhong(tmp.getMaPhong());
+			if (soPhong.equals(tmp.getMaPhong()) && tmpP.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
+				kiemTra = false;
+		}
+			
 			if (kiemTra)
 				btn.setEnabled(true);
 			else
@@ -525,23 +545,6 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		}
 	}
 	
-	private void setEnabledBtnThanhToan() {
-		for (JButton btn : btnPhongList) {
-			boolean kiemTra = true;
-			String soPhong = btn.getText().replace("Phòng ", "");
-			for (TempThanhToan tmp : tempTT_dao.getAllTemp()) {
-				Phong tmpP = p_dao.getPhongTheoMaPhong(tmp.getMaPhong());
-				if (soPhong.equals(tmp.getMaPhong()) && tmpP.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
-					kiemTra = false;
-			}
-			if (kiemTra)
-				btn.setEnabled(true);
-			else
-				btn.setEnabled(false);
-		}
-	}
-
-
 	private int calculateSize() {
 		int i = p_dao.getallPhongs().size();
 		if (i <= 15) {
@@ -709,8 +712,15 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 			if (tempTT_dao.getAllTemp().size() == 0) {
 				JOptionPane.showMessageDialog(this, "Chưa phòng nào được thêm vào danh sách thanh toán");
 			} else {
-				dialog_ThanhToan = new Dialog_ThanhToan(TOOL_TIP_TEXT_KEY);
+				dialog_ThanhToan = new Dialog_ThanhToan(txtMaPhong.getText());
 				dialog_ThanhToan.setVisible(true);
+			}
+		}
+		if (o.equals(btnBackHuyThanhToan)) {
+			if (tempTT_dao.getAllTemp().size() == 0) {
+				JOptionPane.showMessageDialog(this, "Chưa phòng nào được thêm vào danh sách thanh toán");
+			} else {
+				tempTT_dao.deleteALLTempThanhToan();
 			}
 		}
 		if (o instanceof JButton) {
@@ -734,7 +744,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					}
 
 					if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
-						dialog_PhongDangSD = new Dialog_PhongDangSD(maPhong);
+						dialog_PhongDangSD = new Dialog_PhongDangSD(maPhong,this);
 						dialog_PhongDangSD.setModal(true);
 						dialog_PhongDangSD.setVisible(true);
 						return;

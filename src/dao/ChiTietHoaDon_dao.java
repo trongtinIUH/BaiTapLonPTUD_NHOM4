@@ -81,7 +81,7 @@ public class ChiTietHoaDon_dao {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return dsChiTietHoaDon;
 	}

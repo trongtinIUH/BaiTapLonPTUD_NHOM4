@@ -18,8 +18,7 @@ public class DataManager {
 	private static boolean loadDV = false;
 	private static boolean loadSDT = false;
 	private static String maHD_trongDSThanhToan;
-	
-	
+
 	public static String getRole() {
 		return role;
 	}

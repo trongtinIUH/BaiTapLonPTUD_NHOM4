@@ -8,9 +8,6 @@ import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -33,6 +30,7 @@ import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
+import dao.TempPhongBiChuyen_dao;
 import dao.TempThanhToan_dao;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
@@ -42,6 +40,7 @@ import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TempDatPhong;
+import entity.TempPhongBiChuyen;
 import entity.TempThanhToan;
 
 public class Dialog_PhongDangSD extends JDialog implements ActionListener {
@@ -71,7 +70,6 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private KhachHang_dao kh_dao;
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private PhieuDatPhong pdp_of_room;
-	private PhieuDatPhong pdp_of_room_1;
 	private TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
 	private GD_TrangChu trangChu;
@@ -80,10 +78,13 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	@SuppressWarnings("unused")
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private String maP;
+	private TempPhongBiChuyen_dao tempChuyen_dao;
+	private GD_DatPhong datPhong;
 
-	public Dialog_PhongDangSD(String maPhong) {
+	public Dialog_PhongDangSD(String maPhong, GD_DatPhong datPhong) {
 		// kích thước giao diện
 		maP = maPhong;
+		this.datPhong = datPhong;
 		getContentPane().setBackground(Color.WHITE);
 		setSize(335, 500);
 		setLocationRelativeTo(null);
@@ -96,6 +97,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 		kh_dao = new KhachHang_dao();
 		tempTT_dao = new TempThanhToan_dao();
 		ph_dao = new Phong_dao();
+		tempChuyen_dao = new TempPhongBiChuyen_dao();
 
 		// các lbl góc
 		// trái-----------------------------------------------------------------------
@@ -358,12 +360,78 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 					dialog_ThanhToan.setVisible(true);
 					dispose();
 				}else {
+				
 					TempThanhToan tmp = new TempThanhToan(p.getMaPhong());
 					tempTT_dao.addTemp(tmp);
 					JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách thanh toán thành công.");
+					
+					datPhong.txtMaPhong.setText(p.getMaPhong());
+					datPhong.txtMaPhong.setForeground(Color.white);
+					
+					int i = 0;
+					for(TempPhongBiChuyen tm_Chuyen : tempChuyen_dao.getAllTemp()) {
+						if(tm_Chuyen.getMaPhongMoi().equals(lblPhong_1.getText())){
+							i++;
+//							System.out.println(i);
+						}
+					}
+					
+					if(i > 0) {
+						ChiTietHoaDon cthd_ht = null;
+						ArrayList<ChiTietHoaDon> dsCTHD_ht = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhong_1.getText());
+						for (ChiTietHoaDon cthd : dsCTHD_ht) {
+							cthd_ht = cthd;
+						}
+						HoaDonDatPhong hd_ht = hd_dao.getHoaDonTheoMaHoaDon(cthd_ht.getHoaDon().getMaHoaDon());
+						
+						String maCt = "";
+						ArrayList<TempPhongBiChuyen> ds_PhongBiChuyen = tempChuyen_dao.getAllTemp();
+						for(TempPhongBiChuyen tm : ds_PhongBiChuyen) {
+							ArrayList<ChiTietHoaDon> cthd_BiChuyen = cthd_dao.getChiTietHoaDonTheoMaPhong(tm.getMaPhong());
+							for(ChiTietHoaDon ct : cthd_BiChuyen) {
+								maCt = ct.getHoaDon().getMaHoaDon();
+							}
+							if(maCt.equals(hd_ht.getMaHoaDon()) && tm.getMaPhongMoi().equals(lblPhong_1.getText())) {
+								TempThanhToan tmp2 = new TempThanhToan(tm.getMaPhong());
+								tempTT_dao.addTemp(tmp2);
+							}
+//							System.out.println(tm.getMaPhong());
+					}
+					
+					}
 					dispose();
 				}
 			}else {
+				int i = 0;
+				for(TempPhongBiChuyen tm_Chuyen : tempChuyen_dao.getAllTemp()) {
+					if(tm_Chuyen.getMaPhongMoi().equals(lblPhong_1.getText())){
+						i++;
+//						System.out.println(i);
+					}
+				}
+				
+				if(i > 0) {
+					ChiTietHoaDon cthd_ht = null;
+					ArrayList<ChiTietHoaDon> dsCTHD_ht = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhong_1.getText());
+					for (ChiTietHoaDon cthd : dsCTHD_ht) {
+						cthd_ht = cthd;
+					}
+					HoaDonDatPhong hd_ht = hd_dao.getHoaDonTheoMaHoaDon(cthd_ht.getHoaDon().getMaHoaDon());
+
+					String maCt = "";
+					ArrayList<TempPhongBiChuyen> ds_PhongBiChuyen = tempChuyen_dao.getAllTemp();
+					for(TempPhongBiChuyen tm : ds_PhongBiChuyen) {
+						ArrayList<ChiTietHoaDon> cthd_BiChuyen = cthd_dao.getChiTietHoaDonTheoMaPhong(tm.getMaPhong());
+						for(ChiTietHoaDon ct : cthd_BiChuyen) {
+							maCt = ct.getHoaDon().getMaHoaDon();
+						}
+						if(maCt.equals(hd_ht.getMaHoaDon()) && tm.getMaPhongMoi().equals(lblPhong_1.getText())) {
+							TempThanhToan tmp2 = new TempThanhToan(tm.getMaPhong());
+							tempTT_dao.addTemp(tmp2);
+						}
+					}
+				}
+				
 				ChiTietHoaDon cthd_hienTaiCuaPhong = null;
 				ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhong_1.getText().trim());
 				for (ChiTietHoaDon cthd : dsCTHD) {
@@ -387,6 +455,7 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 					TempThanhToan tmp = new TempThanhToan(p.getMaPhong());
 					tempTT_dao.addTemp(tmp);
 					JOptionPane.showMessageDialog(this, "Phòng " + p.getMaPhong() + " được thêm vào danh sách thanh toán thành công.");
+					
 					dispose();
 				}else if(flag == 0){
 					JOptionPane.showMessageDialog(null, "Phòng này không nằm trong cùng 1 hóa đơn đặt phòng của khách hàng với phòng trước đó!!");
