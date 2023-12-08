@@ -85,9 +85,9 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	private String absolutePath;
 	private File selectedFile;
 	private XSSFWorkbook wordbook;
-	
+
 	private JButton btnUser;
-	private Dialog_User dialog_user= new Dialog_User();
+	private Dialog_User dialog_user = new Dialog_User();
 
 	public GD_NhanVien() {
 		setBackground(new Color(246, 245, 255));
@@ -335,7 +335,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		scroll = new JScrollPane(table);
 		scroll.setBounds(9, 50, 1060, 290);
 		pnCenter.add(scroll);
-	
+
 		btnThem.addActionListener(this);
 		btnXoa.addActionListener(this);
 		btnSua.addActionListener(this);
@@ -420,6 +420,12 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	}
 
 	private void them() {
+		//Gán dữ liệu cứng
+		if(rdoNam.isSelected())
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
+		else
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
+		
 		ImageIcon icon = (ImageIcon) imageLabel.getIcon();
 		if (icon != null) {
 			File imageFile = new File(icon.getDescription());
@@ -439,14 +445,23 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			else
 				gt = false;
 			Date ngaySinh = (Date) datePicker.getModel().getValue();
-			String chucVu = (String) cbChucVu.getSelectedItem();
-			NhanVien nv = new NhanVien(ma, hoTen, sDT, gt, ngaySinh, chucVu, absolutePath);
-			if (nv_dao.addNhanVien(nv)) {
-				JOptionPane.showMessageDialog(this, "Thêm thành công!!");
-				clearTable();
-				loadData();
-				xoaTrang();
-				loadMa();
+			Date ngayHienTai = new Date(System.currentTimeMillis());
+
+			// Tính số milliseconds trong một năm (365.25 ngày)
+			long millisecondsPerYear = (long) (365.25 * 24 * 60 * 60 * 1000);
+
+			// Tính số tuổi
+			int tuoi = (int) ((ngayHienTai.getTime() - ngaySinh.getTime()) / millisecondsPerYear);
+			if (tuoi >= 18) {
+				String chucVu = (String) cbChucVu.getSelectedItem();
+				NhanVien nv = new NhanVien(ma, hoTen, sDT, gt, ngaySinh, chucVu, absolutePath);
+				if (nv_dao.addNhanVien(nv)) {
+					JOptionPane.showMessageDialog(this, "Thêm thành công!!");
+					clearTable();
+					loadData();
+					xoaTrang();
+					loadMa();
+				}
 			}
 		}
 	}
@@ -486,11 +501,24 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 				gt = false;
 			Date ngaySinh = (Date) datePicker.getModel().getValue();
 
-			NhanVien nv = new NhanVien(ma, ten, sDT, gt, ngaySinh, (String) cbChucVu.getSelectedItem(), absolutePath);
-			if (nv_dao.updateNhanVien(nv)) {
-				clearTable();
-				loadData();
-				JOptionPane.showMessageDialog(null, "Sửa thành công!!");
+			Date ngayHienTai = new Date(System.currentTimeMillis());
+
+			// Tính số milliseconds trong một năm (365.25 ngày)
+			long millisecondsPerYear = (long) (365.25 * 24 * 60 * 60 * 1000);
+
+			// Tính số tuổi
+			int tuoi = (int) ((ngayHienTai.getTime() - ngaySinh.getTime()) / millisecondsPerYear);
+			System.out.println(tuoi);
+			if (tuoi >= 18) {
+				NhanVien nv = new NhanVien(ma, ten, sDT, gt, ngaySinh, (String) cbChucVu.getSelectedItem(),
+						absolutePath);
+				if (nv_dao.updateNhanVien(nv)) {
+					clearTable();
+					loadData();
+					JOptionPane.showMessageDialog(null, "Sửa thành công!!");
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Nhân viên phải lớn hơn bằng 18 tuổi");
 			}
 		}
 	}
@@ -530,7 +558,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			btnTimKiem.setText("Tìm kiếm");
 		}
 	}
-	
+
 	public void xuatExcel() {
 		try {
 			wordbook = new XSSFWorkbook();
@@ -567,15 +595,15 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 				cell.setCellValue(nv_dao.getAllNhanVien().get(i).getHoTen());
 				cell = row.createCell(3, CellType.STRING);
 				cell.setCellValue(nv_dao.getAllNhanVien().get(i).getSoDienThoai());
-				
+
 				String gioiTinhInExcel = "";
-				if(nv_dao.getAllNhanVien().get(i).isGioiTinh() == true) {
+				if (nv_dao.getAllNhanVien().get(i).isGioiTinh() == true) {
 					gioiTinhInExcel = "Nam";
-				}else
+				} else
 					gioiTinhInExcel = "Nữ";
 				cell = row.createCell(4, CellType.STRING);
 				cell.setCellValue(gioiTinhInExcel);
-				
+
 				cell = row.createCell(5, CellType.STRING);
 				DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 				String ngay = df.format(nv_dao.getAllNhanVien().get(i).getNgaySinh());
@@ -635,8 +663,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			xuatExcel();
 		} else if (obj.equals(openButton)) {
 			chenAnh();
-		}
-		else if(obj.equals(btnUser)) {
+		} else if (obj.equals(btnUser)) {
 			dialog_user.setVisible(true);
 		}
 	}
@@ -660,9 +687,11 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		}
 
 		cbChucVu.setSelectedItem(model.getValueAt(row, 6));
-		imageLabel.setIcon(new ImageIcon(model.getValueAt(row, 7).toString()));
-		
-		
+		if (rdoNam.isSelected())
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
+		else 
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
+
 	}
 
 	@Override
