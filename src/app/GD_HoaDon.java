@@ -66,8 +66,9 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private String colServiceDetail[] = { "Mã hóa đơn", "Tên dịch vụ", "Đơn giá", "Số lượng" };
 	private JLabel lblTitle, lblMaHD, lblTenKH, lblMaNV, lblNgayLapHD, lblTrangThai, lblKhuyenMai, lblTongTien,
 			lblTimKiem, lblKeyword;
-	private JButton btnSua, btnTimKiem, btnXuatDSHD, btnProfile;
+	private JButton btnTimKiem, btnXuatDSHD, btnProfile;
 	public JButton btnXoa;
+	public JButton btnSua;
 	private JComboBox<String> cbTrangThai, cbTimKiem;
 	private JTextField txtMaHD, txtTenKH, txtMaNV, txtKhuyenMai, txtTongTien, txtTimKiem;
 	private HoaDonDatPhong_dao hoadon_dao;

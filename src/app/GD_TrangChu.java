@@ -604,7 +604,9 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 			hoaDon.loadOrderListData();
 			if(DataManager.getRole().equals("NV")) {
 				hoaDon.btnXoa.setEnabled(false);
+				hoaDon.btnSua.setEnabled(false);
 				hoaDon.btnXoa.setBackground(Color.decode("#CCCCCC"));
+				hoaDon.btnSua.setBackground(Color.decode("#CCCCCC"));
 			}
 			cardLayout.show(cardPanel, "HoaDon");
 		} else if (o.equals(btnSanPham)) {

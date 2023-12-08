@@ -41,6 +41,7 @@ GRANT SELECT ON ChiTietHoaDon TO role_NV;
 GRANT SELECT ON ChiTietDichVu TO role_NV;
 GRANT SELECT ON TempDatPhong TO role_NV;
 GRANT SELECT ON TempThanhToan TO role_NV;
+GRANT SELECT ON TaiKhoan TO role_NV;
 -- Grant INSERT permissions to user
 GRANT INSERT ON SanPham TO role_NV;
 GRANT INSERT ON KhuyenMai TO role_NV;

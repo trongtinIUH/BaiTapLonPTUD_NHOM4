@@ -364,27 +364,31 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		add(pnNorth);
 		
 		dateTimePicker.addDateTimeChangeListener(event -> {
-			resetField();
-		    clearDataDoanhThuTheoNgay();
-		    loadDataDoanhThuTheoNgay(); 
-		    try {
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // adjust this pattern to match your SQL Server date/time format
-		        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+			if(DataManager.getRole().equals("NV")) {
+				JOptionPane.showMessageDialog(null, "Nhân viên không có quyền thống kê doanh thu");
+			} else {
+				resetField();
+			    clearDataDoanhThuTheoNgay();
+			    loadDataDoanhThuTheoNgay(); 
+			    try {
+			        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // adjust this pattern to match your SQL Server date/time format
+			        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
 
-		        DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(formattedDateTime);
-		        if(dtlp != null) {
-		            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
-		            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
-		        }
-		        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
-		    } catch (Exception e2) {
-		        e2.printStackTrace();
-		    }
-		    if(model.getRowCount() <= 0) {
-		    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
-		        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
-		    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
-		    }
+			        DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(formattedDateTime);
+			        if(dtlp != null) {
+			            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
+			            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
+			        }
+			        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
+			    } catch (Exception e2) {
+			        e2.printStackTrace();
+			    }
+			    if(model.getRowCount() <= 0) {
+			    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+			        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+			    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
+			    }
+			}
 		});
 		btnThongKe.addActionListener(this);
 		btnLamMoi.addActionListener(this);
@@ -701,135 +705,137 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		Object o = e.getSource();
 		if(o.equals(btnThongKe)) {
 			if(cbThongKe.getSelectedItem().toString().equals("Doanh thu")) {
-				pnTableKH.setVisible(false);
-				cbDate.removeItem("Toàn");
-				if(cbDate.getItemCount() < 3) {
-					cbDate.addItem("Ngày");
-				}
-				cbYearStart.setVisible(true);
-				cbYearEnd.setVisible(true);
-				lblYearStart.setText("Năm bắt đầu");
-				lblYearEnd.setText("Năm kết thúc");
-				cbMonthKH.setVisible(false);
-				cbYearKH.setVisible(false);
-				pnBarChart.setVisible(false);
-				if(cbDate.getSelectedItem().toString().equals("Ngày")) {
-					clearDataDoanhThuTheoNgay();
-					resetField();
-					loadDataDoanhThuTheoNgay();
-					try {
-				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // adjust this pattern to match your SQL Server date/time format
-				        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+				if(DataManager.getRole().equals("NV")) {
+					pnContent.setVisible(false);
+					pnTable.setVisible(false);
+					JOptionPane.showMessageDialog(null, "Nhân viên không có quyền thống kê doanh thu");
+				} else {
+					pnTableKH.setVisible(false);
+					cbDate.removeItem("Toàn");
+					if(cbDate.getItemCount() < 3) {
+						cbDate.addItem("Ngày");
+					}
+					cbYearStart.setVisible(true);
+					cbYearEnd.setVisible(true);
+					lblYearStart.setText("Năm bắt đầu");
+					lblYearEnd.setText("Năm kết thúc");
+					cbMonthKH.setVisible(false);
+					cbYearKH.setVisible(false);
+					pnBarChart.setVisible(false);
+					if(cbDate.getSelectedItem().toString().equals("Ngày")) {
+						clearDataDoanhThuTheoNgay();
+						resetField();
+						loadDataDoanhThuTheoNgay();
+						try {
+					        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // adjust this pattern to match your SQL Server date/time format
+					        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
 
-				        DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(formattedDateTime);
-				        if(dtlp != null) {
-				            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
-				            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
-				        }
-				        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
-				    } catch (Exception e2) {
-				        e2.printStackTrace();
-				    }
-				    if(model.getRowCount() <= 0) {
-				    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
-				        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
-				    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
-				    }
-					cbYearStart.setEnabled(false);
-					cbYearEnd.setEnabled(false);
-					pnCurveLineChart.setVisible(false);
-					pnPieChart.setVisible(false);
-					lblDate.setText("Chọn ngày");
-					dateTimePicker.setVisible(true);
-					cbMonth.setVisible(false);
-					cbYear.setVisible(false);
-					pnContent.setVisible(true);
-					pnTable.setVisible(true);
-					if(model.getRowCount() <= 0) {
-				    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
-				        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
-				    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
-				    }
-				} else if (cbDate.getSelectedItem().toString().equals("Tháng")) {
-					if(DataManager.getRole().equals("QL")) {
-						pnContent.setVisible(true);
+					        DoanhThuLoaiPhong dtlp = phong_dao.tinhTongDoanhThuLoaiPhongTheoNgay(formattedDateTime);
+					        if(dtlp != null) {
+					            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
+					            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
+					        }
+					        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
+					    } catch (Exception e2) {
+					        e2.printStackTrace();
+					    }
+					    if(model.getRowCount() <= 0) {
+					    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+					        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+					    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
+					    }
 						cbYearStart.setEnabled(false);
 						cbYearEnd.setEnabled(false);
 						pnCurveLineChart.setVisible(false);
-						pnPieChart.setVisible(true);
-						lblDate.setText("Chọn tháng");
-						cbMonth.setVisible(true);
-						cbYear.setVisible(true);
-						pnPieChart.setVisible(true);
-						dateTimePicker.setVisible(false);
-						pnTable.setVisible(false);
-						resetField();
-						ThongKeMonth();
-						if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
-							JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của tháng: "
-							+ cbMonth.getSelectedItem() + " năm: " + cbYear.getSelectedItem()
-							);
-						}
-					} else if(DataManager.getRole().equals("NV")) {
-						JOptionPane.showMessageDialog(null, "Nhân viên không có quyền thống kê doanh thu theo tháng!");
-					}
-				} else if(cbDate.getSelectedItem().toString().equals("Năm")) {
-					if(DataManager.getRole().equals("QL")) {
+						pnPieChart.setVisible(false);
+						lblDate.setText("Chọn ngày");
+						dateTimePicker.setVisible(true);
 						cbMonth.setVisible(false);
 						cbYear.setVisible(false);
-						pnPieChart.setVisible(false);
-						cbYearStart.setEnabled(true);
-						cbYearEnd.setEnabled(true);
-						pnContent.setVisible(false);
-						pnTable.setVisible(false);
-						int nambd = Integer.valueOf(cbYearStart.getSelectedItem().toString());
-						int namkt = Integer.valueOf(cbYearEnd.getSelectedItem().toString());
-						if(nambd == namkt) {
+						pnContent.setVisible(true);
+						pnTable.setVisible(true);
+						if(model.getRowCount() <= 0) {
+					    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+					        String formattedDateTime = dateTimePicker.getDateTimeStrict().format(formatter);
+					    	JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê của ngày: " + formattedDateTime);
+					    }
+					} else if (cbDate.getSelectedItem().toString().equals("Tháng")) {
+						if(DataManager.getRole().equals("QL")) {
 							pnContent.setVisible(true);
+							cbYearStart.setEnabled(false);
+							cbYearEnd.setEnabled(false);
 							pnCurveLineChart.setVisible(false);
 							pnPieChart.setVisible(true);
-							lblDate.setText("Tổng quan doanh thu năm "+namkt);
-							lblDate.setSize(400, 50);
+							lblDate.setText("Chọn tháng");
+							cbMonth.setVisible(true);
+							cbYear.setVisible(true);
 							pnPieChart.setVisible(true);
 							dateTimePicker.setVisible(false);
 							pnTable.setVisible(false);
 							resetField();
-							ThongKeYear();
-							lblChartTitle.setText("BIỂU ĐỒ THỐNG KÊ DOANH THU THEO NĂM");
+							ThongKeMonth();
 							if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
-								JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
-								+nambd
+								JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của tháng: "
+								+ cbMonth.getSelectedItem() + " năm: " + cbYear.getSelectedItem()
 								);
 							}
 						}
-						if(namkt > nambd) {
-							String yearStart = cbYearStart.getSelectedItem().toString();
-							String yearEnd = cbYearEnd.getSelectedItem().toString();
-							lineChart.clear();
-							setCurveLineChartData();
-							pnContent.setVisible(true);
-							pnContent.setBounds(0, 192, 400, 535);
-							dateTimePicker.setVisible(false);
-							lblDate.setText("Tổng quan doanh thu từ năm "+yearStart+" đến "+yearEnd);
-							lblDate.setFont(new Font("Arial", Font.BOLD, 17));
-							lblDate.setSize(400, 50);
-							resetField();
-							ThongKeManyYear(nambd, namkt);
-							if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
-								JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
-								+nambd
-								);
-							}
-							pnCurveLineChart.setVisible(true);
-						}
-						if(nambd > namkt) {
-							JOptionPane.showMessageDialog(null, "Năm bắt đầu phải nhỏ hơn năm kết thúc!");
+					} else if(cbDate.getSelectedItem().toString().equals("Năm")) {
+						if(DataManager.getRole().equals("QL")) {
+							cbMonth.setVisible(false);
+							cbYear.setVisible(false);
 							pnPieChart.setVisible(false);
+							cbYearStart.setEnabled(true);
+							cbYearEnd.setEnabled(true);
 							pnContent.setVisible(false);
-							pnCurveLineChart.setVisible(false);
+							pnTable.setVisible(false);
+							int nambd = Integer.valueOf(cbYearStart.getSelectedItem().toString());
+							int namkt = Integer.valueOf(cbYearEnd.getSelectedItem().toString());
+							if(nambd == namkt) {
+								pnContent.setVisible(true);
+								pnCurveLineChart.setVisible(false);
+								pnPieChart.setVisible(true);
+								lblDate.setText("Tổng quan doanh thu năm "+namkt);
+								lblDate.setSize(400, 50);
+								pnPieChart.setVisible(true);
+								dateTimePicker.setVisible(false);
+								pnTable.setVisible(false);
+								resetField();
+								ThongKeYear();
+								lblChartTitle.setText("BIỂU ĐỒ THỐNG KÊ DOANH THU THEO NĂM");
+								if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
+									JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
+									+nambd
+									);
+								}
+							}
+							if(namkt > nambd) {
+								String yearStart = cbYearStart.getSelectedItem().toString();
+								String yearEnd = cbYearEnd.getSelectedItem().toString();
+								lineChart.clear();
+								setCurveLineChartData();
+								pnContent.setVisible(true);
+								pnContent.setBounds(0, 192, 400, 535);
+								dateTimePicker.setVisible(false);
+								lblDate.setText("Tổng quan doanh thu từ năm "+yearStart+" đến "+yearEnd);
+								lblDate.setFont(new Font("Arial", Font.BOLD, 17));
+								lblDate.setSize(400, 50);
+								resetField();
+								ThongKeManyYear(nambd, namkt);
+								if(lblTongDoanhThu.getText().equals("0 VNĐ")) {
+									JOptionPane.showMessageDialog(null, "Không có dữ liệu thống kê của năm "
+									+nambd
+									);
+								}
+								pnCurveLineChart.setVisible(true);
+							}
+							if(nambd > namkt) {
+								JOptionPane.showMessageDialog(null, "Năm bắt đầu phải nhỏ hơn năm kết thúc!");
+								pnPieChart.setVisible(false);
+								pnContent.setVisible(false);
+								pnCurveLineChart.setVisible(false);
+							}
 						}
-					} else if(DataManager.getRole().equals("NV")) {
-						JOptionPane.showMessageDialog(null, "Nhân viên không có quyền thống kê doanh thu theo năm!");
 					}
 				}
 			} else if(cbThongKe.getSelectedItem().toString().equals("Khách hàng")) {
