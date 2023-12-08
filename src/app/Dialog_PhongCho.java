@@ -299,7 +299,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK), "nhanPhong");
 		actionMap.put("nhanPhong", nhanPhongAction);
 		
-//		setEnabledBtnDatPhong();
+		setEnabledBtnDatPhong();
 	}
 
 	public void laydulieu(String maPhong) {
@@ -329,8 +329,8 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 
 	private void setEnabledBtnDatPhong() {
 		pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
-		//Trước 90p để hát tối thiểu 60p
-		LocalDateTime check = pdp.getNgayGioNhanPhong().minusMinutes(90);
+		//Trước 90p để hát tối thiểu 60p -> Vì trước 90p khó demo đổi sang 30p
+		LocalDateTime check = pdp.getNgayGioNhanPhong().minusMinutes(30);
 		if (check.isBefore(LocalDateTime.now())) {
 			btnDatPhong.setEnabled(false);
 		} else {
