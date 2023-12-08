@@ -18,6 +18,15 @@ public class DataManager {
 	private static boolean loadDV = false;
 	private static boolean loadSDT = false;
 	private static String maHD_trongDSThanhToan;
+	private static boolean timerChayTB = false;
+
+	public static boolean isTimerChayTB() {
+		return timerChayTB;
+	}
+
+	public static void setTimerChayTB(boolean timerChayTB) {
+		DataManager.timerChayTB = timerChayTB;
+	}
 
 	public static String getRole() {
 		return role;

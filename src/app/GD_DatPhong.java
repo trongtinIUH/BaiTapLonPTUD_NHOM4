@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.xml.crypto.Data;
 
 import connectDB.ConnectDB;
 
@@ -21,19 +22,28 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 import dao.TempThanhToan_dao;
+import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
+import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TempDatPhong;
 import entity.TempThanhToan;
+import dao.ChiTietHoaDon_dao;
 import dao.LoaiPhong_dao;
+import dao.PhieuDatPhong_dao;
 
 public class GD_DatPhong extends JPanel implements ActionListener {
 
@@ -86,6 +96,9 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private int sizeDSTemp_TT;
 	private Dialog_ThanhToan dialog_ThanhToan;
 	private JButton btnBackHuyThanhToan;
+	private ChiTietHoaDon_dao cthd_dao = new ChiTietHoaDon_dao();
+	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	Timer timerChayThongBao;
 
 	/**
 	 * Create the panel.
@@ -295,11 +308,10 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-		  			ConnectDB.getInstance().connect(DataManager.getRole(), DataManager.getRolePassword());
-		  		} catch (SQLException e1) {
-		  			// TODO Auto-generated catch block
-		  			e1.printStackTrace();
-		  		}
+					ConnectDB.getInstance().connect(DataManager.getRole(), DataManager.getRolePassword());
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 				if (sizeDSTmp != tmp_dao.getAllTemp().size()) {
 					sizeDSTmp = tmp_dao.getAllTemp().size();
 					setEnabledBtnDatPhong();
@@ -308,7 +320,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					sizeDSTemp_TT = tempTT_dao.getAllTemp().size();
 					setEnabledBtnDatPhong();
 				}
-				
+
 				if (DataManager.isChuyenPhong()) {
 					loadData();
 					DataManager.setChuyenPhong(false);
@@ -331,12 +343,12 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					btnBackToBook.setEnabled(false);
 				else
 					btnBackToBook.setEnabled(true);
-				
+
 				if (tempTT_dao.getAllTemp().size() == 0)
 					btnBackThanhToan.setEnabled(false);
 				else
 					btnBackThanhToan.setEnabled(true);
-				
+
 				if (tempTT_dao.getAllTemp().size() == 0)
 					btnBackHuyThanhToan.setEnabled(false);
 				else
@@ -346,9 +358,90 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 //		Bắt đầu Timer
 		timer.start();
-		
-		// ---gốc
-		// 4----------------------------------****************************************************************
+
+		//
+		Timer timerThongBao = new Timer(60000, new ActionListener() {
+
+			private Date gioHienTai;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<PhieuDatPhong> dsMaPhongDatTruoc = new ArrayList<PhieuDatPhong>();
+				dsMaPhongDatTruoc = pdp_dao.getMaPhongDatTruoc();
+				if (dsMaPhongDatTruoc.size() != 0) {
+					for (PhieuDatPhong pdp : dsMaPhongDatTruoc) {
+						Phong p = p_dao.getPhongTheoMaPhong(pdp.getPhong().getMaPhong());
+						if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
+							DateFormat dateFormatGio = new SimpleDateFormat("HH");
+							gioHienTai = new Date();
+							double gioHT = Double.parseDouble(dateFormatGio.format(gioHienTai));
+							DateFormat dateFormatPhut = new SimpleDateFormat("mm");
+							double phutHT = Double.parseDouble(dateFormatPhut.format(gioHienTai));
+
+							LocalDateTime thoiGianCanTraPhong = pdp.getNgayGioNhanPhong().minusMinutes(30);
+							double gioTraPhong = thoiGianCanTraPhong.getHour();
+							double phutTraPhong = thoiGianCanTraPhong.getMinute();
+							if (gioHT == gioTraPhong && phutHT < phutTraPhong && (phutTraPhong - phutHT == 5)) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " còn khoảng 5 phút nữa hết thời gian!");
+							}
+							if (gioHT < gioTraPhong && phutHT > phutTraPhong && (phutTraPhong - phutHT + 60) == 5) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " còn khoảng 5 phút nữa hết thời gian!");
+							}
+							if (gioHT == gioTraPhong && phutHT == phutTraPhong) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " đã hết thời gian vui lòng thanh toán");
+							}
+						} else if (p.getTrangThai() == Enum_TrangThai.Chờ) {
+							DateFormat dateFormatGio = new SimpleDateFormat("HH");
+							gioHienTai = new Date();
+							int gioHT = Integer.parseInt(dateFormatGio.format(gioHienTai));
+							DateFormat dateFormatPhut = new SimpleDateFormat("mm");
+							int phutHT = Integer.parseInt(dateFormatPhut.format(gioHienTai));
+
+							int gioNhanPhong = pdp.getNgayGioNhanPhong().getHour();
+							int phutNhanPhong = pdp.getNgayGioNhanPhong().getMinute();
+							if (gioHT == gioNhanPhong && phutHT < phutNhanPhong && (phutNhanPhong - phutHT == 20)) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " còn 20p nữa đến thời gian nhận phòng vui lòng liên hệ");
+							}
+							if (gioHT < gioNhanPhong && phutHT > phutNhanPhong && (phutNhanPhong - phutHT + 60) == 20) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " còn 20p nữa đến thời gian nhận phòng vui lòng liên hệ");
+							}
+							if (gioHT == gioNhanPhong && phutHT == phutNhanPhong) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " đã đến thời gian nhận phòng vui lòng kiểm tra");
+							}
+						}
+					}
+				}
+			}
+		});
+
+		timerChayThongBao = new Timer(1000, new ActionListener() {
+			private Date timeHienTai;
+			private boolean shouldStop = false;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!shouldStop) {
+					timeHienTai = new Date();
+					DateFormat dateFormatGiay = new SimpleDateFormat("ss");
+					String giayHT = dateFormatGiay.format(timeHienTai);
+
+					if (giayHT.equals("00") && !DataManager.isTimerChayTB()) {
+						timerThongBao.start();
+						shouldStop = true;
+						timerChayThongBao.stop();
+					}
+				}
+			}
+		});
+
+		timerChayThongBao.start();
+
 		// set size icon cho gốc 4
 		ImageIcon phongtrong4 = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
 		Image originalImage_phongtrong4 = phongtrong4.getImage();
@@ -417,7 +510,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		panel_5.setBounds(0, 663, 1080, 27);
 		panel.add(panel_5);
 		panel_5.setLayout(null);
-		
+
 		btnBackHuyThanhToan = new JButton("Hủy danh sách thanh toán");
 		btnBackHuyThanhToan.setBorderPainted(false);
 		btnBackHuyThanhToan.setForeground(Color.blue);
@@ -425,7 +518,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		btnBackHuyThanhToan.setBounds(360, 3, 250, 20);
 		btnBackHuyThanhToan.setBorder(new RoundedBorder(5));
 		panel_5.add(btnBackHuyThanhToan);
-		
+
 		btnBackThanhToan = new JButton("Quay về thanh toán");
 		btnBackThanhToan.setBorderPainted(false);
 		btnBackThanhToan.setForeground(Color.blue);
@@ -520,7 +613,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		panel_ChuaPhong.repaint();
 		scrollPane_Phong.setViewportView(outerPanel);
 
-		setEnabledBtnDatPhong();	
+		setEnabledBtnDatPhong();
 	}
 
 	private void setEnabledBtnDatPhong() {
@@ -533,18 +626,18 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					kiemTra = false;
 			}
 			for (TempThanhToan tmp : tempTT_dao.getAllTemp()) {
-			Phong tmpP = p_dao.getPhongTheoMaPhong(tmp.getMaPhong());
-			if (soPhong.equals(tmp.getMaPhong()) && tmpP.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
-				kiemTra = false;
-		}
-			
+				Phong tmpP = p_dao.getPhongTheoMaPhong(tmp.getMaPhong());
+				if (soPhong.equals(tmp.getMaPhong()) && tmpP.getTrangThai() == Enum_TrangThai.Đang_sử_dụng)
+					kiemTra = false;
+			}
+
 			if (kiemTra)
 				btn.setEnabled(true);
 			else
 				btn.setEnabled(false);
 		}
 	}
-	
+
 	private int calculateSize() {
 		int i = p_dao.getallPhongs().size();
 		if (i <= 15) {
@@ -731,20 +824,20 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					Phong p = p_dao.getPhongTheoMaPhong(maPhong);
 					if (p.getTrangThai() == Enum_TrangThai.Trống) {
 						dialog_htPhong = new Dialog_HienThiPhong(maPhong, trangChu);
-						//dialog_htPhong.setModal(true);
+						// dialog_htPhong.setModal(true);
 						dialog_htPhong.setVisible(true);
 						return;
 					}
 
 					if (p.getTrangThai() == Enum_TrangThai.Chờ) {
 						dialog_PhongCho = new Dialog_PhongCho(maPhong, trangChu);
-						//dialog_PhongCho.setModal(true);
+						// dialog_PhongCho.setModal(true);
 						dialog_PhongCho.setVisible(true);
 						break;
 					}
 
 					if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
-						dialog_PhongDangSD = new Dialog_PhongDangSD(maPhong,this);
+						dialog_PhongDangSD = new Dialog_PhongDangSD(maPhong, this);
 						dialog_PhongDangSD.setModal(true);
 						dialog_PhongDangSD.setVisible(true);
 						return;
