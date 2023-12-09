@@ -888,12 +888,15 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		String hinhthuc = (String) tblPhieuDatPhong.getValueAt(row, 7);
 		String mp = (String) tblPhieuDatPhong.getValueAt(row, 0);
 		String trangthai = "";
-		hd = hd_dao.getHoaDonTheoMaHoaDon("HD" + mp.substring(3));
-		if (hd.getTienKhachDua() <= 0) {
-			trangthai = "Chưa TT";
-		} else {
-			trangthai = "Đã TT";
-		}
+        String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(mp);
+        hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+        if (hd != null && hd.isTrangThai() == false) {
+            trangthai = "Chưa TT";
+        } else if (hd != null && hd.isTrangThai() == true) {
+            trangthai = "Đã TT";
+        } else {
+            trangthai = "Chưa TT";
+        }
 		if (row != 1) {
 			if (hinhthuc.equals("Đặt trước") && trangthai.equals("Chưa TT")) {
 				int tb = JOptionPane.showConfirmDialog(null, "Bạn có hủy phòng?", "Hủy phòng chờ",
