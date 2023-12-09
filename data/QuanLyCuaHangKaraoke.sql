@@ -482,20 +482,20 @@ BEGIN
     END
 END;
 
-select * from NhanVien
-select * from TaiKhoan
-select * from LoaiPhong
-select * from Phong 
-select * from SanPham 
-select * from KhuyenMai
-select * from KhachHang
-select * from PhieuDatPhong
-select * from HoaDonDatPhong
-select * from ChiTietHoaDon
-select * from ChiTietDichVu
-select * from TempDatPhong
-select * from TempThanhToan
-select * from TempPhongBiChuyen
+--select * from NhanVien
+--select * from TaiKhoan
+--select * from LoaiPhong
+--select * from Phong 
+--select * from SanPham 
+--select * from KhuyenMai
+--select * from KhachHang
+--select * from PhieuDatPhong
+--select * from HoaDonDatPhong
+--select * from ChiTietHoaDon
+--select * from ChiTietDichVu
+--select * from TempDatPhong
+--select * from TempThanhToan
+--select * from TempPhongBiChuyen
 
 
 
