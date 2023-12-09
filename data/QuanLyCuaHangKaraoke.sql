@@ -483,8 +483,6 @@ BEGIN
     END
 END;
 
-<<<<<<< HEAD
-
 --Phân quyền
 
 -- Switch to the master database to create the logins

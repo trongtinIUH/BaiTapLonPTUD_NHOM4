@@ -616,6 +616,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		} else if (obj.equals(btnLamMoi)) {
 			xoaTrang();
 			loadMa();
+			loadData();
 		} else if (obj.equals(btnTimKiem)) {
 			tim();
 		} else if (obj.equals(btnXuatExcel)) {
