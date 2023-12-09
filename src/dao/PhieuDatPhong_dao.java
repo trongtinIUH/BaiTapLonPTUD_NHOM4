@@ -58,7 +58,7 @@ public class PhieuDatPhong_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from PhieuDatPhong where ngayGioNhanPhong > GETDATE()";
+			String sql = "select * from PhieuDatPhong where DATEADD(MINUTE, 1, ngayGioNhanPhong) > GETDATE()";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
