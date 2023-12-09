@@ -6,9 +6,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.ModelThongKe;
-import entity.ModelThongKeDTNhieuNam;
-import entity.ModelThongKeKH;
+import utils.ModelThongKe;
+import utils.ModelThongKeDTNhieuNam;
+import utils.ModelThongKeKH;
 
 public class ThongKe_dao {
 	public ArrayList<ModelThongKe> thongKeTheoNam(String yearStart, String yearEnd){

@@ -31,8 +31,8 @@ import dao.TempThanhToan_dao;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.Phong;
-import entity.TempDatPhong;
-import entity.TempThanhToan;
+import utils.TempDatPhong;
+import utils.TempThanhToan;
 import dao.LoaiPhong_dao;
 
 public class GD_DatPhong extends JPanel implements ActionListener {
@@ -52,13 +52,13 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private JScrollPane scrollPane_Phong;
 	private JPanel panel_3;
 	private JPanel outerPanel;
-
 	private JLabel lbl_iconPhongVIP, lbl_iconPhongsuaChua, lbl_iconPhongCho, lbl_iconPhongTrong;
 
 	private Dialog_User dialog_user = new Dialog_User();
 	private Dialog_HienThiPhong dialog_htPhong;
 	private Dialog_PhongDangSD dialog_PhongDangSD;
 	private Dialog_PhongCho dialog_PhongCho;
+	private Dialog_DatPhongCho dialog_DatPhongCho;
 	Phong_dao p_dao;
 	LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private JButton btnPhong;
@@ -86,6 +86,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private int sizeDSTemp_TT;
 	private Dialog_ThanhToan dialog_ThanhToan;
 	private JButton btnBackHuyThanhToan;
+	private JButton btnBackPhongCho;
 
 	/**
 	 * Create the panel.
@@ -316,7 +317,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 				if (DataManager.isDatPhongCho()) {
 					loadData();
-					DataManager.setDatPhongCho(false);
+					DataManager.setDatPhongCho(false);	
 				}
 
 				if (DataManager.isThanhToan()) {
@@ -341,6 +342,12 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 					btnBackHuyThanhToan.setEnabled(false);
 				else
 					btnBackHuyThanhToan.setEnabled(true);
+				
+				if (DataManager.isDatPhongCho()==true)
+					btnBackPhongCho.setEnabled(false);
+				else
+					btnBackPhongCho.setEnabled(true);
+				
 			}
 		});
 
@@ -441,6 +448,14 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		btnBackToBook.setBounds(830, 3, 200, 20);
 		btnBackToBook.setBorder(new RoundedBorder(5));
 		panel_5.add(btnBackToBook);
+		
+		btnBackPhongCho = new JButton("Quay về đặt phòng chờ");
+		btnBackPhongCho.setBorderPainted(false);
+		btnBackPhongCho.setForeground(Color.red);
+		btnBackPhongCho.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		btnBackPhongCho.setBounds(140, 3, 200, 20);
+		btnBackPhongCho.setBorder(new RoundedBorder(5));
+		panel_5.add(btnBackPhongCho);
 
 		// thêm sự kiện
 		btnUser.addActionListener(this);
@@ -452,6 +467,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		btnBackToBook.addActionListener(this);
 		btnBackThanhToan.addActionListener(this);
 		btnBackHuyThanhToan.addActionListener(this);
+		btnBackPhongCho.addActionListener(this);
 	}
 
 	private void loadData() {
@@ -723,6 +739,15 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 				tempTT_dao.deleteALLTempThanhToan();
 			}
 		}
+//		if (o.equals(btnBackPhongCho)) {
+//			if (DataManager.isDatPhongCho()==false) {
+//				dialog_DatPhongCho = new Dialog_DatPhongCho(txtMaPhong.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()), trangChu);
+//				dialog_DatPhongCho.setVisible(true);
+//				
+//			} else {
+//				JOptionPane.showMessageDialog(this, "Chưa phòng nào được đặt trước");
+//			}
+//		}
 		if (o instanceof JButton) {
 			JButton clickedButton = (JButton) o;
 			for (JButton btn : btnPhongList) {

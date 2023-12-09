@@ -36,7 +36,7 @@ import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
 import entity.Phong;
 import entity.SanPham;
-import entity.TempThemDV;
+import utils.TempThemDV;
 
 import javax.swing.JTextField;
 import java.awt.SystemColor;

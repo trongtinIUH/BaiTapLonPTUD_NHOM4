@@ -1,4 +1,4 @@
-package entity;
+package utils;
 
 import java.io.Serializable;
 import java.sql.Date;

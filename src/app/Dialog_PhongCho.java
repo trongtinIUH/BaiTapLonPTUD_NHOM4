@@ -37,7 +37,7 @@ import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TempDatPhong;
+import utils.TempDatPhong;
 
 public class Dialog_PhongCho extends JDialog implements ActionListener {
 

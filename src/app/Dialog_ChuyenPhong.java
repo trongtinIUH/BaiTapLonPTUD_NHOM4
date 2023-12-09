@@ -44,7 +44,7 @@ import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TempPhongBiChuyen;
+import utils.TempPhongBiChuyen;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

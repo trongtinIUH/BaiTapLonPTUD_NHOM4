@@ -144,6 +144,7 @@ CREATE TABLE TempDatPhong (
 )
 go
 
+
 CREATE TABLE TempThanhToan (
     maPhong varchar(20) not null
 )
@@ -497,6 +498,5 @@ END;
 --select * from TempDatPhong
 --select * from TempThanhToan
 --select * from TempPhongBiChuyen
-
 
 

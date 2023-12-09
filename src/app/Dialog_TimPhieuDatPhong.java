@@ -9,10 +9,14 @@ import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -52,7 +56,7 @@ import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TempDatPhong;
+import utils.TempDatPhong;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -365,7 +369,15 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 			}
 			// tìm theo mã phiếu
 			if (comboBox_TrangThai_1.getSelectedItem().equals("Mã phiếu đặt")) {
-			    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP(thongtinTimKiem);
+				
+				Pattern pattern = Pattern.compile("^\\d{10}$");
+				Matcher matcher = pattern.matcher(thongtinTimKiem);
+				if (!matcher.matches()) {
+				    JOptionPane.showMessageDialog(null, "Mã PDP gồm 10 số ứng với mã phiếu đặt phòng của khách hàng!");
+				    return;
+				}
+				
+			    pdp = pdp_dao.getPhieuDatPhongTheoMaPDP("PDP"+thongtinTimKiem);
 			    kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
 			    String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
 			    nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
@@ -392,6 +404,14 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 			//tìm theo sdt khách
 			else if (comboBox_TrangThai_1.getSelectedItem().equals("Số điện thoại KH")) {
+				//kiem tra sdt nhà mạng vietnam
+				Pattern pattern = Pattern.compile("(03[2-9]|05[689]|07[06-9]|08[1-689]|09[0-46-9])+([0-9]{7})\\b");
+				Matcher matcher = pattern.matcher(thongtinTimKiem);
+				if (!matcher.matches()) {
+				    JOptionPane.showMessageDialog(null, "Số điện thoại phải là một chuỗi số hợp lệ theo các nhà mạng Việt Nam!");
+				    return;
+				}
+
 			    int check = 1;
 			    // Tìm kiếm theo số điện thoại
 			    kh = kh_dao.getKhachHangTheoSDT(thongtinTimKiem);
@@ -437,7 +457,14 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
  
 			// Tìm kiếm theo tên khách hàng
 			else if (comboBox_TrangThai_1.getSelectedItem().equals("Họ tên KH")) {
-				
+				//kiem tra ho ten hop le
+				Pattern pattern = Pattern.compile("^[\\p{L} .'-]+$");
+				Matcher matcher = pattern.matcher(thongtinTimKiem);
+				if (!matcher.matches()) {
+				    JOptionPane.showMessageDialog(null, "Tên phải là một chuỗi chữ cái hợp lệ VD: Trần Trọng Tín hoặc trần trọng tín!");
+				    return;
+				}
+
 				ArrayList<KhachHang> DSkh = kh_dao.getKhachHangTheoTenKH(thongtinTimKiem);
 				if (DSkh.size() != 0) {
 					int check = 1;
@@ -477,200 +504,207 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 					JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
 				}
 			} 
-			// tìm ngày nhận phong
-//			else if (comboBox_TrangThai_1.getSelectedItem().equals("Ngày nhận phòng")) {
-//			    String ngaynhanStr = txtLoaiTimKiem.getText();
-//			    ArrayList<PhieuDatPhong> dsPDPtheoNgay = new ArrayList<>();
-//			    if (ngaynhanStr.length() == 10) {
-//			        // Tìm kiếm theo ngày cụ thể
-//			        DateTimeFormatter formatter_ngaynhan = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//			        LocalDate ngaynhan = LocalDate.parse(ngaynhanStr, formatter_ngaynhan);
-//			        dsPDPtheoNgay = pdp_dao.getPDPTheoNgayNhan(ngaynhan);
-//				    if (!dsPDPtheoNgay.isEmpty()) {
-//				        int check = 1;
-//				        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
-//				            // so sánh mã hóa đơn tồn tại
-//				            if (formatter1.format(pdp.getNgayGioDatPhong())
-//				                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
-//				                hinhthuc = "Đặt trực tiếp";
-//				            } else {
-//				                hinhthuc = "Đặt trước";
-//				            }
-//				            if (dsPDPtheoNgay != null) {
-//				                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-//				                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-//				                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-//				                if (hd != null && hd.isTrangThai() == false) {
-//				                    trangthai = "Chưa TT";
-//				                } else if (hd != null && hd.isTrangThai() == true) {
-//				                    trangthai = "Đã TT";
-//				                } else {
-//				                    trangthai = "Chưa TT";
-//				                }
-//				                if (pdp != null) {
-//				                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
-//				                            && check == 1) {
-//				                        btnTimKiem.setText("Hủy tìm");
-//				                        clearTable();
-//				                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
-//				                        check = 0;
-//				                    }
-//				                    Canh_Deu_Bang();
-//				                }
-//				            } else {
-//				                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
-//				            }
-//				        }
-//				        if (check == 1) {
-//				            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
-//				        }
-//				    } else {
-//				        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
-//				    }
-//			    } else if (ngaynhanStr.contains("-")) {
-//			        // Tìm kiếm theo tháng và năm
-//			        DateTimeFormatter formatter_ngaynhan = DateTimeFormatter.ofPattern("yyyy-MM");
-//			        YearMonth ngaynhan = YearMonth.parse(ngaynhanStr, formatter_ngaynhan);
-//			        dsPDPtheoNgay = pdp_dao.getPDPTheoThangNhan(ngaynhan);
-//				    if (!dsPDPtheoNgay.isEmpty()) {
-//				        int check = 1;
-//				        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
-//				            // so sánh mã hóa đơn tồn tại
-//				            if (formatter1.format(pdp.getNgayGioDatPhong())
-//				                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
-//				                hinhthuc = "Đặt trực tiếp";
-//				            } else {
-//				                hinhthuc = "Đặt trước";
-//				            }
-//				            if (dsPDPtheoNgay != null) {
-//				                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-//				                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-//				                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-//				                if (hd != null && hd.isTrangThai() == false) {
-//				                    trangthai = "Chưa TT";
-//				                } else if (hd != null && hd.isTrangThai() == true) {
-//				                    trangthai = "Đã TT";
-//				                } else {
-//				                    trangthai = "Chưa TT";
-//				                }
-//				                if (pdp != null) {
-//				                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
-//				                            && check == 1) {
-//				                        btnTimKiem.setText("Hủy tìm");
-//				                        clearTable();
-//				                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
-//				                        check = 0;
-//				                    }
-//				                    Canh_Deu_Bang();
-//				                }
-//				            } else {
-//				                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
-//				            }
-//				        }
-//				        if (check == 1) {
-//				            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
-//				        }
-//				    } else {
-//				        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
-//				    }
-//			    } else {
-//			        // Tìm kiếm theo năm
-//			        int nam = Integer.parseInt(ngaynhanStr);
-//			        dsPDPtheoNgay = pdp_dao.getPDPTheoNamNhan(nam);
-//				    if (!dsPDPtheoNgay.isEmpty()) {
-//				        int check = 1;
-//				        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
-//				            // so sánh mã hóa đơn tồn tại
-//				            if (formatter1.format(pdp.getNgayGioDatPhong())
-//				                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
-//				                hinhthuc = "Đặt trực tiếp";
-//				            } else {
-//				                hinhthuc = "Đặt trước";
-//				            }
-//				            if (dsPDPtheoNgay != null) {
-//				                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-//				                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-//				                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-//				                if (hd != null && hd.isTrangThai() == false) {
-//				                    trangthai = "Chưa TT";
-//				                } else if (hd != null && hd.isTrangThai() == true) {
-//				                    trangthai = "Đã TT";
-//				                } else {
-//				                    trangthai = "Chưa TT";
-//				                }
-//				                if (pdp != null) {
-//				                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
-//				                            && check == 1) {
-//				                        btnTimKiem.setText("Hủy tìm");
-//				                        clearTable();
-//				                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
-//				                        check = 0;
-//				                    }
-//				                    Canh_Deu_Bang();
-//				                }
-//				            } else {
-//				                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
-//				            }
-//				        }
-//				        if (check == 1) {
-//				            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
-//				        }
-//				    } else {
-//				        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
-//				    }
-//			    }
-//
-//			    
-//			}
-
 			
 			else if (comboBox_TrangThai_1.getSelectedItem().equals("Ngày nhận phòng")) {
-			    DateTimeFormatter formatter_ngaynhan = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			    String ngaynhanStr = txtLoaiTimKiem.getText();
-			    LocalDate ngaynhan = LocalDate.parse(ngaynhanStr, formatter_ngaynhan);
-			    ArrayList<PhieuDatPhong> dsPDPtheoNgay = pdp_dao.getPDPTheoNgayNhan(ngaynhan);
-			    if (!dsPDPtheoNgay.isEmpty()) {
-			        int check = 1;
-			        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
-			            // so sánh mã hóa đơn tồn tại
-			            if (formatter1.format(pdp.getNgayGioDatPhong())
-			                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
-			                hinhthuc = "Đặt trực tiếp";
-			            } else {
-			                hinhthuc = "Đặt trước";
-			            }
-			            if (dsPDPtheoNgay != null) {
-			                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
-			                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
-			                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
-			                if (hd != null && hd.isTrangThai() == false) {
-			                    trangthai = "Chưa TT";
-			                } else if (hd != null && hd.isTrangThai() == true) {
-			                    trangthai = "Đã TT";
-			                } else {
-			                    trangthai = "Chưa TT";
-			                }
-			                if (pdp != null) {
-			                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
-			                            && check == 1) {
-			                        btnTimKiem.setText("Hủy tìm");
-			                        clearTable();
-			                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
-			                        check = 0;
-			                    }
-			                    Canh_Deu_Bang();
-			                }
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
-			            }
-			        }
-			        if (check == 1) {
-			            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
-			        }
-			    } else {
-			        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+			    ArrayList<PhieuDatPhong> dsPDPtheoNgay = new ArrayList<>();
+
+			    // Kiểm tra xem người dùng đã nhập vào một tháng trong một năm cụ thể hay không
+			    if (ngaynhanStr.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
+			    	 DateTimeFormatter formatter_ngaynhan = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				        LocalDate ngaynhan = LocalDate.parse(ngaynhanStr, formatter_ngaynhan);
+				        dsPDPtheoNgay = pdp_dao.getPDPTheoNgayNhan(ngaynhan);
+					    if (!dsPDPtheoNgay.isEmpty()) {
+					        int check = 1;
+					        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
+					            // so sánh mã hóa đơn tồn tại
+					            if (formatter1.format(pdp.getNgayGioDatPhong())
+					                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+					                hinhthuc = "Đặt trực tiếp";
+					            } else {
+					                hinhthuc = "Đặt trước";
+					            }
+					            if (dsPDPtheoNgay != null) {
+					                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+					                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+					                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+					                if (hd != null && hd.isTrangThai() == false) {
+					                    trangthai = "Chưa TT";
+					                } else if (hd != null && hd.isTrangThai() == true) {
+					                    trangthai = "Đã TT";
+					                } else {
+					                    trangthai = "Chưa TT";
+					                }
+					                if (pdp != null) {
+					                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
+					                            && check == 1) {
+					                        btnTimKiem.setText("Hủy tìm");
+					                        clearTable();
+					                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
+					                        check = 0;
+					                    }
+					                    Canh_Deu_Bang();
+					                }
+					            } else {
+					                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+					            }
+					        }
+					        if (check == 1) {
+					            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+					        }
+					    } else {
+					        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+					    }
 			    }
+
+			    else if (ngaynhanStr.matches("^\\d{4}-\\d{2}$")) {
+			        YearMonth thangNhan = YearMonth.parse(ngaynhanStr);
+			        dsPDPtheoNgay = pdp_dao.getPDPTheoThangNhan(thangNhan);
+				    if (!dsPDPtheoNgay.isEmpty()) {
+				        int check = 1;
+				        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
+				            // so sánh mã hóa đơn tồn tại
+				            if (formatter1.format(pdp.getNgayGioDatPhong())
+				                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+				                hinhthuc = "Đặt trực tiếp";
+				            } else {
+				                hinhthuc = "Đặt trước";
+				            }
+				            if (dsPDPtheoNgay != null) {
+				                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+				                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+				                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+				                if (hd != null && hd.isTrangThai() == false) {
+				                    trangthai = "Chưa TT";
+				                } else if (hd != null && hd.isTrangThai() == true) {
+				                    trangthai = "Đã TT";
+				                } else {
+				                    trangthai = "Chưa TT";
+				                }
+				                if (pdp != null) {
+				                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
+				                            && check == 1) {
+				                        btnTimKiem.setText("Hủy tìm");
+				                        clearTable();
+				                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
+				                        check = 0;
+				                    }
+				                    Canh_Deu_Bang();
+				                }
+				            } else {
+				                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+				            }
+				        }
+				        if (check == 1) {
+				            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+				        }
+				    } else {
+				        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+				    }
+			    }
+			    // Kiểm tra xem người dùng đã nhập vào một năm cụ thể hay không
+			    else   if (ngaynhanStr.matches("^\\d{4}$")) {
+			        int namNhan = Integer.parseInt(ngaynhanStr);
+			        dsPDPtheoNgay = pdp_dao.getPDPTheoNamNhan(namNhan);
+				    if (!dsPDPtheoNgay.isEmpty()) {
+				        int check = 1;
+				        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
+				            // so sánh mã hóa đơn tồn tại
+				            if (formatter1.format(pdp.getNgayGioDatPhong())
+				                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+				                hinhthuc = "Đặt trực tiếp";
+				            } else {
+				                hinhthuc = "Đặt trước";
+				            }
+				            if (dsPDPtheoNgay != null) {
+				                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+				                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+				                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+				                if (hd != null && hd.isTrangThai() == false) {
+				                    trangthai = "Chưa TT";
+				                } else if (hd != null && hd.isTrangThai() == true) {
+				                    trangthai = "Đã TT";
+				                } else {
+				                    trangthai = "Chưa TT";
+				                }
+				                if (pdp != null) {
+				                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
+				                            && check == 1) {
+				                        btnTimKiem.setText("Hủy tìm");
+				                        clearTable();
+				                       
+				                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
+				                        check = 0;
+				                    }
+				                    Canh_Deu_Bang();
+				                }
+				            } else {
+				                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+				            }
+				        }
+				        if (check == 1) {
+				            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+				        }
+				    } else {
+				        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+				    }
+			    }
+			    // Ngược lại, giả định người dùng đã nhập vào một ngày cụ thể
+			    else {
+			    	JOptionPane.showMessageDialog(this, "Vui lòng nhập Năm-Tháng-Ngày cần tìm. Bạn có thể nhập Năm, Năm-Tháng cần tìm!");
+			    }
+   
 			}
+
+			
+			
+//			else if (comboBox_TrangThai_1.getSelectedItem().equals("Ngày nhận phòng")) {
+//			    DateTimeFormatter formatter_ngaynhan = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//			    String ngaynhanStr = txtLoaiTimKiem.getText();
+//			    LocalDate ngaynhan = LocalDate.parse(ngaynhanStr, formatter_ngaynhan);
+//			    ArrayList<PhieuDatPhong> dsPDPtheoNgay = pdp_dao.getPDPTheoNgayNhan(ngaynhan);
+//			    if (!dsPDPtheoNgay.isEmpty()) {
+//			        int check = 1;
+//			        for (PhieuDatPhong pdp : dsPDPtheoNgay) {
+//			            // so sánh mã hóa đơn tồn tại
+//			            if (formatter1.format(pdp.getNgayGioDatPhong())
+//			                    .equals(formatter1.format(pdp.getNgayGioNhanPhong()))) {
+//			                hinhthuc = "Đặt trực tiếp";
+//			            } else {
+//			                hinhthuc = "Đặt trước";
+//			            }
+//			            if (dsPDPtheoNgay != null) {
+//			                String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(pdp.getMaPhieu());
+//			                nv = nv_dao.getNhanVienTheoMa(pdp.getNhanVien().getMaNhanVien());
+//			                hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
+//			                if (hd != null && hd.isTrangThai() == false) {
+//			                    trangthai = "Chưa TT";
+//			                } else if (hd != null && hd.isTrangThai() == true) {
+//			                    trangthai = "Đã TT";
+//			                } else {
+//			                    trangthai = "Chưa TT";
+//			                }
+//			                if (pdp != null) {
+//			                    if (XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai)
+//			                            && check == 1) {
+//			                        btnTimKiem.setText("Hủy tìm");
+//			                        clearTable();
+//			                        XuatDSTheoTrangThai(pdp, kh, ngayGioDat, ngayGioNhan, hinhthuc, trangthai);
+//			                        check = 0;
+//			                    }
+//			                    Canh_Deu_Bang();
+//			                }
+//			            } else {
+//			                JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin!!");
+//			            }
+//			        }
+//			        if (check == 1) {
+//			            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+//			        }
+//			    } else {
+//			        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin");
+//			    }
+//			}
 
 
 		} else {

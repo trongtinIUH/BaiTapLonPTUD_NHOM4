@@ -39,8 +39,8 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
 import dao.KhuyenMai_dao;
-import entity.DateLabelFormatter;
 import entity.KhuyenMai;
+import utils.DateLabelFormatter;
 
 public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListener {
 	/**
