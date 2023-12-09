@@ -29,6 +29,7 @@ import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.KhachHang_dao;
+import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import entity.Enum_TrangThai;
@@ -76,6 +77,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JLabel lbl_NgayNhanPhong;
 
 	private Phong_dao phong_dao = new Phong_dao();
+	private LoaiPhong_dao loaiphong_dao = new LoaiPhong_dao();
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private KhachHang kh = new KhachHang();
 	private Date ngayHienTai;
@@ -85,6 +87,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private LocalDateTime ngay_GioNhanPhong;
 
 	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp, int songuoi, GD_TrangChu trangChu) {
+
 		// màn
 		// hình******************************************************************************
 		this.trangChu = trangChu;
@@ -176,7 +179,6 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		txtSoNguoi.setFont(new Font("Arial", Font.BOLD, 16));
 		txtSoNguoi.setBounds(550, 5, 100, 25);
 		panel_1.add(txtSoNguoi);
-
 		lbl_GiaTien_1 = new JLabel(lp.getDonGiaTheoGio() + " VNĐ");
 		lbl_GiaTien_1.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl_GiaTien_1.setBounds(550, 40, 200, 25);
@@ -284,16 +286,8 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		btn_DatPhong.addActionListener(this);
 		btn_KiemTraSDT.addActionListener(this);
 		btn_QuayLai.addActionListener(this);
-		if (!DataManager.getSoDienThoaiKHDat().equals("")) {
-			txtSDT.setText(DataManager.getSoDienThoaiKHDat());
-		}
-		
-	}
-
-	
-	private void loadDataPhong() {
-		if (!DataManager.getSoDienThoaiKHDat().equals("")) {
-			txtSDT.setText(DataManager.getSoDienThoaiKHDat());
+		if (!DataManager.getSoDienThoaiKHDatCho().equals("")) {
+			txtSDT.setText(DataManager.getSoDienThoaiKHDatCho());
 			khachHang_dao = new KhachHang_dao();
 			String sdt = txtSDT.getText();
 			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
@@ -303,6 +297,12 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 			lbl_GioiTinh_1.setText(gioiTinhStr);
 			lbl_TenKH_1.setText(hoTen);
 		}
+		// Lưu mã phòng
+		DataManager.setMaPhongDatCho(maPhong);
+
+		// Lưu số người hát
+		DataManager.setSoNguoiHatPhongCho(txtSoNguoi.getText());
+		
 	}
 	
 	@Override
@@ -387,7 +387,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		} else {
 			int checkCustomer = JOptionPane.showConfirmDialog(this,
 					"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
-			DataManager.setSoDienThoaiKHDat(txtSDT.getText());
+			DataManager.setsoDienThoaiKHDatCho(txtSDT.getText());
 			DataManager.setLoadSDT(true);
 			if (checkCustomer == JOptionPane.YES_OPTION) {
 				trangChu.showKhachHangCard();

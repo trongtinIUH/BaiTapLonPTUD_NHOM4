@@ -739,15 +739,15 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 				tempTT_dao.deleteALLTempThanhToan();
 			}
 		}
-//		if (o.equals(btnBackPhongCho)) {
-//			if (DataManager.isDatPhongCho()==false) {
-//				dialog_DatPhongCho = new Dialog_DatPhongCho(txtMaPhong.getText(), p, lp, Integer.parseInt(txtSoNguoi.getText()), trangChu);
-//				dialog_DatPhongCho.setVisible(true);
-//				
-//			} else {
-//				JOptionPane.showMessageDialog(this, "Chưa phòng nào được đặt trước");
-//			}
-//		}
+		if (o.equals(btnBackPhongCho)) {
+			if (DataManager.isDatPhongCho()==false) {
+				dialog_DatPhongCho = new Dialog_DatPhongCho(txtMaPhong.getText(), null, null, Integer.parseInt(txtSoNguoi.getText()), trangChu);
+				dialog_DatPhongCho.setVisible(true);
+				
+			} else {
+				JOptionPane.showMessageDialog(this, "Chưa phòng nào được đặt trước");
+			}
+		}
 		if (o instanceof JButton) {
 			JButton clickedButton = (JButton) o;
 			for (JButton btn : btnPhongList) {

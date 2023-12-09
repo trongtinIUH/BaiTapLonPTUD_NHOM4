@@ -483,8 +483,8 @@ BEGIN
     END
 END;
 
---select * from NhanVien
---select * from TaiKhoan
+select * from NhanVien
+select * from TaiKhoan
 --select * from ChiTietLuong
 --select * from LoaiPhong
 --select * from Phong 
