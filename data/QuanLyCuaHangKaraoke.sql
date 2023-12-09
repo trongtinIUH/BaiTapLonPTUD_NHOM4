@@ -144,6 +144,7 @@ CREATE TABLE TempDatPhong (
 )
 go
 
+
 CREATE TABLE TempThanhToan (
     maPhong varchar(20) not null
 )
@@ -156,21 +157,21 @@ CREATE TABLE TempPhongBiChuyen (
 go
 
 --Nhân viên
-insert into NhanVien values('2001001',N'Trần Văn Sơn', '0933900911', 1, '1995-2-5 08:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\son2001001.jpg')
-insert into NhanVien values('2110001',N'Lê Hương Trà', '0822911911', 0, '2001-7-7 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Tra2110002.jpg')
-insert into NhanVien values('2211001',N'Vũ Văn Hà', '0826812977', 1, '2000-7-30 14:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Ha2211003.jpg')
-insert into NhanVien values('2211002',N'Nguyễn Thái Sỹ', '0344211955', 1, '1999-5-22 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Sy2211002.jpg')
-insert into NhanVien values('2311001',N'Lê Tuyết Nhi', '0663765198', 0, '2002-7-9 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Nhi2311001.jpg')
-insert into NhanVien values('2200003',N'Nguyễn Thị Hạnh', '0911645222', 0, '1998-11-30 14:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\Hanh2200003.jpg')
-insert into NhanVien values('2211004',N'Phạm Văn Đạt', '0877124518', 1, '1999-3-2 10:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Dat2201004.jpg')
-insert into NhanVien values('2111002',N'Phan Văn Đức', '0455050198', 1, '2001-9-5 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Duc2111002.jpg')
-insert into NhanVien values('2010002',N'Vũ Thị Minh', '0119456771', 0, '2000-2-8 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Minh2010002.jpg')
-insert into NhanVien values('2110003',N'Nguyễn Quỳnh Như', '0455912090', 0, '1998-12-3 07:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Nhu2110003.jpg')
-insert into NhanVien values('2301002',N'Nguyễn Văn Bá Nhân', '0821643221', 1, '2000-9-10 18:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\Nhan2301002.jpg')
-insert into NhanVien values('2210005',N'Nguyễn Thị Minh Ngọc', '0775298641', 0, '2001-8-22 17:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Ngoc2210005.jpg')
-insert into NhanVien values('2311003',N'Lê Văn Thành', '0988328785', 1, '1999-9-25 08:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Thanh2311003.jpg')
-insert into NhanVien values('2210006',N'Nguyễn Thị Như Hoa', '0821734226', 0, '2000-8-17 11:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Hoa2210006.jpg')
-insert into NhanVien values('2110004',N'Lê Thị Đào', '0967432230', 0, '1994-1-20 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Dao2110004.jpg')
+insert into NhanVien values('2001001',N'Trần Văn Sơn', '0933900911', 1, '1995-2-5 08:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2110001',N'Lê Hương Trà', '0822911911', 0, '2001-7-7 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2211001',N'Vũ Văn Hà', '0826812977', 1, '2000-7-30 14:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2211002',N'Nguyễn Thái Sỹ', '0344211955', 1, '1999-5-22 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2311001',N'Lê Tuyết Nhi', '0663765198', 0, '2002-7-9 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2200003',N'Nguyễn Thị Hạnh', '0911645222', 0, '1998-11-30 14:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2211004',N'Phạm Văn Đạt', '0877124518', 1, '1999-3-2 10:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2111002',N'Phan Văn Đức', '0455050198', 1, '2001-9-5 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2010002',N'Vũ Thị Minh', '0119456771', 0, '2000-2-8 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2110003',N'Nguyễn Quỳnh Như', '0455912090', 0, '1998-12-3 07:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2301002',N'Nguyễn Văn Bá Nhân', '0821643221', 1, '2000-9-10 18:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2210005',N'Nguyễn Thị Minh Ngọc', '0775298641', 0, '2001-8-22 17:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2311003',N'Lê Văn Thành', '0988328785', 1, '1999-9-25 08:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2210006',N'Nguyễn Thị Như Hoa', '0821734226', 0, '2000-8-17 11:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2110004',N'Lê Thị Đào', '0967432230', 0, '1994-1-20 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
 go
 
 --Tài khoản
@@ -482,6 +483,79 @@ BEGIN
     END
 END;
 
+<<<<<<< HEAD
+
+--Phân quyền
+
+-- Switch to the master database to create the logins
+go 
+drop login NV
+drop login QL
+go
+USE master;
+
+-- Create logins
+CREATE LOGIN QL WITH PASSWORD = 'QLpassword', CHECK_POLICY = OFF;
+CREATE LOGIN NV WITH PASSWORD = 'NVpassword', CHECK_POLICY = OFF;
+
+-- Switch to your database to create the users and roles
+USE QuanLyCuaHangKaraoke4T;
+
+-- Create users for the logins in the database
+CREATE USER QL FOR LOGIN QL;
+CREATE USER NV FOR LOGIN NV;
+
+-- Create roles
+CREATE ROLE role_QL AUTHORIZATION dbo;
+CREATE ROLE role_NV AUTHORIZATION dbo;
+
+-- Add the users to the roles
+EXEC sp_addrolemember 'role_QL', 'QL';
+EXEC sp_addrolemember 'role_NV', 'NV';
+
+-- Grant permissions to admin
+GRANT CREATE TABLE, CREATE PROCEDURE, CREATE VIEW, CREATE FUNCTION TO role_QL;
+GRANT SELECT, INSERT, UPDATE, DELETE TO role_QL;
+
+-- Grant SELECT permissions to user
+GRANT SELECT ON LoaiPhong TO role_NV;
+GRANT SELECT ON NhanVien TO role_NV;
+GRANT SELECT ON Phong TO role_NV;
+GRANT SELECT ON SanPham TO role_NV;
+GRANT SELECT ON KhuyenMai TO role_NV;
+GRANT SELECT ON KhachHang TO role_NV;
+GRANT SELECT ON PhieuDatPhong TO role_NV;
+GRANT SELECT ON HoaDonDatPhong TO role_NV;
+GRANT SELECT ON ChiTietHoaDon TO role_NV;
+GRANT SELECT ON ChiTietDichVu TO role_NV;
+GRANT SELECT ON TempDatPhong TO role_NV;
+GRANT SELECT ON TempThanhToan TO role_NV;
+-- Grant INSERT permissions to user
+GRANT INSERT ON SanPham TO role_NV;
+GRANT INSERT ON KhuyenMai TO role_NV;
+GRANT INSERT ON KhachHang TO role_NV;
+GRANT INSERT ON PhieuDatPhong TO role_NV;
+GRANT INSERT ON HoaDonDatPhong TO role_NV;
+GRANT INSERT ON ChiTietHoaDon TO role_NV;
+GRANT INSERT ON ChiTietDichVu TO role_NV;
+GRANT INSERT ON TempDatPhong TO role_NV;
+GRANT INSERT ON TempThanhToan TO role_NV;
+-- Grant UPDATE permissions to user
+GRANT UPDATE ON Phong TO role_NV;
+GRANT UPDATE ON SanPham TO role_NV;
+GRANT UPDATE ON KhuyenMai TO role_NV;
+GRANT UPDATE ON KhachHang TO role_NV;
+GRANT UPDATE ON PhieuDatPhong TO role_NV;
+GRANT UPDATE ON HoaDonDatPhong TO role_NV;
+GRANT UPDATE ON ChiTietHoaDon TO role_NV;
+GRANT UPDATE ON ChiTietDichVu TO role_NV;
+GRANT UPDATE ON TempDatPhong TO role_NV;
+GRANT UPDATE ON TempThanhToan TO role_NV;
+--Grant DELETE permissions to user
+GRANT DELETE ON TempDatPhong TO role_NV;
+GRANT DELETE ON TempThanhToan TO role_NV;
+
+
 --select * from NhanVien
 --select * from TaiKhoan
 --select * from LoaiPhong
@@ -496,6 +570,4 @@ END;
 --select * from TempDatPhong
 --select * from TempThanhToan
 --select * from TempPhongBiChuyen
-
-
-
+--select * from TempPhongBiChuyen

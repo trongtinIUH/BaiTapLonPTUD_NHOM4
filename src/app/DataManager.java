@@ -2,7 +2,7 @@ package app;
 
 import java.util.ArrayList;
 
-import entity.TempThemDV;
+import utils.TempThemDV;
 
 public class DataManager {
 
@@ -12,12 +12,65 @@ public class DataManager {
 	private static boolean thanhToan;
 	private static boolean datPhong;
 	private static String soDienThoaiKHDat = "";
-    private static boolean chuyenPhong,datPhongCho,phongTrong;
-    private static ArrayList<TempThemDV> ctdvTempList;
-    private static double tongTienDV;
+	private static String soDienThoaiKHDatCho = "";
+	private static String maPhongDatCho = "";
+	private static String soNguoiHatDatCho = "";
+	private static boolean chuyenPhong, datPhongCho, phongTrong;
+	private static ArrayList<TempThemDV> ctdvTempList;
+	private static double tongTienDV;
 	private static boolean loadDV = false;
 	private static boolean loadSDT = false;
 	private static String maHD_trongDSThanhToan;
+	private static boolean timerChayTB = false;
+	private static boolean loadSDTCho = false;
+
+	public static boolean isLoadSDTCho() {
+		return loadSDTCho;
+	}
+
+	public static void setLoadSDTCho(boolean loadSDTCho) {
+		DataManager.loadSDTCho = loadSDTCho;
+	}
+
+	public static String getSoDienThoaiKHDatCho() {
+		return soDienThoaiKHDatCho;
+	}
+
+	public static void setSoDienThoaiKHDatCho(String soDienThoaiKHDatCho) {
+		DataManager.soDienThoaiKHDatCho = soDienThoaiKHDatCho;
+	}
+
+	public static String getMaPhongDatCho() {
+		return maPhongDatCho;
+	}
+
+	public static void setMaPhongDatCho(String maPhongDatCho) {
+		DataManager.maPhongDatCho = maPhongDatCho;
+	}
+
+	public static String getSoNguoiHatDatCho() {
+		return soNguoiHatDatCho;
+	}
+
+	public static void setSoNguoiHatDatCho(String soNguoiHatDatCho) {
+		DataManager.soNguoiHatDatCho = soNguoiHatDatCho;
+	}
+
+	public static boolean isPhongTrong() {
+		return phongTrong;
+	}
+
+	public static void setPhongTrong(boolean phongTrong) {
+		DataManager.phongTrong = phongTrong;
+	}
+
+	public static boolean isTimerChayTB() {
+		return timerChayTB;
+	}
+
+	public static void setTimerChayTB(boolean timerChayTB) {
+		DataManager.timerChayTB = timerChayTB;
+	}
 
 	public static String getRole() {
 		return role;
@@ -51,7 +104,6 @@ public class DataManager {
 		DataManager.loadDV = loadDV;
 	}
 
-
 	public static double getTongTienDV() {
 		return tongTienDV;
 	}
@@ -67,7 +119,6 @@ public class DataManager {
 	public static void setCtdvTempList(ArrayList<TempThemDV> ctdvTempList) {
 		DataManager.ctdvTempList = ctdvTempList;
 	}
-
 
 	public static String getSoDienThoaiKHDat() {
 		return soDienThoaiKHDat;

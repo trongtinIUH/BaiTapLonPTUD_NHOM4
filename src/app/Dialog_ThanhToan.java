@@ -63,8 +63,8 @@ import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.SanPham;
-import entity.TempPhongBiChuyen;
-import entity.TempThanhToan;
+import utils.TempPhongBiChuyen;
+import utils.TempThanhToan;
 
 import java.awt.Dimension;
 import java.awt.Window;

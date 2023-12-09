@@ -41,9 +41,11 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
+import dao.DangNhap_dao;
 import dao.NhanVien_dao;
-import entity.DateLabelFormatter;
 import entity.NhanVien;
+import entity.TaiKhoan;
+import utils.DateLabelFormatter;
 
 public class GD_NhanVien extends JPanel implements ActionListener, MouseListener {
 	/**
@@ -55,7 +57,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
 
 	private String col[] = { "STT", "Mã nhân viên", "Họ tên", "Số điện thoại", "Giới tính", "Ngày sinh", "Chức vụ",
-			"Ảnh", "Thông tin làm" };
+			"Ảnh"};
 	private JLabel lblTitle;
 	private JPanel pnNorth;
 	private SqlDateModel modelNgaySinh;
@@ -75,6 +77,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	private JTable table;
 	private JScrollPane scroll;
 	private NhanVien_dao nv_dao;
+	private DangNhap_dao dangNhap_dao = new DangNhap_dao();
 	private JTextField txtMa;
 	private JTextField txtHoTen;
 	private JTextField txtSDT;
@@ -345,6 +348,8 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		table.addMouseListener(this);
 		openButton.addActionListener(this);
 		btnUser.addActionListener(this);
+		rdoNam.addActionListener(this);
+		rdoNu.addActionListener(this);
 
 		loadData();
 		loadMa();
@@ -366,7 +371,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		for (NhanVien nv : nv_dao.getAllNhanVien()) {
 			i++;
 			Object[] row = { i, nv.getMaNhanVien(), nv.getHoTen(), nv.getSoDienThoai(), getGT(nv), nv.getNgaySinh(),
-					nv.getChucVu(), nv.getAnhDaiDien(), "Xem chi tiết" };
+					nv.getChucVu(), nv.getAnhDaiDien()};
 			model.addRow(row);
 		}
 	}
@@ -454,9 +459,22 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			int tuoi = (int) ((ngayHienTai.getTime() - ngaySinh.getTime()) / millisecondsPerYear);
 			if (tuoi >= 18) {
 				String chucVu = (String) cbChucVu.getSelectedItem();
+				String role,mk;
+				boolean trangthai;
+				if(cbChucVu.getSelectedItem().equals("Nhân viên quản lý")) {
+					role="Quản lý";
+					trangthai=true;
+					mk=ma;
+				}else {
+					role="Nhân viên";
+					trangthai=true;
+					mk=ma;
+				}
 				NhanVien nv = new NhanVien(ma, hoTen, sDT, gt, ngaySinh, chucVu, absolutePath);
 				if (nv_dao.addNhanVien(nv)) {
-					JOptionPane.showMessageDialog(this, "Thêm thành công!!");
+					JOptionPane.showMessageDialog(this, "Thêm thành công | Tài Khoản và Mật Khẩu của bạn là: "+ma+"\nVui lòng tiến hành đổi mật khẩu để tăng bảo mật !");
+					TaiKhoan tk= new TaiKhoan(ma, mk, trangthai, nv= new NhanVien(ma, hoTen, sDT, gt, ngaySinh, chucVu, absolutePath), role);
+					dangNhap_dao.Them_taiKhoan_matKhau(tk);
 					clearTable();
 					loadData();
 					xoaTrang();
@@ -665,6 +683,10 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			chenAnh();
 		} else if (obj.equals(btnUser)) {
 			dialog_user.setVisible(true);
+		} else if (obj.equals(rdoNam)) {
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
+		} else if (obj.equals(rdoNu)) {
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
 		}
 	}
 
@@ -687,10 +709,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		}
 
 		cbChucVu.setSelectedItem(model.getValueAt(row, 6));
-		if (rdoNam.isSelected())
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
-		else 
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
+		imageLabel.setIcon(new ImageIcon(model.getValueAt(row, 7).toString()));
 
 	}
 

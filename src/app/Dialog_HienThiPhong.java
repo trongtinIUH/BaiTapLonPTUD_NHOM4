@@ -25,7 +25,7 @@ import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 import entity.LoaiPhong;
 import entity.Phong;
-import entity.TempDatPhong;
+import utils.TempDatPhong;
 import dao.LoaiPhong_dao;
 
 public class Dialog_HienThiPhong extends JDialog implements ActionListener {
