@@ -39,8 +39,8 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
 import dao.SanPham_dao;
-import entity.DateLabelFormatter;
 import entity.SanPham;
+import utils.DateLabelFormatter;
 
 public class GD_SanPham extends JPanel implements ActionListener, MouseListener {
 

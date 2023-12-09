@@ -7,10 +7,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.DoanhThuLoaiPhong;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.Phong;
+import utils.DoanhThuLoaiPhong;
 
 public class Phong_dao {
 	public ArrayList<Phong> getallPhongs() {

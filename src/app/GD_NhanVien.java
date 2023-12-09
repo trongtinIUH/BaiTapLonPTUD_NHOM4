@@ -41,9 +41,11 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
+import dao.DangNhap_dao;
 import dao.NhanVien_dao;
-import entity.DateLabelFormatter;
 import entity.NhanVien;
+import entity.TaiKhoan;
+import utils.DateLabelFormatter;
 
 public class GD_NhanVien extends JPanel implements ActionListener, MouseListener {
 	/**
@@ -75,6 +77,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	private JTable table;
 	private JScrollPane scroll;
 	private NhanVien_dao nv_dao;
+	private DangNhap_dao dangNhap_dao = new DangNhap_dao();
 	private JTextField txtMa;
 	private JTextField txtHoTen;
 	private JTextField txtSDT;
@@ -454,9 +457,22 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			int tuoi = (int) ((ngayHienTai.getTime() - ngaySinh.getTime()) / millisecondsPerYear);
 			if (tuoi >= 18) {
 				String chucVu = (String) cbChucVu.getSelectedItem();
+				String role,mk;
+				boolean trangthai;
+				if(cbChucVu.getSelectedItem().equals("Nhân viên quản lý")) {
+					role="Quản lý";
+					trangthai=true;
+					mk=ma;
+				}else {
+					role="Nhân viên";
+					trangthai=true;
+					mk=ma;
+				}
 				NhanVien nv = new NhanVien(ma, hoTen, sDT, gt, ngaySinh, chucVu, absolutePath);
 				if (nv_dao.addNhanVien(nv)) {
-					JOptionPane.showMessageDialog(this, "Thêm thành công!!");
+					JOptionPane.showMessageDialog(this, "Thêm thành công | Tài Khoản và Mật Khẩu của bạn là: "+ma+"\nVui lòng tiến hành đổi mật khẩu để tăng bảo mật !");
+					TaiKhoan tk= new TaiKhoan(ma, mk, trangthai, nv= new NhanVien(ma, hoTen, sDT, gt, ngaySinh, chucVu, absolutePath), role);
+					dangNhap_dao.Them_taiKhoan_matKhau(tk);
 					clearTable();
 					loadData();
 					xoaTrang();

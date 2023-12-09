@@ -43,15 +43,15 @@ import dao.KhuyenMai_dao;
 import dao.NhanVien_dao;
 import dao.Phong_dao;
 import dao.ThongKe_dao;
-import entity.CurveLineChart;
-import entity.DoanhThuLoaiPhong;
 import entity.HoaDonDatPhong;
-import entity.ModelChart;
-import entity.ModelPieChart;
-import entity.ModelThongKe;
-import entity.ModelThongKeDTNhieuNam;
-import entity.ModelThongKeKH;
-import entity.PieChart;
+import utils.CurveLineChart;
+import utils.DoanhThuLoaiPhong;
+import utils.ModelChart;
+import utils.ModelPieChart;
+import utils.ModelThongKe;
+import utils.ModelThongKeDTNhieuNam;
+import utils.ModelThongKeKH;
+import utils.PieChart;
 
 public class GD_ThongKe extends JPanel implements ActionListener{
 	/**

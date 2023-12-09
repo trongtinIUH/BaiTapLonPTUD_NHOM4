@@ -1,4 +1,4 @@
-package entity;
+package utils;
 
 public class ModelThongKeDTNhieuNam {
 	private String nam;

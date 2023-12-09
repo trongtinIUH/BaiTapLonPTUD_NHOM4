@@ -1,4 +1,4 @@
-package entity;
+package utils;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;

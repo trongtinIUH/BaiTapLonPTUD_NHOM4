@@ -2,7 +2,7 @@ package app;
 
 import java.util.ArrayList;
 
-import entity.TempThemDV;
+import utils.TempThemDV;
 
 public class DataManager {
 
@@ -12,6 +12,9 @@ public class DataManager {
 	private static boolean thanhToan;
 	private static boolean datPhong;
 	private static String soDienThoaiKHDat = "";
+	private static String soDienThoaiKHDatCho = "";
+	private static String maPhongDatCho="";
+	private static String soNguoiHat="";
     private static boolean chuyenPhong,datPhongCho,phongTrong;
     private static ArrayList<TempThemDV> ctdvTempList;
     private static double tongTienDV;
@@ -28,6 +31,29 @@ public class DataManager {
 		DataManager.timerChayTB = timerChayTB;
 	}
 
+	//tín làm
+	public static String getSoDienThoaiKHDatCho() {
+		return soDienThoaiKHDatCho;
+	}
+
+	public static void setsoDienThoaiKHDatCho(String soDienThoaiKHDatCho) {
+		DataManager.soDienThoaiKHDatCho = soDienThoaiKHDatCho;
+	}
+	public static String getMaPhongDatCho() {
+		return maPhongDatCho;
+	}
+
+	public static void setMaPhongDatCho(String maPhongDatCho) {
+		DataManager.maPhongDatCho = maPhongDatCho;
+	}
+	public static String getSoNguoiHatPhongCho() {
+		return soNguoiHat;
+	}
+
+	public static void setSoNguoiHatPhongCho(String soNguoiHat) {
+		DataManager.soNguoiHat = soNguoiHat;
+	}
+	
 	public static String getRole() {
 		return role;
 	}

@@ -1,4 +1,4 @@
-package entity;
+package utils;
 
 import java.util.Date;
 import java.util.Objects;

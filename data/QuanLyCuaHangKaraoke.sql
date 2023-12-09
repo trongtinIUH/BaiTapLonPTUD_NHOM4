@@ -144,6 +144,7 @@ CREATE TABLE TempDatPhong (
 )
 go
 
+
 CREATE TABLE TempThanhToan (
     maPhong varchar(20) not null
 )
@@ -482,6 +483,7 @@ BEGIN
     END
 END;
 
+<<<<<<< HEAD
 
 --Phân quyền
 
@@ -568,4 +570,5 @@ GRANT DELETE ON TempThanhToan TO role_NV;
 --select * from ChiTietDichVu
 --select * from TempDatPhong
 --select * from TempThanhToan
+--select * from TempPhongBiChuyen
 --select * from TempPhongBiChuyen
