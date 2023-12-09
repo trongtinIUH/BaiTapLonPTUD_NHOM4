@@ -354,11 +354,11 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 				else
 					btnBackHuyThanhToan.setEnabled(true);
 				
-				if (DataManager.isDatPhongCho()==true)
-					btnBackPhongCho.setEnabled(false);
-				else
+				if (!DataManager.getMaPhongDatCho().equals(""))
 					btnBackPhongCho.setEnabled(true);
-				
+				else
+					btnBackPhongCho.setEnabled(false);
+
 			}
 		});
 
@@ -833,7 +833,9 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		}
 		if (o.equals(btnBackPhongCho)) {
 			if (DataManager.isDatPhongCho()==false) {
-				dialog_DatPhongCho = new Dialog_DatPhongCho(txtMaPhong.getText(), null, null, Integer.parseInt(txtSoNguoi.getText()), trangChu);
+				Phong p = p_dao.getPhongTheoMaPhong(DataManager.getMaPhongDatCho());
+				LoaiPhong lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
+				dialog_DatPhongCho = new Dialog_DatPhongCho(p.getMaPhong(), p, lp, Integer.parseInt(DataManager.getSoNguoiHatDatCho()), trangChu);
 				dialog_DatPhongCho.setVisible(true);
 				
 			} else {

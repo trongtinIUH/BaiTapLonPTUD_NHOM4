@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.xml.crypto.Data;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
@@ -50,7 +51,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JTextField txtSDT;
 	private JButton btn_KiemTraSDT, btn_QuayLai, btn_DatPhong;
 	private JPanel panel_1, panel_2;
-	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1, lbl_sdtKH, lbl_GioiTinh,lbl_NgayDatPhong_1;
+	private JLabel lbl_GioiTinh_1, lbl_GiaTien_1, lbl_TenKH_1, lbl_sdtKH, lbl_GioiTinh, lbl_NgayDatPhong_1;
 	private JTextField txtSoNguoi;
 
 	private JLabel lbl_TenKH;
@@ -96,7 +97,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		setSize(800, 400);
 		setLocationRelativeTo(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
-	    this.setIconImage(icon.getImage());
+		this.setIconImage(icon.getImage());
 
 		// panel chứa tiêu đề--------------------------------------
 		JPanel panel = new JPanel();
@@ -233,7 +234,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		String formattedDateTime = now.format(formatter);
 
 		// Đặt chuỗi này làm văn bản cho JLabel của bạn
-		lbl_NgayDatPhong_1= new JLabel();
+		lbl_NgayDatPhong_1 = new JLabel();
 		lbl_NgayDatPhong_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lbl_NgayDatPhong_1.setText(formattedDateTime);
 		lbl_NgayDatPhong_1.setBounds(200, 190, 260, 25);
@@ -290,21 +291,17 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 			txtSDT.setText(DataManager.getSoDienThoaiKHDatCho());
 			khachHang_dao = new KhachHang_dao();
 			String sdt = txtSDT.getText();
-			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
-			String hoTen = khachHang.getHoTen();
-			boolean gioiTinh = khachHang.isGioiTinh();
-			String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
-			lbl_GioiTinh_1.setText(gioiTinhStr);
-			lbl_TenKH_1.setText(hoTen);
+			KhachHang khachHang = khachHang_dao.getKhachHangTheoSDT(sdt);
+			if (khachHang != null) {
+				String hoTen = khachHang.getHoTen();
+				boolean gioiTinh = khachHang.isGioiTinh();
+				String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
+				lbl_GioiTinh_1.setText(gioiTinhStr);
+				lbl_TenKH_1.setText(hoTen);
+			}
 		}
-		// Lưu mã phòng
-		DataManager.setMaPhongDatCho(maPhong);
-
-		// Lưu số người hát
-		DataManager.setSoNguoiHatPhongCho(txtSoNguoi.getText());
-		
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -315,29 +312,15 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 		if (o.equals(btn_DatPhong)) {
 			khachHang_dao = new KhachHang_dao();
 			String sdt = txtSDT.getText();
-			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
-			
-			// Lấy thời gian đặt phòng
-			String formattedDateTime = lbl_NgayDatPhong_1.getText();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd    hh:mm a");
-			LocalDateTime ngayGioDatPhong_cu = LocalDateTime.parse(formattedDateTime, formatter);
-
-			// Lấy thời gian nhận phòng từ DateTimePicker
-			LocalDateTime ngay_GioNhanPhong = dateTimePicker_1.getDateTimePermissive();
-
-			// Tính khoảng thời gian giữa thời gian đặt phòng và thời gian nhận phòng
-			Duration duration = Duration.between(ngayGioDatPhong_cu, ngay_GioNhanPhong);
-
-			// Kiểm tra xem thời gian nhận phòng có lớn hơn thời gian đặt phòng hay không
-			if (duration.toMinutes() <= 0) {
-			    JOptionPane.showMessageDialog(this, "Thời gian nhận phòng phải lớn hơn thời gian đặt phòng!");
-			} else {
-
-			
+			KhachHang khachHang = khachHang_dao.getKhachHangTheoSDT(sdt);
 			if (khachHang != null && khachHang.getHoTen().equals(lbl_TenKH_1.getText())) {
 				JOptionPane.showMessageDialog(this, "Đặt phòng thành công, thời gian bắt đầu được tính !");
 				DataManager.setSoDienThoaiKHDat("");
 				DataManager.setDatPhongCho(true);
+				DataManager.setSoDienThoaiKHDatCho("");
+				DataManager.setMaPhongDatCho("");
+				DataManager.setSoNguoiHatDatCho("");
+
 				Enum_TrangThai trangThai = Enum_TrangThai.Chờ;
 				Phong phong = new Phong(lbl_Phong.getText(), trangThai);
 				phong_dao.updatePhong(phong, lbl_Phong.getText());
@@ -348,7 +331,7 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 				Phong ph1 = new Phong(maPhong);
 				String maNV = DataManager.getUserName();
 				NhanVien nv = new NhanVien(maNV);
-				kh = khachHang_dao.TimkiemSDT_KHachHang(sdt);
+				kh = khachHang_dao.getKhachHangTheoSDT(sdt);
 				String maKH = kh.getMaKhachHang();
 				KhachHang kh2 = new KhachHang(maKH);
 				ngayGioDatPhong = LocalDateTime.now();
@@ -360,41 +343,41 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 				pdp_dao.addPhieuDatPhong(pdp);
 
 				setVisible(false);
-			} else if(khachHang != null && !khachHang.getHoTen().equals(lbl_TenKH_1.getText())) {
+			} else if (khachHang != null && !khachHang.getHoTen().equals(lbl_TenKH_1.getText())) {
 				JOptionPane.showMessageDialog(this, "Bạn chưa kiểm tra số điện thoại khách hàng");
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(this,
 						"Khách hàng phải có thông tin trên hệ thống mới được phép đặt phòng trước!");
 			}
 
 		}
-		}
 
-	// kiem tra khach hang
-	if(o.equals(btn_KiemTraSDT))
+		// kiem tra khach hang
+		if (o.equals(btn_KiemTraSDT))
 
-	{
-		khachHang_dao = new KhachHang_dao();
-		String sdt = txtSDT.getText();
-		KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
-		if (khachHang != null) {
-			String hoTen = khachHang.getHoTen();
-			boolean gioiTinh = khachHang.isGioiTinh();
-			String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
-			lbl_GioiTinh_1.setText(gioiTinhStr);
-			lbl_TenKH_1.setText(hoTen);
-			DataManager.setSoDienThoaiKHDat(txtSDT.getText());
-		} else {
-			int checkCustomer = JOptionPane.showConfirmDialog(this,
-					"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
-			DataManager.setsoDienThoaiKHDatCho(txtSDT.getText());
-			DataManager.setLoadSDT(true);
-			if (checkCustomer == JOptionPane.YES_OPTION) {
-				trangChu.showKhachHangCard();
-				setVisible(false);
+		{
+			khachHang_dao = new KhachHang_dao();
+			String sdt = txtSDT.getText();
+			KhachHang khachHang = khachHang_dao.getKhachHangTheoSDT(sdt);
+			if (khachHang != null) {
+				String hoTen = khachHang.getHoTen();
+				boolean gioiTinh = khachHang.isGioiTinh();
+				String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
+				lbl_GioiTinh_1.setText(gioiTinhStr);
+				lbl_TenKH_1.setText(hoTen);
+			} else {
+				int checkCustomer = JOptionPane.showConfirmDialog(this,
+						"Khách hàng chưa có trên hệ thống! Bạn có muốn thêm khách hàng không?");
+				DataManager.setSoDienThoaiKHDatCho(sdt);
+				DataManager.setMaPhongDatCho(lbl_Phong.getText());
+				DataManager.setSoNguoiHatDatCho(txtSoNguoi.getText());
+				DataManager.setLoadSDTCho(true);
+				if (checkCustomer == JOptionPane.YES_OPTION) {
+					trangChu.showKhachHangCard();
+					setVisible(false);
+				}
 			}
 		}
-	}
 
 	}
 

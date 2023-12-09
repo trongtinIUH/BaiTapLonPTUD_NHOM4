@@ -419,7 +419,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 			txtSDT.setText(DataManager.getSoDienThoaiKHDat());
 			khachHang_dao = new KhachHang_dao();
 			String sdt = txtSDT.getText();
-			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
+			KhachHang khachHang = khachHang_dao.getKhachHangTheoSDT(sdt);
 			String hoTen = khachHang.getHoTen();
 			boolean gioiTinh = khachHang.isGioiTinh();
 			String gioiTinhStr = gioiTinh ? "Nam" : "Nữ";
@@ -578,7 +578,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 							kh = kh_dao.getKhachHangTheoSDT("0000000000");
 						else
 							kh = kh_dao.getKhachHangTheoSDT(txtSDT.getText());
-						
+
 						PhieuDatPhong pdb = new PhieuDatPhong(TaoMaPDP(), p, nv, kh, ngayGioHT, ngayGioHT,
 								tmpDatPhong.getSoNguoiHat());
 						if (p.getTrangThai() != Enum_TrangThai.Chờ) {
@@ -609,8 +609,8 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 						// Thêm chi tiết hóa đơn
 						ChiTietHoaDon cthd;
 
-						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(ngayGioHT),
-								Timestamp.valueOf(ngayGioHT), 0);
+						cthd = new ChiTietHoaDon(hddp, p, Timestamp.valueOf(ngayGioHT), Timestamp.valueOf(ngayGioHT),
+								0);
 						cthd_dao.addChiTietHD(cthd);
 
 						// Thêm chi tiết dịch vụ, cập nhật lại số lượng sản phẩm trong csdl
@@ -652,7 +652,7 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 		if (o.equals(btn_KiemTraSDT)) {
 			khachHang_dao = new KhachHang_dao();
 			String sdt = txtSDT.getText();
-			KhachHang khachHang = khachHang_dao.TimkiemSDT_KHachHang(sdt);
+			KhachHang khachHang = khachHang_dao.getKhachHangTheoSDT(sdt);
 			if (khachHang != null) {
 				String hoTen = khachHang.getHoTen();
 				boolean gioiTinh = khachHang.isGioiTinh();

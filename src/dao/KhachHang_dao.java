@@ -66,7 +66,7 @@ public class KhachHang_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "SELECT * FROM KhachHang WHERE hoTen LIKE N'%" + tenKhachHang+ "%'";
+			String sql = "SELECT * FROM KhachHang WHERE hoTen LIKE N'%" + tenKhachHang + "%'";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
@@ -185,26 +185,4 @@ public class KhachHang_dao {
 		}
 		return n > 0;
 	}
-
-	// hàm tìm khi tồn tại tín làm
-	public KhachHang TimkiemSDT_KHachHang(String SDT) {
-		KhachHang khachHang = null;
-		try {
-			ConnectDB.getInstance();
-			Connection con = ConnectDB.getConnection();
-			String sql = "select * from KhachHang where soDienThoai = N'" + SDT + "'";
-			Statement sta = con.createStatement();
-			ResultSet rs = sta.executeQuery(sql);
-			if (rs.next()) {
-				String maKhachHang = rs.getString("maKhachHang");
-				String hoTen = rs.getString("hoTen");
-				boolean gioiTinh = rs.getBoolean("gioiTinh");
-				khachHang = new KhachHang(maKhachHang, hoTen, SDT, gioiTinh);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return khachHang;
-	}
-
 }
