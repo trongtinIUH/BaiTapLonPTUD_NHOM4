@@ -57,7 +57,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	Font font3 = new Font("Arial", Font.PLAIN, 18); // jtexfield
 
 	private String col[] = { "STT", "Mã nhân viên", "Họ tên", "Số điện thoại", "Giới tính", "Ngày sinh", "Chức vụ",
-			"Ảnh", "Thông tin làm" };
+			"Ảnh"};
 	private JLabel lblTitle;
 	private JPanel pnNorth;
 	private SqlDateModel modelNgaySinh;
@@ -348,6 +348,8 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		table.addMouseListener(this);
 		openButton.addActionListener(this);
 		btnUser.addActionListener(this);
+		rdoNam.addActionListener(this);
+		rdoNu.addActionListener(this);
 
 		loadData();
 		loadMa();
@@ -369,7 +371,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		for (NhanVien nv : nv_dao.getAllNhanVien()) {
 			i++;
 			Object[] row = { i, nv.getMaNhanVien(), nv.getHoTen(), nv.getSoDienThoai(), getGT(nv), nv.getNgaySinh(),
-					nv.getChucVu(), nv.getAnhDaiDien(), "Xem chi tiết" };
+					nv.getChucVu(), nv.getAnhDaiDien()};
 			model.addRow(row);
 		}
 	}
@@ -681,6 +683,10 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 			chenAnh();
 		} else if (obj.equals(btnUser)) {
 			dialog_user.setVisible(true);
+		} else if (obj.equals(rdoNam)) {
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
+		} else if (obj.equals(rdoNu)) {
+			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
 		}
 	}
 
@@ -703,10 +709,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		}
 
 		cbChucVu.setSelectedItem(model.getValueAt(row, 6));
-		if (rdoNam.isSelected())
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
-		else 
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
+		imageLabel.setIcon(new ImageIcon(model.getValueAt(row, 7).toString()));
 
 	}
 

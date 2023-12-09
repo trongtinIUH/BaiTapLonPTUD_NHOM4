@@ -157,21 +157,21 @@ CREATE TABLE TempPhongBiChuyen (
 go
 
 --Nhân viên
-insert into NhanVien values('2001001',N'Trần Văn Sơn', '0933900911', 1, '1995-2-5 08:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\son2001001.jpg')
-insert into NhanVien values('2110001',N'Lê Hương Trà', '0822911911', 0, '2001-7-7 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Tra2110002.jpg')
-insert into NhanVien values('2211001',N'Vũ Văn Hà', '0826812977', 1, '2000-7-30 14:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Ha2211003.jpg')
-insert into NhanVien values('2211002',N'Nguyễn Thái Sỹ', '0344211955', 1, '1999-5-22 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Sy2211002.jpg')
-insert into NhanVien values('2311001',N'Lê Tuyết Nhi', '0663765198', 0, '2002-7-9 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Nhi2311001.jpg')
-insert into NhanVien values('2200003',N'Nguyễn Thị Hạnh', '0911645222', 0, '1998-11-30 14:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\Hanh2200003.jpg')
-insert into NhanVien values('2211004',N'Phạm Văn Đạt', '0877124518', 1, '1999-3-2 10:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Dat2201004.jpg')
-insert into NhanVien values('2111002',N'Phan Văn Đức', '0455050198', 1, '2001-9-5 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Duc2111002.jpg')
-insert into NhanVien values('2010002',N'Vũ Thị Minh', '0119456771', 0, '2000-2-8 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Minh2010002.jpg')
-insert into NhanVien values('2110003',N'Nguyễn Quỳnh Như', '0455912090', 0, '1998-12-3 07:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Nhu2110003.jpg')
-insert into NhanVien values('2301002',N'Nguyễn Văn Bá Nhân', '0821643221', 1, '2000-9-10 18:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\Nhan2301002.jpg')
-insert into NhanVien values('2210005',N'Nguyễn Thị Minh Ngọc', '0775298641', 0, '2001-8-22 17:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Ngoc2210005.jpg')
-insert into NhanVien values('2311003',N'Lê Văn Thành', '0988328785', 1, '1999-9-25 08:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Thanh2311003.jpg')
-insert into NhanVien values('2210006',N'Nguyễn Thị Như Hoa', '0821734226', 0, '2000-8-17 11:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Hoa2210006.jpg')
-insert into NhanVien values('2110004',N'Lê Thị Đào', '0967432230', 0, '1994-1-20 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\Dao2110004.jpg')
+insert into NhanVien values('2001001',N'Trần Văn Sơn', '0933900911', 1, '1995-2-5 08:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2110001',N'Lê Hương Trà', '0822911911', 0, '2001-7-7 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2211001',N'Vũ Văn Hà', '0826812977', 1, '2000-7-30 14:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2211002',N'Nguyễn Thái Sỹ', '0344211955', 1, '1999-5-22 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2311001',N'Lê Tuyết Nhi', '0663765198', 0, '2002-7-9 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2200003',N'Nguyễn Thị Hạnh', '0911645222', 0, '1998-11-30 14:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2211004',N'Phạm Văn Đạt', '0877124518', 1, '1999-3-2 10:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2111002',N'Phan Văn Đức', '0455050198', 1, '2001-9-5 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2010002',N'Vũ Thị Minh', '0119456771', 0, '2000-2-8 12:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2110003',N'Nguyễn Quỳnh Như', '0455912090', 0, '1998-12-3 07:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2301002',N'Nguyễn Văn Bá Nhân', '0821643221', 1, '2000-9-10 18:00:00.000', N'Nhân viên quản lý', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2210005',N'Nguyễn Thị Minh Ngọc', '0775298641', 0, '2001-8-22 17:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2311003',N'Lê Văn Thành', '0988328785', 1, '1999-9-25 08:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nam.png')
+insert into NhanVien values('2210006',N'Nguyễn Thị Như Hoa', '0821734226', 0, '2000-8-17 11:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
+insert into NhanVien values('2110004',N'Lê Thị Đào', '0967432230', 0, '1994-1-20 09:00:00.000', N'Nhân viên phục vụ', 'D:\BaiTapLonPTUD_NHOM4\image\nhanvien_nu.png')
 go
 
 --Tài khoản
