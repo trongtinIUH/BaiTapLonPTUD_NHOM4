@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.TempThanhToan;
+import utils.TempThanhToan;
 
 public class TempThanhToan_dao {
 	public ArrayList<TempThanhToan> getAllTemp() {

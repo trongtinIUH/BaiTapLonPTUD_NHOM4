@@ -42,8 +42,8 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
 import dao.NhanVien_dao;
-import entity.DateLabelFormatter;
 import entity.NhanVien;
+import utils.DateLabelFormatter;
 
 public class GD_NhanVien extends JPanel implements ActionListener, MouseListener {
 	/**

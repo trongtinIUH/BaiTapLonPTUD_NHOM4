@@ -1,4 +1,4 @@
-package entity;
+package utils;
 
 public class TempThemDV {
 	private String maPhong;

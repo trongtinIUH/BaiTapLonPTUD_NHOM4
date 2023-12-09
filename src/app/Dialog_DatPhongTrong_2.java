@@ -43,8 +43,8 @@ import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.SanPham;
-import entity.TempDatPhong;
-import entity.TempThemDV;
+import utils.TempDatPhong;
+import utils.TempThemDV;
 
 import javax.swing.table.DefaultTableModel;
 
