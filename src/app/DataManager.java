@@ -23,6 +23,15 @@ public class DataManager {
 	private static String maHD_trongDSThanhToan;
 	private static boolean timerChayTB = false;
 	private static boolean loadSDTCho = false;
+	private static String maNhanVien;
+	
+	public static String getMaNV() {
+		return maNhanVien;
+	}
+
+	public static void setMaNV(String maNhanVien) {
+		DataManager.maNhanVien = maNhanVien;
+	}
 
 	public static boolean isLoadSDTCho() {
 		return loadSDTCho;

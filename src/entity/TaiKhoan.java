@@ -24,6 +24,14 @@ public class TaiKhoan implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
+	public TaiKhoan(String maTaiKhoan, String matKhau, boolean trangThai, String roleName) {
+		super();
+		this.maTaiKhoan = maTaiKhoan;
+		this.matKhau = matKhau;
+		this.trangThai = trangThai;
+		this.roleName = roleName;
+	}
+
 	public TaiKhoan(String maTaiKhoan, String matKhau, boolean trangThai, NhanVien nhanVien, String roleName) {
 		super();
 		this.maTaiKhoan = maTaiKhoan;
