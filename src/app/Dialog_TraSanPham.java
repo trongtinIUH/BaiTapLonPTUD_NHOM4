@@ -97,6 +97,13 @@ public class Dialog_TraSanPham extends JDialog implements ActionListener {
 			int soLuong = Integer.parseInt(txtSLDat.getText()) - Integer.parseInt(txtSLTra.getText());
 			double donGia = s.getDonGia();
 			ChiTietDichVu ctdv = new ChiTietDichVu(hd,ph,sp,soLuong,donGia);
+			
+			for(SanPham sanPham : sp_dao.getallSanPhams()) {
+				if(sanPham.getMaSanPham().equals(s.getMaSanPham())) {
+					sp_dao.updateSLTon(sanPham.getSoLuongTon() + Integer.parseInt(txtSLTra.getText()), sanPham.getMaSanPham());
+					break;
+				}
+			}
 			if(ctdv_dao.UpdateChiTietDV(ctdv)) {
 				thanhToan.clearTable();
 				thanhToan.loadData();

@@ -37,7 +37,7 @@ import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TempDatPhong;
+import utils.TempDatPhong;
 
 public class Dialog_PhongCho extends JDialog implements ActionListener {
 
@@ -64,7 +64,6 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	private TimePickerSettings timeSettings;
 	private DatePickerSettings dateSettings;
 	private DatePickerSettings dateSettings_1;
-
 
 	private TimePickerSettings timeSettings_1;
 	private DateTimePicker dateTimePicker_1;
@@ -260,7 +259,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		btn_HuyPhong.addActionListener(this);
 		btnNhanPhong.addActionListener(this);
 		btnDatPhong.addActionListener(this);
-
+		
 		// Tạo một Action cho btnDatPhong
 
 		Action huyPhongAction = new AbstractAction() {
@@ -299,7 +298,8 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		// Thêm phím nóng cho btn_DatPhongCho
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK), "nhanPhong");
 		actionMap.put("nhanPhong", nhanPhongAction);
-
+		
+		setEnabledBtnDatPhong();
 	}
 
 	public void laydulieu(String maPhong) {
@@ -327,13 +327,24 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		}
 	}
 
+	private void setEnabledBtnDatPhong() {
+		pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
+		//Trước 90p để hát tối thiểu 60p -> Vì trước 90p khó demo đổi sang 30p
+		LocalDateTime check = pdp.getNgayGioNhanPhong().minusMinutes(30);
+		if (check.isBefore(LocalDateTime.now())) {
+			btnDatPhong.setEnabled(false);
+		} else {
+			btnDatPhong.setEnabled(true);
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnDatPhong)) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
 			pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
-			String ngayGioNhan = pdp.getNgayGioNhanPhong().format(formatter);
+			String ngayGioNhan = pdp.getNgayGioNhanPhong().minusMinutes(30).format(formatter);
 			if (JOptionPane.showConfirmDialog(null,
 					"Nếu đặt phòng trực tiếp, chỉ được sử dụng trước " + ngayGioNhan
 							+ " Bạn có muốn tiếp tục đặt không?",

@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import dao.DangNhap_dao;
 import dao.NhanVien_dao;
 import entity.NhanVien;
+import entity.TaiKhoan;
 
 public class Dialog_User extends JDialog implements ActionListener{
 	/**
@@ -36,7 +37,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private JButton btnDoiMK;
 	private JLabel lbl_HoTen,lbl_TrangThai;
 	private JLabel lbl_ChucVu;
-	private JTextField txtQunL;
+	private JTextField txtQunL,txtmanv;
 	private JLabel hinhNV;
 	private JLabel lbl_nen;
 	private NhanVien_dao nv_dao;
@@ -45,7 +46,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private JLabel lbl_TrangThai_1;
 	@SuppressWarnings("unused")
 	private DangNhap_dao dangNhap_dao= new DangNhap_dao();
-	private String trangthaidangnhap;
+	private String trangthaidangnhap,hinhanh_url;
 //	private GD_TrangDangNhap gd_dangNhap = new GD_TrangDangNhap(); 
 	public Dialog_User() {
 		setTitle("User");
@@ -55,7 +56,6 @@ public class Dialog_User extends JDialog implements ActionListener{
 	    this.setIconImage(icon.getImage());
 		//setResizable(false);
 		nv_dao = new NhanVien_dao();
-		
 		this.addWindowListener(new WindowAdapter() {
 		    public void windowOpened(WindowEvent e) {
 				NhanVien nv = null;
@@ -63,15 +63,15 @@ public class Dialog_User extends JDialog implements ActionListener{
 				txt_HoTen.setText(nv.getHoTen());
 				txtQunL.setText(nv.getChucVu());
 				ma=nv.getMaNhanVien();
+				hinhanh_url=nv.getAnhDaiDien();
+			      ImageIcon phongtrong = new ImageIcon(hinhanh_url);
+			      Image originalImage_phongtrong = phongtrong.getImage();
+			      Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(130, 110, java.awt.Image.SCALE_SMOOTH);
+			      ImageIcon resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
+			      hinhNV.setIcon(resizedIcon_phongtrong);
+				
 		    }
-		});
-		
-	      ImageIcon phongtrong = new ImageIcon("image\\nv1.jpg");
-	      Image originalImage_phongtrong = phongtrong.getImage();
-	      Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(130, 110, java.awt.Image.SCALE_SMOOTH);
-	      ImageIcon resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
-	      
-		
+		});		
 		
 		getContentPane().setBackground(Color.WHITE);
 		setBackground(Color.WHITE);
@@ -79,7 +79,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 		
 		hinhNV = new JLabel("");
 		hinhNV.setBounds(0, 10, 120, 120);
-		hinhNV.setIcon(resizedIcon_phongtrong);
+		
 		getContentPane().add(hinhNV);
 		
 		btnDoiMK = new JButton("Đổi Mật Khẩu");

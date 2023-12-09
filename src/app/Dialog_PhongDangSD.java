@@ -39,9 +39,9 @@ import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TempDatPhong;
-import entity.TempPhongBiChuyen;
-import entity.TempThanhToan;
+import utils.TempDatPhong;
+import utils.TempPhongBiChuyen;
+import utils.TempThanhToan;
 
 public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	/**

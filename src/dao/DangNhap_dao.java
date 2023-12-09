@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-
 import entity.NhanVien;
+import entity.PhieuDatPhong;
+import entity.Phong;
 import entity.TaiKhoan;
 
 public class DangNhap_dao {
@@ -144,7 +146,35 @@ public class DangNhap_dao {
 	    }
 	    return updated;
 	}
-
+	//thêm tk và  mk cho nv mới
+	public boolean Them_taiKhoan_matKhau(TaiKhoan tk) {
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement psmt = null;
+		int n = 0;
+		try {
+			psmt = con.prepareStatement("insert into TaiKhoan values(?,?,?,?)");
+			psmt.setString(1, tk.getMaTaiKhoan());
+			psmt.setString(2, tk.getMatKhau());
+			psmt.setBoolean(3, tk.isTrangThai());
+			psmt.setString(4, tk.getRoleName());
+			n = psmt.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				psmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+		return n > 0;
+	}
 
 
 	public String getRole(String maTaiKhoan, String matkhau) {

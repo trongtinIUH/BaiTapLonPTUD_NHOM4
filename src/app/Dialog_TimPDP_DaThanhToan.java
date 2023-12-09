@@ -203,8 +203,9 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 		lbl_ngayThanhToan.setFont(new Font("Arial", Font.BOLD, 18));
 		lbl_ngayThanhToan.setBounds(10, 290, 150, 30);
 		getContentPane().add(lbl_ngayThanhToan);
-		String maHD="HD"+maPDP.substring(3);
-        hd=hd_dao.getHoaDonTheoMaHoaDon(maHD);
+		//tín sữa lại
+        String maHoaDon = hd_dao.getMaHDTheoMaPhieuDP(maPDP);
+		hd = hd_dao.getHoaDonDatPhongTheoMaHD(maHoaDon);
         String ngayGioNhan = hd.getNgayLapHoaDon().toString();
 		
 		lblngaytt = new JLabel();
@@ -218,6 +219,7 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 		lbl_TongTien.setBounds(10, 370, 95, 30);
 		
 		getContentPane().add(lbl_TongTien);
+		
 		
 		lbl_Tongtien_1 = new JLabel();
 		df= new DecimalFormat("#,###,### VNĐ");

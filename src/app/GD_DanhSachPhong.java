@@ -263,7 +263,6 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		cbLoaiTim.setFont(font3);
 		cbLoaiTim.setBounds(170, 55, 170, 30);
 		cbLoaiTim.addItem("Mã phòng");
-		cbLoaiTim.addItem("Loại phòng");
 		cbLoaiTim.addItem("Sức chứa");
 		pnEast.add(cbLoaiTim);
 

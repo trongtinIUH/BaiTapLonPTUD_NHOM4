@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.TempDatPhong;
+import utils.TempDatPhong;
 
 public class TempDatPhong_dao {
 	public ArrayList<TempDatPhong> getAllTemp() {

@@ -36,7 +36,7 @@ import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
 import entity.Phong;
 import entity.SanPham;
-import entity.TempThemDV;
+import utils.TempThemDV;
 
 import javax.swing.JTextField;
 import java.awt.SystemColor;
@@ -347,7 +347,12 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			}
 		});
 
-		loadData();
+		Phong p = p_dao.getPhongTheoMaPhong(ma);
+		if(p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
+			loadData_DangSD();
+		}else {
+			loadData_DatPhong();
+		}
 
 	}
 
@@ -383,8 +388,16 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			}
 		}
 	}
+	
+	public void loadData_DangSD() {
+		sp_dao = new SanPham_dao();
+		for (SanPham x : sp_dao.getallSp()) {
+			Object[] row = { x.getMaSanPham(), x.getTenSanPham(), x.getSoLuongTon(), x.getDonGia() };
+			model_Trai.addRow(row);
+		}
+	}
 
-	public void loadData() {
+	public void loadData_DatPhong() {
 		sp_dao = new SanPham_dao();
 		for (SanPham x : sp_dao.getallSp()) {
 			if (DataManager.getCtdvTempList() != null) {
@@ -467,7 +480,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 			}
 		} else {
 			clearTable();
-			loadData();
+			loadData_DatPhong();
 			btnTimKiem.setText("Tìm kiếm");
 		}
 	}
@@ -544,6 +557,14 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 							Double.parseDouble(model_Phai.getValueAt(i, 3).toString()));
 
 					ctdvTempList.add(ctdv);
+					for (int row = 0; row < tblThemDv_Trai.getRowCount(); row++) {
+						for(SanPham sp : sp_dao.getallSanPhams()) {
+							if(sp.getMaSanPham().equals(model_Trai.getValueAt(row, 0).toString())) {
+								sp_dao.updateSLTon(Integer.parseInt(model_Trai.getValueAt(row, 2).toString()), sp.getMaSanPham());
+								break;
+							}
+						}
+					}
 				}
 				
 				
@@ -555,11 +576,22 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 
 				DataManager.setCtdvTempList(ctdvTempList);
 				for (TempThemDV tmp : DataManager.getCtdvTempList()) {
-					ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
-							new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
-					ctdv_dao.addChiTietDV(ctdv);
+					if(sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Thức ăn")) {
+						ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
+								new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.03);
+						ctdv_dao.addChiTietDV(ctdv);
+					}
+					else if(sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Đồ uống")) {
+						ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
+								new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.02);
+						ctdv_dao.addChiTietDV(ctdv);
+					}
+					else {
+						ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
+								new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.01);
+						ctdv_dao.addChiTietDV(ctdv);
+					}
 				}
-//				System.out.println(maHoaDon);
 			}
 
 			JOptionPane.showMessageDialog(this, "Thêm dịch vụ thành công!");
