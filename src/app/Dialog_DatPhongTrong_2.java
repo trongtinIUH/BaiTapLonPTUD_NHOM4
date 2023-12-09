@@ -616,13 +616,35 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 						// Thêm chi tiết dịch vụ, cập nhật lại số lượng sản phẩm trong csdl
 						if (DataManager.getCtdvTempList() != null) {
 							for (TempThemDV tmp : DataManager.getCtdvTempList()) {
-								ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
-										new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia());
-								if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
-									SanPham sp = sp_dao.getSanPhamTheoMaSP(tmp.getMaSP());
-									sp.setSoLuongTon(sp.getSoLuongTon() - tmp.getSoLuong());
-									ctdv_dao.addChiTietDV(ctdv);
-									sp_dao.updateSanPham(sp);
+								if(sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Thức ăn")) {
+									ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
+											new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.03);
+									if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
+										SanPham sp = sp_dao.getSanPhamTheoMaSP(tmp.getMaSP());
+										sp.setSoLuongTon(sp.getSoLuongTon() - tmp.getSoLuong());
+										ctdv_dao.addChiTietDV(ctdv);
+										sp_dao.updateSanPham(sp);
+									}
+								}
+								else if(sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Đồ uống")) {
+									ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
+											new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.02);
+									if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
+										SanPham sp = sp_dao.getSanPhamTheoMaSP(tmp.getMaSP());
+										sp.setSoLuongTon(sp.getSoLuongTon() - tmp.getSoLuong());
+										ctdv_dao.addChiTietDV(ctdv);
+										sp_dao.updateSanPham(sp);
+									}
+								}
+								else {
+									ChiTietDichVu ctdv = new ChiTietDichVu(hddp, new Phong(tmp.getMaPhong()),
+											new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.01);
+									if (ctdv.getPhong().getMaPhong().equals(tmpDatPhong.getMaPhong())) {
+										SanPham sp = sp_dao.getSanPhamTheoMaSP(tmp.getMaSP());
+										sp.setSoLuongTon(sp.getSoLuongTon() - tmp.getSoLuong());
+										ctdv_dao.addChiTietDV(ctdv);
+										sp_dao.updateSanPham(sp);
+									}
 								}
 							}
 						}

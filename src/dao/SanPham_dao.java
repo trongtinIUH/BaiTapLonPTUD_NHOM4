@@ -57,6 +57,29 @@ public class SanPham_dao {
 		return dt;
 	}
 	
+	public String getLoaiSanPhamTheoMaSP(String maSP) {
+		String loaiSP = "";
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select loaiSanPham from SanPham where maSanPham = '" + maSP + "'";
+			Statement stm = con.createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while(rs.next()) {
+				loaiSP = rs.getString("loaiSanPham");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return loaiSP;
+	}
+	
 	public SanPham getSanPhamTheoTen(String tenSP) {
 		SanPham dt = null;
 		try {

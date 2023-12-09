@@ -219,6 +219,7 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 		
 		getContentPane().add(lbl_TongTien);
 		
+		
 		lbl_Tongtien_1 = new JLabel();
 		df= new DecimalFormat("#,###,### VNĐ");
 		lbl_Tongtien_1.setText(df.format(hd.tinhTongTienThanhToan(phong_dao.tinhTongTienPhongTheoMaHoaDon(hd.getMaHoaDon()),
