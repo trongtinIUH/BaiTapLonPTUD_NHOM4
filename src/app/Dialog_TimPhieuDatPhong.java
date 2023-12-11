@@ -101,7 +101,6 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	private LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private LoaiPhong lp;
 	private Dialog_PhongDangSD dialog_PhongDangSD;
-
 	private Dialog_TimPDP_DaThanhToan dialog_TimPDP_DaThanhToan;
 
 	public Dialog_TimPhieuDatPhong() {
