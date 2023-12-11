@@ -88,10 +88,10 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
-	    this.setIconImage(icon.getImage());
-	    p_dao = new Phong_dao();
-	    ctdv_dao = new ChiTietDichVu_dao();
-	    sp_dao = new SanPham_dao();
+		this.setIconImage(icon.getImage());
+		p_dao = new Phong_dao();
+		ctdv_dao = new ChiTietDichVu_dao();
+		sp_dao = new SanPham_dao();
 
 		// panel chứa tiêu đề--------------------------------------
 		panel = new JPanel();
@@ -305,52 +305,57 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 				if (selectedRow == -1) {
 					JOptionPane.showMessageDialog(null, "Bạn chưa chọn sản phẩm!");
 				} else {
-					if (txtSoLuong.getText().equals("")) {
-						JOptionPane.showMessageDialog(null, "Bạn chưa nhập số lượng!");
-					} else {
-						int soLuong = Integer.parseInt(txtSoLuong.getText());
-						int soLuongTon = Integer
-								.parseInt(model_Trai.getValueAt(tblThemDv_Trai.getSelectedRow(), 2).toString());
-						// Thay đổi số lượng trong dữ liệu
-						if (soLuong < soLuongTon) {
-							String maSP = model_Trai.getValueAt(selectedRow, 0).toString(); // Assuming maSP is in the
-																							// first column
-							boolean found = false;
-							for (int i = 0; i < model_Phai.getRowCount(); i++) {
-								if (model_Phai.getValueAt(i, 0).equals(maSP)) { // Assuming maSP is in the first column
-									int existingSoLuong = Integer
-											.parseInt(model_Phai.getValueAt(i, selectedRowData.length - 3).toString());
-									model_Phai.setValueAt(existingSoLuong + soLuong, i, selectedRowData.length - 3);
-									found = true;
-									break;
+					int soLuong = 0;
+					try {
+						soLuong = Integer.parseInt(txtSoLuong.getText());
+						if (soLuong > 0) {
+							int soLuongTon = Integer
+									.parseInt(model_Trai.getValueAt(tblThemDv_Trai.getSelectedRow(), 2).toString());
+							// Thay đổi số lượng trong dữ liệu
+							if (soLuong < soLuongTon) {
+								String maSP = model_Trai.getValueAt(selectedRow, 0).toString(); // Assuming maSP is in
+																								// the
+								// first column
+								boolean found = false;
+								for (int i = 0; i < model_Phai.getRowCount(); i++) {
+									if (model_Phai.getValueAt(i, 0).equals(maSP)) { // Assuming maSP is in the first
+																					// column
+										int existingSoLuong = Integer.parseInt(
+												model_Phai.getValueAt(i, selectedRowData.length - 3).toString());
+										model_Phai.setValueAt(existingSoLuong + soLuong, i, selectedRowData.length - 3);
+										found = true;
+										break;
+									}
 								}
-							}
-							if (!found) {
+								if (!found) {
 //					                selectedRowData[selectedRowData.length - 3] = soLuong;
-								int currentRow = tblThemDv_Trai.getSelectedRow();
+									int currentRow = tblThemDv_Trai.getSelectedRow();
 
-								Object[] row = { model_Trai.getValueAt(currentRow, 0),
-										model_Trai.getValueAt(currentRow, 1), soLuong,
-										model_Trai.getValueAt(currentRow, 3),
+									Object[] row = { model_Trai.getValueAt(currentRow, 0),
+											model_Trai.getValueAt(currentRow, 1), soLuong,
+											model_Trai.getValueAt(currentRow, 3),
 
-								};
-								model_Phai.addRow(row);
+									};
+									model_Phai.addRow(row);
+								}
+								soLuongTon -= soLuong;
+								model_Trai.setValueAt(soLuongTon, selectedRow, 2);
+								capNhatTongTien();
 							}
-							soLuongTon -= soLuong;
-							model_Trai.setValueAt(soLuongTon, selectedRow, 2);
-							capNhatTongTien();
 						} else {
-							JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng nhỏ hơn số lượng tồn!");
+							JOptionPane.showMessageDialog(null, "Số lượng phải lớn hơn 0");
 						}
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Nhập không hợp lệ");
 					}
 				}
 			}
 		});
 
 		Phong p = p_dao.getPhongTheoMaPhong(ma);
-		if(p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
+		if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
 			loadData_DangSD();
-		}else {
+		} else {
 			loadData_DatPhong();
 		}
 
@@ -358,37 +363,42 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 
 	public void loadDataPDSD() {
 		Phong p = p_dao.getPhongTheoMaPhong(ma);
-		if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
-			ChiTietHoaDon cthd_hienTaiCuaPhong1 = null;
-			ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(ma);
-			for (ChiTietHoaDon cthd : dsCTHD) {
-				cthd_hienTaiCuaPhong1 = cthd;
-			}
-			
-			ChiTietDichVu ctdv_hienTaiCuaPhong2 = null;
-			ArrayList<ChiTietDichVu> dsCTDV = ctdv_dao.getChiTietDichVuTheoMaPhong(ma);
-			for (ChiTietDichVu ctdv : dsCTDV) {
-				ctdv_hienTaiCuaPhong2 = ctdv;
-			}
-			
-			if(ctdv_hienTaiCuaPhong2 != null) {
-				if(cthd_hienTaiCuaPhong1.getHoaDon().getMaHoaDon().equals(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon())) {
-					ArrayList<ChiTietDichVu> dsctdv = ctdv_dao
-							.getChiTietDichVuTheoMaHD(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon());
-					maHoaDon = ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon();
-					for (ChiTietDichVu ctdv : dsctdv) {
-						if (ctdv.getPhong().getMaPhong().equals(ma)) {
-							SanPham sp = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
-							Object[] row = { ctdv.getSanPham().getMaSanPham(), sp.getTenSanPham(), ctdv.getSoLuong(),
-									ctdv.getGia() };
-							model_Phai.addRow(row);
+		try {
+			if (p.getTrangThai() == Enum_TrangThai.Đang_sử_dụng) {
+				ChiTietHoaDon cthd_hienTaiCuaPhong1 = null;
+				ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(ma);
+				for (ChiTietHoaDon cthd : dsCTHD) {
+					cthd_hienTaiCuaPhong1 = cthd;
+				}
+
+				ChiTietDichVu ctdv_hienTaiCuaPhong2 = null;
+				ArrayList<ChiTietDichVu> dsCTDV = ctdv_dao.getChiTietDichVuTheoMaPhong(ma);
+				for (ChiTietDichVu ctdv : dsCTDV) {
+					ctdv_hienTaiCuaPhong2 = ctdv;
+				}
+
+				if (ctdv_hienTaiCuaPhong2 != null) {
+					if (cthd_hienTaiCuaPhong1.getHoaDon().getMaHoaDon()
+							.equals(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon())) {
+						ArrayList<ChiTietDichVu> dsctdv = ctdv_dao
+								.getChiTietDichVuTheoMaHD(ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon());
+						maHoaDon = ctdv_hienTaiCuaPhong2.getHoaDon().getMaHoaDon();
+						for (ChiTietDichVu ctdv : dsctdv) {
+							if (ctdv.getPhong().getMaPhong().equals(ma)) {
+								SanPham sp = sp_dao.getSanPhamTheoMaSP(ctdv.getSanPham().getMaSanPham());
+								Object[] row = { ctdv.getSanPham().getMaSanPham(), sp.getTenSanPham(),
+										ctdv.getSoLuong(), ctdv.getGia() };
+								model_Phai.addRow(row);
+							}
 						}
 					}
 				}
 			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn lại phòng cần thêm dịch vụ");
 		}
 	}
-	
+
 	public void loadData_DangSD() {
 		sp_dao = new SanPham_dao();
 		for (SanPham x : sp_dao.getallSp()) {
@@ -506,14 +516,17 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 					ArrayList<TempThemDV> ctdvTempList = DataManager.getCtdvTempList();
 					for (int i = 0; i < model_Phai.getRowCount(); i++) {
 
-						for(TempThemDV temp : ctdvTempList) {
-							if(temp.getMaPhong().equals(ma) && temp.getMaSP().equals(model_Phai.getValueAt(i, 0).toString())) {
-								temp.setSoLuong(temp.getSoLuong() + Integer.parseInt(model_Phai.getValueAt(i, 2).toString()));
+						for (TempThemDV temp : ctdvTempList) {
+							if (temp.getMaPhong().equals(ma)
+									&& temp.getMaSP().equals(model_Phai.getValueAt(i, 0).toString())) {
+								temp.setSoLuong(
+										temp.getSoLuong() + Integer.parseInt(model_Phai.getValueAt(i, 2).toString()));
 								flag = 1;
 							}
 						}
-						if(flag != 1) {
-							TempThemDV ctdv = new TempThemDV(ma, model_Phai.getValueAt(i, 0).toString(), // Replace with the
+						if (flag != 1) {
+							TempThemDV ctdv = new TempThemDV(ma, model_Phai.getValueAt(i, 0).toString(), // Replace with
+																											// the
 									// actual column
 									// indices
 									model_Phai.getValueAt(i, 1).toString(), // and types if they are not strings
@@ -558,16 +571,16 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 
 					ctdvTempList.add(ctdv);
 					for (int row = 0; row < tblThemDv_Trai.getRowCount(); row++) {
-						for(SanPham sp : sp_dao.getallSanPhams()) {
-							if(sp.getMaSanPham().equals(model_Trai.getValueAt(row, 0).toString())) {
-								sp_dao.updateSLTon(Integer.parseInt(model_Trai.getValueAt(row, 2).toString()), sp.getMaSanPham());
+						for (SanPham sp : sp_dao.getallSanPhams()) {
+							if (sp.getMaSanPham().equals(model_Trai.getValueAt(row, 0).toString())) {
+								sp_dao.updateSLTon(Integer.parseInt(model_Trai.getValueAt(row, 2).toString()),
+										sp.getMaSanPham());
 								break;
 							}
 						}
 					}
 				}
-				
-				
+
 				ChiTietHoaDon cthd_hienTaiCuaPhong = null;
 				ArrayList<ChiTietHoaDon> dsCTHD = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhong1.getText().trim());
 				for (ChiTietHoaDon cthd : dsCTHD) {
@@ -576,19 +589,23 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 
 				DataManager.setCtdvTempList(ctdvTempList);
 				for (TempThemDV tmp : DataManager.getCtdvTempList()) {
-					if(sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Thức ăn")) {
-						ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
-								new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.03);
+					if (sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Thức ăn")) {
+						ChiTietDichVu ctdv = new ChiTietDichVu(
+								new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()),
+								new Phong(tmp.getMaPhong()), new SanPham(tmp.getMaSP()), tmp.getSoLuong(),
+								tmp.getDonGia() * 1.03);
 						ctdv_dao.addChiTietDV(ctdv);
-					}
-					else if(sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Đồ uống")) {
-						ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
-								new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.02);
+					} else if (sp_dao.getLoaiSanPhamTheoMaSP(tmp.getMaSP()).equals("Đồ uống")) {
+						ChiTietDichVu ctdv = new ChiTietDichVu(
+								new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()),
+								new Phong(tmp.getMaPhong()), new SanPham(tmp.getMaSP()), tmp.getSoLuong(),
+								tmp.getDonGia() * 1.02);
 						ctdv_dao.addChiTietDV(ctdv);
-					}
-					else {
-						ChiTietDichVu ctdv = new ChiTietDichVu(new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()), new Phong(tmp.getMaPhong()),
-								new SanPham(tmp.getMaSP()), tmp.getSoLuong(), tmp.getDonGia() * 1.01);
+					} else {
+						ChiTietDichVu ctdv = new ChiTietDichVu(
+								new HoaDonDatPhong(cthd_hienTaiCuaPhong.getHoaDon().getMaHoaDon()),
+								new Phong(tmp.getMaPhong()), new SanPham(tmp.getMaSP()), tmp.getSoLuong(),
+								tmp.getDonGia() * 1.01);
 						ctdv_dao.addChiTietDV(ctdv);
 					}
 				}
