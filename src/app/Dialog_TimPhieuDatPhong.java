@@ -967,7 +967,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		int row = tblPhieuDatPhong.getSelectedRow();
 		String maphong = (String) tblPhieuDatPhong.getValueAt(row, 1).toString();
 		String songuoi = (String) tblPhieuDatPhong.getValueAt(row, 6).toString();
-		pdp = pdp_dao.getPhieuDatPhongTheoMa(maphong);
+		pdp = pdp_dao.getPDPDatTruocTheoMaPhong(maphong);
 		p = p_dao.getPhongTheoMaPhong(maphong);
 		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
 		kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
@@ -982,7 +982,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				int phut_ht = LocalDateTime.now().getMinute();
 				int tongsophut_ht = gio_ht * 60 + phut_ht;
 				// giờ phút nhận phòng
-				pdp = pdp_dao.getPhieuDatPhongTheoMa(maphong);
+				pdp = pdp_dao.getPDPDatTruocTheoMaPhong(maphong);
 				int gio_np = pdp.getNgayGioNhanPhong().getHour();
 				int phut_np = pdp.getNgayGioNhanPhong().getMinute();
 				int tongsophut_np = gio_np * 60 + phut_np;

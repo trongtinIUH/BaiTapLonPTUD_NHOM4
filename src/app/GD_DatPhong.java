@@ -420,6 +420,16 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
 										+ " đã đến thời gian nhận phòng vui lòng kiểm tra");
 							}
+							
+							if (gioHT == gioNhanPhong && phutHT > phutNhanPhong && phutHT - phutNhanPhong == 20) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " đã qua 20p nhận phòng vui lòng kiểm tra");
+							}
+							
+							if (gioHT > gioNhanPhong && phutHT < phutNhanPhong && (phutHT - phutNhanPhong + 60) == 20) {
+								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
+										+ " đã qua 20p nhận phòng vui lòng kiểm tra");
+							}
 						}
 					}
 				}
