@@ -299,11 +299,11 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.CTRL_DOWN_MASK), "nhanPhong");
 		actionMap.put("nhanPhong", nhanPhongAction);
 		
-		setEnabledBtnDatPhong();
+		setEnabledBtnDatPhong(maPhong);
 	}
 
 	public void laydulieu(String maPhong) {
-		pdp = pdp_dao.getPhieuDatPhongTheoMa(maPhong);
+		pdp = pdp_dao.getPDPDatTruocTheoMaPhong(maPhong);
 		p = p_dao.getPhongTheoMaPhong(maPhong);
 		lp = lp_dao.getLoaiPhongTheoMaLoaiPhong(p.getLoaiPhong().getMaLoaiPhong());
 		kh = kh_dao.getKhachHangTheoMaKH(pdp.getKhachHang().getMaKhachHang());
@@ -327,8 +327,8 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		}
 	}
 
-	private void setEnabledBtnDatPhong() {
-		pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
+	private void setEnabledBtnDatPhong(String maPhong) {
+		pdp = pdp_dao.getPDPDatTruocTheoMaPhong(maPhong);
 		//Trước 90p để hát tối thiểu 60p -> Vì trước 90p khó demo đổi sang 30p
 		LocalDateTime check = pdp.getNgayGioNhanPhong().minusMinutes(30);
 		if (check.isBefore(LocalDateTime.now())) {
@@ -343,7 +343,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 		Object o = e.getSource();
 		if (o.equals(btnDatPhong)) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
-			pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
+			pdp = pdp_dao.getPDPDatTruocTheoMaPhong(lblPhong_1.getText());
 			String ngayGioNhan = pdp.getNgayGioNhanPhong().minusMinutes(30).format(formatter);
 			if (JOptionPane.showConfirmDialog(null,
 					"Nếu đặt phòng trực tiếp, chỉ được sử dụng trước " + ngayGioNhan
@@ -360,7 +360,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 			int phut_ht = LocalDateTime.now().getMinute();
 			int tongsophut_ht = gio_ht * 60 + phut_ht;
 			// giờ phút nhận phòng
-			pdp = pdp_dao.getPhieuDatPhongTheoMa(lblPhong_1.getText());
+			pdp = pdp_dao.getPDPDatTruocTheoMaPhong(lblPhong_1.getText());
 			int gio_np = pdp.getNgayGioNhanPhong().getHour();
 			int phut_np = pdp.getNgayGioNhanPhong().getMinute();
 			int tongsophut_np = gio_np * 60 + phut_np;

@@ -58,7 +58,7 @@ public class PhieuDatPhong_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from PhieuDatPhong where DATEADD(MINUTE, 1, ngayGioNhanPhong) > GETDATE()";
+			String sql = "select * from PhieuDatPhong where DATEADD(MINUTE, 21, ngayGioNhanPhong) > GETDATE()";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
@@ -78,7 +78,7 @@ public class PhieuDatPhong_dao {
 		return dsPDP;
 	}
 
-	public PhieuDatPhong getPhieuDatPhongTheoMa(String maPhong) {
+	public PhieuDatPhong getPDPDatTruocTheoMaPhong(String maPhong) {
 		PhieuDatPhong pdp = null;
 		try {
 			ConnectDB.getInstance();
@@ -88,7 +88,8 @@ public class PhieuDatPhong_dao {
 		}
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * from PhieuDatPhong where maPhong = '" + maPhong + "'";
+			String sql = "SELECT TOP 1 * FROM PhieuDatPhong WHERE maPhong = '" + maPhong
+					+ "' ORDER BY ngayGioNhanPhong DESC";
 			Statement stm = con.createStatement();
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
@@ -630,61 +631,60 @@ public class PhieuDatPhong_dao {
 		}
 		return dsPDP;
 	}
-	
+
 	public ArrayList<PhieuDatPhong> getPDPTheoThangNhan(YearMonth thangNhan) {
-	    ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
-	    try {
-	        ConnectDB.getInstance();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    Connection con = ConnectDB.getConnection();
-	    try {
-	        String sql = "select * from PhieuDatPhong where YEAR(ngayGioNhanPhong) = ? and MONTH(ngayGioNhanPhong) = ?";
-	        PreparedStatement stm = con.prepareStatement(sql);
-	        stm.setInt(1, thangNhan.getYear());
-	        stm.setInt(2, thangNhan.getMonthValue());
-	        ResultSet rs = stm.executeQuery();
-	        while (rs.next()) {
-	            Phong p = new Phong(rs.getString(2));
-	            NhanVien nv = new NhanVien(rs.getString(3));
-	            KhachHang kh = new KhachHang(rs.getString(4));
-	            LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
-	            LocalDateTime ngaynhan = rs.getTimestamp(6).toLocalDateTime();
-	            dsPDP.add(new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngaynhan, rs.getInt(7)));
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return dsPDP;
+		ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from PhieuDatPhong where YEAR(ngayGioNhanPhong) = ? and MONTH(ngayGioNhanPhong) = ?";
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setInt(1, thangNhan.getYear());
+			stm.setInt(2, thangNhan.getMonthValue());
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				Phong p = new Phong(rs.getString(2));
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngaynhan = rs.getTimestamp(6).toLocalDateTime();
+				dsPDP.add(new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngaynhan, rs.getInt(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsPDP;
 	}
+
 	public ArrayList<PhieuDatPhong> getPDPTheoNamNhan(int namNhan) {
-	    ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
-	    try {
-	        ConnectDB.getInstance();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    Connection con = ConnectDB.getConnection();
-	    try {
-	        String sql = "select * from PhieuDatPhong where YEAR(ngayGioNhanPhong) = ?";
-	        PreparedStatement stm = con.prepareStatement(sql);
-	        stm.setInt(1, namNhan);
-	        ResultSet rs = stm.executeQuery();
-	        while (rs.next()) {
-	            Phong p = new Phong(rs.getString(2));
-	            NhanVien nv = new NhanVien(rs.getString(3));
-	            KhachHang kh = new KhachHang(rs.getString(4));
-	            LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
-	            LocalDateTime ngaynhan = rs.getTimestamp(6).toLocalDateTime();
-	            dsPDP.add(new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngaynhan, rs.getInt(7)));
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return dsPDP;
+		ArrayList<PhieuDatPhong> dsPDP = new ArrayList<PhieuDatPhong>();
+		try {
+			ConnectDB.getInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Connection con = ConnectDB.getConnection();
+		try {
+			String sql = "select * from PhieuDatPhong where YEAR(ngayGioNhanPhong) = ?";
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setInt(1, namNhan);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				Phong p = new Phong(rs.getString(2));
+				NhanVien nv = new NhanVien(rs.getString(3));
+				KhachHang kh = new KhachHang(rs.getString(4));
+				LocalDateTime ngayGioDatPhong = rs.getTimestamp(5).toLocalDateTime();
+				LocalDateTime ngaynhan = rs.getTimestamp(6).toLocalDateTime();
+				dsPDP.add(new PhieuDatPhong(rs.getString(1), p, nv, kh, ngayGioDatPhong, ngaynhan, rs.getInt(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsPDP;
 	}
-
-
 
 }
