@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -23,14 +22,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.xml.crypto.Data;
 
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
 import dao.KhachHang_dao;
-import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import entity.Enum_TrangThai;
@@ -39,7 +36,6 @@ import entity.LoaiPhong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import utils.TempDatPhong;
 
 public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 
@@ -56,9 +52,6 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 
 	private JLabel lbl_TenKH;
 	private LocalDateTime now;
-	private DateTimePicker dateTimePicker;
-	private TimePickerSettings timeSettings;
-	private DatePickerSettings dateSettings;
 
 	private KhachHang_dao khachHang_dao = new KhachHang_dao();
 
@@ -78,7 +71,6 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private JLabel lbl_NgayNhanPhong;
 
 	private Phong_dao phong_dao = new Phong_dao();
-	private LoaiPhong_dao loaiphong_dao = new LoaiPhong_dao();
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private KhachHang kh = new KhachHang();
 	private Date ngayHienTai;

@@ -569,3 +569,4 @@ GRANT DELETE ON TempThanhToan TO role_NV;
 --select * from TempThanhToan
 --select * from TempPhongBiChuyen
 --select * from TempPhongBiChuyen
+

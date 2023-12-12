@@ -25,7 +25,6 @@ import javax.swing.UIManager;
 import dao.DangNhap_dao;
 import dao.NhanVien_dao;
 import entity.NhanVien;
-import entity.TaiKhoan;
 
 public class Dialog_User extends JDialog implements ActionListener{
 	/**
@@ -37,7 +36,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private JButton btnDoiMK;
 	private JLabel lbl_HoTen,lbl_TrangThai;
 	private JLabel lbl_ChucVu;
-	private JTextField txtQunL,txtmanv;
+	private JTextField txtQunL;
 	private JLabel hinhNV;
 	private JLabel lbl_nen;
 	private NhanVien_dao nv_dao;

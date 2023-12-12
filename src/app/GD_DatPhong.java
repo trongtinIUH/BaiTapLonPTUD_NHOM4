@@ -5,7 +5,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.xml.crypto.Data;
 
 import connectDB.ConnectDB;
 
@@ -22,7 +21,6 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,7 +36,6 @@ import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import dao.ChiTietHoaDon_dao;
 import utils.TempDatPhong;
 import utils.TempThanhToan;
 import dao.LoaiPhong_dao;
@@ -95,7 +92,6 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private int sizeDSTemp_TT;
 	private Dialog_ThanhToan dialog_ThanhToan;
 	private JButton btnBackHuyThanhToan;
-	private ChiTietHoaDon_dao cthd_dao = new ChiTietHoaDon_dao();
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	Timer timerChayThongBao;
 	private JButton btnBackPhongCho;

@@ -516,6 +516,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 
 	public void load_Tien() {
 		tienDichVu_update = 0;
+		
 		for (ChiTietDichVu ctdv : ctdv_dao.getChiTietDichVuTheoMaHD(lbl_MaHoaDon_1.getText().trim())) {
 			tienDichVu_update += ctdv.getSoLuong() * ctdv.getGia();
 		}
@@ -655,7 +656,6 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 						flag = 1;
 						break;
 					}
-//					System.out.println(tm_Chuyen.getMaPhongMoi() + "  " + maPh);
 				}
 
 				soGioHat_Item = 0;

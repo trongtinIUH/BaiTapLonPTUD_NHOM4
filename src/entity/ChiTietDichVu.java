@@ -25,6 +25,7 @@ public class ChiTietDichVu  implements Serializable{
 		this.soLuong = soLuong;
 		this.gia = gia;
 	}
+	
 	public Phong getPhong() {
 		return phong;
 	}

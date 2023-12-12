@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
@@ -37,6 +38,7 @@ import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.TempPhongBiChuyen_dao;
+import entity.ChiTietDichVu;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
 import entity.HoaDonDatPhong;
@@ -44,6 +46,7 @@ import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
+import entity.SanPham;
 import utils.TempPhongBiChuyen;
 
 import javax.swing.JScrollPane;
@@ -92,6 +95,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private String loaiPhong;
 	private JLabel lblPhongHienTai_1;
 	private TempPhongBiChuyen_dao tempChuyen_dao;
+	private ChiTietDichVu_dao ctdv_dao;
 	public Dialog_ChuyenPhong(String maPhong, String soNguoi) {
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 480);
@@ -108,6 +112,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		hd_dao = new HoaDonDatPhong_dao();
 		kh_dao = new KhachHang_dao();
 		tempChuyen_dao = new TempPhongBiChuyen_dao();
+		ctdv_dao = new ChiTietDichVu_dao();
 		this.addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent e) {
 				NhanVien nv = null;
@@ -489,15 +494,23 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 					
 					JOptionPane.showMessageDialog(null,
 							"Chuyển sang phòng " + model.getValueAt(tblChuyenPhong.getSelectedRow(), 0) + " thành công!!");
-					DataManager.setChuyenPhong(true);
-			
-//					String ma = "";
-//					ArrayList<ChiTietHoaDon> dsCTHD_TheoPhongBiChuyen = cthd_dao.getChiTietHoaDonTheoMaPhong(lblPhongHienTai_1.getText());
-//					for(ChiTietHoaDon ct : dsCTHD_TheoPhongBiChuyen) {
-//						ma = ct.getHoaDon().getMaHoaDon();
-//					}
-//					HoaDonDatPhong hd_BiChuyen = hd_dao.getHoaDonDatPhongTheoMaHD(ma);	
-//					Phong ph_biChuyen = ph_dao.getPhongTheoMaPhong(lblPhongHienTai_1.getText());
+					DataManager.setChuyenPhong(true);	
+					
+
+					//Chuyển dịch vụ sang phòng mới
+					ArrayList<ChiTietDichVu> dsChiTietDV = ctdv_dao.getChiTietDichVuTheoMaHDVaMaPhong(maHD, txtMa.getText());
+					if(dsChiTietDV != null) {
+						for(ChiTietDichVu ctdv : dsChiTietDV) {
+							ctdv_dao.deleteChiTietDV2(maHD, ctdv.getSanPham().getMaSanPham(), txtMa.getText());
+							
+							Phong phongMoi2 = new Phong(model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString());
+							SanPham spMoi_Item = new SanPham(ctdv.getSanPham().getMaSanPham());
+							int sl = ctdv.getSoLuong();
+							double giaSP = ctdv.getGia(); 
+							ChiTietDichVu ct = new ChiTietDichVu(hd,phongMoi2, spMoi_Item, sl, giaSP);
+							ctdv_dao.addChiTietDV(ct);
+						}
+					}
 					
 					TempPhongBiChuyen tmp_Chuyen = new TempPhongBiChuyen(lblPhongHienTai_1.getText(), model.getValueAt(tblChuyenPhong.getSelectedRow(), 0).toString());
 					for(TempPhongBiChuyen tmp_BiChuyen : tempChuyen_dao.getAllTemp()) {
