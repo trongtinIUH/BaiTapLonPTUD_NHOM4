@@ -85,9 +85,15 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 
 		// hiển thị full màn hình
 		setBounds(0, 0, 1388, 768);
+		//code này để tín test full màn hình
+//		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+//        setUndecorated(true);
+        
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+
 
 		panel_1.setBorder(new CompoundBorder());
 		panel_1.setBackground(Color.CYAN);

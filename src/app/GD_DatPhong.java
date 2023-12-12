@@ -33,9 +33,11 @@ import dao.Phong_dao;
 import dao.TempDatPhong_dao;
 import dao.TempThanhToan_dao;
 import entity.Enum_TrangThai;
+import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.Phong;
+import dao.KhachHang_dao;
 import utils.TempDatPhong;
 import utils.TempThanhToan;
 import dao.LoaiPhong_dao;
@@ -93,6 +95,8 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private Dialog_ThanhToan dialog_ThanhToan;
 	private JButton btnBackHuyThanhToan;
 	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private KhachHang kh= new KhachHang();
+	private KhachHang_dao kh_dao= new KhachHang_dao();
 	Timer timerChayThongBao;
 	private JButton btnBackPhongCho;
 
@@ -404,27 +408,29 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 							int gioNhanPhong = pdp.getNgayGioNhanPhong().getHour();
 							int phutNhanPhong = pdp.getNgayGioNhanPhong().getMinute();
+							String mkh = pdp.getKhachHang().getMaKhachHang();
+							kh = kh_dao.getKhachHangTheoMaKH(mkh);
 							if (gioHT == gioNhanPhong && phutHT < phutNhanPhong && (phutNhanPhong - phutHT == 20)) {
 								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
-										+ " còn 20p nữa đến thời gian nhận phòng vui lòng liên hệ");
+										+ " Còn 20p nữa đến thời gian nhận phòng vui lòng liên hệ KH:"+kh.getSoDienThoai()+"");
 							}
 							if (gioHT < gioNhanPhong && phutHT > phutNhanPhong && (phutNhanPhong - phutHT + 60) == 20) {
 								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
-										+ " còn 20p nữa đến thời gian nhận phòng vui lòng liên hệ");
+										+ " Còn 20p nữa đến thời gian nhận phòng vui lòng liên hệ KH:"+kh.getSoDienThoai()+"");
 							}
 							if (gioHT == gioNhanPhong && phutHT == phutNhanPhong) {
 								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
-										+ " đã đến thời gian nhận phòng vui lòng kiểm tra");
+										+ " Đã đến thời gian nhận phòng vui lòng kiểm tra");
 							}
 							
 							if (gioHT == gioNhanPhong && phutHT > phutNhanPhong && phutHT - phutNhanPhong == 20) {
 								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
-										+ " đã qua 20p nhận phòng vui lòng kiểm tra");
+										+ " Đã qua 20p nhận phòng vui lòng liên hệ KH:"+kh.getSoDienThoai()+"");
 							}
 							
 							if (gioHT > gioNhanPhong && phutHT < phutNhanPhong && (phutHT - phutNhanPhong + 60) == 20) {
 								JOptionPane.showMessageDialog(null, "Phòng " + pdp.getPhong().getMaPhong()
-										+ " đã qua 20p nhận phòng vui lòng kiểm tra");
+										+ " Đã qua 20p nhận phòng vui lòng kiểm tra");
 							}
 						}
 					}
