@@ -387,7 +387,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 				} else if (tongsophut_np - tongsophut_ht < -30) {
 					// Khách hàng đến trễ hơn giờ nhận phòng 30 phút
 					// Thực hiện công việc B
-					JOptionPane.showMessageDialog(this, "Phòng hủy do đến trễ quá 30 phút!");
+					JOptionPane.showMessageDialog(this, "Phòng hủy do đến trễ quá 30 phút vui lòng đặt phòng khác để sử dụng phòng karaoke!");
 					pdp_dao.xoaPhieuDatPhongTheoMa(lblPhong_1.getText());
 					DataManager.setDatPhongCho(true);
 					Enum_TrangThai trangThai = Enum_TrangThai.Trống;
