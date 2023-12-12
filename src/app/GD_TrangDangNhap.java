@@ -51,7 +51,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
   		}
 		gd_TrangChu = new GD_TrangChu();
 		
-		ImageIcon icon = new ImageIcon("image\\\\hinh_trangdangnhap.jpg");
+		ImageIcon icon = new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//hinh_trangdangnhap.jpg");
 	    this.setIconImage(icon.getImage());
 	
 		JPanel panel = new JPanel();
@@ -100,9 +100,9 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		panel.add(lblKaeaoke);
 		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("image\\hinh_trangdangnhap.jpg"));
+		label.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//hinh_trangdangnhap.jpg"));
 		label.setBounds(300, 10, 370, 350);
-		ImageIcon hinhgt= new ImageIcon("image\\hinh_trangdangnhap.jpg");
+		ImageIcon hinhgt= new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//hinh_trangdangnhap.jpg");
 		Image image = hinhgt.getImage();
 		Image newImage = image.getScaledInstance(370, 350, java.awt.Image.SCALE_SMOOTH);
 		hinhgt = new ImageIcon(newImage);
@@ -110,9 +110,9 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 		panel.add(label);
 		
 		JLabel label1 = new JLabel("");
-		label1.setIcon(new ImageIcon("image\\hinh_trangDN1.jpg"));
+		label1.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//hinh_trangDN1.jpg"));
 		label1.setBounds(0, 260, 50, 50);
-		ImageIcon hinhgt1= new ImageIcon("image\\hinh_trangDN1.jpg");
+		ImageIcon hinhgt1= new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//hinh_trangDN1.jpg");
 		Image image1 = hinhgt1.getImage();
 		Image newImage1 = image1.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 		hinhgt1 = new ImageIcon(newImage1);
@@ -156,7 +156,7 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
         
 	}
 	public static void main(String[] args) {
-		ImageIcon img = new ImageIcon("icon\\icon_Karaoke3.jpg");
+		ImageIcon img = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_Karaoke3.jpg");
 		GD_TrangDangNhap trangDangNhap = new GD_TrangDangNhap();
 		trangDangNhap.setVisible(true);
 		trangDangNhap.setIconImage(img.getImage());

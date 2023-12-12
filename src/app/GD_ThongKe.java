@@ -114,9 +114,9 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		btnProfile = new JButton();
 		btnProfile.setBackground(Color.decode("#B5E6FB"));
 		btnProfile.setBorderPainted(false);
-		btnProfile.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnProfile.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png"));
 		btnProfile.setBounds(1020, 7, 45, 45);
-		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		ImageIcon iconProfile = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png");
 		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
 		btnProfile.setIcon(iconProfile);
 		pnNorth.add(btnProfile);
@@ -176,7 +176,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		btnThongKe.setBackground(Color.decode("#0D99FF"));
 		btnThongKe.setForeground(Color.white);
 		btnThongKe.setFont(new Font("Arial", Font.BOLD, 18));
-		btnThongKe.setIcon(new ImageIcon("icon\\ThongKe_icon.png"));
+		btnThongKe.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//ThongKe_icon.png"));
 		btnThongKe.setBorder(new RoundedBorder(5));
 		btnThongKe.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnThongKe.setIconTextGap(18);
@@ -185,7 +185,7 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		btnLamMoi.setBackground(Color.decode("#32BF26"));
 		btnLamMoi.setForeground(Color.white);
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 18));
-		btnLamMoi.setIcon(new ImageIcon("icon\\Refresh_icon.png"));
+		btnLamMoi.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Refresh_icon.png"));
 		btnLamMoi.setHorizontalTextPosition(SwingConstants.RIGHT); 
 		btnLamMoi.setBorder(new RoundedBorder(5));
 		btnLamMoi.setIconTextGap(18);
@@ -484,7 +484,9 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 						pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
 					}
 			    }
-			    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoThang(m, year)+"");
+			    double soGioHat = chitiethoadon_dao.tinhSoGioHatTheoThang(m, year);
+			    double soGioHatSauKhiLamTron = Math.round(soGioHat * 100.0) / 100.0;
+			    lblTongSoGioHat.setText(soGioHatSauKhiLamTron+"");
 		    } catch (Exception e2) {
 		    	e2.printStackTrace();
 			}

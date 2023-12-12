@@ -82,9 +82,9 @@ public class GD_TroGiup extends JPanel implements MouseListener{
 		pnNorth.add(lblTitle);
 		lblProfile = new JLabel("");
 		lblProfile.setBackground(new Color(255, 165, 0));
-		lblProfile.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		lblProfile.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png"));
 		lblProfile.setBounds(1020, 7, 45, 45);
-		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		ImageIcon iconProfile = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png");
 		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
 		lblProfile.setIcon(iconProfile);
 		pnNorth.add(lblProfile);

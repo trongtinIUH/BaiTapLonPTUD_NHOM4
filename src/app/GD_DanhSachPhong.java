@@ -85,11 +85,14 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		pnNorth.add(lblTitle);
 
 		// ---nút user
-		btnUser = new JButton("");
-		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 5, 61, 45);
-		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser = new JButton();
+		btnUser.setBackground(Color.decode("#B5E6FB"));
 		btnUser.setBorderPainted(false);
+		btnUser.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png"));
+		btnUser.setBounds(1020, 7, 45, 45);
+		ImageIcon iconProfile = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png");
+		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
+		btnUser.setIcon(iconProfile);
 		pnNorth.add(btnUser);
 
 		// căn giữa title
@@ -221,22 +224,22 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		pnSouth.add(cbSoPhong);
 
 		// Các nút
-		pnSouth.add(btnThem = new JButton("THÊM", new ImageIcon("icon\\Add_icon.png")));
+		pnSouth.add(btnThem = new JButton("THÊM", new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Add_icon.png")));
 		btnThem.setFont(font);
 		btnThem.setBounds(60, 250, 130, 35);
 		btnThem.setBackground(new Color(109, 197, 112));
 		btnThem.setBorder(new RoundedBorder(5));
-		pnSouth.add(btnXoa = new JButton("XÓA", new ImageIcon("icon\\Delete_icon.png")));
+		pnSouth.add(btnXoa = new JButton("XÓA", new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Delete_icon.png")));
 		btnXoa.setFont(font);
 		btnXoa.setBounds(208, 250, 130, 35);
 		btnXoa.setBackground(new Color(228, 50, 51));
 		btnXoa.setBorder(new RoundedBorder(5));
-		pnSouth.add(btnSua = new JButton("SỬA", new ImageIcon("icon\\Edit_icon.png")));
+		pnSouth.add(btnSua = new JButton("SỬA", new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Edit_icon.png")));
 		btnSua.setFont(font);
 		btnSua.setBounds(356, 250, 130, 35);
 		btnSua.setBackground(new Color(74, 131, 215));
 		btnSua.setBorder(new RoundedBorder(5));
-		pnSouth.add(btnLamMoi = new JButton("LÀM MỚI", new ImageIcon("icon\\Refresh_icon.png")));
+		pnSouth.add(btnLamMoi = new JButton("LÀM MỚI", new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Refresh_icon.png")));
 		btnLamMoi.setFont(font);
 		btnLamMoi.setBounds(504, 250, 130, 35);
 		btnLamMoi.setBackground(new Color(104, 211, 211));
@@ -276,7 +279,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		txtTuKhoaTim.setBounds(30, 160, 310, 30);
 		pnEast.add(txtTuKhoaTim);
 
-		btnTimKiem = new JButton("Tìm kiếm", new ImageIcon("icon\\Research_icon.png"));
+		btnTimKiem = new JButton("Tìm kiếm", new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Research_icon.png"));
 		btnTimKiem.setFont(font);
 		btnTimKiem.setBounds(112, 250, 140, 35);
 		btnTimKiem.setBackground(new Color(238, 233, 233));
@@ -294,7 +297,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		lblBang.setForeground(Color.blue);
 		lblBang.setBounds(20, 15, 500, 30);
 
-		pnCenter.add(btnXuatExcel = new JButton("Xuất danh sách các phòng", new ImageIcon("icon\\Excel_icon.png")));
+		pnCenter.add(btnXuatExcel = new JButton("Xuất danh sách các phòng", new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Excel_icon.png")));
 		btnXuatExcel.setFont(font);
 		btnXuatExcel.setBorder(new RoundedBorder(5));
 		btnXuatExcel.setBounds(798, 14, 270, 30);

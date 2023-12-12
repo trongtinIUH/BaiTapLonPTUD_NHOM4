@@ -109,9 +109,9 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnProfile = new JButton();
 		btnProfile.setBackground(Color.decode("#B5E6FB"));
 		btnProfile.setBorderPainted(false);
-		btnProfile.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnProfile.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png"));
 		btnProfile.setBounds(1020, 7, 45, 45);
-		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		ImageIcon iconProfile = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png");
 		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
 		btnProfile.setIcon(iconProfile);
 		pnNorth.add(btnProfile);
@@ -219,7 +219,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXoa.setBackground(Color.decode("#EE1919"));
 		btnXoa.setForeground(Color.white);
 		btnXoa.setFont(new Font("Arial", Font.BOLD, 18));
-		btnXoa.setIcon(new ImageIcon("icon\\Delete_icon.png"));
+		btnXoa.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Delete_icon.png"));
 		btnXoa.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnXoa.setBorder(new RoundedBorder(5));
 		btnXoa.setIconTextGap(18);
@@ -229,7 +229,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnSua.setBackground(Color.decode("#4A83D7"));
 		btnSua.setForeground(Color.white);
 		btnSua.setFont(new Font("Arial", Font.BOLD, 18));
-		btnSua.setIcon(new ImageIcon("icon\\Edit_icon.png"));
+		btnSua.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Edit_icon.png"));
 		btnSua.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnSua.setBorder(new RoundedBorder(5));
 		btnSua.setIconTextGap(18);
@@ -262,7 +262,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnTimKiem.setBackground(Color.decode("#0D99FF"));
 		btnTimKiem.setForeground(Color.white);
 		btnTimKiem.setFont(new Font("Arial", Font.BOLD, 18));
-		btnTimKiem.setIcon(new ImageIcon("icon\\Research_icon.png"));
+		btnTimKiem.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Research_icon.png"));
 		btnTimKiem.setBorder(new RoundedBorder(5));
 		btnTimKiem.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnTimKiem.setIconTextGap(18);
@@ -273,7 +273,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 		btnXuatDSHD.setBackground(Color.decode("#FBB5B5"));
 		btnXuatDSHD.setForeground(Color.white);
 		btnXuatDSHD.setFont(new Font("Arial", Font.BOLD, 16));
-		btnXuatDSHD.setIcon(new ImageIcon("icon\\Excel_icon.png"));
+		btnXuatDSHD.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//Excel_icon.png"));
 		btnXuatDSHD.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnXuatDSHD.setIconTextGap(10);
 
@@ -399,7 +399,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 
 	public void loadOrderDetailData(String maHD) {
 		for (ChiTietHoaDon cthd : chitiethoadon_dao.getChiTietHoaDonTheoMaHD(maHD)) {
-			Object[] row = { cthd.getHoaDon().getMaHoaDon(), cthd.getPhong().getMaPhong(), cthd.getSoGioHat() };
+			Object[] row = { cthd.getHoaDon().getMaHoaDon(), cthd.getPhong().getMaPhong(), Math.round(cthd.getSoGioHat() * 100.0) / 100.0 };
 			modelOrderDetail.addRow(row);
 		}
 	}

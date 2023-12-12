@@ -71,7 +71,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	public GD_TrangChu() {
 		super("Karaoke 4T");
 		datPhong = new GD_DatPhong(this);
-		ImageIcon icon = new ImageIcon("icon\\icon_Karaoke3.jpg");
+		ImageIcon icon = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_Karaoke3.jpg");
 		this.setIconImage(icon.getImage());
 		initialize();
 	}
@@ -111,7 +111,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnDatPhong.setBackground(Color.white);
 		btnDatPhong.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnDatPhong.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnDatPhong.setIcon(new ImageIcon("icon\\icon_DatPhong.png"));
+		btnDatPhong.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_DatPhong.png"));
 		btnDatPhong.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -122,7 +122,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnDanhSachPhong = new JButton("DANH SÁCH PHÒNG   (F2)");
 		btnDanhSachPhong.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnDanhSachPhong.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnDanhSachPhong.setIcon(new ImageIcon("icon\\icon_DSPhong.png"));
+		btnDanhSachPhong.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_DSPhong.png"));
 		btnDanhSachPhong.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -135,7 +135,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnNhanVien = new JButton("NHÂN VIÊN                    (F3)");
 		btnNhanVien.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnNhanVien.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnNhanVien.setIcon(new ImageIcon("icon\\icon_NhanVien.png"));
+		btnNhanVien.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_NhanVien.png"));
 		btnNhanVien.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -153,7 +153,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnKhachHang.setBorderPainted(false);
 		btnKhachHang.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnKhachHang.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnKhachHang.setIcon(new ImageIcon("icon\\icon_KhachHang.png"));
+		btnKhachHang.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_KhachHang.png"));
 		btnKhachHang.setForeground(Color.BLACK);
 		btnKhachHang.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnKhachHang.setBackground(new Color(217, 226, 231));
@@ -161,7 +161,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnSanPham = new JButton("SẢN PHẨM                    (F5)");
 		btnSanPham.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnSanPham.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnSanPham.setIcon(new ImageIcon("icon\\icon_SanPham.png"));
+		btnSanPham.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_SanPham.png"));
 		btnSanPham.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -180,7 +180,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnKhuyenMai.setBorderPainted(false);
 		btnKhuyenMai.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnKhuyenMai.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnKhuyenMai.setIcon(new ImageIcon("icon\\icon_KhuyenMai.png"));
+		btnKhuyenMai.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_KhuyenMai.png"));
 		btnKhuyenMai.setForeground(Color.BLACK);
 		btnKhuyenMai.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnKhuyenMai.setBackground(new Color(217, 226, 231));
@@ -194,7 +194,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnHoaDon.setBorderPainted(false);
 		btnHoaDon.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnHoaDon.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnHoaDon.setIcon(new ImageIcon("icon\\icon_HoaDon.png"));
+		btnHoaDon.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_HoaDon.png"));
 		btnHoaDon.setForeground(Color.BLACK);
 		btnHoaDon.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnHoaDon.setBackground(new Color(217, 226, 231));
@@ -208,7 +208,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnThongKe.setBorderPainted(false);
 		btnThongKe.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnThongKe.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnThongKe.setIcon(new ImageIcon("icon\\icon_ThongKe.png"));
+		btnThongKe.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_ThongKe.png"));
 		btnThongKe.setForeground(Color.BLACK);
 		btnThongKe.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnThongKe.setBackground(new Color(217, 226, 231));
@@ -222,7 +222,7 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		btnTroGiup.setBorderPainted(false);
 		btnTroGiup.setHorizontalAlignment(SwingConstants.LEFT); // căn lề trái button
 		btnTroGiup.setIconTextGap(30); // Tạo Khoảng cách giữa icon và Nội dung(text)
-		btnTroGiup.setIcon(new ImageIcon("icon\\icon_TroGiup.png"));
+		btnTroGiup.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_TroGiup.png"));
 		btnTroGiup.setForeground(Color.BLACK);
 		btnTroGiup.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnTroGiup.setBackground(new Color(217, 226, 231));
@@ -241,9 +241,9 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		panel_3.add(pnMargin);
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBackground(new Color(255, 165, 0));
-		lblNewLabel_1.setIcon(new ImageIcon("image\\hinh_trangdangnhap.jpg"));
+		lblNewLabel_1.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//hinh_trangdangnhap.jpg"));
 		lblNewLabel_1.setBounds(0, 100, 100, 100);
-		ImageIcon hinhgt1 = new ImageIcon("image\\hinh_trangdangnhap.jpg");
+		ImageIcon hinhgt1 = new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//hinh_trangdangnhap.jpg");
 		Image image1 = hinhgt1.getImage();
 		Image newImage1 = image1.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
 		hinhgt1 = new ImageIcon(newImage1);
@@ -339,9 +339,9 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 		JPanel trangChu = new JPanel();
 		trangChu.setBackground(Color.black);
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon("image\\TrangChu.jpg"));
+		lblNewLabel_2.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//TrangChu.jpg"));
 		lblNewLabel_2.setBounds(0, 100, 1080, 730);
-		ImageIcon hinhgt = new ImageIcon("image\\TrangChu.jpg");
+		ImageIcon hinhgt = new ImageIcon("D://BaiTapLonPTUD_NHOM4//image//TrangChu.jpg");
 		Image image = hinhgt.getImage();
 		Image newImage = image.getScaledInstance(1080, 730, java.awt.Image.SCALE_SMOOTH);
 		hinhgt = new ImageIcon(newImage);

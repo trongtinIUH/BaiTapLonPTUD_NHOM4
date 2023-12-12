@@ -139,11 +139,14 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 25));
 		panel.add(panel_1);
 		// ---nút user
-		btnUser = new JButton("");
-		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 5, 61, 45);
-		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser = new JButton();
+		btnUser.setBackground(Color.decode("#B5E6FB"));
 		btnUser.setBorderPainted(false);
+		btnUser.setIcon(new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png"));
+		btnUser.setBounds(1020, 7, 45, 45);
+		ImageIcon iconProfile = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_profile.png");
+		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
+		btnUser.setIcon(iconProfile);
 		panel_1.add(btnUser);
 
 		// ---gốc

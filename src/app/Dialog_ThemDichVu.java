@@ -87,7 +87,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		setSize(800, 500);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
-		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
+		ImageIcon icon = new ImageIcon("D://BaiTapLonPTUD_NHOM4//icon//icon_white.png");
 		this.setIconImage(icon.getImage());
 		p_dao = new Phong_dao();
 		ctdv_dao = new ChiTietDichVu_dao();
