@@ -379,7 +379,9 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 			            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
 			            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
 			        }
-			        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
+			        double soGioHat = chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime);
+			        double soGioHatSauKhiLamTron = Math.round(soGioHat * 100.0) / 100.0;
+			        lblTongSoGioHat.setText(soGioHatSauKhiLamTron+"");
 			    } catch (Exception e2) {
 			        e2.printStackTrace();
 			    }
@@ -484,7 +486,9 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 						pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
 					}
 			    }
-			    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoThang(m, year)+"");
+			    double soGioHat = chitiethoadon_dao.tinhSoGioHatTheoThang(m, year);
+			    double soGioHatSauKhiLamTron = Math.round(soGioHat * 100.0) / 100.0;
+			    lblTongSoGioHat.setText(soGioHatSauKhiLamTron+ "");
 		    } catch (Exception e2) {
 		    	e2.printStackTrace();
 			}
@@ -522,7 +526,9 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 						pieChart.addData(new ModelPieChart("Doanh thu phòng VIP", dtlp.getDoanhThuPhongVIP(), new Color(221, 65, 65)));
 					}
 			    }
-			    lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNam(year)+"");
+			    double soGioHat = chitiethoadon_dao.tinhSoGioHatTheoNam(year);
+			    double soGioHatSauKhiLamTron = Math.round(soGioHat * 100.0) / 100.0;
+			    lblTongSoGioHat.setText(soGioHatSauKhiLamTron+ "");
 		    } catch (Exception e2) {
 		    	e2.printStackTrace();
 			}
@@ -592,7 +598,8 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 		lblTongHoaDon.setText(tongHoaDon+"");
 		lblDoanhThuPhongThuong.setText(df.format(tongDoanhThuPhongThuong));
 	    lblDoanhThuPhongVIP.setText(df.format(tongDoanhThuPhongVIP));
-		lblTongSoGioHat.setText(tongSoGioHat+"");
+	    double soGioHatSauKhiLamTron = Math.round(tongSoGioHat * 100.0) / 100.0;
+	    lblTongSoGioHat.setText(soGioHatSauKhiLamTron+ "");
 	}
 	
 	public void updateYearCbo() {
@@ -735,7 +742,9 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 					            lblDoanhThuPhongThuong.setText(df.format(dtlp.getDoanhThuPhongThuong()));
 					            lblDoanhThuPhongVIP.setText(df.format(dtlp.getDoanhThuPhongVIP()));
 					        }
-					        lblTongSoGioHat.setText(chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime)+"");
+					        double tongSoGioHat = chitiethoadon_dao.tinhSoGioHatTheoNgay(formattedDateTime);
+					        double soGioHatSauKhiLamTron = Math.round(tongSoGioHat * 100.0) / 100.0;
+						    lblTongSoGioHat.setText(soGioHatSauKhiLamTron+ "");
 					    } catch (Exception e2) {
 					        e2.printStackTrace();
 					    }

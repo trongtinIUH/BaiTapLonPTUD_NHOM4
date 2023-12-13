@@ -139,11 +139,14 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 25));
 		panel.add(panel_1);
 		// ---nút user
-		btnUser = new JButton("");
-		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 5, 61, 45);
-		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser = new JButton();
+		btnUser.setBackground(Color.decode("#B5E6FB"));
 		btnUser.setBorderPainted(false);
+		btnUser.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnUser.setBounds(1020, 7, 45, 45);
+		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
+		btnUser.setIcon(iconProfile);
 		panel_1.add(btnUser);
 
 		// ---gốc
@@ -206,7 +209,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		btnTimKiem = new JButton("Tìm kiếm");
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
+		btnTimKiem.setIcon(new ImageIcon("icon\\Research_icon.png"));
 		btnTimKiem.setBounds(672, 10, 180, 40);
 		btnTimKiem.setBorder(new RoundedBorder(5));
 		btnTimKiem.setBackground(new Color(13, 153, 255, 255));
@@ -214,7 +217,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 		btnLamMoi = new JButton("Làm mới");
 		btnLamMoi.setForeground(Color.WHITE);
-		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
+		btnLamMoi.setIcon(new ImageIcon("icon\\Refresh_icon.png"));
 		btnLamMoi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLamMoi.setBounds(879, 10, 180, 40);
 		btnLamMoi.setBorder(new RoundedBorder(5));
@@ -222,7 +225,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		panel_2.add(btnLamMoi);
 
 		btnTimKiemPDP = new JButton("Tìm phiếu đặt phòng");
-		btnTimKiemPDP.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
+		btnTimKiemPDP.setIcon(new ImageIcon("icon\\Research_icon.png"));
 		btnTimKiemPDP.setForeground(Color.WHITE);
 		btnTimKiemPDP.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnTimKiemPDP.setBounds(672, 55, 387, 40);
@@ -231,45 +234,45 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 
 		panel_2.add(btnTimKiemPDP);
 
-		ImageIcon phongtrong = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
+		ImageIcon phongtrong = new ImageIcon("icon\\phongtrong.png");
 		Image originalImage_phongtrong = phongtrong.getImage();
 		Image resizedImage_phongtrong = originalImage_phongtrong.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
 		resizedIcon_phongtrong = new ImageIcon(resizedImage_phongtrong);
 //		panel_ChuaPhong.setLayout(null);
-		ImageIcon phongsd = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsd.png");
+		ImageIcon phongsd = new ImageIcon("icon\\phongsd.png");
 		Image originalImage_phongsd = phongsd.getImage();
 		Image resizedImage_phongsd = originalImage_phongsd.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
 		resizedIcon_phongsd = new ImageIcon(resizedImage_phongsd);
 
-		ImageIcon phongcho = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongcho.png");
+		ImageIcon phongcho = new ImageIcon("icon\\phongcho.png");
 		Image originalImage_phongcho = phongcho.getImage();
 		Image resizedImage_phongcho = originalImage_phongcho.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
 		resizedIcon_phongcho = new ImageIcon(resizedImage_phongcho);
 
-		ImageIcon phongsua = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsua.png");
+		ImageIcon phongsua = new ImageIcon("icon\\phongsua.png");
 		Image originalImage_phongsua = phongsua.getImage();
 		Image resizedImage_phongsua = originalImage_phongsua.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
 		resizedIcon_phongsua = new ImageIcon(resizedImage_phongsua);
 
 		// chỉnh sửa kích thước các icon VIP_______________________________
-		ImageIcon phongtrongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\trong_vip.png");
+		ImageIcon phongtrongvip = new ImageIcon("icon\\trong_vip.png");
 		Image originalImage_phongtrongvip = phongtrongvip.getImage();
 		Image resizedImage_phongtrongvip = originalImage_phongtrongvip.getScaledInstance(60, 60,
 				java.awt.Image.SCALE_SMOOTH);
 		resizedIcon_phongtrongvip = new ImageIcon(resizedImage_phongtrongvip);
 
-		ImageIcon phongsdvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sd_vip.png");
+		ImageIcon phongsdvip = new ImageIcon("icon\\sd_vip.png");
 		Image originalImage_phongsdvip = phongsdvip.getImage();
 		Image resizedImage_phongsdvip = originalImage_phongsdvip.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
 		resizedIcon_phongsdvip = new ImageIcon(resizedImage_phongsdvip);
 
-		ImageIcon phongchovip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\cho_vip.png");
+		ImageIcon phongchovip = new ImageIcon("icon\\cho_vip.png");
 		Image originalImage_phongchovip = phongchovip.getImage();
 		Image resizedImage_phongchovip = originalImage_phongchovip.getScaledInstance(60, 60,
 				java.awt.Image.SCALE_SMOOTH);
 		resizedIcon_phongchovip = new ImageIcon(resizedImage_phongchovip);
 
-		ImageIcon phongsuavip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\sua_vip.png");
+		ImageIcon phongsuavip = new ImageIcon("icon\\sua_vip.png");
 		Image originalImage_phongsuavip = phongsuavip.getImage();
 		Image resizedImage_phongsuavip = originalImage_phongsuavip.getScaledInstance(60, 60,
 				java.awt.Image.SCALE_SMOOTH);
@@ -461,28 +464,28 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 		timerChayThongBao.start();
 
 		// set size icon cho gốc 4
-		ImageIcon phongtrong4 = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongtrong.png");
+		ImageIcon phongtrong4 = new ImageIcon("icon\\phongtrong.png");
 		Image originalImage_phongtrong4 = phongtrong4.getImage();
 		Image resizedImage_phongtrong4 = originalImage_phongtrong4.getScaledInstance(30, 30,
 				java.awt.Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon_phongtrong4 = new ImageIcon(resizedImage_phongtrong4);
 		panel_ChuaPhong.setLayout(null);
-		ImageIcon phongsd4 = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsd.png");
+		ImageIcon phongsd4 = new ImageIcon("icon\\phongsd.png");
 		Image originalImage_phongsd4 = phongsd4.getImage();
 		Image resizedImage_phongsd4 = originalImage_phongsd4.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon_phongsd4 = new ImageIcon(resizedImage_phongsd4);
 
-		ImageIcon phongcho4 = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongcho.png");
+		ImageIcon phongcho4 = new ImageIcon("Dicon\\phongcho.png");
 		Image originalImage_phongcho4 = phongcho4.getImage();
 		Image resizedImage_phongcho4 = originalImage_phongcho4.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon_phongcho4 = new ImageIcon(resizedImage_phongcho4);
 
-		ImageIcon phongsua4 = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongsua.png");
+		ImageIcon phongsua4 = new ImageIcon("icon\\phongsua.png");
 		Image originalImage_phongsua4 = phongsua4.getImage();
 		Image resizedImage_phongsua4 = originalImage_phongsua4.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon_phongsua4 = new ImageIcon(resizedImage_phongsua4);
 
-		ImageIcon phongvip = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\phongvip.png");
+		ImageIcon phongvip = new ImageIcon("icon\\phongvip.png");
 		Image originalImage_phongvip = phongvip.getImage();
 		Image resizedImage_phongvip = originalImage_phongvip.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon resizedIcon_phongvip = new ImageIcon(resizedImage_phongvip);

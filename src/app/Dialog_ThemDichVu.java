@@ -175,7 +175,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		panel_Phai.add(pn_dssp_Phai);
 
 		btn_LamMoi = new JButton("Làm Mới");
-		btn_LamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
+		btn_LamMoi.setIcon(new ImageIcon("icon\\Refresh_icon.png"));
 		btn_LamMoi.setFont(new Font("Arial", Font.BOLD, 12));
 		btn_LamMoi.setBackground(new Color(252, 155, 78));
 		btn_LamMoi.setBounds(5, 335, 110, 30);
@@ -206,7 +206,7 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		panel_Trai.add(txtTenSP);
 		txtTenSP.setColumns(20);
 
-		ImageIcon iconTimKiem = new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png");
+		ImageIcon iconTimKiem = new ImageIcon("icon\\Research_icon.png");
 		Image originalImage_iconTimKiem = iconTimKiem.getImage();
 		Image resizedImage_iconTimKiem = originalImage_iconTimKiem.getScaledInstance(16, 16,
 				java.awt.Image.SCALE_SMOOTH);

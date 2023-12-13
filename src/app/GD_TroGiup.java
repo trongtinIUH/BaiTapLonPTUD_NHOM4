@@ -128,7 +128,7 @@ public class GD_TroGiup extends JPanel implements MouseListener{
 		pnContent.add(lblLink = new JLabel("Link web hướng dẫn: "));
 		lblLink.setFont(font_Content2);
 		lblLink.setBounds( 32, 240, 170, 30);
-		pnContent.add(lblLink2 = new JLabel("D:\\BaiTapLonPTUD_NHOM4\\HuongDanPhanMem\\index.html"));
+		pnContent.add(lblLink2 = new JLabel("HuongDanPhanMem\\index.html"));
 		lblLink2.setFont(font_Content2);
 		lblLink2.setForeground(Color.blue);
 		lblLink2.setBounds( 202, 240, 470, 30);
@@ -372,7 +372,7 @@ public class GD_TroGiup extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == lblLink2) {
-			openLocalHtmlFile("D:\\BaiTapLonPTUD_NHOM4\\HuongDanPhanMem\\index.html");
+			openLocalHtmlFile("HuongDanPhanMem\\index.html");
 		}else if(e.getSource() == lblVideo2) {
 			openWebpage("https://www.youtube.com/watch?v=6yFKPBBZtTs");
 		}else if (e.getSource() == interfaceTree) {

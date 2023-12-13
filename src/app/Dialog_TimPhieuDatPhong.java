@@ -177,7 +177,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 		btnTimKiem = new JButton("Tìm kiếm");
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setFont(new Font("Arial", Font.BOLD, 15));
-		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
+		btnTimKiem.setIcon(new ImageIcon("icon\\Research_icon.png"));
 		btnTimKiem.setBounds(400, 45, 290, 30);
 		btnTimKiem.setBackground(new Color(13, 153, 255, 255));
 		btnTimKiem.setBorder(new RoundedBorder(20));
@@ -185,7 +185,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 
 		btnLamMoi = new JButton("Làm Mới");
 		btnLamMoi.setForeground(Color.WHITE);
-		btnLamMoi.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Refresh_icon.png"));
+		btnLamMoi.setIcon(new ImageIcon("icon\\Refresh_icon.png"));
 		btnLamMoi.setFont(new Font("Arial", Font.BOLD, 15));
 		btnLamMoi.setBounds(720, 5, 125, 30);
 		btnLamMoi.setBackground(new Color(112, 210, 103, 255));
@@ -1142,7 +1142,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 				cell.setCellValue(trangthai);
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
+			File file = new File("LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);

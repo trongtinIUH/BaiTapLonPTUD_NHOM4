@@ -846,7 +846,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	}
 
 	private void inHoaDon(String path) {
-		path = "D:\\BaiTapLonPTUD_NHOM4\\LuuFile_PDF\\" + path + ".pdf";
+		path = "LuuFile_PDF\\" + path + ".pdf";
 		if (!path.matches("(.)+(\\.pdf)$")) {
 			path += ".pdf";
 		}

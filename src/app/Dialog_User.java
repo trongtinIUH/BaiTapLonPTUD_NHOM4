@@ -142,7 +142,7 @@ public class Dialog_User extends JDialog implements ActionListener{
 		getContentPane().add(txtQunL);
 		
 		lbl_nen = new JLabel("");
-		lbl_nen.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nenUser.jpg"));
+		lbl_nen.setIcon(new ImageIcon("image\\nenUser.jpg"));
 		lbl_nen.setBounds(0, 0, 384, 261);
 		getContentPane().add(lbl_nen);
 		

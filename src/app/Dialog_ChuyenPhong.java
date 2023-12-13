@@ -274,7 +274,7 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		btnTimKiem = new JButton("Tìm kiếm");
 		btnTimKiem.setForeground(Color.WHITE);
 		btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnTimKiem.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\Research_icon.png"));
+		btnTimKiem.setIcon(new ImageIcon("icon\\Research_icon.png"));
 		btnTimKiem.setBounds(570, 10, 200, 35);
 		btnTimKiem.setBackground(new Color(13, 153, 255, 255));
 		panel_2.add(btnTimKiem);

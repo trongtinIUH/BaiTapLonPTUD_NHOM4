@@ -399,7 +399,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 
 	public void loadOrderDetailData(String maHD) {
 		for (ChiTietHoaDon cthd : chitiethoadon_dao.getChiTietHoaDonTheoMaHD(maHD)) {
-			Object[] row = { cthd.getHoaDon().getMaHoaDon(), cthd.getPhong().getMaPhong(), cthd.getSoGioHat() };
+			Object[] row = { cthd.getHoaDon().getMaHoaDon(), cthd.getPhong().getMaPhong(), Math.round(cthd.getSoGioHat() * 100.0) / 100.0 };
 			modelOrderDetail.addRow(row);
 		}
 	}
@@ -613,7 +613,7 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
+			File file = new File("LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);

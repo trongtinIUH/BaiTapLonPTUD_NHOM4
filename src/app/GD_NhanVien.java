@@ -104,11 +104,14 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		lblTitle = new JLabel("NHÂN VIÊN");
 		pnNorth.add(lblTitle);
 		// ---nút user
-		btnUser = new JButton("");
-		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 5, 61, 45);
-		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser = new JButton();
+		btnUser.setBackground(Color.decode("#B5E6FB"));
 		btnUser.setBorderPainted(false);
+		btnUser.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnUser.setBounds(1020, 7, 45, 45);
+		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
+		btnUser.setIcon(iconProfile);
 		pnNorth.add(btnUser);
 
 		// căn giữa title
@@ -427,9 +430,9 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	private void them() {
 		//Gán dữ liệu cứng
 		if(rdoNam.isSelected())
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
+			imageLabel.setIcon(new ImageIcon("image\\nhanvien_nam.png"));
 		else
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
+			imageLabel.setIcon(new ImageIcon("image\\nhanvien_nu.png"));
 		
 		ImageIcon icon = (ImageIcon) imageLabel.getIcon();
 		if (icon != null) {
@@ -634,7 +637,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
+			File file = new File("LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);
@@ -684,9 +687,9 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 		} else if (obj.equals(btnUser)) {
 			dialog_user.setVisible(true);
 		} else if (obj.equals(rdoNam)) {
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nam.png"));
+			imageLabel.setIcon(new ImageIcon("image\\nhanvien_nam.png"));
 		} else if (obj.equals(rdoNu)) {
-			imageLabel.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\image\\nhanvien_nu.png"));
+			imageLabel.setIcon(new ImageIcon("image\\nhanvien_nu.png"));
 		}
 	}
 

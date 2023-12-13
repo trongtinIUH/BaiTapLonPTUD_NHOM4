@@ -17,7 +17,7 @@ public class App_Karaoke4T extends JFrame {
         label = new JLabel();
 
         // Tạo một biểu tượng mới với hình ảnh của bạn
-        ImageIcon hinhgt = new ImageIcon("image/hinh_trangdangnhap.jpg");
+        ImageIcon hinhgt = new ImageIcon("./image/hinh_trangdangnhap.jpg");
 		Image image = hinhgt.getImage();
 		Image newImage = image.getScaledInstance(400, 400, java.awt.Image.SCALE_SMOOTH);
 		hinhgt = new ImageIcon(newImage);

@@ -85,11 +85,14 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 		pnNorth.add(lblTitle);
 
 		// ---nút user
-		btnUser = new JButton("");
-		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 5, 61, 45);
-		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser = new JButton();
+		btnUser.setBackground(Color.decode("#B5E6FB"));
 		btnUser.setBorderPainted(false);
+		btnUser.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnUser.setBounds(1020, 7, 45, 45);
+		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
+		btnUser.setIcon(iconProfile);
 		pnNorth.add(btnUser);
 
 		// căn giữa title
@@ -594,7 +597,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 				cell.setCellValue(loaiPhong.getDonGiaTheoGio());
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSachPhong.xlsx");
+			File file = new File("LuuFile_Excel\\DanhSachPhong.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);

@@ -106,11 +106,14 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 25));
 		pnNorth.add(lblTitle);
 		// ---nút user
-		btnUser = new JButton("");
-		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 5, 61, 45);
-		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser = new JButton();
+		btnUser.setBackground(Color.decode("#B5E6FB"));
 		btnUser.setBorderPainted(false);
+		btnUser.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnUser.setBounds(1020, 7, 45, 45);
+		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
+		btnUser.setIcon(iconProfile);
 		pnNorth.add(btnUser);
 
 		JPanel pnlCenter = new JPanel();
@@ -585,7 +588,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
+			File file = new File("LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);

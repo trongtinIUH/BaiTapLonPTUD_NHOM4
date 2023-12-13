@@ -80,6 +80,7 @@ public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListene
 	private JComboBox<String> cbLoaiTim1;
 	private KhuyenMai_dao km_dao = new KhuyenMai_dao();
 	private XSSFWorkbook wordbook;
+	private Dialog_User dialog_User= new Dialog_User();
 
 	public GD_KhuyenMai() {
 		// TODO Auto-generated constructor stub
@@ -95,11 +96,14 @@ public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListene
 		pnNorth.add(lblTitle);
 
 		// ---nút user
-		btnUser = new JButton("");
-		btnUser.setIcon(new ImageIcon("D:\\BaiTapLonPTUD_NHOM4\\icon\\user.png"));
-		btnUser.setBounds(1019, 5, 61, 45);
-		btnUser.setBackground(new Color(181, 230, 251, 255));
+		btnUser = new JButton();
+		btnUser.setBackground(Color.decode("#B5E6FB"));
 		btnUser.setBorderPainted(false);
+		btnUser.setIcon(new ImageIcon("icon\\icon_profile.png"));
+		btnUser.setBounds(1020, 7, 45, 45);
+		ImageIcon iconProfile = new ImageIcon("icon\\icon_profile.png");
+		iconProfile = new ImageIcon(iconProfile.getImage().getScaledInstance(45, 45, java.awt.Image.SCALE_SMOOTH));
+		btnUser.setIcon(iconProfile);
 		pnNorth.add(btnUser);
 
 		// căn giữa title
@@ -311,6 +315,7 @@ public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListene
 		cbLoaiTim.addActionListener(this);
 		cbLoaiTim1.addActionListener(this);
 		btnXuatExcel.addActionListener(this);
+		btnUser.addActionListener(this);
 	}
 
 	private void clearTable() {
@@ -558,7 +563,7 @@ public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListene
 				cell.setCellValue(ngay);
 			}
 
-			File file = new File("D:\\BaiTapLonPTUD_NHOM4\\LuuFile_Excel\\DanhSach.xlsx");
+			File file = new File("LuuFile_Excel\\DanhSach.xlsx");
 			try {
 				FileOutputStream file_out = new FileOutputStream(file);
 				wordbook.write(file_out);
@@ -612,6 +617,9 @@ public class GD_KhuyenMai extends JPanel implements ActionListener, MouseListene
 		}
 		if (o.equals(btnXuatExcel)) {
 			xuatExcel();
+		}
+		if(o.equals(btnUser)) {
+			dialog_User.setVisible(true);
 		}
 	}
 
